@@ -18,5 +18,31 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
             android:id="@+id/deviceTypeTextField" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:id="@+id/decrementButton" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="0"
+                android:id="@+id/deviceCounterTextField" />
+
+            <Button
+                android:layout_width="37dp"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:id="@+id/incrementButton" />
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>
