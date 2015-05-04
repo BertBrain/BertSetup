@@ -112,6 +112,10 @@ public class Project {
 		return categoryNames;
 	}
 
+    public List<Category> getCategories() {
+        return categories;
+    }
+
     public List<String> getLocationNames() {
         List<String> locationNames = new ArrayList<String>();
         for (BertUnit b : berts) {
