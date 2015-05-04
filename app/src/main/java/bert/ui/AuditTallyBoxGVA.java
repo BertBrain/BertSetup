@@ -9,6 +9,8 @@ import android.app.Activity;
 import android.widget.Button;
 import android.widget.TextView;
 
+import bert.database.BertUnit;
+import bert.database.Category;
 import bert.ui.R;
 
 import java.util.ArrayList;
@@ -19,15 +21,15 @@ import java.util.List;
 /**
  * Created by liamcook on 5/1/15.
  */
-public class AuditTallyBoxGVA extends ArrayAdapter<String> {
+public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
 
-    HashMap<String, View> cells = new HashMap<String, View>();
-    HashMap<String, Integer> counts = new HashMap<String, Integer>();
-    List<String> deviceTypes;
+    HashMap<Category, View> cells = new HashMap<Category, View>();
+    HashMap<Category, Integer> counts = new HashMap<Category, Integer>();
+    List<Category> deviceTypes;
     Activity activity;
     int recourseId;
 
-    public AuditTallyBoxGVA(Activity activity, int recourseId, List<String> deviceTypes) {
+    public AuditTallyBoxGVA(Activity activity, int recourseId, List<Category> deviceTypes) {
         super(activity, recourseId, deviceTypes);
         this.deviceTypes = deviceTypes;
         this.activity = activity;
@@ -37,8 +39,6 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
     @Override public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
 
-
-
         View gridCell;
         if (view == null){
             counts.put(deviceTypes.get(position), 0);
@@ -47,7 +47,7 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
             gridCell = inflater.inflate(R.layout.fragment_grid_cell, parent, false);
 
             TextView deviceTypeTextField = (TextView) gridCell.findViewById(R.id.deviceTypeTextField);
-            deviceTypeTextField.setText(deviceTypes.get(position));
+            deviceTypeTextField.setText(deviceTypes.get(position).getName());
 
             Button incrementButton = (Button) gridCell.findViewById(R.id.incrementButton);
             Button decrementButton = (Button) gridCell.findViewById(R.id.decrementButton);
@@ -68,28 +68,42 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
         return gridCell;
     }
 
-    void addToDeviceType(String deviceType, int numberToAdd){
+    void addToDeviceType(Category deviceType, int numberToAdd){
         int oldCount = counts.get(deviceType);
         counts.put(deviceType, oldCount + numberToAdd);
         System.out.println("count for: " + deviceType + "is now: " + counts.get(deviceType));
         setCountForDeviceType(deviceType, oldCount + numberToAdd);
     }
 
-    void setCountForDeviceType(String deviceType, int count){
+    void setCountForDeviceType(Category deviceType, int count){
 
         View gridCell = cells.get(deviceType);
         TextView deviceTypeCounter = (TextView) gridCell.findViewById(R.id.deviceCounterTextField);
         deviceTypeCounter.setText(String.valueOf(count));
     }
+
+    //WIP
+    /*
+    public List<BertUnit> generateBertList(){
+        List<BertUnit> berts = new List<BertUnit>;
+        for (Category category : deviceTypes){
+            int count = counts.get(category);
+            for (int i = 0; i<count; i++){
+                BertUnit bert = new BertUnit(name, location, building, category);
+            }
+        }
+    }
+    */
+
 }
 
 class buttonListener implements View.OnClickListener {
 
     int incrementAmount =0;
     AuditTallyBoxGVA owner;
-    String deviceType;
+    Category deviceType;
 
-    public buttonListener(String deviceType, int incrementAmount, AuditTallyBoxGVA owner){
+    public buttonListener(Category deviceType, int incrementAmount, AuditTallyBoxGVA owner){
         this.deviceType = deviceType;
         this.owner = owner;
         this.incrementAmount = incrementAmount;

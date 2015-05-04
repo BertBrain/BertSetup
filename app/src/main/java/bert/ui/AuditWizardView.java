@@ -123,4 +123,6 @@ public class AuditWizardView extends Fragment {
         public List<String> getDeviceTypes();
         public void addBerts(ArrayList<BertUnit> berts);
     }
+
+
 }
