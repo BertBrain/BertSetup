@@ -71,14 +71,18 @@ public class AuditTallyBox extends Fragment {
 
     @Override
     public void onResume(){
-        deviceTypeCounter = (TextView) getView().findViewById(R.id.deviceCounterTextField);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_grid_cell, container, false);
+        View view = inflater.inflate(R.layout.fragment_grid_cell, container, false);
+
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -105,12 +109,12 @@ public class AuditTallyBox extends Fragment {
         mListener = null;
     }
 
-    public void increment(View view){
+    public void increment(){
         count++;
         updateDisplay();
     }
 
-    public void decrement(View view){
+    public void decrement(){
         if (count > 0){
             count--;
         }
@@ -118,6 +122,7 @@ public class AuditTallyBox extends Fragment {
     }
 
     public void updateDisplay(){
+        System.out.println("updating display to: "+ count);
         deviceTypeCounter.setText(String.valueOf(count));
     }
 
