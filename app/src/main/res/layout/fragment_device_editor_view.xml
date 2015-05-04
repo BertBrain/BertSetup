@@ -64,6 +64,8 @@
                     android:layout_column="0" />
 
                 <EditText
+                    android:imeActionLabel="Done"
+                    android:imeOptions="actionDone"
                     android:layout_width="370dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/macAdress"
