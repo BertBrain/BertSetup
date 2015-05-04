@@ -11,7 +11,7 @@ public class Category {
 	/**
 	 * 
 	 * @param name Name of device
-	 * @param type 15A Bert, 20A Bert, 220V Bert
+	 * @param bertType 15A Bert, 20A Bert, 220V Bert
 	 * @param estimatedLoad in watts
 	 */
 	public Category(String name, int bertType, int estimatedLoad) {

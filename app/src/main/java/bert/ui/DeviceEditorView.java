@@ -29,38 +29,31 @@ import bert.database.BertUnit;
  * create an instance of this fragment.
  */
 public class DeviceEditorView extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_LOCATION = "location";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String location;
+    private int position;
 
     private OnFragmentInteractionListener mListener;
 
-    private String location;
-    private TextView tempLocationDisplay;
-
     private EditText deviceNameTextField;
-    private EditText macAdressTextField;
+    private EditText macAddressTextField;
 
-    private int position;
+
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param location the room used to populate the bertlist.
      * @return A new instance of fragment DeviceEditorView.
      */
     // TODO: Rename and change types and number of parameters
-    public static DeviceEditorView newInstance(String param1, String param2) {
+    public static DeviceEditorView newInstance(String location) {
         DeviceEditorView fragment = new DeviceEditorView();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_LOCATION, location);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,34 +66,24 @@ public class DeviceEditorView extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            location = getArguments().getString(ARG_LOCATION);
         }
-
-
     }
 
     @Override
     public void onResume(){
         super.onResume();
         System.out.println(getView());
-        macAdressTextField = (EditText) getView().findViewById(R.id.macAdress);
+        macAddressTextField = (EditText) getView().findViewById(R.id.macAdress);
         deviceNameTextField = (EditText) getView().findViewById(R.id.deviceName);
-        tempLocationDisplay = (TextView) getView().findViewById(R.id.tempLocationDisplay);
         System.out.println(getArguments());
-        if (getArguments() != null){
-            tempLocationDisplay.setText(getArguments().getString("location"));
-        } else {
-            System.out.println("null arguments to device editor view");
-        }
 
 
         MainActivity activity = (MainActivity)getActivity();
         List<String> names = new ArrayList<String>();
         if (getArguments() != null) {
-            List<BertUnit> berts = activity.getBertListForLocation(getArguments().getString("location"));
-            for (int i = 0; i < berts.size(); i++) {
-                names.add(berts.get(i).getName());
+            for (BertUnit bert : getBertList()) {
+                names.add(bert.getName());
             }
         }
 
@@ -112,15 +95,14 @@ public class DeviceEditorView extends Fragment {
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                loadDeviceAtPostion(position); //TODO: make this pull from database
-
+                loadDeviceAtPostion(position);
             }
         });
 
-        macAdressTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        macAddressTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE){
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     updateMAC();
                 }
                 return false;
@@ -129,11 +111,8 @@ public class DeviceEditorView extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
         return inflater.inflate(R.layout.fragment_device_editor_view, container, false);
     }
 
@@ -177,30 +156,25 @@ public class DeviceEditorView extends Fragment {
         public List<BertUnit> getBertListForLocation(String location);
     }
 
-    private void updateMAC(){
-        getBertList().get(position).setMAC(macAdressTextField.getText().toString());
+    private void updateMAC() {
+        getBertList().get(position).setMAC(macAddressTextField.getText().toString());
     }
 
     private void loadDeviceAtPostion(int position){
         this.position = position;
-        System.out.println("loading device named" + position);
-        //TODO: implement this, pull from database
-        //TODO: make this update text fields
-        List<BertUnit> berts = getBertList();
-        deviceNameTextField.setText(berts.get(position).getName());
-        macAdressTextField.setText(berts.get(position).getMAC());
+        BertUnit b = getBertList().get(position);
+        deviceNameTextField.setText(b.getName());
+        macAddressTextField.setText(b.getMAC());
     }
 
     private List<BertUnit> getBertList(){
-        MainActivity activity = (MainActivity)getActivity();
+        MainActivity activity = (MainActivity) getActivity();
         List<BertUnit> berts;
         if (getArguments() != null) {
-            berts = activity.getBertListForLocation(getArguments().getString("location"));
+            berts = activity.getBertListForLocation(location);
         } else {
             berts = new ArrayList<BertUnit>();
         }
         return  berts;
-
     }
-
 }

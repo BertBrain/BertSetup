@@ -72,10 +72,9 @@ public class Project {
 	 	root.appendChild(client);
 	 	//BertList
 		Element bertElementList = projectDoc.createElement("BertList");
-		for (int i = 0; i < berts.size(); i++) {
+		for (BertUnit b : berts) {
 			//Bert
 			Element bertElement = projectDoc.createElement("Bert");
-			BertUnit b = berts.get(i);
 			bertElement.setAttribute("name", b.getName());
 			bertElement.setAttribute("location", b.getLocation());
 			bertElement.setAttribute("building", b.getBuilding());
@@ -104,8 +103,8 @@ public class Project {
 	  
 	public List<String> getCategoryNames() {
 		List<String> categoryNames = new ArrayList<String>();
-		for (int i = 0; i < berts.size(); i++) {
-			String catName = categories.get(berts.get(i).getCategoryID()).getName();
+		for (BertUnit b : berts) {
+			String catName = categories.get(b.getCategoryID()).getName();
 			if (!categoryNames.contains(catName)) {
 				categoryNames.add(catName);
 			}
@@ -115,8 +114,8 @@ public class Project {
 
     public List<String> getLocationNames() {
         List<String> locationNames = new ArrayList<String>();
-        for (int i = 0; i < berts.size(); i++) {
-            String n = berts.get(i).getLocation();
+        for (BertUnit b : berts) {
+            String n = b.getLocation();
             if (!locationNames.contains(n)) {
                 locationNames.add(n);
             }
@@ -126,8 +125,7 @@ public class Project {
 
     public List<BertUnit> getBertsByLocation(String building, String location) {
         List<BertUnit> returnList = new ArrayList<BertUnit>();
-        for (int i = 0; i < berts.size(); i++) {
-            BertUnit b = berts.get(i);
+        for (BertUnit b : berts) {
             if (b.getBuilding() == building && b.getLocation() == location) {
                 returnList.add(b);
             }
