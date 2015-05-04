@@ -24,10 +24,11 @@
                 android:layout_width="300dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="left|center_vertical"
-                android:rowCount="8"
+                android:rowCount="11"
                 android:columnCount="1"
                 android:orientation="vertical"
-                android:id="@+id/grid">
+                android:id="@+id/grid"
+                android:isScrollContainer="true">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -99,6 +100,15 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/building"
                     android:layout_row="7"
+                    android:layout_column="0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Bert Type"
+                    android:id="@+id/bertTypeTextView"
+                    android:layout_row="8"
                     android:layout_column="0" />
 
             </GridLayout>

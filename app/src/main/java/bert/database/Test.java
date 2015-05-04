@@ -18,6 +18,19 @@ public class Test {
         testProject.addBert(new BertUnit("bert11", "1", "Math", 1));
         testProject.addBert(new BertUnit("bert12", "1", "Math", 1));
         testProject.addBert(new BertUnit("bert13", "1", "Math", 1));
+        testProject.addBert(new BertUnit("bert14", "2", "Math", 1));
+        testProject.addBert(new BertUnit("bert15", "3", "Math", 1));
+        testProject.addBert(new BertUnit("bert16", "4", "Math", 1));
+        testProject.addBert(new BertUnit("bert17", "5", "Math", 1));
+        testProject.addBert(new BertUnit("bert18", "6", "Math", 1));
+        testProject.addBert(new BertUnit("bert19", "7", "Math", 1));
+        testProject.addBert(new BertUnit("bert20", "8", "Math", 1));
+        testProject.addBert(new BertUnit("bert21", "9", "Math", 1));
+        testProject.addBert(new BertUnit("bert22", "10", "Math", 1));
+        testProject.addBert(new BertUnit("bert23", "11", "Math", 1));
+        testProject.addBert(new BertUnit("bert24", "12", "Math", 1));
+
+
         testProject.berts.get(0).setMAC("12345");
     }
 
