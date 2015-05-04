@@ -1,12 +1,13 @@
-package com.example.liamcook.test;
+package bert.ui;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.app.Activity;
 import android.widget.TextView;
+
+import com.example.liamcook.bert.R;
 
 import java.util.ArrayList;
 

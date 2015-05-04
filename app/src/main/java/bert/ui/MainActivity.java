@@ -1,19 +1,19 @@
-package com.example.liamcook.test;
+package bert.ui;
 
 import android.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
-import android.content.Intent;
+import com.example.liamcook.bert.R;
+
+import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener{
 

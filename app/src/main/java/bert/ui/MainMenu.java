@@ -1,8 +1,6 @@
-package com.example.liamcook.test;
+package bert.ui;
 
-import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.app.ListActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.content.Intent;
+
+import com.example.liamcook.bert.R;
 
 import java.util.ArrayList;
 
