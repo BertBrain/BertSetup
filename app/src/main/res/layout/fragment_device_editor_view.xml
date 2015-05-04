@@ -2,8 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.example.liamcook.ui.DeviceEditorView">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
@@ -12,55 +10,50 @@
         android:weightSum="1">
 
         <ListView
-            android:layout_width="175dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:id="@+id/nameList" />
+            android:isScrollContainer="true"
+            android:id="@+id/bertList" />
 
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.88">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Device Editor View"
-                android:id="@+id/tempLocationDisplay"
-                android:layout_gravity="center" />
-
             <GridLayout
-                android:layout_width="fill_parent"
+                android:layout_width="300dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="left|center_vertical"
-                android:rowCount="3"
-                android:columnCount="2"
+                android:rowCount="8"
+                android:columnCount="1"
                 android:orientation="vertical"
                 android:id="@+id/grid">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Device Name: "
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Device Name"
                     android:id="@+id/deviceNameTextView"
                     android:layout_row="0"
                     android:layout_column="0" />
 
                 <EditText
+                    android:imeActionLabel="Done"
+                    android:imeOptions="actionDone"
                     android:layout_width="366dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/deviceName"
-                    android:layout_row="0"
-                    android:layout_column="1" />
+                    android:layout_row="1"
+                    android:layout_column="0" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="MAC Adress:"
-                    android:id="@+id/textView6"
-                    android:layout_row="1"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="MAC Address"
+                    android:id="@+id/macAddressTextView"
+                    android:layout_row="2"
                     android:layout_column="0" />
 
                 <EditText
@@ -68,9 +61,45 @@
                     android:imeOptions="actionDone"
                     android:layout_width="370dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/macAdress"
-                    android:layout_row="1"
-                    android:layout_column="1" />
+                    android:id="@+id/macAddress"
+                    android:layout_row="3"
+                    android:layout_column="0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Room"
+                    android:id="@+id/roomTextView"
+                    android:layout_row="4"
+                    android:layout_column="0" />
+
+                <EditText
+                    android:imeActionLabel="Done"
+                    android:imeOptions="actionDone"
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/room"
+                    android:layout_row="5"
+                    android:layout_column="0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Building"
+                    android:id="@+id/buildingTextView"
+                    android:layout_row="6"
+                    android:layout_column="0" />
+
+                <EditText
+                    android:imeActionLabel="Done"
+                    android:imeOptions="actionDone"
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/building"
+                    android:layout_row="7"
+                    android:layout_column="0" />
 
             </GridLayout>
         </FrameLayout>

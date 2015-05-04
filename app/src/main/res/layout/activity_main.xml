@@ -15,7 +15,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="230dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:weightSum="1"
@@ -23,24 +23,23 @@
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:text="+ New Room"
-                android:onClick="openAuditWizardView"
-                android:id="@+id/new_room"
-                android:layout_marginBottom="5dp" />
+                android:layout_height="50dp"
+                android:text="Project View"
+                android:id="@+id/button_project_view"
+                android:onClick="openProjectActivity" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Audit Room"
+                android:id="@+id/button_audit"
+                android:onClick="openAuditWizardView" />
 
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="187dp"
-                android:id="@+id/locationListView" />
-
-            <Button
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Button"
-                android:id="@+id/button2"
-                android:onClick="openMenu" />
-
+                android:isScrollContainer="true"
+                android:id="@+id/locationListView" />
 
         </LinearLayout>
 
@@ -48,6 +47,5 @@
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
     </LinearLayout>
 </RelativeLayout>

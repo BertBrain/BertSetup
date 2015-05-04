@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bert.database.BertUnit;
-
+//FIXME: App crashes if you click next twice on the keyboard while editing bert info.
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -39,6 +39,8 @@ public class DeviceEditorView extends Fragment {
 
     private EditText deviceNameTextField;
     private EditText macAddressTextField;
+    private EditText roomTextField;
+    private EditText buildingTextField;
 
 
 
@@ -74,8 +76,10 @@ public class DeviceEditorView extends Fragment {
     public void onResume(){
         super.onResume();
         System.out.println(getView());
-        macAddressTextField = (EditText) getView().findViewById(R.id.macAdress);
+        macAddressTextField = (EditText) getView().findViewById(R.id.macAddress);
         deviceNameTextField = (EditText) getView().findViewById(R.id.deviceName);
+        roomTextField = (EditText) getView().findViewById(R.id.room);
+        buildingTextField = (EditText) getView().findViewById(R.id.building);
         System.out.println(getArguments());
 
 
@@ -87,10 +91,10 @@ public class DeviceEditorView extends Fragment {
             }
         }
 
-        ArrayAdapter<String> locationTableAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, names);
+        ArrayAdapter<String> deviceTableAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, names);
 
-        ListView locationListView = (ListView) getView().findViewById(R.id.nameList);
-        locationListView.setAdapter(locationTableAdapter);
+        ListView locationListView = (ListView) getView().findViewById(R.id.bertList);
+        locationListView.setAdapter(deviceTableAdapter);
 
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -107,6 +111,16 @@ public class DeviceEditorView extends Fragment {
                 }
                 return false;
             }
+        });
+
+        deviceNameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+           @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+               if (actionId == EditorInfo.IME_ACTION_DONE) {
+                   updateName();
+               }
+               return false;
+           }
         });
     }
 
@@ -160,11 +174,18 @@ public class DeviceEditorView extends Fragment {
         getBertList().get(position).setMAC(macAddressTextField.getText().toString());
     }
 
+    private void updateName() {
+        getBertList().get(position).setName(deviceNameTextField.getText().toString());
+        onResume();
+    }
+
     private void loadDeviceAtPostion(int position){
         this.position = position;
         BertUnit b = getBertList().get(position);
         deviceNameTextField.setText(b.getName());
         macAddressTextField.setText(b.getMAC());
+        roomTextField.setText(b.getLocation());
+        buildingTextField.setText(b.getBuilding());
     }
 
     private List<BertUnit> getBertList(){

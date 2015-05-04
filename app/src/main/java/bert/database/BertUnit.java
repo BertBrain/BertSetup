@@ -30,7 +30,11 @@ public class BertUnit {
 	public String getName() {
 		return name;
 	}
-	
+
+    public void setName(String newName) {
+        this.name = newName;
+    }
+
 	public String getLocation() {
 		return location;
 	}

@@ -114,7 +114,7 @@ public class MainActivity extends ActionBarActivity implements DeviceEditorView.
         fragmentTransaction.commit();
     }
 
-    public void openMenu(View view) {
+    public void openProjectActivity(View view) {
         Intent intent = new Intent(this, ProjectMenu.class);
         startActivity(intent);
     }
