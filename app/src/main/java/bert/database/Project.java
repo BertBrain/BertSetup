@@ -117,11 +117,22 @@ public class Project {
         List<String> locationNames = new ArrayList<String>();
         for (int i = 0; i < berts.size(); i++) {
             String n = berts.get(i).getLocation();
-            if(!locationNames.contains(n)) {
+            if (!locationNames.contains(n)) {
                 locationNames.add(n);
             }
         }
         return locationNames;
+    }
+
+    public List<BertUnit> getBertsByLocation(String building, String location) {
+        List<BertUnit> returnList = new ArrayList<BertUnit>();
+        for (int i = 0; i < berts.size(); i++) {
+            BertUnit b = berts.get(i);
+            if (b.getBuilding() == building && b.getLocation() == location) {
+                returnList.add(b);
+            }
+        }
+        return returnList;
     }
 	  
 	public void exportBertConfiguratorCSV() {
