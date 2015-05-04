@@ -11,13 +11,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import bert.database.BertUnit;
+import bert.database.Test;
 import bert.ui.R;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener{
 
     @Override
     public void onFragmentInteraction(android.net.Uri uri) {
+
+    }
+
+    @Override
+    public void addBerts(ArrayList<BertUnit> berts){
 
     }
 
@@ -120,13 +128,13 @@ public class MainActivity extends ActionBarActivity implements DeviceEditorView.
         return deviceTypes;
     }
 
-    public ArrayList<String> getLocations(){
-        ArrayList<String> locations = new ArrayList<String>();
-        locations.add("Gym");
-        locations.add("Cafeteria");
-        locations.add("101");
-        locations.add("102");
-        return locations;
+    public List<BertUnit> getBertListForLocation(String location){
+        //TODO: allow different buildings
+        return Test.testProject.getBertsByLocation("Math", location);
+    }
+
+    public List<String> getLocations(){
+        return Test.testProject.getLocationNames();
     }
 
 

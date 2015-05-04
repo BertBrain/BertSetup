@@ -13,7 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.EditText;
 
-import bert.ui.R;
+import java.util.ArrayList;
+import java.util.List;
+
+import bert.database.BertUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -87,7 +90,16 @@ public class DeviceEditorView extends Fragment {
             System.out.println("null arguments to device editor view");
         }
 
-        String[] names = {"Printer 1", "Printer 2", "Projector"}; //TODO: pull from database
+
+        MainActivity activity = (MainActivity)getActivity();
+        List<String> names = new ArrayList<String>();
+        if (getArguments() != null) {
+            List<BertUnit> berts = activity.getBertListForLocation(getArguments().getString("location"));
+            for (int i = 0; i < berts.size(); i++) {
+                names.add(berts.get(i).getName());
+            }
+        }
+
         ArrayAdapter<String> locationTableAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, names);
 
         ListView locationListView = (ListView) getView().findViewById(R.id.nameList);
@@ -96,7 +108,7 @@ public class DeviceEditorView extends Fragment {
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                loadDeviceNamed(String.valueOf(position)); //TODO: make this pull from database
+                loadDeviceAtPostion(position); //TODO: make this pull from database
 
             }
         });
@@ -148,12 +160,14 @@ public class DeviceEditorView extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+        public List<BertUnit> getBertListForLocation(String location);
     }
 
-    private void loadDeviceNamed(String deviceName){
-        System.out.println("loading device named" + deviceName);
+    private void loadDeviceAtPostion(int position){
+        System.out.println("loading device named" + position);
         //TODO: implement this, pull from database
         //TODO: make this update text fields
-        deviceNameTextField.setText(deviceName);
+        deviceNameTextField.setText(position);
     }
+
 }

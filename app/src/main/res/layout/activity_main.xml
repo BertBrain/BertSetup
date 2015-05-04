@@ -41,6 +41,7 @@
                 android:id="@+id/button2"
                 android:onClick="openMenu" />
 
+
         </LinearLayout>
 
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
