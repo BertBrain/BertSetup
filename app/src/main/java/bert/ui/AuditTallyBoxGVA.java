@@ -1,5 +1,6 @@
 package bert.ui;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import bert.ui.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -19,8 +21,8 @@ import java.util.List;
  */
 public class AuditTallyBoxGVA extends ArrayAdapter<String> {
 
-    List<AuditTallyBox>tallyBoxViews;
-
+    HashMap<String, View> cells = new HashMap<String, View>();
+    HashMap<String, Integer> counts = new HashMap<String, Integer>();
     List<String> deviceTypes;
     Activity activity;
     int recourseId;
@@ -30,42 +32,31 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
         this.deviceTypes = deviceTypes;
         this.activity = activity;
         this.recourseId = recourseId;
-        tallyBoxViews = new ArrayList<AuditTallyBox>();
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
 
+
+
         View gridCell;
         if (view == null){
+            counts.put(deviceTypes.get(position), 0);
+
             LayoutInflater inflater = activity.getLayoutInflater();
             gridCell = inflater.inflate(R.layout.fragment_grid_cell, parent, false);
 
             TextView deviceTypeTextField = (TextView) gridCell.findViewById(R.id.deviceTypeTextField);
-          deviceTypeTextField.setText(deviceTypes.get(position));
+            deviceTypeTextField.setText(deviceTypes.get(position));
 
-            //deviceTypeCounter = (TextView) getView().findViewById(R.id.deviceCounterTextField);
             Button incrementButton = (Button) gridCell.findViewById(R.id.incrementButton);
             Button decrementButton = (Button) gridCell.findViewById(R.id.decrementButton);
 
             System.out.println("creating click listeners");
-            incrementButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-                public void onClick(View v) {
-                    System.out.println("incrementing");
-                    //increment();
+            incrementButton.setOnClickListener(new buttonListener(deviceTypes.get(position), 1, this));
+            decrementButton.setOnClickListener(new buttonListener(deviceTypes.get(position), -1, this));
 
-                }
-            });
-
-            decrementButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("decrementing");
-                    //decrement();
-
-                }
-            });
+            cells.put(deviceTypes.get(position), gridCell);
 
         } else {
             gridCell = convertView;
@@ -75,5 +66,39 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
         System.out.println(gridCell);
         //System.out.println(view);
         return gridCell;
+    }
+
+    void addToDeviceType(String deviceType, int numberToAdd){
+        int oldCount = counts.get(deviceType);
+        counts.put(deviceType, oldCount + numberToAdd);
+        System.out.println("count for: " + deviceType + "is now: " + counts.get(deviceType));
+        setCountForDeviceType(deviceType, oldCount + numberToAdd);
+    }
+
+    void setCountForDeviceType(String deviceType, int count){
+
+        View gridCell = cells.get(deviceType);
+        TextView deviceTypeCounter = (TextView) gridCell.findViewById(R.id.deviceCounterTextField);
+        deviceTypeCounter.setText(count);
+    }
+}
+
+class buttonListener implements View.OnClickListener {
+
+    int incrementAmount =0;
+    AuditTallyBoxGVA owner;
+    String deviceType;
+
+    public buttonListener(String deviceType, int incrementAmount, AuditTallyBoxGVA owner){
+        this.deviceType = deviceType;
+        this.owner = owner;
+        this.incrementAmount = incrementAmount;
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        System.out.println(incrementAmount);
+        owner.addToDeviceType(deviceType, incrementAmount);
     }
 }
