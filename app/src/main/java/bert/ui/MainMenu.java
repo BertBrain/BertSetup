@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.content.Intent;
 
-import com.example.liamcook.bert.R;
+import bert.ui.R;
 
 import java.util.ArrayList;
 

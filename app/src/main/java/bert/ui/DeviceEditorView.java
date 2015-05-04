@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.EditText;
 
-import com.example.liamcook.bert.R;
+import bert.ui.R;
 
 /**
  * A simple {@link Fragment} subclass.
