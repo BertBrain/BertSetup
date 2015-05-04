@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bert.database.BertUnit;
-//FIXME: App crashes if you click next twice on the keyboard while editing bert info.
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the

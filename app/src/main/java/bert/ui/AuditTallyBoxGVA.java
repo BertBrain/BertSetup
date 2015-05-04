@@ -79,7 +79,7 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
 
         View gridCell = cells.get(deviceType);
         TextView deviceTypeCounter = (TextView) gridCell.findViewById(R.id.deviceCounterTextField);
-        deviceTypeCounter.setText(count);
+        deviceTypeCounter.setText(String.valueOf(count));
     }
 }
 
