@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -114,6 +116,16 @@ public class DeviceEditorView extends Fragment {
 
             }
         });
+
+        macAdressTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE){
+                    updateMAC();
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -165,6 +177,9 @@ public class DeviceEditorView extends Fragment {
         public List<BertUnit> getBertListForLocation(String location);
     }
 
+    private void updateMAC(){
+        getBertList().get(position).setMAC(macAdressTextField.getText().toString());
+    }
 
     private void loadDeviceAtPostion(int position){
         this.position = position;
