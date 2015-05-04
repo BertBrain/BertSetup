@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
-import com.example.liamcook.bert.R;
+import bert.ui.R;
 
 import java.util.ArrayList;
 

@@ -7,7 +7,7 @@ import android.widget.ArrayAdapter;
 import android.app.Activity;
 import android.widget.TextView;
 
-import com.example.liamcook.bert.R;
+import bert.ui.R;
 
 import java.util.ArrayList;
 
