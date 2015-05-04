@@ -112,6 +112,17 @@ public class Project {
 		}
 		return categoryNames;
 	}
+
+    public List<String> getLocationNames() {
+        List<String> locationNames = new ArrayList<String>();
+        for (int i = 0; i < berts.size(); i++) {
+            String n = berts.get(i).getLocation();
+            if(!locationNames.contains(n)) {
+                locationNames.add(n);
+            }
+        }
+        return locationNames;
+    }
 	  
 	public void exportBertConfiguratorCSV() {
 	    //TODO write
