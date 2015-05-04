@@ -184,7 +184,6 @@ public class DeviceEditorView extends Fragment {
         } else {
             berts = new ArrayList<BertUnit>();
         }
-
         return  berts;
 
     }

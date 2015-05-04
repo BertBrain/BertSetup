@@ -8,18 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import bert.ui.R;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link GridCell.OnFragmentInteractionListener} interface
+ * {@link AddProjectView.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link GridCell#newInstance} factory method to
+ * Use the {@link AddProjectView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GridCell extends Fragment {
+public class AddProjectView extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,11 +35,11 @@ public class GridCell extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment GridCell.
+     * @return A new instance of fragment AddProjectView.
      */
     // TODO: Rename and change types and number of parameters
-    public static GridCell newInstance(String param1, String param2) {
-        GridCell fragment = new GridCell();
+    public static AddProjectView newInstance(String param1, String param2) {
+        AddProjectView fragment = new AddProjectView();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -49,7 +47,7 @@ public class GridCell extends Fragment {
         return fragment;
     }
 
-    public GridCell() {
+    public AddProjectView() {
         // Required empty public constructor
     }
 
@@ -66,7 +64,7 @@ public class GridCell extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_grid_cell, container, false);
+        return inflater.inflate(R.layout.fragment_add_project, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

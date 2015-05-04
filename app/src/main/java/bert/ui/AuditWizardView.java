@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import bert.database.BertUnit;
-import bert.ui.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -80,10 +80,10 @@ public class AuditWizardView extends Fragment {
         }
     }
 
-    @Override public void onResume(){
+    @Override public void onResume() {
         super.onResume();
         MainActivity activity = (MainActivity)getActivity();
-        GridViewAdapter adapter = new GridViewAdapter(this.getActivity(), android.R.layout.simple_gallery_item, activity.getDeviceTypes());
+        AuditTallyBoxGVA adapter = new AuditTallyBoxGVA(this.getActivity(), android.R.layout.simple_gallery_item, activity.getDeviceTypes());
 
         GridView gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(adapter);
@@ -120,8 +120,7 @@ public class AuditWizardView extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
 
-        public ArrayList<String> getDeviceTypes();
+        public List<String> getDeviceTypes();
         public void addBerts(ArrayList<BertUnit> berts);
     }
-
 }

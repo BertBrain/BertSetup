@@ -13,7 +13,7 @@ import android.widget.ListView;
 
 import bert.database.BertUnit;
 import bert.database.Test;
-import bert.ui.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity implements DeviceEditorView.
 
     @Override
     public void addBerts(ArrayList<BertUnit> berts){
-
+        //TODO write
     }
 
     @Override
@@ -59,7 +59,7 @@ public class MainActivity extends ActionBarActivity implements DeviceEditorView.
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            openDeviceEditorView(getLocations().get(position)); // TODO: get name of location from database
+            openDeviceEditorView(getLocations().get(position));
 
             }
         });
@@ -114,26 +114,23 @@ public class MainActivity extends ActionBarActivity implements DeviceEditorView.
         fragmentTransaction.commit();
     }
 
-    public void openMenu(View view){
-        Intent intent = new Intent(this, MainMenu.class);
+    public void openMenu(View view) {
+        Intent intent = new Intent(this, ProjectMenu.class);
         startActivity(intent);
     }
 
-    //TODO: all below should be from database
-    @Override public ArrayList<String> getDeviceTypes(){
-        ArrayList<String> deviceTypes = new  ArrayList<String>();
-        deviceTypes.add("Coffe Machine");
-        deviceTypes.add("Printer");
-        deviceTypes.add("Projector");
-        return deviceTypes;
+    @Override
+    public List<String> getDeviceTypes() {
+        return Test.testProject.getCategoryNames();
     }
 
-    public List<BertUnit> getBertListForLocation(String location){
+    @Override
+    public List<BertUnit> getBertListForLocation(String location) {
         //TODO: allow different buildings
         return Test.testProject.getBertsByLocation("Math", location);
     }
 
-    public List<String> getLocations(){
+    public List<String> getLocations() {
         return Test.testProject.getLocationNames();
     }
 

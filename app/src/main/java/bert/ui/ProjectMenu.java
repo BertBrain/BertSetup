@@ -11,11 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.content.Intent;
 
-import bert.ui.R;
-
 import java.util.ArrayList;
 
-public class MainMenu extends ActionBarActivity implements AddProject.OnFragmentInteractionListener{
+public class ProjectMenu extends ActionBarActivity implements AddProjectView.OnFragmentInteractionListener{
 
     @Override
     public void onFragmentInteraction(android.net.Uri uri){
@@ -66,7 +64,7 @@ public class MainMenu extends ActionBarActivity implements AddProject.OnFragment
 
     public void openNewProjectView(View view){
         System.out.println("opening new project fragment");
-        AddProject newProjectFragment = new AddProject();
+        AddProjectView newProjectFragment = new AddProjectView();
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container_new_project, newProjectFragment);

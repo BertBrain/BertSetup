@@ -10,17 +10,19 @@ import android.widget.TextView;
 import bert.ui.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Created by liamcook on 5/1/15.
  */
-public class GridViewAdapter extends ArrayAdapter<String> {
+public class AuditTallyBoxGVA extends ArrayAdapter<String> {
 
-    ArrayList<String> deviceTypes;
+    List<String> deviceTypes;
     Activity activity;
     int recourseId;
-    public GridViewAdapter(Activity activity, int recourseId, ArrayList<String> deviceTypes) {
+
+    public AuditTallyBoxGVA(Activity activity, int recourseId, List<String> deviceTypes) {
         super(activity, recourseId, deviceTypes);
         this.deviceTypes = deviceTypes;
         this.activity = activity;
@@ -29,7 +31,7 @@ public class GridViewAdapter extends ArrayAdapter<String> {
 
 
 
-    @Override public View getView(int position, View convertView, ViewGroup parent){
+    @Override public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
 
 
