@@ -12,6 +12,7 @@ public class Test {
         testProject.addBert(new BertUnit("bert5", "231", "Math", 1));
         testProject.addBert(new BertUnit("bert6", "231", "Math", 1));
         testProject.addBert(new BertUnit("bert7", "245", "Math", 1));
+        testProject.berts.get(0).setMAC("12345");
     }
 
 	public static void main(String[] args) {		

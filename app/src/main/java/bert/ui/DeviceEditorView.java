@@ -43,6 +43,8 @@ public class DeviceEditorView extends Fragment {
 
     private EditText deviceNameTextField;
     private EditText macAdressTextField;
+
+    private int position;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -163,11 +165,28 @@ public class DeviceEditorView extends Fragment {
         public List<BertUnit> getBertListForLocation(String location);
     }
 
+
     private void loadDeviceAtPostion(int position){
+        this.position = position;
         System.out.println("loading device named" + position);
         //TODO: implement this, pull from database
         //TODO: make this update text fields
-        deviceNameTextField.setText(position);
+        List<BertUnit> berts = getBertList();
+        deviceNameTextField.setText(berts.get(position).getName());
+        macAdressTextField.setText(berts.get(position).getMAC());
+    }
+
+    private List<BertUnit> getBertList(){
+        MainActivity activity = (MainActivity)getActivity();
+        List<BertUnit> berts;
+        if (getArguments() != null) {
+            berts = activity.getBertListForLocation(getArguments().getString("location"));
+        } else {
+            berts = new ArrayList<BertUnit>();
+        }
+
+        return  berts;
+
     }
 
 }
