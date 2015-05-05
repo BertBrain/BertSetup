@@ -32,26 +32,25 @@ public class Project {
 	    categories = Arrays.asList(Category.projector, Category.vendingMachine);
 	}
 	  
-	public Project() {//XXX add arguments
-	    Document doc = bert.database.File.loadDocument("test.xml");
-	    Element projectTag = (Element) doc.getElementsByTagName("Project").item(0);
+	public Project(Document document) {
+	    Element projectTag = (Element) document.getElementsByTagName("Project").item(0);
 	    this.projectName = projectTag.getAttribute("projectName");
 	    this.creationDate = projectTag.getAttribute("creationDate");
 	    this.modifiedDate = projectTag.getAttribute("modifiedDate");
 	    
-	    Element contactTag = (Element) doc.getElementsByTagName("Contact").item(0);
+	    Element contactTag = (Element) document.getElementsByTagName("Contact").item(0);
 	    this.contactName = contactTag.getAttribute("contactName");
 	    this.contactNumber = contactTag.getAttribute("contactNumber");
 	    
 	    berts = new ArrayList<BertUnit>();
-	    NodeList bertNodeList = doc.getElementsByTagName("Bert");
+	    NodeList bertNodeList = document.getElementsByTagName("Bert");
 	    for (int i = 0; i < bertNodeList.getLength(); i++) {
 	    	Element e = (Element) bertNodeList.item(i);
 	    	berts.add(new BertUnit(e));
 	    }
 	    
 	    categories = new ArrayList<Category>();
-	    NodeList categoryNodeList = doc.getElementsByTagName("Category");
+	    NodeList categoryNodeList = document.getElementsByTagName("Category");
 	    for (int i = 0; i < categoryNodeList.getLength(); i++) {
 	    	Element e = (Element) categoryNodeList.item(i);
 			categories.add(Integer.parseInt(e.getAttribute("id")), new Category(e));
@@ -59,7 +58,7 @@ public class Project {
 	}
 	  
 	public void exportToXML() {
-		Document projectDoc = bert.database.File.createDocument();
+		Document projectDoc = FileHelper.createDocument();
 	 	Element root = projectDoc.createElement("Project");	 	
 	 	//Project
 	 	root.setAttribute("projectName", projectName);
@@ -98,7 +97,7 @@ public class Project {
 		
 		//Finish
 		projectDoc.appendChild(root);
-		bert.database.File.printDocument(projectDoc);
+		FileHelper.printDocument(projectDoc);
 	}
 	  
 	public List<String> getCategoryNames() {
@@ -111,6 +110,10 @@ public class Project {
 		}
 		return categoryNames;
 	}
+
+    public String getProjectName() {
+        return projectName;
+    }
 
     public List<Category> getCategories() {
         return categories;
@@ -127,16 +130,17 @@ public class Project {
         return locationNames;
     }
 
+    //FIXME Currently ignores buildings reimplement soon
     public List<BertUnit> getBertsByLocation(String building, String location) {
         List<BertUnit> returnList = new ArrayList<BertUnit>();
         for (BertUnit b : berts) {
-            if (b.getBuilding() == building && b.getLocation() == location) {
+            if (/*b.getBuilding() == building && */b.getLocation() == location) {
                 returnList.add(b);
             }
         }
         return returnList;
     }
-	  
+
 	public void exportBertConfiguratorCSV() {
 	    //TODO write
 	}

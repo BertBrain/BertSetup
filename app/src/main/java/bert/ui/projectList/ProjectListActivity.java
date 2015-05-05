@@ -1,4 +1,4 @@
-package bert.ui;
+package bert.ui.projectList;
 
 import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
@@ -12,8 +12,14 @@ import android.widget.ListView;
 import android.content.Intent;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ProjectMenu extends ActionBarActivity implements AddProjectView.OnFragmentInteractionListener{
+import bert.database.Project;
+import bert.database.ProjectProvider;
+import bert.ui.R;
+import bert.ui.roomList.RoomListActivity;
+
+public class ProjectListActivity extends ActionBarActivity implements AddProjectView.OnFragmentInteractionListener{
 
     @Override
     public void onFragmentInteraction(android.net.Uri uri){
@@ -32,7 +38,7 @@ public class ProjectMenu extends ActionBarActivity implements AddProjectView.OnF
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main_menu, menu);
 
-        ArrayAdapter<String> projectTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getProjects());
+        ArrayAdapter<String> projectTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getProjectNameList());
 
         ListView projectListView = (ListView) findViewById(R.id.projectListView);
         projectListView.setAdapter(projectTableAdapter);
@@ -40,7 +46,7 @@ public class ProjectMenu extends ActionBarActivity implements AddProjectView.OnF
         projectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openMain(String.valueOf(position)); //TODO: make this get actual project name
+                openMain(position); //TODO: make this get actual project name
             }
         });
 
@@ -73,25 +79,24 @@ public class ProjectMenu extends ActionBarActivity implements AddProjectView.OnF
     }
 
     //this opens a project after it has been selected from list - list name can be passed
-    public void openMain(String project){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        //TODO: make this pass a project name
+    public void openMain(int projectListIndex){
+        Intent i = new Intent(this, RoomListActivity.class);
+        i.putExtra("projectIndex", projectListIndex);
+        startActivity(i);
     }
 
     //opens a project when new project is pressed - project must be found through view
     public void openMain(View view){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, RoomListActivity.class);
         startActivity(intent);
         //TODO: make this pass a project name
     }
 
-    //TODO: get from database
-    public ArrayList<String> getProjects(){
-        ArrayList<String> projects = new ArrayList<String>();
-        projects.add("SCH");
-        projects.add("Haverford");
-        projects.add("Other School");
-        return projects;
+    public List<String> getProjectNameList() {
+        List<String> names = new ArrayList<>();
+        for (Project p : ProjectProvider.getInstance().getProjectList()) {
+            names.add(p.getProjectName());
+        }
+        return names;
     }
 }

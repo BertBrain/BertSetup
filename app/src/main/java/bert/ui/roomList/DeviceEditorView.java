@@ -1,4 +1,4 @@
-package bert.ui;
+package bert.ui.roomList;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bert.database.BertUnit;
+import bert.ui.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +52,6 @@ public class DeviceEditorView extends Fragment {
      * @param location the room used to populate the bertlist.
      * @return A new instance of fragment DeviceEditorView.
      */
-    // TODO: Rename and change types and number of parameters
     public static DeviceEditorView newInstance(String location) {
         DeviceEditorView fragment = new DeviceEditorView();
         Bundle args = new Bundle();
@@ -83,15 +83,15 @@ public class DeviceEditorView extends Fragment {
         System.out.println(getArguments());
 
 
-        MainActivity activity = (MainActivity)getActivity();
-        List<String> names = new ArrayList<String>();
+        RoomListActivity activity = (RoomListActivity)getActivity();
+        List<String> bertNameList = new ArrayList<String>();
         if (getArguments() != null) {
             for (BertUnit bert : getBertList()) {
-                names.add(bert.getName());
+                bertNameList.add(bert.getName());
             }
         }
 
-        ArrayAdapter<String> deviceTableAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, names);
+        ArrayAdapter<String> deviceTableAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, bertNameList);
 
         ListView locationListView = (ListView) getView().findViewById(R.id.bertList);
         locationListView.setAdapter(deviceTableAdapter);
@@ -165,7 +165,6 @@ public class DeviceEditorView extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
         public List<BertUnit> getBertListForLocation(String location);
     }
@@ -189,7 +188,7 @@ public class DeviceEditorView extends Fragment {
     }
 
     private List<BertUnit> getBertList(){
-        MainActivity activity = (MainActivity) getActivity();
+        RoomListActivity activity = (RoomListActivity) getActivity();
         List<BertUnit> berts;
         if (getArguments() != null) {
             berts = activity.getBertListForLocation(location);

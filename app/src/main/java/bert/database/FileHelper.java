@@ -1,5 +1,6 @@
 package bert.database;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -19,7 +20,7 @@ import org.xml.sax.SAXException;
 /**
  * @author afiol-mahon
  */
-public class File {
+public class FileHelper {
 	public static void printDocument(Document document) {
 		try {
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -48,12 +49,12 @@ public class File {
 		}
 	}
 	
-	public static Document loadDocument(String path) {
+	public static Document loadDocument(File file) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		Document document = null;
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			document = builder.parse(path);
+			document = builder.parse(file);
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (SAXException e) {

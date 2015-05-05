@@ -1,4 +1,4 @@
-package bert.ui;
+package bert.ui.roomList;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -11,6 +11,7 @@ import android.widget.GridView;
 
 import bert.database.BertUnit;
 import bert.database.Test;
+import bert.ui.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,7 @@ public class AuditWizardView extends Fragment {
 
     @Override public void onResume() {
         super.onResume();
-        MainActivity activity = (MainActivity)getActivity();
+        RoomListActivity activity = (RoomListActivity)getActivity();
         AuditTallyBoxGVA adapter = new AuditTallyBoxGVA(this.getActivity(), android.R.layout.simple_gallery_item, Test.testProject.getCategories());
 
         GridView gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
@@ -122,7 +123,6 @@ public class AuditWizardView extends Fragment {
         public void onFragmentInteraction(Uri uri);
 
         public List<String> getDeviceTypes();
-        public void addBerts(ArrayList<BertUnit> berts);
     }
 
 

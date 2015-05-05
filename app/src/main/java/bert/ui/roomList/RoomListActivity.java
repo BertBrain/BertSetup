@@ -1,4 +1,4 @@
-package bert.ui;
+package bert.ui.roomList;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -12,12 +12,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import bert.database.BertUnit;
-import bert.database.Test;
+import bert.database.Project;
+import bert.database.ProjectProvider;
+import bert.ui.projectList.ProjectListActivity;
+import bert.ui.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener{
+public class RoomListActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener {
+
+    Project selectedProject;
 
     @Override
     public void onFragmentInteraction(android.net.Uri uri) {
@@ -25,22 +29,13 @@ public class MainActivity extends ActionBarActivity implements DeviceEditorView.
     }
 
     @Override
-    public void addBerts(ArrayList<BertUnit> berts){
-        //TODO write
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_room_list);
         if (findViewById(R.id.fragment_container) != null) {
-
-            //if restoring, don't replace
-            if (savedInstanceState != null) {
-                return;
-            }
-
+            if (savedInstanceState != null) return;//if restoring, don't replace
+            Bundle extras = getIntent().getExtras();
+            selectedProject = ProjectProvider.getInstance().getProjectList().get(extras.getInt("projectIndex"));
             DeviceEditorView auditWizard = new DeviceEditorView();
             auditWizard.setArguments(getIntent().getExtras());
 
@@ -59,8 +54,7 @@ public class MainActivity extends ActionBarActivity implements DeviceEditorView.
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            openDeviceEditorView(getLocations().get(position));
-
+                openDeviceEditorView(getLocations().get(position));
             }
         });
     }
@@ -115,24 +109,22 @@ public class MainActivity extends ActionBarActivity implements DeviceEditorView.
     }
 
     public void openProjectActivity(View view) {
-        Intent intent = new Intent(this, ProjectMenu.class);
+        Intent intent = new Intent(this, ProjectListActivity.class);
         startActivity(intent);
     }
 
     @Override
     public List<String> getDeviceTypes() {
-        return Test.testProject.getCategoryNames();
+        return selectedProject.getCategoryNames();
     }
 
     @Override
     public List<BertUnit> getBertListForLocation(String location) {
         //TODO: allow different buildings
-        return Test.testProject.getBertsByLocation("Math", location);
+        return selectedProject.getBertsByLocation("Math", location);
     }
 
     public List<String> getLocations() {
-        return Test.testProject.getLocationNames();
+        return selectedProject.getLocationNames();
     }
-
-
 }
