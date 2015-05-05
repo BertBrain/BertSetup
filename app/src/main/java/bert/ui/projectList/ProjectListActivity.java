@@ -85,13 +85,6 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
         startActivity(i);
     }
 
-    //opens a project when new project is pressed - project must be found through view
-    public void openMain(View view){
-        Intent intent = new Intent(this, RoomListActivity.class);
-        startActivity(intent);
-        //TODO: make this pass a project name
-    }
-
     public List<String> getProjectNameList() {
         List<String> names = new ArrayList<>();
         for (Project p : ProjectProvider.getInstance().getProjectList()) {

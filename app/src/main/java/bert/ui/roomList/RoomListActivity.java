@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import bert.database.BertUnit;
 import bert.database.Category;
@@ -34,7 +35,8 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
 
     @Override
     public void addBerts(ArrayList<BertUnit> berts ){
-        //TODO: make this add berts to the database
+        selectedProject.addBerts(berts);
+        createLocationlistView();
     }
 
     @Override
@@ -44,7 +46,13 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState != null) return;//if restoring, don't replace
             Bundle extras = getIntent().getExtras();
-            selectedProject = ProjectProvider.getInstance().getProjectList().get(extras.getInt("projectIndex"));
+            try {
+                selectedProject = ProjectProvider.getInstance().getProjectList().get(extras.getInt("projectIndex"));
+            } catch (Exception e){
+                System.out.println("no project was sent to room list activity, using test project");
+                selectedProject = Test.testProject;
+            }
+
             DeviceEditorView auditWizard = new DeviceEditorView();
             auditWizard.setArguments(getIntent().getExtras());
 
@@ -54,7 +62,14 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
             System.out.println("error: fragment container not found");
         }
 
+        Spinner buildingDropdown = (Spinner) findViewById(R.id.buildingDropdown);
+        ArrayAdapter<String> buildingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, selectedProject.getBuildingNames());
 
+        buildingDropdown.setAdapter(buildingAdapter);
+    }
+
+
+    private void createLocationlistView(){
         ArrayAdapter<String> locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getLocations());
 
         ListView locationListView = (ListView) findViewById(R.id.locationListView);
@@ -67,7 +82,6 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

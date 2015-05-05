@@ -43,4 +43,5 @@ public class Category {
 	
 	public static Category projector = new Category("Projector", 15, 12);
 	public static Category vendingMachine = new Category("VendingMachine", 220, 350);
+    public static Category printer = new Category("Printer", 220, 350);
 }

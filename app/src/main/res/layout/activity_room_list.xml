@@ -21,12 +21,26 @@
             android:weightSum="1"
             android:id="@+id/leftPane">
 
-            <Button
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="Project View"
-                android:id="@+id/button_project_view"
-                android:onClick="openProjectActivity" />
+                android:layout_height="52dp"
+                android:layout_gravity="center_horizontal">
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buildingDropdown"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+"
+                    android:id="@+id/addBuildingButton"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
             <Button
                 android:layout_width="match_parent"

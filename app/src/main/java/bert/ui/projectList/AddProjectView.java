@@ -1,14 +1,20 @@
 package bert.ui.projectList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
+import bert.database.Project;
+import bert.database.ProjectProvider;
 import bert.ui.R;
+import bert.ui.roomList.RoomListActivity;
 
 
 /**
@@ -30,6 +36,10 @@ public class AddProjectView extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private TextView nameTextField;
+    private TextView dateTextField;
+    private TextView contactTextField;
 
     /**
      * Use this factory method to create a new instance of
@@ -77,6 +87,22 @@ public class AddProjectView extends Fragment {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        contactTextField = (TextView) getView().findViewById(R.id.projectContactTextField);
+        nameTextField = (TextView) getView().findViewById(R.id.projectNameTextField);
+        dateTextField = (TextView) getView().findViewById(R.id.projectDateTextField);
+
+        Button doneButton = (Button) getView().findViewById(R.id.createProjectButton);
+        doneButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                createProjectAndFinish();
+            }
+        });
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -106,6 +132,18 @@ public class AddProjectView extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    private void createProjectAndFinish(){
+        Project newProject = new Project(nameTextField.getText().toString(),
+                                         contactTextField.getText().toString(),
+                                         dateTextField.getText().toString());
+        ProjectProvider.getInstance().addProject(newProject);
+
+        Intent i = new Intent(getActivity(), RoomListActivity.class);
+        i.putExtra("projectIndex", ProjectProvider.getInstance().getProjectList().size()-1);
+
+        startActivity(i);
     }
 
 }

@@ -8,13 +8,14 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="center_horizontal|top">
+        android:layout_gravity="center_horizontal|bottom|top">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:layout_gravity="top">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -32,16 +33,18 @@
 
         <GridView
             android:layout_width="wrap_content"
-            android:layout_height="248dp"
+            android:layout_height="118dp"
             android:id="@+id/auditWizardGridView"
             android:numColumns="2"
-            android:choiceMode="none" />
+            android:choiceMode="none"
+            android:isScrollContainer="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Done"
             android:id="@+id/finisedAuditWizardButton"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal|bottom"
+            android:gravity="bottom" />
     </LinearLayout>
 </FrameLayout>

@@ -8,9 +8,11 @@ import android.app.Activity;
 import android.widget.Button;
 import android.widget.TextView;
 
+import bert.database.BertUnit;
 import bert.database.Category;
 import bert.ui.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,15 +61,15 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
             gridCell = convertView;
         }
 
-        //view = activity.findViewById(R.id.gridCellLayout);
         System.out.println(gridCell);
-        //System.out.println(view);
         return gridCell;
     }
 
     void addToDeviceType(Category deviceType, int numberToAdd) {
         int oldCount = counts.get(deviceType);
-        counts.put(deviceType, oldCount + numberToAdd);
+        if (oldCount > 0 || numberToAdd > 0){
+            counts.put(deviceType, oldCount + numberToAdd);
+        }
         System.out.println("count for: " + deviceType.getName() + " is now: " + counts.get(deviceType));
         setCountForDeviceType(deviceType, counts.get(deviceType));
     }
@@ -78,18 +80,10 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         deviceTypeCounter.setText(String.valueOf(count));
     }
 
-    //WIP
-    /*
-    public List<BertUnit> generateBertList(){
-        List<BertUnit> berts = new List<BertUnit>;
-        for (Category category : deviceTypes){
-            int count = counts.get(category);
-            for (int i = 0; i<count; i++){
-                BertUnit bert = new BertUnit(name, location, building, category);
-            }
-        }
+    public HashMap<Category, Integer> getCounts(){
+        return this.counts;
     }
-    */
+
 
 }
 

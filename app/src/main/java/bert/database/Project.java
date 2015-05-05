@@ -29,7 +29,7 @@ public class Project {
 	    this.creationDate = new SimpleDateFormat("MM-dd-yyyy").format(new Date());
 	    this.modifiedDate = creationDate;
 	    berts = new ArrayList<BertUnit>();
-	    categories = Arrays.asList(Category.projector, Category.vendingMachine);
+	    categories = Arrays.asList(Category.projector, Category.vendingMachine, Category.printer);
 	}
 	  
 	public Project(Document document) {
@@ -118,7 +118,7 @@ public class Project {
     public List<Category> getCategories() {
         List<Category> categories = new ArrayList<Category>();
         for (BertUnit b : berts) {
-            Category cat = categories.get(b.getCategoryID());
+            Category cat = this.categories.get(b.getCategoryID());
             if (!categories.contains(cat)) {
                 categories.add(cat);
             }
@@ -135,6 +135,17 @@ public class Project {
             }
         }
         return locationNames;
+    }
+
+    public List<String> getBuildingNames() {
+        List<String> buildingNames = new ArrayList<String>();
+        for (BertUnit b : berts) {
+            String n = b.getBuilding();
+            if (!buildingNames.contains(n)){
+                buildingNames.add(n);
+            }
+        }
+        return buildingNames;
     }
 
     //FIXME Currently ignores buildings reimplement soon
@@ -159,4 +170,10 @@ public class Project {
 	public void addBert(BertUnit bert) {
 		berts.add(bert);
 	}
+
+    public void addBerts(List<BertUnit> berts){
+        for (BertUnit b : berts){
+            addBert(b);
+        }
+    }
 }

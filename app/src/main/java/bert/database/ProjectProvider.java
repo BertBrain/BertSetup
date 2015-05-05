@@ -43,11 +43,14 @@ public class ProjectProvider {
     private void loadProjectList() {
         File projectDir = getProjectDirectory();
         projectList = new ArrayList<Project>();
-        if (projectDir != null) {
+        if (projectDir != null && projectList.size() > 0) {
             List<File> files = Arrays.asList(projectDir.listFiles());
             for (File f : files) {
                 projectList.add(new Project(FileHelper.loadDocument(f)));
             }
+        }
+        if (projectList.size() == 0){
+            System.out.println("no projects found");
         }
         Log.d("Project Provider", "Loaded " + projectList.size() + " projects from storage");
     }
@@ -55,5 +58,9 @@ public class ProjectProvider {
     private static boolean externalStorageAvailable() {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state);
+    }
+
+    public void addProject(Project project){
+        projectList.add(project);
     }
 }

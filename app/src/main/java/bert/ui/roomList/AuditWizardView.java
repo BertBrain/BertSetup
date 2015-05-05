@@ -7,7 +7,9 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import bert.database.BertUnit;
 
@@ -17,6 +19,7 @@ import bert.database.Test;
 import bert.ui.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -38,6 +41,8 @@ public class AuditWizardView extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    AuditTallyBoxGVA tallyGridAdapter;
+    TextView locationTextView;
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -88,10 +93,20 @@ public class AuditWizardView extends Fragment {
     @Override public void onResume() {
         super.onResume();
         RoomListActivity activity = (RoomListActivity)getActivity();
-        AuditTallyBoxGVA adapter = new AuditTallyBoxGVA(this.getActivity(), android.R.layout.simple_gallery_item, Test.testProject.getCategories());
+        tallyGridAdapter = new AuditTallyBoxGVA(this.getActivity(), android.R.layout.simple_gallery_item, activity.getDeviceTypes());
 
         GridView gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
-        gridView.setAdapter(adapter);
+        gridView.setAdapter(tallyGridAdapter);
+
+        Button finishedButton = (Button) getView().findViewById(R.id.finisedAuditWizardButton);
+        finishedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAuditWizard();
+            }
+        });
+
+        locationTextView = (TextView)getView().findViewById(R.id.locationNameTextField);
     }
 
     @Override
@@ -127,8 +142,30 @@ public class AuditWizardView extends Fragment {
 
         public List<Category> getDeviceTypes();
         public void addBerts(ArrayList<BertUnit> berts);
-
     }
 
+    private void finishAuditWizard(){
+        String location = locationTextView.getText().toString();
+        HashMap<Category, Integer> counts = tallyGridAdapter.getCounts();
 
+        List<BertUnit> berts = new ArrayList<BertUnit>();
+        int categoryCount = 0;
+        for (Category category : ((RoomListActivity)getActivity()).getDeviceTypes()){
+
+            int count = counts.get(category);
+            for (int i = 0; i<count; i++){
+                String name = location + " - " + category.getName() + " " + (i-1);
+                BertUnit bert = new BertUnit(name, location, "math", categoryCount);
+                berts.add(bert);
+            }
+            categoryCount++;
+        }
+        RoomListActivity activity = (RoomListActivity)getActivity();
+        activity.addBerts((ArrayList<BertUnit>)berts);
+        if (berts.size() > 0){
+            activity.openDeviceEditorView(berts.get(0).getLocation());
+        } else {
+            System.out.println("done button pressed but no berts to be added");
+        }
+    }
 }
