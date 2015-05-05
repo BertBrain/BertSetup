@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import bert.database.BertUnit;
+import bert.database.Category;
 import bert.database.Test;
 
 import java.util.ArrayList;
@@ -120,8 +121,8 @@ public class MainActivity extends ActionBarActivity implements DeviceEditorView.
     }
 
     @Override
-    public List<String> getDeviceTypes() {
-        return Test.testProject.getCategoryNames();
+    public List<Category> getDeviceTypes() {
+        return Test.testProject.getCategories();
     }
 
     @Override
