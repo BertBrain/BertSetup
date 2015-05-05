@@ -12,11 +12,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import bert.database.BertUnit;
+import bert.database.Category;
+import bert.database.Test;
+
 import bert.database.Project;
 import bert.database.ProjectProvider;
 import bert.ui.projectList.ProjectListActivity;
 import bert.ui.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RoomListActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener {
@@ -26,6 +30,11 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     @Override
     public void onFragmentInteraction(android.net.Uri uri) {
 
+    }
+
+    @Override
+    public void addBerts(ArrayList<BertUnit> berts ){
+        //TODO: make this add berts to the database
     }
 
     @Override
@@ -114,8 +123,8 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     @Override
-    public List<String> getDeviceTypes() {
-        return selectedProject.getCategoryNames();
+    public List<Category> getDeviceTypes() {
+        return Test.testProject.getCategories();
     }
 
     @Override

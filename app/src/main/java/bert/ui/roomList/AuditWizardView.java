@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import bert.database.BertUnit;
+
+import bert.database.Category;
+
 import bert.database.Test;
 import bert.ui.R;
 
@@ -122,7 +125,9 @@ public class AuditWizardView extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
 
-        public List<String> getDeviceTypes();
+        public List<Category> getDeviceTypes();
+        public void addBerts(ArrayList<BertUnit> berts);
+
     }
 
 
