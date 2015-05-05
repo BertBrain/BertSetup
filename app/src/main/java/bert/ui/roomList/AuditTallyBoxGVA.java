@@ -1,6 +1,5 @@
-package bert.ui;
+package bert.ui.roomList;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +8,9 @@ import android.app.Activity;
 import android.widget.Button;
 import android.widget.TextView;
 
-import bert.database.BertUnit;
 import bert.database.Category;
 import bert.ui.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

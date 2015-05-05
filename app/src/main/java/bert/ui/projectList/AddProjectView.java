@@ -1,4 +1,4 @@
-package bert.ui;
+package bert.ui.projectList;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -7,27 +7,19 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 
-import bert.database.BertUnit;
-
-import bert.database.Category;
-
-import bert.database.Test;
-
-import java.util.ArrayList;
-import java.util.List;
+import bert.ui.R;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AuditWizardView.OnFragmentInteractionListener} interface
+ * {@link AddProjectView.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AuditWizardView#newInstance} factory method to
+ * Use the {@link AddProjectView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AuditWizardView extends Fragment {
+public class AddProjectView extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,11 +37,11 @@ public class AuditWizardView extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AuditWizardView.
+     * @return A new instance of fragment AddProjectView.
      */
     // TODO: Rename and change types and number of parameters
-    public static AuditWizardView newInstance(String param1, String param2) {
-        AuditWizardView fragment = new AuditWizardView();
+    public static AddProjectView newInstance(String param1, String param2) {
+        AddProjectView fragment = new AddProjectView();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -57,7 +49,7 @@ public class AuditWizardView extends Fragment {
         return fragment;
     }
 
-    public AuditWizardView() {
+    public AddProjectView() {
         // Required empty public constructor
     }
 
@@ -74,7 +66,7 @@ public class AuditWizardView extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_audit_wizard_view, container, false);
+        return inflater.inflate(R.layout.fragment_add_project, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -84,15 +76,6 @@ public class AuditWizardView extends Fragment {
         }
     }
 
-    @Override public void onResume() {
-        super.onResume();
-        MainActivity activity = (MainActivity)getActivity();
-        AuditTallyBoxGVA adapter = new AuditTallyBoxGVA(this.getActivity(), android.R.layout.simple_gallery_item, Test.testProject.getCategories());
-
-        GridView gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
-        gridView.setAdapter(adapter);
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -100,7 +83,7 @@ public class AuditWizardView extends Fragment {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement onFragmentInteraction. in auditwizard");
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -123,10 +106,6 @@ public class AuditWizardView extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
-
-        public List<Category> getDeviceTypes();
-        public void addBerts(ArrayList<BertUnit> berts);
     }
-
 
 }

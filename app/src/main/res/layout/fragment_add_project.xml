@@ -31,6 +31,8 @@
                 android:layout_width="284dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/projectNameTextField"
+                android:imeActionLabel="Done"
+                android:imeOptions="actionDone"
                 android:layout_row="0"
                 android:layout_column="1" />
 
@@ -47,6 +49,8 @@
                 android:layout_width="283dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/projectContactTextField"
+                android:imeActionLabel="Done"
+                android:imeOptions="actionDone"
                 android:layout_row="1"
                 android:layout_column="1" />
 
@@ -65,6 +69,8 @@
                 android:inputType="date"
                 android:ems="10"
                 android:id="@+id/dateTextField"
+                android:imeActionLabel="Done"
+                android:imeOptions="actionDone"
                 android:layout_row="2"
                 android:layout_column="1" />
 
@@ -73,8 +79,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start Project"
-            android:id="@+id/startProjectButton"
+            android:text="Create Project"
+            android:id="@+id/createProjectButton"
             android:layout_gravity="center_horizontal"
             android:onClick="openMain"/>
 
