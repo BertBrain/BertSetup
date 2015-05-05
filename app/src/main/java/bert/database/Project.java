@@ -57,7 +57,7 @@ public class Project {
 	    }
 	}
 	  
-	public void exportToXML() {
+	public Document exportToXML() {
 		Document projectDoc = FileHelper.createDocument();
 	 	Element root = projectDoc.createElement("Project");	 	
 	 	//Project
@@ -94,10 +94,8 @@ public class Project {
 			categoryList.appendChild(cat);
 		}
 		root.appendChild(categoryList);
-		
-		//Finish
 		projectDoc.appendChild(root);
-		FileHelper.printDocument(projectDoc);
+        return projectDoc;
 	}
 	  
 	public List<String> getCategoryNames() {

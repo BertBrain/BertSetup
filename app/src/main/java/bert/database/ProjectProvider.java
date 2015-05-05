@@ -3,10 +3,21 @@ package bert.database;
 import android.os.Environment;
 import android.util.Log;
 
+import org.w3c.dom.Document;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * Created by afiol-mahon on 5/5/15.
@@ -50,6 +61,20 @@ public class ProjectProvider {
             }
         }
         Log.d("Project Provider", "Loaded " + projectList.size() + " projects from storage");
+    }
+
+    private void saveProject(Project project) {//TODO test this
+        Document d = project.exportToXML();
+        String fileName = project.getProjectName().replaceAll("\\W|_", "");
+        fileName.concat(".xml");
+        try {
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer();
+            Result result = new StreamResult(getProjectDirectory());
+            Source source = new DOMSource(d);
+        } catch(TransformerConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
     private static boolean externalStorageAvailable() {
