@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import bert.database.BertUnit;
+
 import bert.database.Category;
+
+import bert.database.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +87,7 @@ public class AuditWizardView extends Fragment {
     @Override public void onResume() {
         super.onResume();
         MainActivity activity = (MainActivity)getActivity();
-        AuditTallyBoxGVA adapter = new AuditTallyBoxGVA(this.getActivity(), android.R.layout.simple_gallery_item, activity.getDeviceTypes());
+        AuditTallyBoxGVA adapter = new AuditTallyBoxGVA(this.getActivity(), android.R.layout.simple_gallery_item, Test.testProject.getCategories());
 
         GridView gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(adapter);

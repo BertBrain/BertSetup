@@ -40,7 +40,7 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         View view = convertView;
 
         View gridCell;
-        if (view == null){
+        if (view == null) {
             counts.put(deviceTypes.get(position), 0);
 
             LayoutInflater inflater = activity.getLayoutInflater();
@@ -68,15 +68,14 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         return gridCell;
     }
 
-    void addToDeviceType(Category deviceType, int numberToAdd){
+    void addToDeviceType(Category deviceType, int numberToAdd) {
         int oldCount = counts.get(deviceType);
         counts.put(deviceType, oldCount + numberToAdd);
-        System.out.println("count for: " + deviceType + "is now: " + counts.get(deviceType));
-        setCountForDeviceType(deviceType, oldCount + numberToAdd);
+        System.out.println("count for: " + deviceType.getName() + " is now: " + counts.get(deviceType));
+        setCountForDeviceType(deviceType, counts.get(deviceType));
     }
 
-    void setCountForDeviceType(Category deviceType, int count){
-
+    void setCountForDeviceType(Category deviceType, int count) {
         View gridCell = cells.get(deviceType);
         TextView deviceTypeCounter = (TextView) gridCell.findViewById(R.id.deviceCounterTextField);
         deviceTypeCounter.setText(String.valueOf(count));
@@ -99,11 +98,11 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
 
 class buttonListener implements View.OnClickListener {
 
-    int incrementAmount =0;
+    int incrementAmount = 0;
     AuditTallyBoxGVA owner;
     Category deviceType;
 
-    public buttonListener(Category deviceType, int incrementAmount, AuditTallyBoxGVA owner){
+    public buttonListener(Category deviceType, int incrementAmount, AuditTallyBoxGVA owner) {
         this.deviceType = deviceType;
         this.owner = owner;
         this.incrementAmount = incrementAmount;

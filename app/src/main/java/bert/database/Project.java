@@ -112,15 +112,15 @@ public class Project {
 		return categoryNames;
 	}
 
-    public List<Category> getCategories(){
+    public List<Category> getCategories() {
         List<Category> categories = new ArrayList<Category>();
         for (BertUnit b : berts) {
             Category cat = categories.get(b.getCategoryID());
-            if (!categories.contains(cat)){
+            if (!categories.contains(cat)) {
                 categories.add(cat);
             }
         }
-        return  categories;
+        return categories;
     }
 
     public List<String> getLocationNames() {
