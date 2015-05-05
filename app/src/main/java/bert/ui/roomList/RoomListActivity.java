@@ -26,6 +26,8 @@ import java.util.List;
 
 public class RoomListActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener {
 
+    String currentBuilding;
+
     Project selectedProject;
 
     @Override
@@ -48,7 +50,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
             Bundle extras = getIntent().getExtras();
             try {
                 selectedProject = ProjectProvider.getInstance().getProjectList().get(extras.getInt("projectIndex"));
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("no project was sent to room list activity, using test project");
                 selectedProject = Test.testProject;
             }
@@ -57,17 +59,18 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
             auditWizard.setArguments(getIntent().getExtras());
 
             getFragmentManager().beginTransaction().add(R.id.fragment_container, auditWizard).commit();
-        }
-        else {
+        } else {
             System.out.println("error: fragment container not found");
         }
+    }
 
+
+    private void createBuildingDropdown(){
         Spinner buildingDropdown = (Spinner) findViewById(R.id.buildingDropdown);
         ArrayAdapter<String> buildingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, selectedProject.getBuildingNames());
 
         buildingDropdown.setAdapter(buildingAdapter);
     }
-
 
     private void createLocationlistView(){
         ArrayAdapter<String> locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getLocations());
@@ -134,6 +137,12 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     public void openProjectActivity(View view) {
         Intent intent = new Intent(this, ProjectListActivity.class);
         startActivity(intent);
+    }
+
+    public void addBuilding(View view){
+        String newBuildingName = "Math";
+        //TODO: launch activity and force user into textbox
+        currentBuilding = newBuildingName;
     }
 
     @Override
