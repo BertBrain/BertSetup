@@ -34,19 +34,20 @@
 
         <GridView
             android:layout_width="wrap_content"
-            android:layout_height="118dp"
+            android:layout_height="86dp"
             android:id="@+id/auditWizardGridView"
             android:numColumns="2"
             android:choiceMode="none"
             android:isScrollContainer="true"
-            android:layout_weight="0.13" />
+            android:layout_gravity="bottom|top" />
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text="Done"
             android:id="@+id/finisedAuditWizardButton"
             android:layout_gravity="center_horizontal|bottom"
-            android:gravity="bottom" />
+            android:gravity="bottom"
+            android:layout_weight="1" />
     </LinearLayout>
 </FrameLayout>

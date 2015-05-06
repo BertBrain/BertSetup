@@ -153,19 +153,22 @@ public class AuditWizardView extends Fragment {
         int categoryCount = 0;
         for (Category category : ((RoomListActivity)getActivity()).getDeviceTypes()){
 
-            int count = counts.get(category);
-            for (int i = 0; i<count; i++){
-                String name;
-                if (i == 0){
-                    name = location + " - " + category.getName();
-                } else {
-                    name = location + " - " + category.getName() + " " + (i+1);
+            if (counts.get(category) != null){
+                int count = counts.get(category);
+                for (int i = 0; i<count; i++){
+                    String name;
+                    if (i == 0){
+                        name = location + " - " + category.getName();
+                    } else {
+                        name = location + " - " + category.getName() + " " + (i+1);
+                    }
+
+
+                    BertUnit bert = new BertUnit(name, location, ((RoomListActivity)getActivity()).getBuilding(), categoryCount);
+                    berts.add(bert);
                 }
-
-
-                BertUnit bert = new BertUnit(name, location, ((RoomListActivity)getActivity()).getBuilding(), categoryCount);
-                berts.add(bert);
             }
+
             categoryCount++;
         }
         RoomListActivity activity = (RoomListActivity)getActivity();
