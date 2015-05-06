@@ -1,5 +1,7 @@
 package bert.database;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -50,6 +52,7 @@ public class FileHelper {
 	}
 	
 	public static Document loadDocument(File file) {
+        log("Loading document: " + file.getName());
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		Document document = null;
 		try {
@@ -64,4 +67,8 @@ public class FileHelper {
 		}
 		return document;
 	}
+
+    private static void log(String o) {
+        Log.d("File_Helper", o);
+    }
 }

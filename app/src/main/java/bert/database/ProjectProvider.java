@@ -32,6 +32,7 @@ public class ProjectProvider {
 
     public static ProjectProvider getInstance() {
         if (instance == null) {
+            log("Creating instance...");
             instance = new ProjectProvider();
             instance.loadProjectList();
         }
@@ -46,7 +47,7 @@ public class ProjectProvider {
         if (externalStorageAvailable()) {
             return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "BertProjects");
         } else {
-            Log.e("Storage Error", "Unable to load Project Folder");
+            Log.e("Project_Provider", "Unable to load Project Folder");
             return null;
         }
     }
@@ -54,19 +55,20 @@ public class ProjectProvider {
     private void loadProjectList() {
         File projectDir = getProjectDirectory();
         projectList = new ArrayList<Project>();
-        if (projectDir != null && projectList.size() > 0) {
+        if (projectDir != null) {
             List<File> files = Arrays.asList(projectDir.listFiles());
-            for (File f : files) {
-                projectList.add(new Project(FileHelper.loadDocument(f)));
+            if (files.size() > 0) {
+                for (File f : files) {
+                    log("Loading file <" + f.getName() + "> from project directory");
+                    projectList.add(new Project(FileHelper.loadDocument(f)));
+                }
             }
         }
-        if (projectList.size() == 0){
-            System.out.println("no projects found");
-        }
-        Log.d("Project Provider", "Loaded " + projectList.size() + " projects from storage");
+        log("Loaded " + projectList.size() + " projects from storage");
     }
 
     private void saveProject(Project project) {//TODO test this
+        log("Saving Project: " + project.getProjectName() + " to XML file");
         Document d = project.exportToXML();
         String fileName = project.getProjectName().replaceAll("\\W|_", "");
         fileName.concat(".xml");
@@ -82,10 +84,16 @@ public class ProjectProvider {
 
     private static boolean externalStorageAvailable() {
         String state = Environment.getExternalStorageState();
+        log("External storage state: " + state);
         return Environment.MEDIA_MOUNTED.equals(state);
     }
 
-    public void addProject(Project project){
+    public void addProject(Project project) {
+        log("Adding project <" + project.getProjectName() + "> to projectList");
         projectList.add(project);
+    }
+
+    private static void log(String output) {
+        Log.d("Project_Provider", output);
     }
 }
