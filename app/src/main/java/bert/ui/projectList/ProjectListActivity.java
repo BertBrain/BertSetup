@@ -17,6 +17,7 @@ import java.util.List;
 import bert.database.Project;
 import bert.database.ProjectProvider;
 import bert.ui.R;
+import bert.ui.roomList.NoSelectionView;
 import bert.ui.roomList.RoomListActivity;
 
 public class ProjectListActivity extends ActionBarActivity implements AddProjectView.OnFragmentInteractionListener{
@@ -24,6 +25,19 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     @Override
     public void onFragmentInteraction(android.net.Uri uri){
 
+    }
+
+    @Override
+    public void closeCreateProjectView(){
+        NoSelectionView emptyView = new NoSelectionView();
+        Bundle args = new Bundle();
+        args.putString("message", "");
+        emptyView.setArguments(args);
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container_new_project, emptyView);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     @Override

@@ -132,6 +132,7 @@ public class AddProjectView extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+        public void closeCreateProjectView();
     }
 
     private void createProjectAndFinish(){//TODO add contact number to this form
@@ -146,7 +147,9 @@ public class AddProjectView extends Fragment {
         Intent i = new Intent(getActivity(), RoomListActivity.class);
         i.putExtra("projectIndex", ProjectProvider.getInstance().getProjectList().size()-1);
         ((ProjectListActivity) getActivity()).loadProjectList();
+        ((ProjectListActivity) getActivity()).closeCreateProjectView();
         startActivity(i);
+
     }
 
 }
