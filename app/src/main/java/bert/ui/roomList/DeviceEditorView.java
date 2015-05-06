@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -81,7 +82,7 @@ public class DeviceEditorView extends Fragment {
         roomTextField = (EditText) getView().findViewById(R.id.room);
         buildingTextField = (EditText) getView().findViewById(R.id.building);
         System.out.println(getArguments());
-
+        setDetailViewVisibility(false);
 
         RoomListActivity activity = (RoomListActivity)getActivity();
         List<String> bertNameList = new ArrayList<String>();
@@ -189,6 +190,7 @@ public class DeviceEditorView extends Fragment {
         macAddressTextField.setText(b.getMAC());
         roomTextField.setText(b.getLocation());
         buildingTextField.setText(b.getBuilding());
+        setDetailViewVisibility(true);
     }
 
     private List<BertUnit> getBertList(){
@@ -200,5 +202,15 @@ public class DeviceEditorView extends Fragment {
             berts = new ArrayList<BertUnit>();
         }
         return  berts;
+    }
+
+    private void setDetailViewVisibility(boolean isVisible){
+        FrameLayout detailView = (FrameLayout) getView().findViewById(R.id.detailViewFrame);
+        if (isVisible){
+            detailView.setVisibility(View.VISIBLE);
+        } else {
+            detailView.setVisibility(View.INVISIBLE);
+        }
+
     }
 }

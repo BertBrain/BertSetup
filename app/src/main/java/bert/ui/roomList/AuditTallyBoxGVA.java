@@ -37,8 +37,8 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
         View gridCell;
-        if (!cells.keySet().contains(position) ) {
-            System.out.println("creating gird cell at position: " + position);
+        if (!cells.keySet().contains(deviceTypes.get(position)) ) {
+            System.out.println("creating grid cell at position for category: " + deviceTypes.get(position).getName());
             counts.put(deviceTypes.get(position), 0);
 
             LayoutInflater inflater = activity.getLayoutInflater();
@@ -57,11 +57,11 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
             cells.put(deviceTypes.get(position), gridCell);
 
        } else {
-            gridCell = cells.get(position);
+            gridCell = cells.get(deviceTypes.get(position));
         }
 
-        System.out.println(gridCell);
-        System.out.println(cells);
+        System.out.println("grid cell to return: " + gridCell);
+        System.out.println("cells hashmap:" + cells);
         return gridCell;
     }
 
