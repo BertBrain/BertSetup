@@ -1,5 +1,6 @@
 package bert.ui.roomList;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -67,10 +68,12 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
                 selectedProject = Test.testProject;
             }
 
-            DeviceEditorView auditWizard = new DeviceEditorView();
-            auditWizard.setArguments(getIntent().getExtras());
+            NoSelectionView splash = new NoSelectionView();
+            Bundle args = new Bundle();
+            args.putString("message", "no building selected, project just loaded");
+            splash.setArguments(args);
 
-            getFragmentManager().beginTransaction().add(R.id.fragment_container, auditWizard).commit();
+            getFragmentManager().beginTransaction().add(R.id.fragment_container, splash).commit();
         } else {
             System.out.println("error: fragment container not found");
         }
@@ -97,7 +100,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                setDropdownPosition(0);
+                openNoSelectionView("No Building Selected");
                 System.out.println("error: nothing selected");
             }
         });
@@ -109,6 +112,10 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
 
     private void createLocationlistView(){
         ArrayAdapter<String> locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getLocationsInBuilding(currentBuilding));
+
+        if (getLocationsInBuilding(currentBuilding).size() == 0){
+            openNoSelectionView("No Rooms in Building. Please create a New Room");
+        }
 
         ListView locationListView = (ListView) findViewById(R.id.locationListView);
         locationListView.setAdapter(locationTableAdapter);
@@ -148,11 +155,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         System.out.println("opening audit wizard view");
         AuditWizardView auditWizardView = new AuditWizardView();
 
-
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, auditWizardView);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        loadFragment(auditWizardView);
     }
 
     public void openDeviceEditorView(String locationName){
@@ -163,8 +166,23 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         args.putString("location", locationName);
         deviceEditorView.setArguments(args);
 
+        loadFragment(deviceEditorView);
+    }
+
+    public void openNoSelectionView(String message){
+        System.out.println("openening no location view");
+        NoSelectionView noSelectionView = new NoSelectionView();
+
+        Bundle args = new Bundle();
+        args.putString("message", message);
+        noSelectionView.setArguments(args);
+
+        loadFragment(noSelectionView);
+    }
+
+    private void loadFragment(Fragment frag){
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, deviceEditorView);
+        fragmentTransaction.replace(R.id.fragment_container, frag);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
