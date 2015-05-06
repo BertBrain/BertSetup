@@ -115,6 +115,8 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
 
         if (getLocationsInBuilding(currentBuilding).size() == 0){
             openNoSelectionView("No Rooms in Building. Please create a New Room");
+        } else {
+            openNoSelectionView("Select A Room or create a new one");
         }
 
         ListView locationListView = (ListView) findViewById(R.id.locationListView);

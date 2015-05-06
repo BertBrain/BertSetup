@@ -28,6 +28,7 @@
                 android:layout_column="0" />
 
             <EditText
+                android:singleLine="true"
                 android:layout_width="284dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/projectNameTextField"
@@ -46,6 +47,7 @@
                 android:layout_column="0" />
 
             <EditText
+                android:singleLine="true"
                 android:layout_width="283dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/projectContactTextField"
@@ -64,6 +66,7 @@
                 android:layout_column="0" />
 
             <EditText
+                android:singleLine="true"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:inputType="date"
