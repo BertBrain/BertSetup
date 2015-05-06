@@ -141,6 +141,7 @@ public class AuditWizardView extends Fragment {
         public void onFragmentInteraction(Uri uri);
 
         public List<Category> getDeviceTypes();
+        public String getBuilding();
         public void addBerts(ArrayList<BertUnit> berts);
     }
 
@@ -154,8 +155,15 @@ public class AuditWizardView extends Fragment {
 
             int count = counts.get(category);
             for (int i = 0; i<count; i++){
-                String name = location + " - " + category.getName() + " " + (i-1);
-                BertUnit bert = new BertUnit(name, location, "math", categoryCount);
+                String name;
+                if (i == 0){
+                    name = location + " - " + category.getName();
+                } else {
+                    name = location + " - " + category.getName() + " " + (i+1);
+                }
+
+
+                BertUnit bert = new BertUnit(name, location, ((RoomListActivity)getActivity()).getBuilding(), categoryCount);
                 berts.add(bert);
             }
             categoryCount++;

@@ -29,7 +29,7 @@ public class Project {
 	    this.creationDate = new SimpleDateFormat("MM-dd-yyyy").format(new Date());
 	    this.modifiedDate = creationDate;
 	    berts = new ArrayList<BertUnit>();
-	    categories = Arrays.asList(Category.projector, Category.vendingMachine, Category.printer);
+	    categories = Arrays.asList(Category.projector, Category.vendingMachine, Category.printer, Category.hotWaterHeater, Category.cat1, Category.cat2, Category.cat3);
 	}
 	  
 	public Project(Document document) {
@@ -100,6 +100,9 @@ public class Project {
 	  
 	public List<String> getCategoryNames() {
 		List<String> categoryNames = new ArrayList<String>();
+        for (Category cat : this.categories){
+            categoryNames.add(cat.getName());
+        }
 		for (BertUnit b : berts) {
 			String catName = categories.get(b.getCategoryID()).getName();
 			if (!categoryNames.contains(catName)) {
@@ -114,7 +117,7 @@ public class Project {
     }
 
     public List<Category> getCategories() {
-        List<Category> categories = new ArrayList<Category>();
+        List<Category> categories = this.categories;
         for (BertUnit b : berts) {
             Category cat = this.categories.get(b.getCategoryID());
             if (!categories.contains(cat)) {
@@ -129,6 +132,17 @@ public class Project {
         for (BertUnit b : berts) {
             String n = b.getLocation();
             if (!locationNames.contains(n)) {
+                locationNames.add(n);
+            }
+        }
+        return locationNames;
+    }
+
+    public List<String> getLocationNamesInBuilding(String building){
+        List<String> locationNames = new ArrayList<String>();
+        for (BertUnit b : berts) {
+            String n = b.getLocation();
+            if (!locationNames.contains(n) && b.getBuilding() == building) {
                 locationNames.add(n);
             }
         }

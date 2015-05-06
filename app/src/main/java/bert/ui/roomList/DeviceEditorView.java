@@ -106,7 +106,7 @@ public class DeviceEditorView extends Fragment {
         macAddressTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (actionId == EditorInfo.IME_ACTION_DONE && v == macAddressTextField) {
                     updateMAC();
                 }
                 return false;
@@ -116,7 +116,7 @@ public class DeviceEditorView extends Fragment {
         deviceNameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
            @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-               if (actionId == EditorInfo.IME_ACTION_DONE) {
+               if (actionId == EditorInfo.IME_ACTION_DONE && v == deviceNameTextField) {
                    updateName();
                }
                return false;
@@ -170,11 +170,15 @@ public class DeviceEditorView extends Fragment {
     }
 
     private void updateMAC() {
-        getBertList().get(position).setMAC(macAddressTextField.getText().toString());
+        if (getBertList().size() > 0) {
+            getBertList().get(position).setMAC(macAddressTextField.getText().toString());
+        }
     }
 
     private void updateName() {
-        getBertList().get(position).setName(deviceNameTextField.getText().toString());
+        if (getBertList().size() > 0){
+            getBertList().get(position).setName(deviceNameTextField.getText().toString());
+        }
         onResume();
     }
 

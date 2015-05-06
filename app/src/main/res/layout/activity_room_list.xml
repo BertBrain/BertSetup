@@ -35,11 +35,11 @@
                     android:spinnerMode="dropdown" />
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="37dp"
                     android:layout_height="wrap_content"
                     android:text="+"
                     android:id="@+id/addBuildingButton"
-                    android:layout_weight="1" />
+                    android:onClick="launchBuildingNameTextField" />
             </LinearLayout>
 
             <Button
@@ -54,6 +54,13 @@
                 android:layout_height="wrap_content"
                 android:isScrollContainer="true"
                 android:id="@+id/locationListView" />
+
+            <EditText
+                android:imeActionLabel="Done"
+                android:imeOptions="actionDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/newBuildingName"/>
 
         </LinearLayout>
 

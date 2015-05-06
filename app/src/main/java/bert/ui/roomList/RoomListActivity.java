@@ -1,16 +1,22 @@
 package bert.ui.roomList;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import bert.database.BertUnit;
 import bert.database.Category;
@@ -29,10 +35,16 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     String currentBuilding;
 
     Project selectedProject;
-
+    List<String> buildings;
+    EditText newBuildingName;
     @Override
     public void onFragmentInteraction(android.net.Uri uri) {
 
+    }
+
+    @Override
+    public String getBuilding(){
+        return currentBuilding;
     }
 
     @Override
@@ -62,18 +74,41 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         } else {
             System.out.println("error: fragment container not found");
         }
+        createBuildingDropdown();
     }
 
 
     private void createBuildingDropdown(){
+        if (buildings == null || buildings.size() == 0) {
+                buildings = selectedProject.getBuildingNames();
+        }
         Spinner buildingDropdown = (Spinner) findViewById(R.id.buildingDropdown);
-        ArrayAdapter<String> buildingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, selectedProject.getBuildingNames());
+        ArrayAdapter<String> buildingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, buildings);
 
         buildingDropdown.setAdapter(buildingAdapter);
+        buildingDropdown.setSelection(buildings.size() - 1);
+
+        buildingDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                setDropdownPosition(position);
+                createLocationlistView();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                setDropdownPosition(0);
+                System.out.println("error: nothing selected");
+            }
+        });
+    }
+
+    private void setDropdownPosition(int position){
+        currentBuilding = buildings.get(position);
     }
 
     private void createLocationlistView(){
-        ArrayAdapter<String> locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getLocations());
+        ArrayAdapter<String> locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getLocationsInBuilding(currentBuilding));
 
         ListView locationListView = (ListView) findViewById(R.id.locationListView);
         locationListView.setAdapter(locationTableAdapter);
@@ -81,7 +116,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openDeviceEditorView(getLocations().get(position));
+                openDeviceEditorView(getLocationsInBuilding(currentBuilding).get(position));
             }
         });
     }
@@ -139,24 +174,47 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         startActivity(intent);
     }
 
-    public void addBuilding(View view){
-        String newBuildingName = "Math";
-        //TODO: launch activity and force user into textbox
-        currentBuilding = newBuildingName;
+    public void launchBuildingNameTextField(View view){
+        newBuildingName = (EditText) findViewById(R.id.newBuildingName);
+        newBuildingName.setFocusable(true);
+        newBuildingName.requestFocus();
+        newBuildingName.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    addBuilding();
+                }
+                return  false;
+            }
+        });
+        InputMethodManager manager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        manager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    public void addBuilding(){
+        currentBuilding = newBuildingName.getText().toString();
+        buildings.add(currentBuilding);
+        newBuildingName.setText("");
+        newBuildingName.clearFocus();
+        InputMethodManager manager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        manager.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
+
+        createBuildingDropdown();
+        createLocationlistView();
     }
 
     @Override
     public List<Category> getDeviceTypes() {
-        return Test.testProject.getCategories();
+        return selectedProject.getCategories();
     }
 
     @Override
     public List<BertUnit> getBertListForLocation(String location) {
         //TODO: allow different buildings
-        return selectedProject.getBertsByLocation("Math", location);
+        return selectedProject.getBertsByLocation(currentBuilding, location);
     }
 
-    public List<String> getLocations() {
-        return selectedProject.getLocationNames();
+    public List<String> getLocationsInBuilding(String building) {
+        return selectedProject.getLocationNamesInBuilding(building);
     }
 }

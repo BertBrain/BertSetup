@@ -36,10 +36,9 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-
         View gridCell;
-        if (view == null) {
+        if (!cells.keySet().contains(position) ) {
+            System.out.println("creating gird cell at position: " + position);
             counts.put(deviceTypes.get(position), 0);
 
             LayoutInflater inflater = activity.getLayoutInflater();
@@ -57,11 +56,12 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
 
             cells.put(deviceTypes.get(position), gridCell);
 
-        } else {
-            gridCell = convertView;
+       } else {
+            gridCell = cells.get(position);
         }
 
         System.out.println(gridCell);
+        System.out.println(cells);
         return gridCell;
     }
 
@@ -75,8 +75,11 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
     }
 
     void setCountForDeviceType(Category deviceType, int count) {
+        System.out.println("setting count for device type: " + deviceType.getName() + " " + count);
         View gridCell = cells.get(deviceType);
+        System.out.println(gridCell);
         TextView deviceTypeCounter = (TextView) gridCell.findViewById(R.id.deviceCounterTextField);
+        System.out.println("deviceTypeCounter old count" + deviceTypeCounter.getText().toString());
         deviceTypeCounter.setText(String.valueOf(count));
     }
 
