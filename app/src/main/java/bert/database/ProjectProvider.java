@@ -56,7 +56,7 @@ public class ProjectProvider {
     private void loadProjectList() {
         File projectDir = getProjectDirectory();
         projectList = new ArrayList<Project>();
-        if (projectDir != null) {
+        if (projectDir != null && projectDir.listFiles() != null) {
             List<File> files = Arrays.asList(projectDir.listFiles());
             if (files.size() > 0) {
                 for (File f : files) {
