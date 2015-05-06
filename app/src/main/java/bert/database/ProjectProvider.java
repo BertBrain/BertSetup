@@ -72,11 +72,11 @@ public class ProjectProvider {
         log("Saving Project: " + project.getProjectName() + " to XML file");
         Document d = project.exportToXML();
         String fileName = project.getProjectName().replaceAll("\\W|_", "");
-        fileName.concat(".xml");
+        fileName += ".xml";
         try {
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer();
-            Result result = new StreamResult(getProjectDirectory());
+            Result result = new StreamResult(new File(getProjectDirectory(), fileName));
             Source source = new DOMSource(d);
             transformer.transform(source, result);
         } catch(TransformerConfigurationException e) {
