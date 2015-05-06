@@ -26,6 +26,7 @@
                 android:id="@+id/textView" />
 
             <EditText
+                android:singleLine="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/locationNameTextField"
@@ -33,17 +34,18 @@
         </LinearLayout>
 
         <GridView
+            android:horizontalSpacing="5dp"
+            android:verticalSpacing="5dp"
             android:layout_width="wrap_content"
-            android:layout_height="86dp"
+            android:layout_height="200dp"
             android:id="@+id/auditWizardGridView"
             android:numColumns="2"
             android:choiceMode="none"
-            android:isScrollContainer="true"
-            android:layout_gravity="bottom|top" />
+            android:isScrollContainer="true" />
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="61dp"
             android:text="Done"
             android:id="@+id/finisedAuditWizardButton"
             android:layout_gravity="center_horizontal|bottom"
