@@ -32,16 +32,33 @@ public class BertUnit {
 	}
 
     public void setName(String newName) {
-        this.name = newName;
+        Cleaner.clean(newName);
+        if (Cleaner.isValid(newName)) {
+            this.name = newName;
+        }
     }
 
 	public String getLocation() {
 		return location;
 	}
-	
+
+    public void setLocation(String newLocation) {
+        Cleaner.clean(newLocation);
+        if (Cleaner.isValid(newLocation)) {
+            this.location = newLocation;
+        }
+    }
+
 	public String getBuilding() {
 		return building;
 	}
+
+    public void setBuilding(String newBuilding) {
+        Cleaner.clean(newBuilding);
+        if (Cleaner.isValid(newBuilding)) {
+            this.building = newBuilding;
+        }
+    }
 	
 	public void setMAC(String newMAC) {
 		//TODO implement MAC address formatter in this method
@@ -55,4 +72,8 @@ public class BertUnit {
 	public int getCategoryID() {
 		return categoryID;
 	}
+
+    public void setCategoryID(int newCategoryID) {
+        this.categoryID = newCategoryID;
+    }
 }

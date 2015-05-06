@@ -14,13 +14,13 @@ import org.w3c.dom.NodeList;
  * @author afiol-mahon
  */
 public class Project {
-	String projectName;
-	String contactName;
-	String contactNumber;
-	String creationDate;
-	String modifiedDate;
-	List<BertUnit> berts;
-	List<Category> categories;
+	private String projectName;
+	private String contactName;
+	private String contactNumber;
+	private String creationDate;
+	private String modifiedDate;
+	private List<BertUnit> berts;
+	private List<Category> categories;
 	
 	public Project(String name, String contactName, String contactNumber) {
 		this.projectName = name;
@@ -56,7 +56,7 @@ public class Project {
 			categories.add(Integer.parseInt(e.getAttribute("id")), new Category(e));
 	    }
 	}
-	  
+
 	public Document exportToXML() {
 		Document projectDoc = FileHelper.createDocument();
 	 	Element root = projectDoc.createElement("Project");	 	
@@ -111,10 +111,6 @@ public class Project {
 		}
 		return categoryNames;
 	}
-
-    public String getProjectName() {
-        return projectName;
-    }
 
     public List<Category> getCategories() {
         List<Category> categories = this.categories;
@@ -187,5 +183,47 @@ public class Project {
         for (BertUnit b : berts){
             addBert(b);
         }
+    }
+
+    //Getters and setters
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String newProjectName) {
+        Cleaner.clean(newProjectName);
+        if (Cleaner.isValid(newProjectName)) {
+            this.projectName = newProjectName;
+        }
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String newContactName) {
+        Cleaner.clean(newContactName);
+        if (Cleaner.isValid(newContactName)) {
+            this.contactName = newContactName;
+        }
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String newContactNumber) {
+        Cleaner.clean(newContactNumber);
+        if (Cleaner.isValid(newContactNumber)) {
+            this.contactNumber = newContactNumber;
+        }
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate;
     }
 }

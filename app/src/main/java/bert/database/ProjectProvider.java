@@ -15,6 +15,7 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -24,11 +25,11 @@ import javax.xml.transform.stream.StreamResult;
  * @author afiol-mahon
  */
 public class ProjectProvider {
+
     private static ProjectProvider instance;
     private List<Project> projectList;
 
-    private ProjectProvider() {
-    }
+    private ProjectProvider() {}
 
     public static ProjectProvider getInstance() {
         if (instance == null) {
@@ -44,7 +45,7 @@ public class ProjectProvider {
     }
 
     private File getProjectDirectory() {
-        if (externalStorageAvailable()) {
+        if (isExternalStorageAvailable()) {
             return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "BertProjects");
         } else {
             Log.e("Project_Provider", "Unable to load Project Folder");
@@ -67,7 +68,7 @@ public class ProjectProvider {
         log("Loaded " + projectList.size() + " projects from storage");
     }
 
-    private void saveProject(Project project) {//TODO test this
+    public void saveProject(Project project) {//TODO test this
         log("Saving Project: " + project.getProjectName() + " to XML file");
         Document d = project.exportToXML();
         String fileName = project.getProjectName().replaceAll("\\W|_", "");
@@ -77,20 +78,24 @@ public class ProjectProvider {
             Transformer transformer = factory.newTransformer();
             Result result = new StreamResult(getProjectDirectory());
             Source source = new DOMSource(d);
+            transformer.transform(source, result);
         } catch(TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch(TransformerException e) {
             e.printStackTrace();
         }
     }
 
-    private static boolean externalStorageAvailable() {
+    public void addProject(Project project) {
+        projectList.add(project);
+        saveProject(project);
+        log("Added project <" + project.getProjectName() + "> to projectList");
+    }
+
+    private static boolean isExternalStorageAvailable() {
         String state = Environment.getExternalStorageState();
         log("External storage state: " + state);
         return Environment.MEDIA_MOUNTED.equals(state);
-    }
-
-    public void addProject(Project project) {
-        log("Adding project <" + project.getProjectName() + "> to projectList");
-        projectList.add(project);
     }
 
     private static void log(String output) {

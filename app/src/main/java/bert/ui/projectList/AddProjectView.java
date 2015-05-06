@@ -134,15 +134,18 @@ public class AddProjectView extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
-    private void createProjectAndFinish(){
+    private void createProjectAndFinish(){//TODO add contact number to this form
         Project newProject = new Project(nameTextField.getText().toString(),
                                          contactTextField.getText().toString(),
                                          dateTextField.getText().toString());
+        nameTextField.setText("");
+        contactTextField.setText("");
+        dateTextField.setText("");
         ProjectProvider.getInstance().addProject(newProject);
 
         Intent i = new Intent(getActivity(), RoomListActivity.class);
         i.putExtra("projectIndex", ProjectProvider.getInstance().getProjectList().size()-1);
-
+        ((ProjectListActivity) getActivity()).loadProjectList();
         startActivity(i);
     }
 

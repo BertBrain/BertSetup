@@ -37,19 +37,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main_menu, menu);
-
-        ArrayAdapter<String> projectTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getProjectNameList());
-
-        ListView projectListView = (ListView) findViewById(R.id.projectListView);
-        projectListView.setAdapter(projectTableAdapter);
-
-        projectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openMain(position); //TODO: make this get actual project name
-            }
-        });
-
+        loadProjectList();
         return true;
     }
 
@@ -91,5 +79,19 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
             names.add(p.getProjectName());
         }
         return names;
+    }
+
+    public void loadProjectList() {
+        ArrayAdapter<String> projectTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getProjectNameList());
+
+        ListView projectListView = (ListView) findViewById(R.id.projectListView);
+        projectListView.setAdapter(projectTableAdapter);
+
+        projectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openMain(position);
+            }
+        });
     }
 }
