@@ -38,18 +38,16 @@ import java.util.List;
 
 public class RoomListActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener {
 
-    Project selectedProject;
-    String currentBuilding;
-    List<String> buildings;
+    private Project selectedProject;
+    private String currentBuilding;
+    private List<String> buildings;
 
-    Spinner buildingDropdown;
-    Button addBuildingButton;
-    EditText newBuildingName;
+    private Spinner buildingDropdown;
+    private Button addBuildingButton;
+    private EditText newBuildingName;
 
     @Override
-    public void onFragmentInteraction(android.net.Uri uri) {
-
-    }
+    public void onFragmentInteraction(android.net.Uri uri) {}
 
     @Override
     public String getBuilding(){
