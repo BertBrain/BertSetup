@@ -44,6 +44,14 @@ public class ProjectProvider {
         return projectList;
     }
 
+    public List<String> getProjectNameList() {
+        List<String> nameList = new ArrayList<>();
+        for (Project p : getProjectList()) {
+            nameList.add(p.getProjectName());
+        }
+        return nameList;
+    }
+
     private File getProjectDirectory() {
         if (isExternalStorageAvailable()) {
             return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "BertProjects");

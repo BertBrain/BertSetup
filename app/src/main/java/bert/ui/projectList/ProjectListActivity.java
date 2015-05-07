@@ -3,6 +3,7 @@ package bert.ui.projectList;
 import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,20 +21,27 @@ import bert.ui.R;
 import bert.ui.NoSelectionView;
 import bert.ui.roomList.RoomListActivity;
 
-public class ProjectListActivity extends ActionBarActivity implements AddProjectView.OnFragmentInteractionListener{
+public class ProjectListActivity extends ActionBarActivity implements AddProjectView.OnFragmentInteractionListener {
+
+    private ListView projectListView;
+    private ArrayAdapter<String> projectTableAdapter;
 
     @Override
-    public void onFragmentInteraction(android.net.Uri uri){}
+    public void onFragmentInteraction(android.net.Uri uri) {}
+
+    @Override
+    public void openAddProjectView(View view) {
+        log("Opening New Project Fragment.");
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container_new_project, new AddProjectView());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
 
     @Override
     public void closeAddProjectView() {
-        NoSelectionView emptyView = new NoSelectionView();
-        Bundle args = new Bundle();
-        args.putString("message", "");
-        emptyView.setArguments(args);
-
         FragmentTransaction t = getFragmentManager().beginTransaction();
-        t.replace(R.id.fragment_container_new_project, emptyView);
+        t.replace(R.id.fragment_container_new_project, new NoSelectionView());
         t.addToBackStack(null);
         t.commit();
     }
@@ -43,7 +51,6 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_menu);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,42 +75,25 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
         return super.onOptionsItemSelected(item);
     }
 
-    public void openNewProjectView(View view){
-        System.out.println("opening new project fragment");
-        AddProjectView newProjectFragment = new AddProjectView();
-
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container_new_project, newProjectFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
-
-    //this opens a project after it has been selected from list - list name can be passed
-    public void openMain(int projectListIndex){
+    public void openRoomList(int projectListIndex) {
         Intent i = new Intent(this, RoomListActivity.class);
         i.putExtra("projectIndex", projectListIndex);
         startActivity(i);
     }
 
-    public List<String> getProjectNameList() {
-        List<String> names = new ArrayList<>();
-        for (Project p : ProjectProvider.getInstance().getProjectList()) {
-            names.add(p.getProjectName());
-        }
-        return names;
-    }
-
     public void loadProjectList() {
-        ArrayAdapter<String> projectTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getProjectNameList());
-
-        ListView projectListView = (ListView) findViewById(R.id.projectListView);
+        projectTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ProjectProvider.getInstance().getProjectNameList());
+        projectListView = (ListView) findViewById(R.id.projectListView);
         projectListView.setAdapter(projectTableAdapter);
-
         projectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openMain(position);
+                openRoomList(position);
             }
         });
+    }
+
+    private void log(String output) {
+        Log.d("Project_List_Activity", output);
     }
 }
