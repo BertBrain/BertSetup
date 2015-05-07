@@ -93,7 +93,7 @@ public class AuditWizardView extends Fragment {
     @Override public void onResume() {
         super.onResume();
         RoomListActivity activity = (RoomListActivity)getActivity();
-        tallyGridAdapter = new AuditTallyBoxGVA(this.getActivity(), android.R.layout.simple_gallery_item, activity.getDeviceTypes());
+        tallyGridAdapter = new AuditTallyBoxGVA(this.getActivity(), android.R.layout.simple_gallery_item, activity.getProject().getCategories());
 
         GridView gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(tallyGridAdapter);
@@ -139,8 +139,6 @@ public class AuditWizardView extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
-
-        public List<Category> getDeviceTypes();
         public String getBuilding();
         public void addBerts(ArrayList<BertUnit> berts);
     }
@@ -151,24 +149,20 @@ public class AuditWizardView extends Fragment {
 
         List<BertUnit> berts = new ArrayList<BertUnit>();
         int categoryCount = 0;
-        for (Category category : ((RoomListActivity)getActivity()).getDeviceTypes()){
-
-            if (counts.get(category) != null){
+        for (Category category : ((RoomListActivity)getActivity()).getProject().getCategories()) {
+            if (counts.get(category) != null) {
                 int count = counts.get(category);
-                for (int i = 0; i<count; i++){
+                for (int i = 0; i<count; i++) {
                     String name;
                     if (i == 0){
                         name = location + " - " + category.getName();
                     } else {
                         name = location + " - " + category.getName() + " " + (i+1);
                     }
-
-
                     BertUnit bert = new BertUnit(name, location, ((RoomListActivity)getActivity()).getBuilding(), categoryCount);
                     berts.add(bert);
                 }
             }
-
             categoryCount++;
         }
         RoomListActivity activity = (RoomListActivity)getActivity();

@@ -156,11 +156,10 @@ public class Project {
         return buildingNames;
     }
 
-    //FIXME Currently ignores buildings reimplement soon
     public List<BertUnit> getBertsByLocation(String building, String location) {
         List<BertUnit> returnList = new ArrayList<BertUnit>();
         for (BertUnit b : berts) {
-            if (/*b.getBuilding() == building && */b.getLocation() == location) {
+            if (b.getBuilding() == building && b.getLocation() == location) {
                 returnList.add(b);
             }
         }

@@ -32,7 +32,9 @@ import bert.ui.R;
  */
 public class DeviceEditorView extends Fragment {
     private static final String ARG_LOCATION = "location";
+    private static final String ARG_BUILDING = "building";
 
+    private String building;
     private String location;
     private int position;
 
@@ -51,9 +53,10 @@ public class DeviceEditorView extends Fragment {
      * @param location the room used to populate the bertlist.
      * @return A new instance of fragment DeviceEditorView.
      */
-    public static DeviceEditorView newInstance(String location) {
+    public static DeviceEditorView newInstance(String building, String location) {
         DeviceEditorView fragment = new DeviceEditorView();
         Bundle args = new Bundle();
+        args.putString(ARG_BUILDING, building);
         args.putString(ARG_LOCATION, location);
         fragment.setArguments(args);
         return fragment;
@@ -65,6 +68,7 @@ public class DeviceEditorView extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            building = getArguments().getString(ARG_BUILDING);
             location = getArguments().getString(ARG_LOCATION);
         }
     }
@@ -162,7 +166,6 @@ public class DeviceEditorView extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
-        public List<BertUnit> getBertListForLocation(String location);
     }
 
     private void updateMAC() {
@@ -192,7 +195,7 @@ public class DeviceEditorView extends Fragment {
         RoomListActivity activity = (RoomListActivity) getActivity();
         List<BertUnit> berts;
         if (getArguments() != null) {
-            berts = activity.getBertListForLocation(location);
+            berts = activity.getProject().getBertsByLocation(building, location);
         } else {
             berts = new ArrayList<BertUnit>();
         }
