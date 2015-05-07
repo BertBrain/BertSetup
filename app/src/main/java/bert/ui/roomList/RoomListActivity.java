@@ -45,6 +45,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     private Spinner buildingDropdown;
     private Button addBuildingButton;
     private EditText newBuildingName;
+    private ListView locationListView;
 
     @Override
     public void onFragmentInteraction(android.net.Uri uri) {}
@@ -77,7 +78,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         buildingDropdown = (Spinner) findViewById(R.id.buildingDropdown);
         addBuildingButton = (Button) findViewById(R.id.addBuildingButton);
         newBuildingName = (EditText) findViewById(R.id.newBuildingName);
-
+        locationListView = (ListView) findViewById(R.id.locationListView);
         buildings = selectedProject.getBuildingNames();
         if ( buildings.size() == 0) {
             openNoSelectionView("Create a building");
@@ -230,14 +231,14 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
 
     public void setDropdownVisiblity(boolean visible){
         addBuildingButton = (Button) findViewById(R.id.addBuildingButton);
-        ListView locationListView = (ListView) findViewById(R.id.locationListView);
+
         if (visible){
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(75,
                     LinearLayout.LayoutParams.MATCH_PARENT, 1);
             addBuildingButton.setLayoutParams(layoutParams);
 
             buildingDropdown.setMinimumWidth(0);
-            LinearLayout.LayoutParams dropdownLayoutParams = new LinearLayout.LayoutParams(250,
+            LinearLayout.LayoutParams dropdownLayoutParams = new LinearLayout.LayoutParams(locationListView.getWidth()-75,
                     LinearLayout.LayoutParams.MATCH_PARENT);
             buildingDropdown.setLayoutParams(dropdownLayoutParams);
 
