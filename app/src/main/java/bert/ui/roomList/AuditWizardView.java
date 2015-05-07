@@ -107,45 +107,11 @@ public class AuditWizardView extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-<<<<<<< HEAD
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
-=======
-
-        public List<Category> getDeviceTypes();
->>>>>>> 0403afcf67863e21fc10be18bb964fec5ab4aaad
         public String getBuilding();
         public void addBerts(ArrayList<BertUnit> berts);
     }
 
-<<<<<<< HEAD
-    private void finishAuditWizard(){
-        String location = locationTextView.getText().toString();
-        HashMap<Category, Integer> counts = tallyGridAdapter.getCounts();
-
-        List<BertUnit> berts = new ArrayList<BertUnit>();
-        int categoryCount = 0;
-        for (Category category : ((RoomListActivity)getActivity()).getProject().getCategories()) {
-            if (counts.get(category) != null) {
-                int count = counts.get(category);
-                for (int i = 0; i<count; i++) {
-                    String name;
-                    if (i == 0){
-                        name = location + " - " + category.getName();
-                    } else {
-                        name = location + " - " + category.getName() + " " + (i+1);
-                    }
-                    BertUnit bert = new BertUnit(name, location, ((RoomListActivity)getActivity()).getBuilding(), categoryCount);
-                    berts.add(bert);
-                }
-            }
-            categoryCount++;
-        }
-        RoomListActivity activity = (RoomListActivity)getActivity();
-        activity.addBerts((ArrayList<BertUnit>)berts);
-        if (berts.size() > 0){
-            activity.openDeviceEditorView(berts.get(0).getLocation());
-=======
     private void openNoRoomPopup(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
         builder.setTitle("Room Not Specified");
@@ -185,19 +151,18 @@ public class AuditWizardView extends Fragment {
         String location = locationTextView.getText().toString();
         if (location.length() == 0) {
             openNoRoomPopup();
->>>>>>> 0403afcf67863e21fc10be18bb964fec5ab4aaad
         } else {
             HashMap<Category, Integer> counts = tallyGridAdapter.getCounts();
 
             List<BertUnit> berts = new ArrayList<BertUnit>();
             int categoryCount = 0;
-            for (Category category : ((RoomListActivity)getActivity()).getDeviceTypes()){
+            for (Category category : ((RoomListActivity)getActivity()).getProject().getCategories()) {
 
-                if (counts.get(category) != null){
+                if (counts.get(category) != null) {
                     int count = counts.get(category);
                     for (int i = 0; i<count; i++){
                         String name;
-                        if (i == 0){
+                        if (i == 0) {
                             name = location + " - " + category.getName();
                         } else {
                             name = location + " - " + category.getName() + " " + (i+1);
@@ -207,7 +172,6 @@ public class AuditWizardView extends Fragment {
                         berts.add(bert);
                     }
                 }
-
                 categoryCount++;
             }
             RoomListActivity activity = (RoomListActivity)getActivity();
