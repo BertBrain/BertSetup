@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,11 +38,14 @@ import java.util.List;
 
 public class RoomListActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener {
 
-    String currentBuilding;
-
     Project selectedProject;
+    String currentBuilding;
     List<String> buildings;
+
+    Spinner buildingDropdown;
+    Button addBuildingButton;
     EditText newBuildingName;
+
     @Override
     public void onFragmentInteraction(android.net.Uri uri) {
 
@@ -72,6 +76,10 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
             selectedProject = Test.testProject;
         }
 
+        buildingDropdown = (Spinner) findViewById(R.id.buildingDropdown);
+        addBuildingButton = (Button) findViewById(R.id.addBuildingButton);
+        newBuildingName = (EditText) findViewById(R.id.newBuildingName);
+
         buildings = selectedProject.getBuildingNames();
         if ( buildings.size() == 0) {
             openNoSelectionView("Create a building");
@@ -88,7 +96,6 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
 
     private void createBuildingDropdown(){
 
-        Spinner buildingDropdown = (Spinner) findViewById(R.id.buildingDropdown);
         ArrayAdapter<String> buildingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, buildings);
 
         buildingDropdown.setAdapter(buildingAdapter);
@@ -115,7 +122,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     private void createLocationlistView(){
-        ArrayAdapter<String> locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getLocationsInBuilding(currentBuilding));
+        ArrayAdapter<String> locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, selectedProject.getLocationNamesInBuilding(currentBuilding));
 
         ListView locationListView = (ListView) findViewById(R.id.locationListView);
         locationListView.setAdapter(locationTableAdapter);
@@ -123,7 +130,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openDeviceEditorView(getLocationsInBuilding(currentBuilding).get(position));
+                openDeviceEditorView(selectedProject.getLocationNamesInBuilding(currentBuilding).get(position));
             }
         });
     }
@@ -188,12 +195,11 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     public void openProjectActivity(View view) {
-        Intent intent = new Intent(this, ProjectListActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, ProjectListActivity.class));
     }
 
     public void launchBuildingNameTextField(View view){
-        newBuildingName = (EditText) findViewById(R.id.newBuildingName);
+
         newBuildingName.setFocusable(true);
         newBuildingName.requestFocus();
         newBuildingName.setOnEditorActionListener(new TextView.OnEditorActionListener(){
@@ -225,22 +231,32 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     public void setDropdownVisiblity(boolean visible){
-        Spinner dropdown = (Spinner) findViewById(R.id.buildingDropdown);
-        Button addBuildingButton = (Button) findViewById(R.id.addBuildingButton);
+        addBuildingButton = (Button) findViewById(R.id.addBuildingButton);
         ListView locationListView = (ListView) findViewById(R.id.locationListView);
         if (visible){
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(75,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
+                    LinearLayout.LayoutParams.MATCH_PARENT, 1);
             addBuildingButton.setLayoutParams(layoutParams);
 
+            buildingDropdown.setMinimumWidth(0);
+            LinearLayout.LayoutParams dropdownLayoutParams = new LinearLayout.LayoutParams(250,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            buildingDropdown.setLayoutParams(dropdownLayoutParams);
+
+            addBuildingButton.setGravity(Gravity.RIGHT);
             addBuildingButton.setText("+");
         } else {
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams buttonLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT);
-            addBuildingButton.setLayoutParams(layoutParams);
+            addBuildingButton.setLayoutParams(buttonLayoutParams);
 
-            dropdown.setMinimumWidth(0);
-            addBuildingButton.setWidth(200);
+            buildingDropdown.setMinimumWidth(0);
+            LinearLayout.LayoutParams dropdownLayoutParams = new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            buildingDropdown.setLayoutParams(dropdownLayoutParams);
+
+            addBuildingButton.setGravity(Gravity.CENTER);
+            addBuildingButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             addBuildingButton.setText("+ Add Building");
         }
     }
@@ -252,11 +268,6 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
 
     @Override
     public List<BertUnit> getBertListForLocation(String location) {
-        //TODO: allow different buildings
         return selectedProject.getBertsByLocation(currentBuilding, location);
-    }
-
-    public List<String> getLocationsInBuilding(String building) {
-        return selectedProject.getLocationNamesInBuilding(building);
     }
 }

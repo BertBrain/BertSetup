@@ -26,13 +26,11 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
     HashMap<Category, Integer> counts = new HashMap<Category, Integer>();
     List<Category> deviceTypes;
     Activity activity;
-    int recourseId;
 
     public AuditTallyBoxGVA(Activity activity, int recourseId, List<Category> deviceTypes) {
         super(activity, recourseId, deviceTypes);
         this.deviceTypes = deviceTypes;
         this.activity = activity;
-        this.recourseId = recourseId;
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
@@ -67,11 +65,17 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
 
     void addToDeviceType(Category deviceType, int numberToAdd) {
         int oldCount = counts.get(deviceType);
+        int newCount = 0;
         if (oldCount > 0 || numberToAdd > 0){
-            counts.put(deviceType, oldCount + numberToAdd);
+            newCount = oldCount + numberToAdd;
+        } else {
+            newCount = oldCount;
         }
+
+        counts.put(deviceType, newCount);
+        setCountForDeviceType(deviceType, newCount);
+
         System.out.println("count for: " + deviceType.getName() + " is now: " + counts.get(deviceType));
-        setCountForDeviceType(deviceType, counts.get(deviceType));
     }
 
     void setCountForDeviceType(Category deviceType, int count) {
@@ -86,7 +90,6 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
     public HashMap<Category, Integer> getCounts(){
         return this.counts;
     }
-
 
 }
 

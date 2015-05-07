@@ -30,10 +30,9 @@
                 android:layout_gravity="center_horizontal">
 
                 <Spinner
-                    android:layout_width="wrap_content"
+                    android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/buildingDropdown"
-                    android:layout_weight="1"
                     android:spinnerMode="dropdown" />
 
                 <Button
@@ -41,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:text="+"
                     android:id="@+id/addBuildingButton"
-                    android:onClick="launchBuildingNameTextField" />
+                    android:onClick="launchBuildingNameTextField"/>
             </LinearLayout>
 
             <ListView
