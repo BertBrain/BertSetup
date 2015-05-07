@@ -66,12 +66,6 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     @Override
-    public void addBerts(ArrayList<BertUnit> berts) {
-        project.addBerts(berts);
-        createLocationlistView();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_list);
@@ -117,7 +111,8 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         });
     }
 
-    private void createLocationlistView() {
+    //TODO should be private
+    public void createLocationlistView() {
         locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getLocationNamesInBuilding(currentBuilding));
         locationListView = (ListView) findViewById(R.id.locationListView);
         locationListView.setAdapter(locationTableAdapter);

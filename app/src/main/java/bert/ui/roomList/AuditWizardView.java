@@ -110,7 +110,6 @@ public class AuditWizardView extends Fragment {
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
         public String getBuilding();
-        public void addBerts(ArrayList<BertUnit> berts);
     }
 
     public void setBertTotalCounter(int count){
@@ -142,9 +141,9 @@ public class AuditWizardView extends Fragment {
             }
         });
 
-        builder.setNeutralButton("Back to Editing", new DialogInterface.OnClickListener(){
+        builder.setNeutralButton("Back to Editing", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int i){
+            public void onClick(DialogInterface dialog, int i) {
                 //nothing
             }
         });
@@ -180,6 +179,8 @@ public class AuditWizardView extends Fragment {
                 categoryCount++;
             }
             RoomListActivity activity = (RoomListActivity)getActivity();
+            activity.getProject().addBerts(berts);
+            activity.createLocationlistView();
             activity.addBerts((ArrayList<BertUnit>)berts);
             if (berts.size() > 0){
                 activity.openDeviceEditorView(berts.get(0).getLocation());
