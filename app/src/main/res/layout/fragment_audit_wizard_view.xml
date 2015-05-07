@@ -70,4 +70,14 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="86dp"
+        android:layout_height="42dp"
+        android:text="Total: 0"
+        android:id="@+id/totalCounterTextField"
+        android:layout_gravity="bottom|left"
+        android:singleLine="true"
+        android:gravity="center_vertical|left"
+        android:textSize="20dp" />
 </FrameLayout>

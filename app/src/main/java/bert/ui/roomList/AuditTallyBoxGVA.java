@@ -26,11 +26,13 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
     HashMap<Category, Integer> counts = new HashMap<Category, Integer>();
     List<Category> deviceTypes;
     Activity activity;
+    AuditWizardView owner;
 
-    public AuditTallyBoxGVA(Activity activity, int recourseId, List<Category> deviceTypes) {
+    public AuditTallyBoxGVA(AuditWizardView owner, Activity activity, int recourseId, List<Category> deviceTypes) {
         super(activity, recourseId, deviceTypes);
         this.deviceTypes = deviceTypes;
         this.activity = activity;
+        this.owner = owner;
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
@@ -91,6 +93,14 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         return this.counts;
     }
 
+    public void updateBertTotal(){
+        int totalCount = 0;
+        for (Integer i : counts.values()){
+            totalCount += i;
+        }
+        owner.setBertTotalCounter(totalCount);
+    }
+
 }
 
 class buttonListener implements View.OnClickListener {
@@ -110,5 +120,6 @@ class buttonListener implements View.OnClickListener {
     public void onClick(View v) {
         System.out.println(incrementAmount);
         owner.addToDeviceType(deviceType, incrementAmount);
+        owner.updateBertTotal();
     }
 }

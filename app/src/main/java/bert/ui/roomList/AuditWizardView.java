@@ -34,7 +34,7 @@ public class AuditWizardView extends Fragment {
     Button cancelButton;
     Button finishedButton;
     GridView gridView;
-
+    TextView totalBertsCounter;
 
     AuditTallyBoxGVA tallyGridAdapter;
     TextView locationTextView;
@@ -65,8 +65,9 @@ public class AuditWizardView extends Fragment {
     @Override public void onResume() {
         super.onResume();
         RoomListActivity activity = (RoomListActivity)getActivity();
-        tallyGridAdapter = new AuditTallyBoxGVA(this.getActivity(), android.R.layout.simple_gallery_item, activity.getDeviceTypes());
+        tallyGridAdapter = new AuditTallyBoxGVA(this, this.getActivity(), android.R.layout.simple_gallery_item, activity.getDeviceTypes());
 
+        totalBertsCounter = (TextView) getView().findViewById(R.id.totalCounterTextField);
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(tallyGridAdapter);
 
@@ -111,6 +112,10 @@ public class AuditWizardView extends Fragment {
         public List<Category> getDeviceTypes();
         public String getBuilding();
         public void addBerts(ArrayList<BertUnit> berts);
+    }
+
+    public void setBertTotalCounter(int count){
+        totalBertsCounter.setText("Total: " + count);
     }
 
     private void openNoRoomPopup(){
