@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Project"
-                android:onClick="openNewProjectView"
+                android:onClick="openAddProjectView"
                 android:id="@+id/button" />
 
             <ListView

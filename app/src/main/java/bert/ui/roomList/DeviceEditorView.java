@@ -31,25 +31,23 @@ import bert.ui.R;
  * create an instance of this fragment.
  */
 public class DeviceEditorView extends Fragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_LOCATION = "location";
 
     private String location;
     private int position;
 
     private OnFragmentInteractionListener mListener;
-
     private EditText deviceNameTextField;
     private EditText macAddressTextField;
     private EditText roomTextField;
     private EditText buildingTextField;
-
-
+    private ArrayAdapter<String> deviceTableAdapter;
+    private ListView locationListView;
+    private FrameLayout detailView;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
      * @param location the room used to populate the bertlist.
      * @return A new instance of fragment DeviceEditorView.
      */
@@ -61,9 +59,7 @@ public class DeviceEditorView extends Fragment {
         return fragment;
     }
 
-    public DeviceEditorView() {
-        // Required empty public constructor
-    }
+    public DeviceEditorView() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,9 +70,8 @@ public class DeviceEditorView extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        System.out.println(getView());
         macAddressTextField = (EditText) getView().findViewById(R.id.macAddress);
         deviceNameTextField = (EditText) getView().findViewById(R.id.deviceName);
         roomTextField = (EditText) getView().findViewById(R.id.room);
@@ -92,9 +87,9 @@ public class DeviceEditorView extends Fragment {
             }
         }
 
-        ArrayAdapter<String> deviceTableAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, bertNameList);
+        deviceTableAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, bertNameList);
 
-        ListView locationListView = (ListView) getView().findViewById(R.id.bertList);
+        locationListView = (ListView) getView().findViewById(R.id.bertList);
         locationListView.setAdapter(deviceTableAdapter);
 
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -177,13 +172,13 @@ public class DeviceEditorView extends Fragment {
     }
 
     private void updateName() {
-        if (getBertList().size() > 0){
+        if (getBertList().size() > 0) {
             getBertList().get(position).setName(deviceNameTextField.getText().toString());
         }
         onResume();
     }
 
-    private void loadDeviceAtPostion(int position){
+    private void loadDeviceAtPostion(int position) {
         this.position = position;
         BertUnit b = getBertList().get(position);
         deviceNameTextField.setText(b.getName());
@@ -193,7 +188,7 @@ public class DeviceEditorView extends Fragment {
         setDetailViewVisibility(true);
     }
 
-    private List<BertUnit> getBertList(){
+    private List<BertUnit> getBertList() {
         RoomListActivity activity = (RoomListActivity) getActivity();
         List<BertUnit> berts;
         if (getArguments() != null) {
@@ -204,13 +199,8 @@ public class DeviceEditorView extends Fragment {
         return  berts;
     }
 
-    private void setDetailViewVisibility(boolean isVisible){
-        FrameLayout detailView = (FrameLayout) getView().findViewById(R.id.detailViewFrame);
-        if (isVisible){
-            detailView.setVisibility(View.VISIBLE);
-        } else {
-            detailView.setVisibility(View.INVISIBLE);
-        }
-
+    private void setDetailViewVisibility(boolean isVisible) {
+        detailView = (FrameLayout) getView().findViewById(R.id.bertDeviceDetailViewFrame);
+        detailView.setVisibility((isVisible) ? View.VISIBLE : View.INVISIBLE);
     }
 }

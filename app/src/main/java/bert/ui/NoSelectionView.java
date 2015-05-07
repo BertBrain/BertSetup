@@ -15,47 +15,33 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class NoSelectionView extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String ARG_MESSAGE = "message";
+    private String mMessage;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NoLocation.
+     * @param message message to display in fragment.
+     * @return A new instance of fragment NoSelectionView.
      */
-    // TODO: Rename and change types and number of parameters
-    public static NoSelectionView newInstance(String param1, String param2) {
+    public static NoSelectionView newInstance(String message) {
         NoSelectionView fragment = new NoSelectionView();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_MESSAGE, message);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public NoSelectionView() {
-        // Required empty public constructor
-    }
+    public NoSelectionView() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
-
+            mMessage = getArguments().getString(ARG_MESSAGE);
+        } else {
+            mMessage = "ERROR: No Message for View";
         }
-
     }
 
     @Override
@@ -66,12 +52,10 @@ public class NoSelectionView extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        if (getArguments() != null && getArguments().getString("message") != null){
-            TextView messageView = (TextView) getView().findViewById(R.id.noSelectionTextView);
-            messageView.setText(getArguments().getString("message"));
-        }
+        TextView messageView = (TextView) getView().findViewById(R.id.noSelectionTextView);
+        messageView.setText(mMessage);
     }
 
     @Override
@@ -83,5 +67,4 @@ public class NoSelectionView extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-
 }

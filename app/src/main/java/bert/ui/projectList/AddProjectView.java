@@ -32,6 +32,7 @@ public class AddProjectView extends Fragment {
     private TextView nameTextField;
     private TextView dateTextField;
     private TextView contactTextField;
+    private Button createButton;
 
     /**
      * Use this factory method to create a new instance of
@@ -39,13 +40,10 @@ public class AddProjectView extends Fragment {
      * @return A new instance of fragment AddProjectView.
      */
     public static AddProjectView newInstance() {
-        AddProjectView fragment = new AddProjectView();
-        return fragment;
+        return new AddProjectView();
     }
 
-    public AddProjectView() {
-        // Required empty public constructor
-    }
+    public AddProjectView() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,28 +51,19 @@ public class AddProjectView extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_project, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         contactTextField = (TextView) getView().findViewById(R.id.projectContactTextField);
         nameTextField = (TextView) getView().findViewById(R.id.projectNameTextField);
         dateTextField = (TextView) getView().findViewById(R.id.projectDateTextField);
-
-        Button doneButton = (Button) getView().findViewById(R.id.createProjectButton);
-        doneButton.setOnClickListener(new View.OnClickListener(){
+        createButton = (Button) getView().findViewById(R.id.createProjectButton);
+        createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
                 createProjectAndFinish();
@@ -88,8 +77,7 @@ public class AddProjectView extends Fragment {
         try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -101,6 +89,7 @@ public class AddProjectView extends Fragment {
 
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
+        public void openAddProjectView(View view);
         public void closeAddProjectView();
     }
 
@@ -121,7 +110,6 @@ public class AddProjectView extends Fragment {
         activity.loadProjectList();
         activity.closeAddProjectView();
         startActivity(intent);
-
     }
 
     private void clearNewProjectForm() {
