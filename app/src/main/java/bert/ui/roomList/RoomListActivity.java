@@ -61,11 +61,6 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     @Override
-    public String getBuilding() {
-        return currentBuilding;
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_list);
@@ -79,14 +74,12 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         buildingNameList = project.getBuildingNames();
         createLocationlistView();
         createBuildingDropdown();
-        if (buildingNameList.size() == 0) {
-            openNoSelectionView("Create a building");
-            setDropdownVisibility(false);
-            startAuditButton.setEnabled(false);
-        } else {
-            openNoSelectionView("Select A Room or create a new one");
+        boolean isBuildingListEmpty = (buildingNameList.size() == 0);
+        openNoSelectionView((isBuildingListEmpty) ? "Create a building" : "Select a Room or create a new one");
+        setBuildingDropdownVisibility(!isBuildingListEmpty);
+        startAuditButton.setEnabled(!isBuildingListEmpty);
+        if (!isBuildingListEmpty) {
             currentBuilding = buildingNameList.get(0); //TODO: make this get last viewed building
-            setDropdownVisibility(true);
         }
     }
 
@@ -147,8 +140,10 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     public void openAuditWizardView(View view) {
-        System.out.println("opening audit wizard view");
         AuditWizardView auditWizardView = new AuditWizardView();
+        Bundle args = new Bundle();
+        args.putString("building", currentBuilding);
+        auditWizardView.setArguments(args);
         loadFragment(auditWizardView);
     }
 
@@ -163,13 +158,10 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     public void openNoSelectionView(String message){
-        System.out.println("openening no location view");
         NoSelectionView noSelectionView = new NoSelectionView();
-
         Bundle args = new Bundle();
         args.putString("message", message);
         noSelectionView.setArguments(args);
-
         loadFragment(noSelectionView);
     }
 
@@ -178,10 +170,6 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         fragmentTransaction.replace(R.id.fragment_container, frag);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-    }
-
-    public void openProjectActivity(View view) {
-        startActivity(new Intent(this, ProjectListActivity.class));
     }
 
     public void launchBuildingNameTextField(View view) {
@@ -201,21 +189,24 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     public void addBuilding() {
-        currentBuilding = newBuildingName.getText().toString();
-        buildingNameList.add(currentBuilding);
-        newBuildingName.setText("");
-        newBuildingName.clearFocus();
-        InputMethodManager manager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        manager.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
+        String input = newBuildingName.getText().toString().trim();
+        if (!input.isEmpty()) {
+            currentBuilding = input;
+            buildingNameList.add(currentBuilding);
+            newBuildingName.setText("");
+            newBuildingName.clearFocus();
+            InputMethodManager manager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            manager.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
 
-        createBuildingDropdown();
-        setDropdownVisibility(true);
-        Button startAddWizardButton = (Button) findViewById(R.id.button_audit);
-        startAddWizardButton.setEnabled(true);
-        createLocationlistView();
+            createBuildingDropdown();
+            setBuildingDropdownVisibility(true);
+            Button startAddWizardButton = (Button) findViewById(R.id.button_audit);
+            startAddWizardButton.setEnabled(true);
+            createLocationlistView();
+        }
     }
 
-    public void setDropdownVisibility(boolean isVisible) {
+    public void setBuildingDropdownVisibility(boolean isVisible) {
         buildingDropdown.setMinimumWidth(0);
         addBuildingButton.setText((isVisible) ? "+" : "+ Add Building");
         addBuildingButton.setGravity((isVisible) ? Gravity.RIGHT : Gravity.CENTER);
