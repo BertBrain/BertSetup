@@ -10,11 +10,14 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -59,33 +62,32 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_list);
-        if (findViewById(R.id.fragment_container) != null) {
-            if (savedInstanceState != null) return;//if restoring, don't replace
-            Bundle extras = getIntent().getExtras();
-            try {
-                selectedProject = ProjectProvider.getInstance().getProjectList().get(extras.getInt("projectIndex"));
-            } catch (Exception e) {
-                System.out.println("no project was sent to room list activity, using test project");
-                selectedProject = Test.testProject;
-            }
 
-            NoSelectionView splash = new NoSelectionView();
-            Bundle args = new Bundle();
-            args.putString("message", "no building selected, project just loaded");
-            splash.setArguments(args);
+        if (savedInstanceState != null) return;//if restoring, don't replace
+        Bundle extras = getIntent().getExtras();
+        try {
+            selectedProject = ProjectProvider.getInstance().getProjectList().get(extras.getInt("projectIndex"));
+        } catch (Exception e) {
+            System.out.println("no project was sent to room list activity, using test project");
+            selectedProject = Test.testProject;
+        }
 
-            getFragmentManager().beginTransaction().add(R.id.fragment_container, splash).commit();
+        buildings = selectedProject.getBuildingNames();
+        if ( buildings.size() == 0) {
+            openNoSelectionView("Create a building");
+            setDropdownVisiblity(false);
+            Button startAddWizardButton = (Button) findViewById(R.id.button_audit);
+            startAddWizardButton.setEnabled(false);
         } else {
-            System.out.println("error: fragment container not found");
+            openNoSelectionView("Select A Room or create a new one");
+            currentBuilding = buildings.get(0); //TODO: make this get last viewed building
+            setDropdownVisiblity(true);
         }
         createBuildingDropdown();
     }
 
-
     private void createBuildingDropdown(){
-        if (buildings == null || buildings.size() == 0) {
-                buildings = selectedProject.getBuildingNames();
-        }
+
         Spinner buildingDropdown = (Spinner) findViewById(R.id.buildingDropdown);
         ArrayAdapter<String> buildingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, buildings);
 
@@ -97,6 +99,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setDropdownPosition(position);
                 createLocationlistView();
+                openNoSelectionView("Select or Create a Room");
             }
 
             @Override
@@ -113,12 +116,6 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
 
     private void createLocationlistView(){
         ArrayAdapter<String> locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getLocationsInBuilding(currentBuilding));
-
-        if (getLocationsInBuilding(currentBuilding).size() == 0){
-            openNoSelectionView("No Rooms in Building. Please create a New Room");
-        } else {
-            openNoSelectionView("Select A Room or create a new one");
-        }
 
         ListView locationListView = (ListView) findViewById(R.id.locationListView);
         locationListView.setAdapter(locationTableAdapter);
@@ -153,16 +150,16 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         return super.onOptionsItemSelected(item);
     }
 
-
     public void openAuditWizardView(View view){
         System.out.println("opening audit wizard view");
-        AuditWizardView auditWizardView = new AuditWizardView();
 
+        AuditWizardView auditWizardView = new AuditWizardView();
         loadFragment(auditWizardView);
     }
 
     public void openDeviceEditorView(String locationName){
         System.out.println("opening device editor view");
+
         DeviceEditorView deviceEditorView = new DeviceEditorView();
 
         Bundle args = new Bundle();
@@ -221,7 +218,31 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         manager.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
 
         createBuildingDropdown();
+        setDropdownVisiblity(true);
+        Button startAddWizardButton = (Button) findViewById(R.id.button_audit);
+        startAddWizardButton.setEnabled(true);
         createLocationlistView();
+    }
+
+    public void setDropdownVisiblity(boolean visible){
+        Spinner dropdown = (Spinner) findViewById(R.id.buildingDropdown);
+        Button addBuildingButton = (Button) findViewById(R.id.addBuildingButton);
+        ListView locationListView = (ListView) findViewById(R.id.locationListView);
+        if (visible){
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(75,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            addBuildingButton.setLayoutParams(layoutParams);
+
+            addBuildingButton.setText("+");
+        } else {
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            addBuildingButton.setLayoutParams(layoutParams);
+
+            dropdown.setMinimumWidth(0);
+            addBuildingButton.setWidth(200);
+            addBuildingButton.setText("+ Add Building");
+        }
     }
 
     @Override
