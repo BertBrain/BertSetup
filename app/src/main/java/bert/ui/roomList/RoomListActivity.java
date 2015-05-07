@@ -25,6 +25,7 @@ import bert.database.Test;
 
 import bert.database.Project;
 import bert.database.ProjectProvider;
+import bert.ui.NoSelectionView;
 import bert.ui.projectList.ProjectListActivity;
 import bert.ui.R;
 
