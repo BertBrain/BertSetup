@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import bert.database.Project;
@@ -61,6 +64,7 @@ public class AddProjectView extends Fragment {
         super.onResume();
         contactTextField = (TextView) getView().findViewById(R.id.projectContactTextField);
         nameTextField = (TextView) getView().findViewById(R.id.projectNameTextField);
+        //TODO check for valid name string beore enabling create Button
         dateTextField = (TextView) getView().findViewById(R.id.projectDateTextField);
         createButton = (Button) getView().findViewById(R.id.createProjectButton);
         createButton.setOnClickListener(new View.OnClickListener() {

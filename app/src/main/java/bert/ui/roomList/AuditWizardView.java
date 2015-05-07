@@ -3,7 +3,6 @@ package bert.ui.roomList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -22,7 +21,6 @@ import bert.database.BertUnit;
 
 import bert.database.Category;
 
-import bert.database.Test;
 import bert.ui.R;
 
 import java.util.ArrayList;
@@ -30,60 +28,56 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AuditWizardView extends Fragment {
+    private static final String ARG_BUILDING = "buildig";
+    private String building;
 
-    Button cancelButton;
-    Button finishedButton;
-    GridView gridView;
-    TextView totalBertsCounter;
+    private Button cancelButton;
+    private Button finishedButton;
+    private GridView gridView;
+    private TextView totalBertsCounter;
 
-    AuditTallyBoxGVA tallyGridAdapter;
-    TextView locationTextView;
+    private AuditTallyBoxGVA tallyGridAdapter;
+    private TextView locationTextView;
 
-    // TODO: Rename and change types and number of parameters
-    public static AuditWizardView newInstance(String param1, String param2) {
-        return new AuditWizardView();
+    private RoomListActivity activity;
+
+    public static AuditWizardView newInstance(String building) {
+        AuditWizardView fragment = new AuditWizardView();
+        Bundle args = new Bundle();
+        args.putString(ARG_BUILDING, building);
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    public AuditWizardView() {
-        // Required empty public constructor
-    }
+    public AuditWizardView() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (getArguments() != null) {
+            building = getArguments().getString(ARG_BUILDING);
+        }
+        activity = (RoomListActivity) getActivity();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_audit_wizard_view, container, false);
     }
 
-
     @Override public void onResume() {
         super.onResume();
-        RoomListActivity activity = (RoomListActivity)getActivity();
-        tallyGridAdapter = new AuditTallyBoxGVA(this, this.getActivity(), android.R.layout.simple_gallery_item, activity.getProject().getCategories());
 
-        totalBertsCounter = (TextView) getView().findViewById(R.id.totalCounterTextField);
+        tallyGridAdapter = new AuditTallyBoxGVA(this, this.getActivity(), android.R.layout.simple_gallery_item, activity.getProject().getCategories());
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(tallyGridAdapter);
 
+        totalBertsCounter = (TextView) getView().findViewById(R.id.totalCounterTextField);
         finishedButton = (Button) getView().findViewById(R.id.finisedAuditWizardButton);
         cancelButton = (Button) getView().findViewById(R.id.canelAuditButton);
-
-        finishedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finishAuditWizard();
-            }
-        });
-        cancelButton.setOnClickListener(new View.OnClickListener(){
+        cancelButton.setOnClickListener(new View.OnClickListener() {
            @Override
-            public void onClick(View view){
-               RoomListActivity activity = (RoomListActivity)getActivity();
+            public void onClick(View view) {
                activity.openNoSelectionView("Select or Create A Room");
            }
         });
@@ -109,20 +103,18 @@ public class AuditWizardView extends Fragment {
 
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
-        public String getBuilding();
     }
 
-    public void setBertTotalCounter(int count){
+    public void setBertTotalCounter(int count) {
         totalBertsCounter.setText("Total: " + count);
     }
 
-    private void openNoRoomPopup(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
-        builder.setTitle("Room Not Specified");
-        builder.setPositiveButton("Set Room", new DialogInterface.OnClickListener() {
+    private void openNoRoomPopup() {
+        AlertDialog.Builder noRoomNameSetAlert = new AlertDialog.Builder(getView().getContext());
+        noRoomNameSetAlert.setTitle("Room Name Not Specified");
+        noRoomNameSetAlert.setPositiveButton("Set Room Name", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int i){
-
+            public void onClick(DialogInterface dialog, int i) {
                 InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 manager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                 locationTextView.setFocusable(true);
@@ -130,7 +122,7 @@ public class AuditWizardView extends Fragment {
                 locationTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_DONE){
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
                             InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                             manager.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
                             finishAuditWizard();
@@ -141,53 +133,45 @@ public class AuditWizardView extends Fragment {
             }
         });
 
-        builder.setNeutralButton("Back to Editing", new DialogInterface.OnClickListener() {
+        noRoomNameSetAlert.setNeutralButton("Back to Editing", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int i) {
-                //nothing
-            }
+            public void onClick(DialogInterface dialog, int i) {}
         });
-
-        builder.create().show();
+        noRoomNameSetAlert.create().show();
     }
 
-    private void finishAuditWizard(){
+    private void finishAuditWizard() {
         String location = locationTextView.getText().toString();
         if (location.length() == 0) {
             openNoRoomPopup();
         } else {
-            HashMap<Category, Integer> counts = tallyGridAdapter.getCounts();
-
+            HashMap<Category, Integer> categoryCounts = tallyGridAdapter.getCounts();
             List<BertUnit> berts = new ArrayList<BertUnit>();
             int categoryCount = 0;
-            for (Category category : ((RoomListActivity)getActivity()).getProject().getCategories()) {
-
-                if (counts.get(category) != null) {
-                    int count = counts.get(category);
-                    for (int i = 0; i<count; i++){
+            for (Category category : activity.getProject().getCategories()) {
+                if (categoryCounts.get(category) != null) {
+                    for (int i = 0; i < categoryCounts.get(category); i++) {
                         String name;
                         if (i == 0) {
                             name = location + " - " + category.getName();
                         } else {
-                            name = location + " - " + category.getName() + " " + (i+1);
+                            name = location + " - " + category.getName() + " " + (i + 1);
                         }
-
-                        BertUnit bert = new BertUnit(name, location, ((RoomListActivity)getActivity()).getBuilding(), categoryCount);
+                        BertUnit bert = new BertUnit(name, location, building, categoryCount);
                         berts.add(bert);
                     }
                 }
                 categoryCount++;
             }
-            RoomListActivity activity = (RoomListActivity)getActivity();
+
             activity.getProject().addBerts(berts);
-            activity.createLocationlistView();
-            activity.addBerts((ArrayList<BertUnit>)berts);
-            if (berts.size() > 0){
+            activity.createLocationlistView(); //Refresh view
+
+            if (berts.size() > 0) {
                 activity.openDeviceEditorView(berts.get(0).getLocation());
             } else {
                 System.out.println("done button pressed but no berts to be added");
             }
         }
-
     }
 }
