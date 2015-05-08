@@ -48,5 +48,4 @@ public class Category {
     public static Category cat1 = new Category("cat1", 220, 350);
     public static Category cat2 = new Category("cat2", 220, 350);
     public static Category cat3 = new Category("cat3", 220, 350);
-
 }

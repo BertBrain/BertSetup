@@ -26,9 +26,9 @@ import bert.ui.R;
 public class ProjectDetailFragment extends Fragment {
     
     
-    EditText projectNameTextField;
-    EditText contactNameTextField;
-    EditText contactInfoTextField;
+    EditText projectNameEditText;
+    EditText contactNameEditText;
+    EditText contactNumberEditText;
     TextView dateCreatedTextField;
     TextView dateModifiedTextField;
     Button exportToBertConfigButton;
@@ -58,9 +58,9 @@ public class ProjectDetailFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        projectNameTextField = (EditText) getView().findViewById(R.id.projectNameTextField);
-        contactNameTextField = (EditText) getView().findViewById(R.id.projectContactTextField);
-        contactInfoTextField = (EditText) getView().findViewById(R.id.projectContactTextField);
+        projectNameEditText = (EditText) getView().findViewById(R.id.projectNameEditText);
+        contactNameEditText = (EditText) getView().findViewById(R.id.contactNameEditText);
+        contactNumberEditText = (EditText) getView().findViewById(R.id.contactNumberEditText);
         dateCreatedTextField = (TextView) getView().findViewById(R.id.dateCreatedTextField);
         dateModifiedTextField = (TextView) getView().findViewById(R.id.dateAcessedTextField);
         exportToBertConfigButton = (Button) getView().findViewById(R.id.exportToBertConfiguratorButton);

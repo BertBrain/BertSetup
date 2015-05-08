@@ -1,6 +1,8 @@
 package bert.ui.projectList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import bert.database.Cleaner;
+import bert.database.DateProvider;
 import bert.database.Project;
 import bert.database.ProjectProvider;
 import bert.ui.R;
@@ -32,10 +36,10 @@ public class AddProjectView extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private TextView nameTextField;
-    private TextView dateTextField;
-    private TextView contactTextField;
     private Button createButton;
+    private TextView nameTextField;
+    private TextView contactTextField;
+    private TextView contactNumberTextField;
 
     /**
      * Use this factory method to create a new instance of
@@ -60,19 +64,29 @@ public class AddProjectView extends Fragment {
     }
 
     @Override
-    public void onResume() {
+    public void onResume() {//TODO check for valid name string beore enabling create Button
         super.onResume();
-        contactTextField = (TextView) getView().findViewById(R.id.projectContactTextField);
-        nameTextField = (TextView) getView().findViewById(R.id.projectNameTextField);
-        //TODO check for valid name string beore enabling create Button
-        dateTextField = (TextView) getView().findViewById(R.id.projectDateTextField);
         createButton = (Button) getView().findViewById(R.id.createProjectButton);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View v) {
                 createProjectAndFinish();
             }
         });
+        createButton.setEnabled(false);
+        nameTextField = (TextView) getView().findViewById(R.id.projectNameTextField);
+        nameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    nameTextField.setText(Cleaner.cleanProjectName(nameTextField.getText().toString()));
+                    createButton.setEnabled(!nameTextField.getText().toString().trim().isEmpty());
+                }
+                return false;
+            }
+        });
+        contactTextField = (TextView) getView().findViewById(R.id.contactTextField);
+        contactNumberTextField = (TextView) getView().findViewById(R.id.contactNumberTextField);
     }
 
     @Override
@@ -97,28 +111,45 @@ public class AddProjectView extends Fragment {
         public void closeAddProjectView();
     }
 
-    private void createProjectAndFinish(){//TODO add contact number to this form
-        String nameText = nameTextField.getText().toString();
-        String contactText = contactTextField.getText().toString();
-        String dateText = dateTextField.getText().toString();
+    private void createProjectAndFinish() {
+        boolean canCreate = true;
+        String newProjectName = nameTextField.getText().toString();
 
-        Project newProject = new Project(nameText, contactText, dateText);
+        for (String s : ProjectProvider.getInstance().getProjectNameList()) {
+            if (s.equals(newProjectName)) {
+                canCreate = false;
+            }
+        }
 
-        clearNewProjectForm();
+        if (canCreate) {
+            Project newProject = new Project(newProjectName);
+            newProject.setContactName(contactTextField.getText().toString());
+            newProject.setContactNumber(contactNumberTextField.getText().toString());
 
-        ProjectProvider.getInstance().addProject(newProject);
+            nameTextField.setText("");
+            contactTextField.setText("");
+            contactNumberTextField.setText("");
 
-        ProjectListActivity activity = (ProjectListActivity) getActivity();
-        Intent intent = new Intent(activity, RoomListActivity.class);
-        intent.putExtra("projectIndex", ProjectProvider.getInstance().getProjectList().size() - 1);
-        activity.loadProjectList();
-        activity.closeAddProjectView();
-        startActivity(intent);
+            ProjectProvider.getInstance().addProject(newProject);
+
+            ProjectListActivity activity = (ProjectListActivity) getActivity();
+            Intent intent = new Intent(activity, RoomListActivity.class);
+            intent.putExtra("projectIndex", ProjectProvider.getInstance().getProjectList().size() - 1);
+            activity.loadProjectList();
+            activity.closeAddProjectView();
+            startActivity(intent);
+        } else {
+            createDuplicateProjectNamePopup();
+        }
     }
 
-    private void clearNewProjectForm() {
-        nameTextField.setText("");
-        contactTextField.setText("");
-        dateTextField.setText("");
+    private void createDuplicateProjectNamePopup() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getView().getContext());
+        alert.setTitle("A Project with the same name already exists");
+        alert.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {}
+        });
+        alert.create().show();
     }
 }
