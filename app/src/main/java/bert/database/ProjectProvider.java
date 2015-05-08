@@ -28,7 +28,6 @@ public class ProjectProvider {
 
     private static ProjectProvider instance;
     private List<Project> projectList;
-
     private ProjectProvider() {}
 
     public static ProjectProvider getInstance() {
@@ -69,18 +68,22 @@ public class ProjectProvider {
             if (files.size() > 0) {
                 for (File f : files) {
                     log("Loading file <" + f.getName() + "> from project directory");
-                    projectList.add(new Project(FileHelper.loadDocument(f)));
+                    Project nextproject = ProjectSerializer.getProjectFromDocument(FileHelper.loadDocument(f));
+                    if (nextproject != null) {
+                        projectList.add(nextproject);
+                    } else {
+                        log("File <" + f.getName() + "> is not a valid project... Skipping");
+                    }
                 }
             }
         }
         log("Loaded " + projectList.size() + " projects from storage");
     }
 
-    public void saveProject(Project project) {//TODO test this
+    public void saveProject(Project project) {
         log("Saving Project: " + project.getProjectName() + " to XML file");
-        Document d = project.exportToXML();
-        String fileName = project.getProjectName().replaceAll("\\W|_", "");
-        fileName += ".xml";
+        Document d = ProjectSerializer.exportToXML(project);
+        String fileName = project.getProjectName() + ".xml";
         try {
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer();
