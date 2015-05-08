@@ -1,5 +1,6 @@
-package bert.database;
+package bert.data;
 
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -9,6 +10,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -19,10 +22,13 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
+import bert.data.proj.Project;
+
 /**
  * @author afiol-mahon
  */
-public class FileHelper {
+public class FileProvider {
 	public static void printDocument(Document document) {
 		try {
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -51,7 +57,7 @@ public class FileHelper {
 		}
 	}
 	
-	public static Document loadDocument(File file) {
+	public static Project loadProject(File file) {
         log("Loading document: " + file.getName());
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		Document document = null;
@@ -65,10 +71,43 @@ public class FileHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return document;
+		return ProjectSerializer.getProjectFromDocument(document);
 	}
 
-    private static void log(String o) {
-        Log.d("File_Helper", o);
-    }
+	public static void saveProject(Project project) {
+		log("Saving Project: " + project.getProjectName() + " to XML file");
+		Document d = ProjectSerializer.exportToXML(project);
+		String fileName = project.getProjectName() + ".xml";
+		try {
+			TransformerFactory factory = TransformerFactory.newInstance();
+			Transformer transformer = factory.newTransformer();
+			Result result = new StreamResult(new File(getProjectDirectory(), fileName));
+			Source source = new DOMSource(d);
+			transformer.transform(source, result);
+		} catch(TransformerConfigurationException e) {
+			e.printStackTrace();
+		} catch(TransformerException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static boolean isExternalStorageAvailable() {
+		String state = Environment.getExternalStorageState();
+		log("External storage state: " + state);
+		return Environment.MEDIA_MOUNTED.equals(state);
+	}
+
+	public static File getProjectDirectory() {
+		if (isExternalStorageAvailable()) {
+			return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "BertProjects");
+		} else {
+			log("Unable to load Project Folder");
+			return null;
+		}
+	}
+
+	private static void log(String output) {
+		Log.d("File_Provider", output);
+	}
+
 }

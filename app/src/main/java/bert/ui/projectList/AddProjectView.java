@@ -13,13 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import bert.database.Cleaner;
-import bert.database.DateProvider;
-import bert.database.Project;
-import bert.database.ProjectProvider;
+import bert.data.utility.Cleaner;
+import bert.data.proj.Project;
+import bert.data.ProjectProvider;
 import bert.ui.R;
 import bert.ui.roomList.RoomListActivity;
 

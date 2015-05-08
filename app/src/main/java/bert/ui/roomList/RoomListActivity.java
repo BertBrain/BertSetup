@@ -3,7 +3,6 @@ package bert.ui.roomList;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
@@ -11,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -23,17 +21,12 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import bert.database.BertUnit;
-import bert.database.Category;
-import bert.database.Test;
-
-import bert.database.Project;
-import bert.database.ProjectProvider;
+import bert.data.proj.Building;
+import bert.data.proj.Project;
+import bert.data.ProjectProvider;
 import bert.ui.NoSelectionView;
-import bert.ui.projectList.ProjectListActivity;
 import bert.ui.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RoomListActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener {
@@ -41,8 +34,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     private static final String ARG_PROJECT_INDEX = "projectIndex";
 
     private Project project;
-    private String currentBuilding;
-    private List<String> buildingNameList;
+    private int currentBuildingID;
 
     private Spinner buildingDropdown;
     private Button addBuildingButton;
@@ -71,27 +63,26 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         addBuildingButton = (Button) findViewById(R.id.addBuildingButton);
         newBuildingName = (EditText) findViewById(R.id.newBuildingName);
         startAuditButton = (Button) findViewById(R.id.button_audit);
-        buildingNameList = project.getBuildingNames();
         createLocationlistView();
         createBuildingDropdown();
-        boolean isBuildingListEmpty = (buildingNameList.size() == 0);
+        boolean isBuildingListEmpty = (project.getBuildingNames().size() == 0);
         openNoSelectionView((isBuildingListEmpty) ? "Create a building" : "Select a Room or create a new one");
         setBuildingDropdownVisibility(!isBuildingListEmpty);
         startAuditButton.setEnabled(!isBuildingListEmpty);
         if (!isBuildingListEmpty) {
-            currentBuilding = buildingNameList.get(0); //TODO: make this get last viewed building
+            currentBuildingID = 0; //TODO: make this get last viewed building
         }
     }
 
     private void createBuildingDropdown() {
         buildingDropdown = (Spinner) findViewById(R.id.buildingDropdown);
-        buildingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, buildingNameList);
+        buildingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getBuildingNames());
         buildingDropdown.setAdapter(buildingAdapter);
-        buildingDropdown.setSelection(buildingNameList.size() - 1);
+        buildingDropdown.setSelection(project.getBuildingNames().size() - 1);
         buildingDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                currentBuilding = buildingNameList.get(position);
+                currentBuildingID = position;
                 createLocationlistView();
                 openNoSelectionView("Select or Create a Room");
             }
@@ -106,13 +97,13 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
 
     //TODO should be private
     public void createLocationlistView() {
-        locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getLocationNamesInBuilding(currentBuilding));
+        locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getLocationNamesInBuilding(currentBuildingID));
         locationListView = (ListView) findViewById(R.id.locationListView);
         locationListView.setAdapter(locationTableAdapter);
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openDeviceEditorView(project.getLocationNamesInBuilding(currentBuilding).get(position));
+                openDeviceEditorView(project.getLocationNamesInBuilding(currentBuildingID).get(position));
             }
         });
     }
@@ -142,7 +133,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     public void openAuditWizardView(View view) {
         AuditWizardView auditWizardView = new AuditWizardView();
         Bundle args = new Bundle();
-        args.putString("building", currentBuilding);
+        args.putInt(AuditWizardView.ARG_BUILDING, currentBuildingID);
         auditWizardView.setArguments(args);
         loadFragment(auditWizardView);
     }
@@ -151,8 +142,8 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         System.out.println("opening device editor view");
         DeviceEditorView deviceEditorView = new DeviceEditorView();
         Bundle args = new Bundle();
-        args.putString("building", currentBuilding);
-        args.putString("location", locationName);
+        args.putInt(DeviceEditorView.ARG_BUILDING, currentBuildingID);
+        args.putString(DeviceEditorView.ARG_LOCATION, locationName);
         deviceEditorView.setArguments(args);
         loadFragment(deviceEditorView);
     }
@@ -191,8 +182,8 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     public void addBuilding() {
         String input = newBuildingName.getText().toString().trim();
         if (!input.isEmpty()) {
-            currentBuilding = input;
-            buildingNameList.add(currentBuilding);
+            project.getBuildings().add(new Building(input));
+            currentBuildingID = project.getBuildingNames().size() - 1;
             newBuildingName.setText("");
             newBuildingName.clearFocus();
             InputMethodManager manager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);

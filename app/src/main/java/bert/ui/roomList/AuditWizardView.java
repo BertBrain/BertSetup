@@ -17,9 +17,9 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import bert.database.BertUnit;
+import bert.data.proj.BertUnit;
 
-import bert.database.Category;
+import bert.data.proj.Category;
 
 import bert.ui.R;
 
@@ -28,8 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AuditWizardView extends Fragment {
-    private static final String ARG_BUILDING = "buildig";
-    private String building;
+    public static final String ARG_BUILDING = "building";
+    private int buildingID;
 
     private Button cancelButton;
     private Button finishedButton;
@@ -55,7 +55,7 @@ public class AuditWizardView extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            building = getArguments().getString(ARG_BUILDING);
+            buildingID = getArguments().getInt(ARG_BUILDING);
         }
         activity = (RoomListActivity) getActivity();
     }
@@ -157,7 +157,7 @@ public class AuditWizardView extends Fragment {
                         } else {
                             name = location + " - " + category.getName() + " " + (i + 1);
                         }
-                        BertUnit bert = new BertUnit(name, location, building, categoryCount);
+                        BertUnit bert = new BertUnit(name, location, buildingID, categoryCount);
                         berts.add(bert);
                     }
                 }

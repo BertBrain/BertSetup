@@ -1,6 +1,8 @@
-package bert.database;
+package bert.data.proj;
 
 import org.w3c.dom.Element;
+
+import bert.data.utility.Cleaner;
 
 /**
  * @author afiol-mahon
@@ -8,22 +10,22 @@ import org.w3c.dom.Element;
 public class BertUnit {
 	private String name;
 	private String location;
-	private String building;
 	private String MAC;
 	private int categoryID;
+	private int buildingID;
 	
-	public BertUnit(String name, String location, String building, int categoryID) {
+	public BertUnit(String name, String location, int buildingID, int categoryID) {
 		this.name = name;
 		this.location = location;
-		this.building = building;
+		this.buildingID = buildingID;
 		this.categoryID = categoryID;
 	}
 	
 	public BertUnit(Element e) {
 		this.name = e.getAttribute("name");
 		this.location = e.getAttribute("location");
-		this.building = e.getAttribute("building");
 		this.MAC = e.getAttribute("MAC");
+		this.buildingID = Integer.parseInt(e.getAttribute("building"));
 		this.categoryID = Integer.parseInt(e.getAttribute("category"));
 	}
 	
@@ -49,16 +51,13 @@ public class BertUnit {
         }
     }
 
-	public String getBuilding() {
-		return building;
+	public int getBuildingID() {
+		return buildingID;
 	}
 
-    public void setBuilding(String newBuilding) {
-        Cleaner.clean(newBuilding);
-        if (Cleaner.isValid(newBuilding)) {
-            this.building = newBuilding;
-        }
-    }
+	public void setBuildingID(int newBuildingID) {
+		this.buildingID = newBuildingID;
+	}
 	
 	public void setMAC(String newMAC) {
 		//TODO implement MAC address formatter in this method

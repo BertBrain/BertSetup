@@ -8,11 +8,9 @@ import android.app.Activity;
 import android.widget.Button;
 import android.widget.TextView;
 
-import bert.database.BertUnit;
-import bert.database.Category;
+import bert.data.proj.Category;
 import bert.ui.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

@@ -12,11 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.content.Intent;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import bert.database.Project;
-import bert.database.ProjectProvider;
+import bert.data.ProjectProvider;
 import bert.ui.R;
 import bert.ui.NoSelectionView;
 import bert.ui.roomList.RoomListActivity;

@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import bert.database.Project;
-import bert.database.ProjectProvider;
+import bert.data.proj.Project;
+import bert.data.ProjectProvider;
 import bert.ui.R;
 
 /**

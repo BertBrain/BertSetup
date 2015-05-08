@@ -1,4 +1,4 @@
-package bert.database;
+package bert.data;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -7,8 +7,15 @@ import org.w3c.dom.NodeList;
 import java.util.ArrayList;
 import java.util.List;
 
+import bert.data.proj.BertUnit;
+import bert.data.proj.Building;
+import bert.data.proj.Category;
+import bert.data.proj.Project;
+import bert.data.utility.DateUtil;
+
 /**
  * Created by afiol-mahon on 5/8/15.
+ * @author afiol-mahon
  */
 public class ProjectSerializer {
     public static Project getProjectFromDocument(Document document) {
@@ -24,7 +31,6 @@ public class ProjectSerializer {
             String newContactNumber = contactTag.getAttribute("contactNumber");
 
             List<BertUnit> newBerts = new ArrayList<BertUnit>();
-
             NodeList bertNodeList = document.getElementsByTagName("Bert");
             for (int i = 0; i < bertNodeList.getLength(); i++) {
                 Element e = (Element) bertNodeList.item(i);
@@ -36,6 +42,13 @@ public class ProjectSerializer {
             for (int i = 0; i < categoryNodeList.getLength(); i++) {
                 Element e = (Element) categoryNodeList.item(i);
                 newCategories.add(Integer.parseInt(e.getAttribute("id")), new Category(e));
+            }
+
+            List<Building> newBuildings = new ArrayList<Building>();
+            NodeList buildingNodeList = document.getElementsByTagName("Building");
+            for (int i = 0; i < buildingNodeList.getLength(); i++) {
+                Element e = (Element) buildingNodeList.item(i);
+                newBuildings.add(Integer.parseInt(e.getAttribute("id")), new Building(e.getAttribute("name")));
             }
 
             Project newProject = new Project(newProjectName);
@@ -52,12 +65,12 @@ public class ProjectSerializer {
     }
 
     public static Document exportToXML(Project p) {
-        Document projectDoc = FileHelper.createDocument();
+        Document projectDoc = FileProvider.createDocument();
         Element root = projectDoc.createElement("Project");
         //Project
         root.setAttribute("projectName", p.getProjectName());
         root.setAttribute("creationDate", p.getCreationDate());
-        root.setAttribute("modifiedDate", DateProvider.getDate());
+        root.setAttribute("modifiedDate", DateUtil.getDate());
         //Client
         Element client = projectDoc.createElement("Contact");
         client.setAttribute("contactName", (p.getContactName() != null) ? p.getContactName() : "");
@@ -70,12 +83,22 @@ public class ProjectSerializer {
             Element bertElement = projectDoc.createElement("Bert");
             bertElement.setAttribute("name", b.getName());
             bertElement.setAttribute("location", b.getLocation());
-            bertElement.setAttribute("building", b.getBuilding());
+            bertElement.setAttribute("building", String.valueOf(b.getBuildingID()));
             bertElement.setAttribute("MAC", b.getMAC());
             bertElement.setAttribute("category", String.valueOf(b.getCategoryID()));
             bertElementList.appendChild(bertElement);
         }
         root.appendChild(bertElementList);
+
+        Element buildingElementList = projectDoc.createElement("Buildings");
+        for (int i = 0; i < p.getBuildings().size(); i++) {
+            Building b = p.getBuildings().get(i);
+            Element buildingElement = projectDoc.createElement("Building");
+            buildingElement.setAttribute("name", b.getName());
+            buildingElement.setAttribute("id", String.valueOf(i));
+            buildingElementList.appendChild(buildingElement);
+        }
+        root.appendChild(buildingElementList);
 
         Element categoryList = projectDoc.createElement("Categories");
         for (int i = 0; i < p.getCategories().size(); i++) {
