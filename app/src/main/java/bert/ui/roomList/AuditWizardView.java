@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AuditWizardView extends Fragment {
-    private static final String ARG_BUILDING = "buildig";
+    private static final String ARG_BUILDING = "building";
     private String building;
 
     private Button cancelButton;
@@ -81,6 +81,14 @@ public class AuditWizardView extends Fragment {
                activity.openNoSelectionView("Select or Create A Room");
            }
         });
+
+        finishedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finishAuditWizard();
+            }
+        });
+
 
         locationTextView = (TextView)getView().findViewById(R.id.locationNameTextField);
         locationTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -167,7 +175,7 @@ public class AuditWizardView extends Fragment {
             activity.getProject().addBerts(berts);
             activity.createLocationlistView(); //Refresh view
 
-            if (berts.size() > 0) {
+            if (activity.getProject().getBertsByLocation(building, location).size() > 0) {
                 activity.openDeviceEditorView(berts.get(0).getLocation());
             } else {
                 System.out.println("done button pressed but no berts to be added");

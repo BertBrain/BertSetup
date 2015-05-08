@@ -1,11 +1,16 @@
 package bert.ui.roomList;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.app.Activity;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import bert.database.BertUnit;
@@ -35,34 +40,54 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         this.owner = owner;
     }
 
+    @Override
+    public int getCount(){
+        return deviceTypes.size() + 1;
+    }
+
     @Override public View getView(int position, View convertView, ViewGroup parent) {
+
         View gridCell;
-        if (!cells.keySet().contains(deviceTypes.get(position)) ) {
-            System.out.println("creating grid cell at position for category: " + deviceTypes.get(position).getName());
-            counts.put(deviceTypes.get(position), 0);
+        LayoutInflater inflater = activity.getLayoutInflater();
+        if (position == deviceTypes.size()) {
+            gridCell = inflater.inflate(R.layout.fragment_add_category_cell, parent, false);
+            gridCell.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("creating new category");
+                    createNewCategory();
+                }
+            });
+        } else {
+            if (!cells.keySet().contains(deviceTypes.get(position))) {
+                System.out.println("creating grid cell at position for category: " + deviceTypes.get(position).getName());
+                counts.put(deviceTypes.get(position), 0);
 
-            LayoutInflater inflater = activity.getLayoutInflater();
-            gridCell = inflater.inflate(R.layout.fragment_grid_cell, parent, false);
 
-            TextView deviceTypeTextField = (TextView) gridCell.findViewById(R.id.deviceTypeTextField);
-            deviceTypeTextField.setText(deviceTypes.get(position).getName());
+                gridCell = inflater.inflate(R.layout.fragment_grid_cell, parent, false);
 
-            Button incrementButton = (Button) gridCell.findViewById(R.id.incrementButton);
-            Button decrementButton = (Button) gridCell.findViewById(R.id.decrementButton);
+                TextView deviceTypeTextField = (TextView) gridCell.findViewById(R.id.deviceTypeTextField);
+                deviceTypeTextField.setText(deviceTypes.get(position).getName());
 
-            System.out.println("creating click listeners");
-            incrementButton.setOnClickListener(new buttonListener(deviceTypes.get(position), 1, this));
-            decrementButton.setOnClickListener(new buttonListener(deviceTypes.get(position), -1, this));
+                Button incrementButton = (Button) gridCell.findViewById(R.id.incrementButton);
+                Button decrementButton = (Button) gridCell.findViewById(R.id.decrementButton);
 
-            cells.put(deviceTypes.get(position), gridCell);
+                System.out.println("creating click listeners");
+                incrementButton.setOnClickListener(new buttonListener(deviceTypes.get(position), 1, this));
+                decrementButton.setOnClickListener(new buttonListener(deviceTypes.get(position), -1, this));
 
-       } else {
-            gridCell = cells.get(deviceTypes.get(position));
+                cells.put(deviceTypes.get(position), gridCell);
+            } else {
+                gridCell = cells.get(deviceTypes.get(position));
+            }
         }
-
         System.out.println("grid cell to return: " + gridCell);
-        System.out.println("cells hashmap:" + cells);
         return gridCell;
+    }
+
+    void createNewCategory(){
+        Intent intent = new Intent(activity, AddCategory.class);
+        owner.startActivity(intent);
     }
 
     void addToDeviceType(Category deviceType, int numberToAdd) {

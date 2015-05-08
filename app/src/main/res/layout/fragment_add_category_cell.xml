@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="162dp"
+    android:layout_height="180dp" tools:context="com.example.liamcook.test.AddCategoryCell"
+    android:background="#ffffffff">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="+ New Category"
+        android:id="@+id/textView11"
+        android:layout_gravity="center" />
+</FrameLayout>

@@ -7,4 +7,15 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_add_category">AddCategory</string>
+
+    <string name="hello_world">Hello world!</string>
+
+    <string-array name="bertTypes">
+        <item> 120 V, 15 A</item>
+        <item> 120 V, 20 A</item>
+        <item> Inline, 110/240 </item>
+        <item> To Be Determined</item>
+    </string-array>
+
 </resources>
