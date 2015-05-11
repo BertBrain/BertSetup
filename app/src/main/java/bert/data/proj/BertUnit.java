@@ -41,6 +41,10 @@ public class BertUnit {
         }
     }
 
+	public String getCSVName() {
+		return getName(); //TODO make this limit to 20 char and format
+	}
+
 	public String getLocation() {
 		return location;
 	}

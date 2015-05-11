@@ -6,6 +6,7 @@ import android.util.Log;
 import org.w3c.dom.Document;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,23 +54,27 @@ public class ProjectProvider {
     }
 
     private void loadProjectListFromFile() {
-        File projectDir = FileProvider.getProjectDirectory();
-        projectList = new ArrayList<Project>();
-        if (projectDir != null && projectDir.listFiles() != null) {
-            List<File> files = Arrays.asList(projectDir.listFiles());
-            if (files.size() > 0) {
-                for (File f : files) {
-                    log("Loading file <" + f.getName() + "> from project directory");
-                    Project nextProject = FileProvider.loadProject(f);
-                    if (nextProject != null) {
-                        projectList.add(nextProject);
-                    } else {
-                        log("File <" + f.getName() + "> is not a valid project... Skipping");
+        try {
+            File projectDir = FileProvider.getProjectDirectory();
+            projectList = new ArrayList<Project>();
+            if (projectDir != null && projectDir.listFiles() != null) {
+                List<File> files = Arrays.asList(projectDir.listFiles());
+                if (files.size() > 0) {
+                    for (File f : files) {
+                        log("Loading file <" + f.getName() + "> from project directory");
+                        Project nextProject = FileProvider.loadProject(f);
+                        if (nextProject != null) {
+                            projectList.add(nextProject);
+                        } else {
+                            log("File <" + f.getName() + "> is not a valid project... Skipping");
+                        }
                     }
                 }
             }
+            log("Loaded " + projectList.size() + " projects from storage");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        log("Loaded " + projectList.size() + " projects from storage");
     }
 
     public void addProject(Project project) {

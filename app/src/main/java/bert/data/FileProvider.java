@@ -88,6 +88,8 @@ public class FileProvider {
 			e.printStackTrace();
 		} catch(TransformerException e) {
 			e.printStackTrace();
+		} catch(IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -97,12 +99,21 @@ public class FileProvider {
 		return Environment.MEDIA_MOUNTED.equals(state);
 	}
 
-	public static File getProjectDirectory() {
+	public static File getProjectDirectory() throws IOException {
 		if (isExternalStorageAvailable()) {
 			return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "BertProjects");
 		} else {
 			log("Unable to load Project Folder");
-			return null;
+			throw new IOException();
+		}
+	}
+
+	public static File getExportsDirectory() throws IOException {
+		if (isExternalStorageAvailable()) {
+			return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "BertExports");
+		} else {
+			log("Unable to load Exports Folder");
+			throw new IOException();
 		}
 	}
 
