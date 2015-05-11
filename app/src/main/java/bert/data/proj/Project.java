@@ -171,4 +171,8 @@ public class Project {
     public List<Building> getBuildings() {
         return this.buildings;
     }
+
+    public void setBuildings(List<Building> newBuildings) {
+        this.buildings = newBuildings;
+    }
 }

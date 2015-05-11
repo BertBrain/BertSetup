@@ -14,19 +14,20 @@ public class BertUnit {
 	private int categoryID;
 	private int buildingID;
 	
-	public BertUnit(String name, String location, int buildingID, int categoryID) {
+	public BertUnit(String name, String location, String MAC, int buildingID, int categoryID) {
 		this.name = name;
 		this.location = location;
+		this.MAC = MAC;
 		this.buildingID = buildingID;
 		this.categoryID = categoryID;
 	}
 	
 	public BertUnit(Element e) {
-		this.name = e.getAttribute("name");
-		this.location = e.getAttribute("location");
+		this.name = e.getAttribute("Name");
+		this.location = e.getAttribute("Location");
 		this.MAC = e.getAttribute("MAC");
-		this.buildingID = Integer.parseInt(e.getAttribute("building"));
-		this.categoryID = Integer.parseInt(e.getAttribute("category"));
+		this.buildingID = Integer.parseInt(e.getAttribute("BuildingID"));
+		this.categoryID = Integer.parseInt(e.getAttribute("CategoryID"));
 	}
 	
 	public String getName() {
@@ -65,7 +66,7 @@ public class BertUnit {
 	}
 	
 	public String getMAC() {
-		return MAC;
+		return (MAC != null) ? MAC : "";
 	}
 	
 	public int getCategoryID() {

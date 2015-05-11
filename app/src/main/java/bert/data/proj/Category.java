@@ -21,9 +21,9 @@ public class Category {
 	}
 	
 	public Category(Element e) {
-		this.name = e.getAttribute("name");
-		this.bertType = Integer.parseInt(e.getAttribute("bertType"));
-		this.estimatedLoad = Integer.parseInt(e.getAttribute("estimatedLoad"));
+		this.name = e.getAttribute("Name");
+		this.bertType = Integer.parseInt(e.getAttribute("BertType"));
+		this.estimatedLoad = Integer.parseInt(e.getAttribute("EstimatedLoad"));
 	}
 	
 	public String getName() {

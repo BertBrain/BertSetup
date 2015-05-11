@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import bert.data.FileProvider;
 import bert.data.proj.BertUnit;
 
 import bert.data.proj.Category;
@@ -73,7 +74,15 @@ public class AuditWizardView extends Fragment {
         gridView.setAdapter(tallyGridAdapter);
 
         totalBertsCounter = (TextView) getView().findViewById(R.id.totalCounterTextField);
+
         finishedButton = (Button) getView().findViewById(R.id.finisedAuditWizardButton);
+        finishedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finishAuditWizard();
+            }
+        });
+
         cancelButton = (Button) getView().findViewById(R.id.canelAuditButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -151,13 +160,8 @@ public class AuditWizardView extends Fragment {
             for (Category category : activity.getProject().getCategories()) {
                 if (categoryCounts.get(category) != null) {
                     for (int i = 0; i < categoryCounts.get(category); i++) {
-                        String name;
-                        if (i == 0) {
-                            name = location + " - " + category.getName();
-                        } else {
-                            name = location + " - " + category.getName() + " " + (i + 1);
-                        }
-                        BertUnit bert = new BertUnit(name, location, buildingID, categoryCount);
+                        String name = location + " - " + category.getName() + " " + (i + 1);
+                        BertUnit bert = new BertUnit(name, location, "", buildingID, categoryCount);
                         berts.add(bert);
                     }
                 }
@@ -172,6 +176,7 @@ public class AuditWizardView extends Fragment {
             } else {
                 System.out.println("done button pressed but no berts to be added");
             }
+            FileProvider.saveProject(activity.getProject());
         }
     }
 }

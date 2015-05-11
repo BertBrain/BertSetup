@@ -73,7 +73,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
 
     public void openRoomList(int projectListIndex) {
         Intent i = new Intent(this, RoomListActivity.class);
-        i.putExtra("projectIndex", projectListIndex);
+        i.putExtra(RoomListActivity.ARG_PROJECT_INDEX, projectListIndex);
         startActivity(i);
     }
 

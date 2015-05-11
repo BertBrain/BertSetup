@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -21,6 +22,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import bert.data.FileProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
@@ -31,7 +33,7 @@ import java.util.List;
 
 public class RoomListActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener {
 
-    private static final String ARG_PROJECT_INDEX = "projectIndex";
+    public static final String ARG_PROJECT_INDEX = "projectIndex";
 
     private Project project;
     private int currentBuildingID;
@@ -72,6 +74,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         if (!isBuildingListEmpty) {
             currentBuildingID = 0; //TODO: make this get last viewed building
         }
+        this.setTitle("Project: " + project.getProjectName());
     }
 
     private void createBuildingDropdown() {
@@ -194,6 +197,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
             Button startAddWizardButton = (Button) findViewById(R.id.button_audit);
             startAddWizardButton.setEnabled(true);
             createLocationlistView();
+            FileProvider.saveProject(project);
         }
     }
 
