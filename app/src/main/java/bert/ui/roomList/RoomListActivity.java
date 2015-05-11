@@ -3,6 +3,7 @@ package bert.ui.roomList;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 
 import bert.data.FileProvider;
 import bert.data.proj.Building;
+import bert.data.proj.Category;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
 import bert.ui.NoSelectionView;
@@ -47,7 +49,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     private ArrayAdapter<String> locationTableAdapter;
     private ListView locationListView;
 
-    AuditWizardView auditWizardView;
+    private AuditWizardView auditWizardView;
 
     @Override
     public void onFragmentInteraction(android.net.Uri uri) {}
@@ -117,7 +119,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (resultCode == RESULT_OK){
             System.out.println("activty result achieved in activity: " + data.getExtras().get("category"));
-            Category newCategory = (Category)data.getExtras().get("category");
+            Category newCategory = (Category) data.getExtras().get("category");
             System.out.println("cateogry name: " + newCategory.getName());
             project.addCategory(newCategory);
 

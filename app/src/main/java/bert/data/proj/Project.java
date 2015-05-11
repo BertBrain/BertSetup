@@ -25,18 +25,9 @@ public class Project {
 	    this.creationDate = DateUtil.getDate();
 	    this.modifiedDate = creationDate;
 	    berts = new ArrayList<BertUnit>();
-<<<<<<< HEAD:app/src/main/java/bert/database/Project.java
-	    categories = new ArrayList<Category>();
-        categories.add(Category.projector);
-        categories.add(Category.vendingMachine);
-        categories.add(Category.hotWaterHeater);
-        categories.add(Category.printer);
-    }
-=======
         buildings = new ArrayList<Building>();
 	    categories = Arrays.asList(Category.DEFAULT_CATEGORIES);
 	}
->>>>>>> buildingAsRef:app/src/main/java/bert/data/proj/Project.java
 
 	public List<String> getCategoryNames() {
 		List<String> categoryNames = new ArrayList<String>();

@@ -120,7 +120,7 @@ public class ProjectSerializer {
             Element cat = projectDoc.createElement(TAG_CATEGORY);
             Category c = p.getCategories().get(i);
             cat.setAttribute("Name", c.getName());
-            cat.setAttribute("BertType", String.valueOf(c.getBertType()));
+            cat.setAttribute("BertType", String.valueOf(c.getBertTypeID()));
             cat.setAttribute("EstimatedLoad", String.valueOf(c.getEstimatedLoad()));
             cat.setAttribute(TAG_CATEGORY_ATTR_ID, String.valueOf(i));//Stores index so that list can be recreated accurately when xml is parsed
             categoryList.appendChild(cat);

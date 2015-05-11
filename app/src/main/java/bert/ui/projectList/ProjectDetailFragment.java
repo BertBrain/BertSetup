@@ -1,6 +1,7 @@
 package bert.ui.projectList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
 import bert.ui.R;
+import bert.ui.roomList.RoomListActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,39 +26,40 @@ import bert.ui.R;
  * create an instance of this fragment.
  */
 public class ProjectDetailFragment extends Fragment {
+
+    public static final String ARG_PROJECT_INDEX = "PROJECT_INDEX";
+
+    private int projectIndex;
     
-    
-    EditText projectNameEditText;
-    EditText contactNameEditText;
-    EditText contactNumberEditText;
-    TextView dateCreatedTextField;
-    TextView dateModifiedTextField;
-    Button exportToBertConfigButton;
-    Button exportToROIButton;
-    Button openProjectButton;
+    private EditText projectNameEditText;
+    private EditText contactNameEditText;
+    private EditText contactNumberEditText;
+    private TextView dateCreatedTextField;
+    private TextView dateModifiedTextField;
+    private Button exportToBertConfigButton;
+    private Button exportToROIButton;
+    private Button openProjectButton;
     
     private OnFragmentInteractionListener mListener;
-
-   private Project currentProject;
+    private Project currentProject;
     
     public static ProjectDetailFragment newInstance(String param1, String param2) {
         return new ProjectDetailFragment();
     }
 
-    public ProjectDetailFragment() {
-        // Required empty public constructor
-    }
+    public ProjectDetailFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            currentProject = ProjectProvider.getInstance().getProjectList().get(getArguments().getInt("PROJECT_INDEX"));
+            this.projectIndex = getArguments().getInt(ARG_PROJECT_INDEX);
+            currentProject = ProjectProvider.getInstance().getProjectList().get(projectIndex);
         }
     }
     
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         projectNameEditText = (EditText) getView().findViewById(R.id.projectNameEditText);
         contactNameEditText = (EditText) getView().findViewById(R.id.contactNameEditText);
@@ -66,17 +69,20 @@ public class ProjectDetailFragment extends Fragment {
         exportToBertConfigButton = (Button) getView().findViewById(R.id.exportToBertConfiguratorButton);
         exportToROIButton = (Button) getView().findViewById(R.id.exportToROIButton);
         openProjectButton = (Button) getView().findViewById(R.id.openProjectButton);
-
+        openProjectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRoomList();
+            }
+        });
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_project_detail_view, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -100,8 +106,13 @@ public class ProjectDetailFragment extends Fragment {
         mListener = null;
     }
 
+    public void openRoomList() {
+        Intent i = new Intent(this.getActivity(), RoomListActivity.class);
+        i.putExtra(RoomListActivity.ARG_PROJECT_INDEX, projectIndex);
+        startActivity(i);
+    }
+
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 

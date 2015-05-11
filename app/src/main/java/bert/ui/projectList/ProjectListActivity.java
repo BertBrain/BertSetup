@@ -17,7 +17,7 @@ import bert.ui.R;
 import bert.ui.NoSelectionView;
 import bert.ui.roomList.RoomListActivity;
 
-public class ProjectListActivity extends ActionBarActivity implements AddProjectView.OnFragmentInteractionListener {
+public class ProjectListActivity extends ActionBarActivity implements AddProjectView.OnFragmentInteractionListener, ProjectDetailFragment.OnFragmentInteractionListener {
 
     private ListView projectListView;
     private ArrayAdapter<String> projectTableAdapter;
@@ -30,6 +30,17 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
         log("Opening New Project Fragment.");
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container_new_project, new AddProjectView());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    public void openProjecDetailView(int projectIndex) {
+        ProjectDetailFragment newView = new ProjectDetailFragment();
+        Bundle args = new Bundle();
+        args.putInt(ProjectDetailFragment.ARG_PROJECT_INDEX, projectIndex);
+        newView.setArguments(args);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container_new_project, newView);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -71,12 +82,6 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
         return super.onOptionsItemSelected(item);
     }
 
-    public void openRoomList(int projectListIndex) {
-        Intent i = new Intent(this, RoomListActivity.class);
-        i.putExtra(RoomListActivity.ARG_PROJECT_INDEX, projectListIndex);
-        startActivity(i);
-    }
-
     public void loadProjectList() {
         projectTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ProjectProvider.getInstance().getProjectNameList());
         projectListView = (ListView) findViewById(R.id.projectListView);
@@ -84,7 +89,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
         projectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openRoomList(position);
+                openProjecDetailView(position);
             }
         });
     }

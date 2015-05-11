@@ -4,6 +4,7 @@ import org.w3c.dom.Element;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Category implements Serializable{
@@ -11,42 +12,35 @@ public class Category implements Serializable{
     public final static int UNSET = -1;
 
 	private final String name;
-	private BertType bertType;
+	private int bertTypeID;
 	private int estimatedLoad;
 	
 	//FIXME bertType should be an enum
 	/**
-	 * 
+	 *
 	 * @param name Name of device
-	 * @param bertType 15A Bert, 20A Bert, 220V Bert
+	 * @param bertTypeID
 	 * @param estimatedLoad in watts
 	 */
-	public Category(String name, BertType bertType, int estimatedLoad) {
+	public Category(String name, int bertTypeID, int estimatedLoad) {
 		this.name = name;
-		this.bertType = bertType;
+		this.bertTypeID = bertTypeID;
 		this.estimatedLoad = estimatedLoad;
 	}
 
 
 	public Category(Element e) {
-<<<<<<< HEAD:app/src/main/java/bert/database/Category.java
-		this.name = e.getAttribute("name");
-        //TODO: make this pull from file
-		//this.bertType = Integer.parseInt(e.getAttribute("bertType"));
-		this.estimatedLoad = Integer.parseInt(e.getAttribute("estimatedLoad"));
-=======
 		this.name = e.getAttribute("Name");
-		this.bertType = Integer.parseInt(e.getAttribute("BertType"));
+		this.bertTypeID = Integer.parseInt(e.getAttribute("BertType"));
 		this.estimatedLoad = Integer.parseInt(e.getAttribute("EstimatedLoad"));
->>>>>>> buildingAsRef:app/src/main/java/bert/data/proj/Category.java
 	}
 	
 	public String getName() {
 		return name;
 	}
 	
-	public BertType getBertType() {
-		return bertType;
+	public int getBertTypeID() {
+		return bertTypeID;
 	}
 	
 	/**
@@ -55,50 +49,14 @@ public class Category implements Serializable{
 	public int getEstimatedLoad() {
 		return estimatedLoad;
 	}
-<<<<<<< HEAD:app/src/main/java/bert/database/Category.java
-	
-	public static Category projector = new Category("Projector", BertType.WALL_20, 12);
-	public static Category vendingMachine = new Category("VendingMachine", BertType.INLINE, 350);
-    public static Category printer = new Category("Printer", BertType.WALL_15, 350);
-    public static Category hotWaterHeater = new Category("hotWaterHeater", BertType.WALL_15, 350);
-
-    public enum BertType implements Serializable{
-        WALL_15, WALL_20, INLINE, UNDEFINED;
-
-        public String toString(){
-            switch (this){
-                case  WALL_15:
-                    return "Wall, 15 A";
-                case  WALL_20:
-                    return "Wall, 20 A";
-                case UNDEFINED:
-                    return "To Be Determined";
-                case INLINE:
-                    return "Inline";
-                default:
-                    return "Error in bert type desciption";
-            }
-        }
-        public static List<BertType> getBertTypes(){
-            List<BertType> bertTypes = new ArrayList<BertType>();
-            bertTypes.add(WALL_15);
-            bertTypes.add(WALL_20);
-            bertTypes.add(INLINE);
-            bertTypes.add(UNDEFINED);
-            return  bertTypes;
-        }
-    }
-=======
 
 	public static Category[] DEFAULT_CATEGORIES = {
-			new Category("Projector", 15, 12),
-			new Category("VendingMachine", 220, 350),
-			new Category("Printer", 220, 350),
-			new Category("hotWaterHeater", 220, 350),
-			new Category("cat1", 220, 350),
-			new Category("cat2", 220, 350),
-			new Category("cat3", 220, 350)
+			new Category("Projector", 1, 12),
+			new Category("VendingMachine", 2, 350),
+			new Category("Printer", 0, 350),
+			new Category("hotWaterHeater", 3, 350)
 	};
->>>>>>> buildingAsRef:app/src/main/java/bert/data/proj/Category.java
+
+	public static List<String> bertTypes = Arrays.asList("WALL_15", "WALL_20", "INLINE", "UNDEFINED");
 }
 

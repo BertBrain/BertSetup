@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import bert.database.Category;
+import bert.data.proj.Category;
 import bert.ui.R;
 
 public class AddCategory extends ActionBarActivity {
@@ -38,9 +38,7 @@ public class AddCategory extends ActionBarActivity {
         bertTypeSelectionSpinner = (Spinner) findViewById(R.id.bertTypeSpinner);
         finishedAddCategory = (Button) findViewById(R.id.finshCreateCategoryButton);
 
-        List<Category.BertType> bertTypes = Category.BertType.getBertTypes();
-
-        ArrayAdapter<Category.BertType> adapter = new ArrayAdapter<Category.BertType>(this, android.R.layout.simple_list_item_1, bertTypes);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Category.bertTypes);
         bertTypeSelectionSpinner.setAdapter(adapter);
 
         finishedAddCategory.setEnabled(false);
@@ -75,7 +73,7 @@ public class AddCategory extends ActionBarActivity {
 
                 System.out.println("estimated load: " + estimatedLoad);
                 Category category = new Category(categoryNameTextField.getText().toString(),
-                        (Category.BertType)bertTypeSelectionSpinner.getSelectedItem(),
+                        bertTypeSelectionSpinner.getSelectedItemPosition(),
                                                  estimatedLoad);
                 System.out.println("new category: " + category);
                 Intent returnValue = new Intent();

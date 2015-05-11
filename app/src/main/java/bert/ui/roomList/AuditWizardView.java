@@ -29,13 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AuditWizardView extends Fragment {
-<<<<<<< HEAD
-    private static final String ARG_BUILDING = "building";
-    private String building;
-=======
+
     public static final String ARG_BUILDING = "building";
     private int buildingID;
->>>>>>> buildingAsRef
 
     private Button cancelButton;
     private Button finishedButton;
@@ -185,7 +181,7 @@ public class AuditWizardView extends Fragment {
             activity.getProject().addBerts(berts);
             activity.createLocationlistView(); //Refresh view
 
-            if (activity.getProject().getBertsByLocation(building, location).size() > 0) {
+            if (activity.getProject().getBertsByLocation(buildingID, location).size() > 0) {
                 activity.openDeviceEditorView(berts.get(0).getLocation());
             } else {
                 System.out.println("done button pressed but no berts to be added");
