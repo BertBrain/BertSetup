@@ -97,7 +97,6 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 openNoSelectionView("No Building Selected");
-                System.out.println("error: nothing selected");
             }
         });
     }
@@ -127,7 +126,6 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
             System.out.println("add category canceled");
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -161,7 +159,6 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     public void openDeviceEditorView(String locationName) {
-        System.out.println("opening device editor view");
         DeviceEditorView deviceEditorView = new DeviceEditorView();
         Bundle args = new Bundle();
         args.putInt(DeviceEditorView.ARG_BUILDING, currentBuildingID);

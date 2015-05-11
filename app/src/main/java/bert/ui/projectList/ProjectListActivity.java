@@ -34,7 +34,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
         fragmentTransaction.commit();
     }
 
-    public void openProjecDetailView(int projectIndex) {
+    public void openProjectDetailView(int projectIndex) {
         ProjectDetailFragment newView = new ProjectDetailFragment();
         Bundle args = new Bundle();
         args.putInt(ProjectDetailFragment.ARG_PROJECT_INDEX, projectIndex);
@@ -89,7 +89,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
         projectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openProjecDetailView(position);
+                openProjectDetailView(position);
             }
         });
     }

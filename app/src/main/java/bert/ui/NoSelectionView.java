@@ -40,13 +40,12 @@ public class NoSelectionView extends Fragment {
         if (getArguments() != null) {
             mMessage = getArguments().getString(ARG_MESSAGE);
         } else {
-            mMessage = "ERROR: No Message for View";
+            mMessage = "No Message";
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_no_location, container, false);
     }
