@@ -62,7 +62,7 @@ public class AddProjectView extends Fragment {
     }
 
     @Override
-    public void onResume() {//TODO check for valid name string beore enabling create Button
+    public void onResume() {
         super.onResume();
         createButton = (Button) getView().findViewById(R.id.createProjectButton);
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +132,7 @@ public class AddProjectView extends Fragment {
 
             ProjectListActivity activity = (ProjectListActivity) getActivity();
             Intent intent = new Intent(activity, RoomListActivity.class);
-            intent.putExtra("projectIndex", ProjectProvider.getInstance().getProjectList().size() - 1);
+            intent.putExtra(RoomListActivity.ARG_PROJECT_INDEX, ProjectProvider.getInstance().getProjectList().size() - 1);
             activity.loadProjectList();
             activity.closeAddProjectView();
             startActivity(intent);
