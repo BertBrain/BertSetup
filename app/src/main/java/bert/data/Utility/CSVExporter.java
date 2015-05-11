@@ -14,7 +14,7 @@ import bert.data.proj.Project;
  * Created by afiol-mahon on 5/11/15.
  */
 public class CSVExporter {
-    public void generateCSV(Project project) throws IOException{
+    public static void generateCSV(Project project) throws IOException{
         File exportCSV = new File(FileProvider.getExportsDirectory(), project.getProjectName() + "_Configurator.csv");
         FileWriter writer = new FileWriter(exportCSV);
         for (BertUnit b : project.getBerts()) {

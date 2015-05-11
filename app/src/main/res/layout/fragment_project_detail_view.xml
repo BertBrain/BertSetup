@@ -41,6 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/projectNameEditText"
+                android:imeActionLabel="Done"
+                android:imeOptions="actionDone"
                 android:layout_row="0"
                 android:layout_column="1" />
 
@@ -48,6 +50,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/contactNameEditText"
+                android:imeActionLabel="Done"
+                android:imeOptions="actionDone"
                 android:layout_row="1"
                 android:layout_column="1" />
 
@@ -64,6 +68,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/contactNumberEditText"
+                android:imeActionLabel="Done"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
                 android:layout_row="3"
                 android:layout_column="1" />
 
@@ -110,35 +117,21 @@
                 android:layout_row="6"
                 android:layout_column="0" />
 
-            <TextView
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Large Text"
-                android:id="@+id/textView10"
+                android:text="Export ROI Sheet"
+                android:id="@+id/exportToROIButton"
                 android:layout_row="7"
-                android:layout_column="0" />
+                android:layout_column="0"/>
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Export Configurator CSV"
+                android:id="@+id/exportToBertConfiguratorButton"
                 android:layout_row="7"
-                android:layout_column="1">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="CSV"
-                    android:id="@+id/exportToROIButton" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bert Configurator"
-                    android:id="@+id/exportToBertConfiguratorButton" />
-            </LinearLayout>
-
+                android:layout_column="1"/>
         </GridLayout>
 
         <Button
@@ -147,7 +140,5 @@
             android:text="Open Project"
             android:id="@+id/openProjectButton"
             android:layout_gravity="center_horizontal" />
-
     </LinearLayout>
-
 </FrameLayout>

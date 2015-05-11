@@ -21,6 +21,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import bert.data.proj.Project;
+import bert.data.utility.Cleaner;
 
 /**
  * Created by afiol-mahon on 5/5/15.
@@ -81,6 +82,16 @@ public class ProjectProvider {
         projectList.add(project);
         FileProvider.saveProject(project);
         log("Added project <" + project.getProjectName() + "> to projectList");
+    }
+
+    public boolean projectNameCheck(String name) {
+        boolean canCreate = Cleaner.isValid(name);
+        for (String s : getProjectNameList()) {
+            if (s.equals(name)) {
+                canCreate = false;
+            }
+        }
+        return canCreate;
     }
 
     private static void log(String output) {

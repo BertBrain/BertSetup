@@ -21,9 +21,10 @@ import java.util.List;
 
 import bert.data.FileProvider;
 import bert.data.proj.BertUnit;
-import bert.data.proj.Building;
+import bert.data.proj.Project;
 import bert.ui.R;
 
+//TODO edit detail fragment shouldnt be available if bert list for location is empty
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -37,9 +38,11 @@ public class DeviceEditorView extends Fragment {
     public static final String ARG_BUILDING = "building";
 
     private RoomListActivity activity;
+    private Project project;
     private int buildingID;
     private String location;
     private int position;
+    private List<BertUnit> bertList;
 
     private OnFragmentInteractionListener mListener;
     private EditText deviceNameTextField;
@@ -70,10 +73,12 @@ public class DeviceEditorView extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         activity = (RoomListActivity) getActivity();
+        project = activity.getProject();
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             buildingID = getArguments().getInt(ARG_BUILDING);
             location = getArguments().getString(ARG_LOCATION);
+            bertList = project.getBertsByLocation(buildingID, location);
         }
     }
 
@@ -84,12 +89,11 @@ public class DeviceEditorView extends Fragment {
         deviceNameTextField = (EditText) getView().findViewById(R.id.deviceName);
         roomTextField = (EditText) getView().findViewById(R.id.room);
         buildingTextField = (EditText) getView().findViewById(R.id.building);
-        System.out.println(getArguments());
         setDetailViewVisibility(false);
 
         List<String> bertNameList = new ArrayList<String>();
         if (getArguments() != null) {
-            for (BertUnit bert : getBertList()) {
+            for (BertUnit bert : bertList) {
                 bertNameList.add(bert.getName());
             }
         }
@@ -165,42 +169,28 @@ public class DeviceEditorView extends Fragment {
     }
 
     private void updateMAC() {
-        if (getBertList().size() > 0) {
-            getBertList().get(position).setMAC(macAddressTextField.getText().toString());
-            FileProvider.saveProject(this.activity.getProject());
+        if (bertList.size() > 0) {
+            bertList.get(position).setMAC(macAddressTextField.getText().toString());
+            FileProvider.saveProject(project);
         }
     }
 
     private void updateName() {
-        if (getBertList().size() > 0) {
-            getBertList().get(position).setName(deviceNameTextField.getText().toString());
-            FileProvider.saveProject(this.activity.getProject());
+        if (bertList.size() > 0) {
+            bertList.get(position).setName(deviceNameTextField.getText().toString());
+            FileProvider.saveProject(project);
         }
         onResume();
     }
 
     private void loadDeviceAtPosition(int position) {
         this.position = position;
-        BertUnit b = getBertList().get(position);
+        BertUnit b = bertList.get(position);
         deviceNameTextField.setText(b.getName());
         macAddressTextField.setText(b.getMAC());
         roomTextField.setText(b.getLocation());
-        buildingTextField.setText(getBuildingList().get(b.getBuildingID()).getName());
+        buildingTextField.setText(project.getBuildings().get(b.getBuildingID()).getName());
         setDetailViewVisibility(true);
-    }
-
-    private List<BertUnit> getBertList() {
-        List<BertUnit> berts;
-        if (getArguments() != null) {
-            berts = this.activity.getProject().getBertsByLocation(buildingID, location);
-        } else {
-            berts = new ArrayList<BertUnit>();
-        }
-        return  berts;
-    }
-
-    private List<Building> getBuildingList() {
-        return this.activity.getProject().getBuildings();
     }
 
     private void setDetailViewVisibility(boolean isVisible) {

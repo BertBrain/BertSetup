@@ -110,16 +110,9 @@ public class AddProjectView extends Fragment {
     }
 
     private void createProjectAndFinish() {
-        boolean canCreate = true;
         String newProjectName = nameTextField.getText().toString();
 
-        for (String s : ProjectProvider.getInstance().getProjectNameList()) {
-            if (s.equals(newProjectName)) {
-                canCreate = false;
-            }
-        }
-
-        if (canCreate) {
+        if (ProjectProvider.getInstance().projectNameCheck(newProjectName)) {
             Project newProject = new Project(newProjectName);
             newProject.setContactName(contactTextField.getText().toString());
             newProject.setContactNumber(contactNumberTextField.getText().toString());
