@@ -12,11 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.content.Intent;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import bert.database.Project;
-import bert.database.ProjectProvider;
+import bert.data.ProjectProvider;
 import bert.ui.R;
 import bert.ui.NoSelectionView;
 import bert.ui.roomList.RoomListActivity;
@@ -77,7 +73,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
 
     public void openRoomList(int projectListIndex) {
         Intent i = new Intent(this, RoomListActivity.class);
-        i.putExtra("projectIndex", projectListIndex);
+        i.putExtra(RoomListActivity.ARG_PROJECT_INDEX, projectListIndex);
         startActivity(i);
     }
 

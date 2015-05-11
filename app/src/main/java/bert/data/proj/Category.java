@@ -1,4 +1,4 @@
-package bert.database;
+package bert.data.proj;
 
 import org.w3c.dom.Element;
 
@@ -29,10 +29,16 @@ public class Category implements Serializable{
 
 
 	public Category(Element e) {
+<<<<<<< HEAD:app/src/main/java/bert/database/Category.java
 		this.name = e.getAttribute("name");
         //TODO: make this pull from file
 		//this.bertType = Integer.parseInt(e.getAttribute("bertType"));
 		this.estimatedLoad = Integer.parseInt(e.getAttribute("estimatedLoad"));
+=======
+		this.name = e.getAttribute("Name");
+		this.bertType = Integer.parseInt(e.getAttribute("BertType"));
+		this.estimatedLoad = Integer.parseInt(e.getAttribute("EstimatedLoad"));
+>>>>>>> buildingAsRef:app/src/main/java/bert/data/proj/Category.java
 	}
 	
 	public String getName() {
@@ -49,6 +55,7 @@ public class Category implements Serializable{
 	public int getEstimatedLoad() {
 		return estimatedLoad;
 	}
+<<<<<<< HEAD:app/src/main/java/bert/database/Category.java
 	
 	public static Category projector = new Category("Projector", BertType.WALL_20, 12);
 	public static Category vendingMachine = new Category("VendingMachine", BertType.INLINE, 350);
@@ -81,5 +88,17 @@ public class Category implements Serializable{
             return  bertTypes;
         }
     }
+=======
+
+	public static Category[] DEFAULT_CATEGORIES = {
+			new Category("Projector", 15, 12),
+			new Category("VendingMachine", 220, 350),
+			new Category("Printer", 220, 350),
+			new Category("hotWaterHeater", 220, 350),
+			new Category("cat1", 220, 350),
+			new Category("cat2", 220, 350),
+			new Category("cat3", 220, 350)
+	};
+>>>>>>> buildingAsRef:app/src/main/java/bert/data/proj/Category.java
 }
 

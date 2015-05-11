@@ -19,7 +19,9 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 
-import bert.database.BertUnit;
+import bert.data.FileProvider;
+import bert.data.proj.BertUnit;
+import bert.data.proj.Building;
 import bert.ui.R;
 
 /**
@@ -31,10 +33,11 @@ import bert.ui.R;
  * create an instance of this fragment.
  */
 public class DeviceEditorView extends Fragment {
-    private static final String ARG_LOCATION = "location";
-    private static final String ARG_BUILDING = "building";
+    public static final String ARG_LOCATION = "location";
+    public static final String ARG_BUILDING = "building";
 
-    private String building;
+    private RoomListActivity activity;
+    private int buildingID;
     private String location;
     private int position;
 
@@ -66,9 +69,10 @@ public class DeviceEditorView extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        activity = (RoomListActivity) getActivity();
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            building = getArguments().getString(ARG_BUILDING);
+            buildingID = getArguments().getInt(ARG_BUILDING);
             location = getArguments().getString(ARG_LOCATION);
         }
     }
@@ -83,7 +87,6 @@ public class DeviceEditorView extends Fragment {
         System.out.println(getArguments());
         setDetailViewVisibility(false);
 
-        RoomListActivity activity = (RoomListActivity)getActivity();
         List<String> bertNameList = new ArrayList<String>();
         if (getArguments() != null) {
             for (BertUnit bert : getBertList()) {
@@ -91,7 +94,7 @@ public class DeviceEditorView extends Fragment {
             }
         }
 
-        deviceTableAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, bertNameList);
+        deviceTableAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, bertNameList);
 
         locationListView = (ListView) getView().findViewById(R.id.bertList);
         locationListView.setAdapter(deviceTableAdapter);
@@ -99,7 +102,7 @@ public class DeviceEditorView extends Fragment {
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                loadDeviceAtPostion(position);
+                loadDeviceAtPosition(position);
             }
         });
 
@@ -164,35 +167,40 @@ public class DeviceEditorView extends Fragment {
     private void updateMAC() {
         if (getBertList().size() > 0) {
             getBertList().get(position).setMAC(macAddressTextField.getText().toString());
+            FileProvider.saveProject(this.activity.getProject());
         }
     }
 
     private void updateName() {
         if (getBertList().size() > 0) {
             getBertList().get(position).setName(deviceNameTextField.getText().toString());
+            FileProvider.saveProject(this.activity.getProject());
         }
         onResume();
     }
 
-    private void loadDeviceAtPostion(int position) {
+    private void loadDeviceAtPosition(int position) {
         this.position = position;
         BertUnit b = getBertList().get(position);
         deviceNameTextField.setText(b.getName());
         macAddressTextField.setText(b.getMAC());
         roomTextField.setText(b.getLocation());
-        buildingTextField.setText(b.getBuilding());
+        buildingTextField.setText(getBuildingList().get(b.getBuildingID()).getName());
         setDetailViewVisibility(true);
     }
 
     private List<BertUnit> getBertList() {
-        RoomListActivity activity = (RoomListActivity) getActivity();
         List<BertUnit> berts;
         if (getArguments() != null) {
-            berts = activity.getProject().getBertsByLocation(building, location);
+            berts = this.activity.getProject().getBertsByLocation(buildingID, location);
         } else {
             berts = new ArrayList<BertUnit>();
         }
         return  berts;
+    }
+
+    private List<Building> getBuildingList() {
+        return this.activity.getProject().getBuildings();
     }
 
     private void setDetailViewVisibility(boolean isVisible) {

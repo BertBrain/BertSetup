@@ -13,13 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import bert.database.Cleaner;
-import bert.database.DateProvider;
-import bert.database.Project;
-import bert.database.ProjectProvider;
+import bert.data.utility.Cleaner;
+import bert.data.proj.Project;
+import bert.data.ProjectProvider;
 import bert.ui.R;
 import bert.ui.roomList.RoomListActivity;
 
@@ -64,7 +62,7 @@ public class AddProjectView extends Fragment {
     }
 
     @Override
-    public void onResume() {//TODO check for valid name string beore enabling create Button
+    public void onResume() {
         super.onResume();
         createButton = (Button) getView().findViewById(R.id.createProjectButton);
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +132,7 @@ public class AddProjectView extends Fragment {
 
             ProjectListActivity activity = (ProjectListActivity) getActivity();
             Intent intent = new Intent(activity, RoomListActivity.class);
-            intent.putExtra("projectIndex", ProjectProvider.getInstance().getProjectList().size() - 1);
+            intent.putExtra(RoomListActivity.ARG_PROJECT_INDEX, ProjectProvider.getInstance().getProjectList().size() - 1);
             activity.loadProjectList();
             activity.closeAddProjectView();
             startActivity(intent);

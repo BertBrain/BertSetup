@@ -1,12 +1,11 @@
-package bert.database;
+package bert.data.proj;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import bert.data.utility.Cleaner;
+import bert.data.utility.DateUtil;
 
 /**
  * @author afiol-mahon
@@ -19,18 +18,25 @@ public class Project {
 	private String modifiedDate;
 	private List<BertUnit> berts;
 	private List<Category> categories;
+    private List<Building> buildings;
 	
 	public Project(String name) {
 		setProjectName(name);
-	    this.creationDate = DateProvider.getDate();
+	    this.creationDate = DateUtil.getDate();
 	    this.modifiedDate = creationDate;
 	    berts = new ArrayList<BertUnit>();
+<<<<<<< HEAD:app/src/main/java/bert/database/Project.java
 	    categories = new ArrayList<Category>();
         categories.add(Category.projector);
         categories.add(Category.vendingMachine);
         categories.add(Category.hotWaterHeater);
         categories.add(Category.printer);
     }
+=======
+        buildings = new ArrayList<Building>();
+	    categories = Arrays.asList(Category.DEFAULT_CATEGORIES);
+	}
+>>>>>>> buildingAsRef:app/src/main/java/bert/data/proj/Project.java
 
 	public List<String> getCategoryNames() {
 		List<String> categoryNames = new ArrayList<String>();
@@ -57,11 +63,11 @@ public class Project {
         return locationNames;
     }
 
-    public List<String> getLocationNamesInBuilding(String building){
+    public List<String> getLocationNamesInBuilding(int building){
         List<String> locationNames = new ArrayList<String>();
         for (BertUnit b : berts) {
             String n = b.getLocation();
-            if (!locationNames.contains(n) && b.getBuilding() == building) {
+            if (!locationNames.contains(n) && b.getBuildingID() == building) {
                 locationNames.add(n);
             }
         }
@@ -70,19 +76,16 @@ public class Project {
 
     public List<String> getBuildingNames() {
         List<String> buildingNames = new ArrayList<String>();
-        for (BertUnit b : berts) {
-            String n = b.getBuilding();
-            if (!buildingNames.contains(n)){
-                buildingNames.add(n);
-            }
+        for (Building b : buildings) {
+            buildingNames.add(b.getName());
         }
         return buildingNames;
     }
 
-    public List<BertUnit> getBertsByLocation(String building, String location) {
+    public List<BertUnit> getBertsByLocation(int building, String location) {
         List<BertUnit> returnList = new ArrayList<BertUnit>();
         for (BertUnit b : berts) {
-            if (b.getBuilding() == building && b.getLocation() == location) {
+            if (b.getBuildingID() == building && b.getLocation() == location) {
                 returnList.add(b);
             }
         }
@@ -176,5 +179,13 @@ public class Project {
 
     public void setBerts(List<BertUnit> newBerts) {
         this.berts = newBerts;
+    }
+
+    public List<Building> getBuildings() {
+        return this.buildings;
+    }
+
+    public void setBuildings(List<Building> newBuildings) {
+        this.buildings = newBuildings;
     }
 }

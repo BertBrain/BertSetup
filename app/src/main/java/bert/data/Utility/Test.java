@@ -1,4 +1,7 @@
-package bert.database;
+package bert.data.utility;
+
+import bert.data.proj.BertUnit;
+import bert.data.proj.Project;
 
 /**
  * @author afiol-mahon
@@ -8,7 +11,7 @@ public class Test {
     static {
         testProject.setContactName("Joe Smith");
         testProject.setContactNumber("555-555-5555");
-        testProject.addBert(new BertUnit("Debug1", "1", "DebugBuilding", 0));
+        testProject.addBert(new BertUnit("Debug1", "1", "MACMAC", 0, 0));
     }
 
 	public static void main(String[] args) {
