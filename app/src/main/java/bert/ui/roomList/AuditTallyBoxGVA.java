@@ -1,5 +1,6 @@
 package bert.ui.roomList;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
@@ -28,7 +29,7 @@ import java.util.List;
 public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
 
     HashMap<Category, View> cells = new HashMap<Category, View>();
-    HashMap<Category, Integer> counts = new HashMap<Category, Integer>();
+    static HashMap<Category, Integer> counts;
     List<Category> deviceTypes;
     Activity activity;
     AuditWizardView owner;
@@ -61,8 +62,10 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         } else {
             if (!cells.keySet().contains(deviceTypes.get(position))) {
                 System.out.println("creating grid cell at position for category: " + deviceTypes.get(position).getName());
-                counts.put(deviceTypes.get(position), 0);
 
+                if (!counts.keySet().contains(deviceTypes.get(position))){
+                    counts.put(deviceTypes.get(position), 0);
+                }
 
                 gridCell = inflater.inflate(R.layout.fragment_grid_cell, parent, false);
 
@@ -72,9 +75,14 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
                 Button incrementButton = (Button) gridCell.findViewById(R.id.incrementButton);
                 Button decrementButton = (Button) gridCell.findViewById(R.id.decrementButton);
 
+                TextView deviceTypeCounter = (TextView) gridCell.findViewById(R.id.deviceCounterTextField);
+                deviceTypeCounter.setText(counts.get(deviceTypes.get(position)).toString());
+
                 System.out.println("creating click listeners");
                 incrementButton.setOnClickListener(new buttonListener(deviceTypes.get(position), 1, this));
                 decrementButton.setOnClickListener(new buttonListener(deviceTypes.get(position), -1, this));
+
+
 
                 cells.put(deviceTypes.get(position), gridCell);
             } else {
@@ -85,9 +93,13 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         return gridCell;
     }
 
+    static public void resetCounts(){
+        counts = new HashMap<Category, Integer>();
+    }
+
     void createNewCategory(){
         Intent intent = new Intent(activity, AddCategory.class);
-        owner.startActivity(intent);
+        activity.startActivityForResult(intent, 1);
     }
 
     void addToDeviceType(Category deviceType, int numberToAdd) {
@@ -125,7 +137,6 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         }
         owner.setBertTotalCounter(totalCount);
     }
-
 }
 
 class buttonListener implements View.OnClickListener {

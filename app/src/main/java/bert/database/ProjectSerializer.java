@@ -31,7 +31,7 @@ public class ProjectSerializer {
                 newBerts.add(new BertUnit(e));
             }
 
-            List<Category> newCategories = new ArrayList<Category>();
+            ArrayList<Category> newCategories = new ArrayList<Category>();
             NodeList categoryNodeList = document.getElementsByTagName("Category");
             for (int i = 0; i < categoryNodeList.getLength(); i++) {
                 Element e = (Element) categoryNodeList.item(i);

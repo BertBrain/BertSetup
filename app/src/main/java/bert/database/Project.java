@@ -25,8 +25,12 @@ public class Project {
 	    this.creationDate = DateProvider.getDate();
 	    this.modifiedDate = creationDate;
 	    berts = new ArrayList<BertUnit>();
-	    categories = Arrays.asList(Category.projector, Category.vendingMachine, Category.printer, Category.hotWaterHeater, Category.cat1, Category.cat2, Category.cat3);
-	}
+	    categories = new ArrayList<Category>();
+        categories.add(Category.projector);
+        categories.add(Category.vendingMachine);
+        categories.add(Category.hotWaterHeater);
+        categories.add(Category.printer);
+    }
 
 	public List<String> getCategoryNames() {
 		List<String> categoryNames = new ArrayList<String>();
@@ -101,6 +105,10 @@ public class Project {
         for (BertUnit b : berts){
             addBert(b);
         }
+    }
+
+    public void addCategory(Category category){
+        categories.add(category);
     }
 
     //Getters and setters

@@ -51,6 +51,7 @@ public class AuditWizardView extends Fragment {
 
     public AuditWizardView() {}
 
+    public AuditTallyBoxGVA getViewAdapter(){ return  tallyGridAdapter;}
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

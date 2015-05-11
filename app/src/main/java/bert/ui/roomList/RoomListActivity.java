@@ -53,6 +53,8 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     private ArrayAdapter<String> locationTableAdapter;
     private ListView locationListView;
 
+    AuditWizardView auditWizardView;
+
     @Override
     public void onFragmentInteraction(android.net.Uri uri) {}
 
@@ -118,6 +120,20 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (resultCode == RESULT_OK){
+            System.out.println("activty result achieved in activity: " + data.getExtras().get("category"));
+            Category newCategory = (Category)data.getExtras().get("category");
+            System.out.println("cateogry name: " + newCategory.getName());
+            project.addCategory(newCategory);
+
+        } else {
+            System.out.println("add category canceled");
+        }
+    }
+
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -140,10 +156,11 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     public void openAuditWizardView(View view) {
-        AuditWizardView auditWizardView = new AuditWizardView();
+        auditWizardView = new AuditWizardView();
         Bundle args = new Bundle();
         args.putString("building", currentBuilding);
         auditWizardView.setArguments(args);
+        AuditTallyBoxGVA.resetCounts();
         loadFragment(auditWizardView);
     }
 
