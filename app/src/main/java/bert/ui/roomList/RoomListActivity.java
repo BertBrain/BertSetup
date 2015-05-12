@@ -91,6 +91,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currentBuildingID = position;
                 createLocationlistView();
+                setBuildingDropdownVisibility(true);
                 openNoSelectionView("Select or Create a Room");
             }
 
@@ -122,7 +123,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
             System.out.println("cateogry name: " + newCategory.getName());
             project.addCategory(newCategory);
 
-        } else {
+        } if (resultCode == RESULT_CANCELED) {
             System.out.println("add category canceled");
         }
     }
@@ -220,7 +221,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     public void setBuildingDropdownVisibility(boolean isVisible) {
         buildingDropdown.setMinimumWidth(0);
         addBuildingButton.setText((isVisible) ? "+" : "+ Add Building");
-        addBuildingButton.setGravity((isVisible) ? Gravity.RIGHT : Gravity.CENTER);
+        //addBuildingButton.setGravity((isVisible) ? Gravity.RIGHT : Gravity.CENTER);
         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(((isVisible) ? 75 : LinearLayout.LayoutParams.MATCH_PARENT), LinearLayout.LayoutParams.MATCH_PARENT, 1);
         LinearLayout.LayoutParams dropDownParams = new LinearLayout.LayoutParams((isVisible) ? locationListView.getWidth()-75 : 0, LinearLayout.LayoutParams.MATCH_PARENT);
         addBuildingButton.setLayoutParams(buttonParams);

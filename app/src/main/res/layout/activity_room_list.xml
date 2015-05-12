@@ -41,7 +41,8 @@
                     android:text="+"
                     android:textAlignment="center"
                     android:id="@+id/addBuildingButton"
-                    android:onClick="launchBuildingNameTextField"/>
+                    android:onClick="launchBuildingNameTextField"
+                    android:gravity="fill_horizontal|center_vertical" />
             </LinearLayout>
 
             <ListView
@@ -61,8 +62,8 @@
                 android:onClick="openAuditWizardView"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="0dp"
-                android:gravity="bottom"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal" />
 
             <EditText
                 android:imeActionLabel="Done"

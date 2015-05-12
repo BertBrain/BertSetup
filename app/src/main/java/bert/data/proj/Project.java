@@ -25,8 +25,9 @@ public class Project {
 	    this.creationDate = DateUtil.getDate();
 	    this.modifiedDate = creationDate;
 	    berts = new ArrayList<BertUnit>();
+	    categories = new ArrayList<Category>();
         buildings = new ArrayList<Building>();
-	    categories = Arrays.asList(Category.DEFAULT_CATEGORIES);
+	    categories = new ArrayList<Category>(Arrays.asList(Category.DEFAULT_CATEGORIES));
 	}
 
 	public List<String> getCategoryNames() {
