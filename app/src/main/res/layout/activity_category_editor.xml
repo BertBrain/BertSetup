@@ -40,6 +40,8 @@
                 android:layout_row="0" />
 
             <EditText
+                android:imeActionLabel="Done"
+                android:imeOptions="actionDone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/category_name_edit_text"
@@ -70,8 +72,11 @@
                 android:layout_column="0" />
 
             <EditText
+                android:imeActionLabel="Done"
+                android:imeOptions="actionDone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:id="@+id/estimated_load_edit_text" />
 
             <Button
