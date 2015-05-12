@@ -1,11 +1,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="200dp"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="wrap_content" tools:context="com.example.liamcook.ui.GridCell" android:id="@+id/gridCellLayout">
 
     <LinearLayout
         android:id="@+id/gridCellInnerLayout"
         android:orientation="vertical"
-        android:layout_width="182dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|top"
         android:background="@color/bright_foreground_material_dark">
@@ -17,7 +17,10 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
             android:id="@+id/deviceTypeTextField"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:maxLines="1"
+            android:textSize="18dp" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -26,11 +29,12 @@
             android:layout_gravity="center_horizontal">
 
             <Button
-                android:layout_width="39dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:text="-"
                 android:id="@+id/decrementButton"
-                android:layout_gravity="right" />
+                android:layout_gravity="right"
+                style="@style/AlertDialog.AppCompat" />
 
 
             <TextView
@@ -40,11 +44,12 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="0"
                 android:id="@+id/deviceCounterTextField"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center" />
 
             <Button
-                android:layout_width="37dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:text="+"
                 android:id="@+id/incrementButton"

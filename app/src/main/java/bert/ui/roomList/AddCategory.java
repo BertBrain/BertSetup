@@ -28,6 +28,7 @@ public class AddCategory extends ActionBarActivity {
     EditText wattageTextField;
     Spinner bertTypeSelectionSpinner;
     Button finishedAddCategory;
+    Button cancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class AddCategory extends ActionBarActivity {
         wattageTextField = (EditText) findViewById(R.id.standyPowerTextField);
         bertTypeSelectionSpinner = (Spinner) findViewById(R.id.bertTypeSpinner);
         finishedAddCategory = (Button) findViewById(R.id.finshCreateCategoryButton);
+        cancelButton = (Button) findViewById(R.id.cancelAddCategoryButton);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Category.bertTypes);
         bertTypeSelectionSpinner.setAdapter(adapter);
@@ -91,7 +93,13 @@ public class AddCategory extends ActionBarActivity {
                 return false;
             }
         });
-
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
     }
 
     @Override
