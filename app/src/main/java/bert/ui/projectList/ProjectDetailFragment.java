@@ -28,6 +28,7 @@ import bert.data.utility.Cleaner;
 import bert.ui.R;
 import bert.ui.roomList.RoomListActivity;
 
+//TODO use 1 save method for all writing to project done
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the

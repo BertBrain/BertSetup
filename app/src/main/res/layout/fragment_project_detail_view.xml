@@ -146,6 +146,7 @@
                 android:layout_height="wrap_content"
                 android:text="Open Project"
                 android:layout_column="0"
+                android:layout_row="0"
                 android:id="@+id/openProjectButton"
                 android:layout_gravity="center_horizontal" />
             <Button
@@ -153,6 +154,7 @@
                 android:layout_height="wrap_content"
                 android:text="Category View"
                 android:layout_column="1"
+                android:layout_row="0"
                 android:id="@+id/categoryEditorButton"
                 android:layout_gravity="center_horizontal" />
             <Button
@@ -160,6 +162,7 @@
                 android:layout_height="wrap_content"
                 android:text="Building View"
                 android:layout_column="2"
+                android:layout_row="0"
                 android:id="@+id/buildingEditorButton"
                 android:layout_gravity="center_horizontal" />
         </GridLayout>

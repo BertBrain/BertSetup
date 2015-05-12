@@ -187,4 +187,8 @@ public class DeviceEditorView extends Fragment {
         detailView = (FrameLayout) getView().findViewById(R.id.bertDeviceDetailViewFrame);
         detailView.setVisibility((isVisible) ? View.VISIBLE : View.INVISIBLE);
     }
+
+    private void saveChanges() {
+
+    }
 }

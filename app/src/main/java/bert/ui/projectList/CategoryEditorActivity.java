@@ -45,6 +45,8 @@ public class CategoryEditorActivity extends ActionBarActivity {
         this.projectID = getIntent().getExtras().getInt(ARG_PROJECT_ID);
         this.project = ProjectProvider.getInstance().getProjectList().get(projectID);
 
+
+
         focusedCategory = project.getCategories().get(0);
 
         categoryEditorLayout = (GridLayout) findViewById(R.id.category_editor_layout);

@@ -15,10 +15,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import bert.data.proj.Category;
 import bert.ui.R;
 
@@ -48,12 +44,12 @@ public class AddCategory extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 int estimatedLoad;
-                if (wattageTextField.getText().toString().length() == 0){
+                if (wattageTextField.getText().toString().length() == 0) {
                     estimatedLoad = Category.UNSET;
                 } else {
                     try {
                         estimatedLoad  = Integer.parseInt(wattageTextField.getText().toString());
-                        if (estimatedLoad < 0){
+                        if (estimatedLoad < 0) {
                             AlertDialog.Builder invalidNumberAlert = new AlertDialog.Builder(getBaseContext());
                             invalidNumberAlert.setTitle("Invalid Number: Standby Wattage cannot be less than 0");
                             invalidNumberAlert.setPositiveButton("OK", null);
@@ -61,7 +57,7 @@ public class AddCategory extends ActionBarActivity {
                             return;
                         }
 
-                    } catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         e.printStackTrace();
                         System.out.println();
                         AlertDialog.Builder invalidNumberAlert = new AlertDialog.Builder(getBaseContext());
@@ -84,15 +80,17 @@ public class AddCategory extends ActionBarActivity {
                 finish();
             }
         });
+
         categoryNameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE){
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     finishedAddCategory.setEnabled(categoryNameTextField.getText().toString().length() > 0);
                 }
                 return false;
             }
         });
+
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

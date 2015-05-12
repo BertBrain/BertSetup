@@ -17,6 +17,6 @@
         <item> Inline, 110/240 </item>
         <item> To Be Determined</item>
     </string-array>
-    <string name="title_activity_category_editor">CategoryEditorActivity</string>
+    <string name="title_activity_category_editor">Category Editor</string>
 
 </resources>
