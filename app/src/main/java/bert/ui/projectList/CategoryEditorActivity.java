@@ -45,11 +45,10 @@ public class CategoryEditorActivity extends ActionBarActivity {
         this.projectID = getIntent().getExtras().getInt(ARG_PROJECT_ID);
         this.project = ProjectProvider.getInstance().getProjectList().get(projectID);
 
-
-
         focusedCategory = project.getCategories().get(0);
 
         categoryEditorLayout = (GridLayout) findViewById(R.id.category_editor_layout);
+        categoryEditorLayout.setVisibility(View.INVISIBLE);
 
         categoryListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getCategoryNames());
         categoryListView = (ListView) findViewById(R.id.category_list_view);
@@ -78,6 +77,7 @@ public class CategoryEditorActivity extends ActionBarActivity {
     }
 
     private void loadCategory(int position) {
+        categoryEditorLayout.setVisibility(View.VISIBLE);
         focusedCategory = project.getCategories().get(position);
         categoryNameEditText.setText(focusedCategory.getName());
         estimatedLoadEditText.setText(String.valueOf(focusedCategory.getEstimatedLoad()));
