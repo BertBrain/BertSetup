@@ -101,7 +101,9 @@ public class FileProvider {
 
 	public static File getProjectDirectory() throws IOException {
 		if (isExternalStorageAvailable()) {
-			return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "BertProjects");
+			File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "BertProjects");
+			f.mkdir();
+			return f;
 		} else {
 			log("Unable to load Project Folder");
 			throw new IOException();
@@ -110,7 +112,9 @@ public class FileProvider {
 
 	public static File getExportsDirectory() throws IOException {
 		if (isExternalStorageAvailable()) {
-			return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "BertExports");
+			File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "BertExports");
+			f.mkdir();
+			return f;
 		} else {
 			log("Unable to load Exports Folder");
 			throw new IOException();

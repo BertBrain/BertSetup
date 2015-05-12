@@ -7,15 +7,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Category implements Serializable{
+public class Category implements Serializable {
 
     public final static int UNSET = -1;
 
-	private final String name;
+	private String name;
 	private int bertTypeID;
 	private int estimatedLoad;
 	
-	//FIXME bertType should be an enum
 	/**
 	 *
 	 * @param name Name of device
@@ -38,16 +37,28 @@ public class Category implements Serializable{
 	public String getName() {
 		return name;
 	}
-	
+
+	public void setName(String newName) {
+		this.name = newName;
+	}
+
 	public int getBertTypeID() {
 		return bertTypeID;
 	}
-	
+
+	public void setBertTypeID(int id) {
+		this.bertTypeID = id;
+	}
+
 	/**
 	 * @return estimated power consumption of device in watts
 	 */
 	public int getEstimatedLoad() {
 		return estimatedLoad;
+	}
+
+	public void setEstimatedLoad(int newEstimatedLoad) {
+		this.estimatedLoad = newEstimatedLoad;
 	}
 
 	public static Category[] DEFAULT_CATEGORIES = {
@@ -63,4 +74,3 @@ public class Category implements Serializable{
 
 	public static List<String> bertTypes = Arrays.asList("WALL_15", "WALL_20", "INLINE", "UNDEFINED");
 }
-

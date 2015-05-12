@@ -26,6 +26,10 @@
             android:name=".roomList.AddCategory"
             android:label="@string/title_activity_add_category" >
         </activity>
+        <activity
+            android:name=".projectList.CategoryEditorActivity"
+            android:label="@string/title_activity_category_editor" >
+        </activity>
     </application>
 
 </manifest>

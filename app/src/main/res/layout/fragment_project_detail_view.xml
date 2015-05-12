@@ -134,11 +134,34 @@
                 android:layout_column="1"/>
         </GridLayout>
 
-        <Button
-            android:layout_width="wrap_content"
+        <GridLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Open Project"
-            android:id="@+id/openProjectButton"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:rowCount="1"
+            android:columnCount="3"
+            android:orientation="vertical">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Open Project"
+                android:layout_column="0"
+                android:id="@+id/openProjectButton"
+                android:layout_gravity="center_horizontal" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category View"
+                android:layout_column="1"
+                android:id="@+id/categoryEditorButton"
+                android:layout_gravity="center_horizontal" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Building View"
+                android:layout_column="2"
+                android:id="@+id/buildingEditorButton"
+                android:layout_gravity="center_horizontal" />
+        </GridLayout>
     </LinearLayout>
 </FrameLayout>

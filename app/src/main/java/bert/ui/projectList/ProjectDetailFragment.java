@@ -51,6 +51,8 @@ public class ProjectDetailFragment extends Fragment {
     private Button exportToBertConfigButton;
     private Button exportToROIButton;
     private Button openProjectButton;
+    private Button categoryEditorButton;
+    private Button buildingEditorButton;
     
     private OnFragmentInteractionListener mListener;
 
@@ -138,7 +140,7 @@ public class ProjectDetailFragment extends Fragment {
                 try {
                     CSVExporter.generateCSV(currentProject);
                     csvGeneratedAlert();
-                } catch(IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                     Log.d("Project Detail Fragment", "Unable to generate Configurator CSV File");
                 }
@@ -152,6 +154,22 @@ public class ProjectDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openRoomList();
+            }
+        });
+
+        categoryEditorButton = (Button) getView().findViewById(R.id.categoryEditorButton);
+        categoryEditorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCategoryEditor();
+            }
+        });
+
+        buildingEditorButton = (Button) getView().findViewById(R.id.buildingEditorButton);
+        buildingEditorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openBuildingEditor();
             }
         });
     }
@@ -190,13 +208,22 @@ public class ProjectDetailFragment extends Fragment {
         startActivity(i);
     }
 
+    public void openBuildingEditor() {
+        //TODO write
+    }
+
+    public void openCategoryEditor() {
+        Intent i = new Intent(this.getActivity(), CategoryEditorActivity.class);
+        i.putExtra(CategoryEditorActivity.ARG_PROJECT_ID, projectIndex);
+        startActivity(i);
+    }
+
     private void csvGeneratedAlert() {
         AlertDialog.Builder alert = new AlertDialog.Builder(getView().getContext());
         alert.setTitle("CSV File has been generated");
         alert.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int i) {
-            }
+            public void onClick(DialogInterface dialog, int i) {}
         });
         alert.create().show();
     }
