@@ -142,7 +142,6 @@ public class ProjectDetailFragment extends Fragment {
                 File fileToShare;
                 try {
                     fileToShare = CSVExporter.generateCSV(currentProject);
-                    csvGeneratedAlert();
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.d("Project Detail Fragment", "Unable to generate Configurator CSV File");
@@ -221,16 +220,6 @@ public class ProjectDetailFragment extends Fragment {
         Intent i = new Intent(this.getActivity(), CategoryEditorActivity.class);
         i.putExtra(CategoryEditorActivity.ARG_PROJECT_ID, projectIndex);
         startActivity(i);
-    }
-
-    private void csvGeneratedAlert() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(getView().getContext());
-        alert.setTitle("CSV File has been generated");
-        alert.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {}
-        });
-        alert.create().show();
     }
 
     public interface OnFragmentInteractionListener {

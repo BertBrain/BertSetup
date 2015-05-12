@@ -90,7 +90,6 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
