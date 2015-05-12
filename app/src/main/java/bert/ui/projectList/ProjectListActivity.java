@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.content.Intent;
 
@@ -19,6 +21,11 @@ import bert.ui.NoSelectionView;
 import bert.ui.roomList.RoomListActivity;
 
 public class ProjectListActivity extends ActionBarActivity implements AddProjectView.OnFragmentInteractionListener, ProjectDetailFragment.OnFragmentInteractionListener {
+
+    FrameLayout overlayLayout;
+    Button emailExportButton;
+    Button SDExportButton;
+    public ShareOverlayView shareView;
 
     private ListView projectListView;
     private ArrayAdapter<String> projectTableAdapter;
@@ -54,10 +61,21 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main_menu, menu);
         loadProjectList();
+
+        overlayLayout = (FrameLayout) findViewById(R.id.shareOverlayView);
+        emailExportButton = (Button) findViewById(R.id.emailExportButton);
+        SDExportButton = (Button) findViewById(R.id.SDCardExportButton);
+        shareView = new ShareOverlayView(emailExportButton, SDExportButton, overlayLayout, this);
+
         return true;
     }
 

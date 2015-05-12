@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import bert.data.FileProvider;
 import bert.data.proj.BertUnit;
+import bert.data.proj.Category;
 import bert.data.proj.Project;
 import bert.ui.R;
 
@@ -48,11 +50,11 @@ public class DeviceEditorView extends Fragment {
     private EditText deviceNameTextField;
     private EditText macAddressTextField;
     private EditText roomTextField;
-    private EditText buildingTextField;
+    private TextView buildingTextField;
     private ArrayAdapter<String> deviceTableAdapter;
     private ListView locationListView;
     private FrameLayout detailView;
-
+    private Spinner categorySelector;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -88,7 +90,8 @@ public class DeviceEditorView extends Fragment {
         macAddressTextField = (EditText) getView().findViewById(R.id.macAddress);
         deviceNameTextField = (EditText) getView().findViewById(R.id.deviceName);
         roomTextField = (EditText) getView().findViewById(R.id.room);
-        buildingTextField = (EditText) getView().findViewById(R.id.building);
+        buildingTextField = (TextView) getView().findViewById(R.id.currentBuildingDisplay);
+        categorySelector = (Spinner) getView().findViewById(R.id.detailViewCategorySelector);
         setDetailViewVisibility(false);
 
         List<String> bertNameList = new ArrayList<String>();
@@ -97,6 +100,9 @@ public class DeviceEditorView extends Fragment {
                 bertNameList.add(bert.getName());
             }
         }
+        ArrayAdapter<String> categoryTableAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, activity.getProject().getCategoryNames());
+        categorySelector.setAdapter(categoryTableAdapter);
+        categorySelector.setSelection(bertList.get(0).getCategoryID());
 
         deviceTableAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, bertNameList);
 
@@ -129,6 +135,22 @@ public class DeviceEditorView extends Fragment {
                return false;
            }
         });
+        categorySelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectCategory(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    void selectCategory(int categoryID){
+        BertUnit bert = bertList.get(this.position);
+        bert.setCategoryID(categoryID);
     }
 
     @Override
@@ -180,6 +202,7 @@ public class DeviceEditorView extends Fragment {
         macAddressTextField.setText(b.getMAC());
         roomTextField.setText(b.getLocation());
         buildingTextField.setText(project.getBuildings().get(b.getBuildingID()).getName());
+        categorySelector.setSelection(bertList.get(position).getCategoryID());
         setDetailViewVisibility(true);
     }
 

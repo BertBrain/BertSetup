@@ -49,4 +49,33 @@
         </FrameLayout>
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/shareOverlayView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#3d7f7f7f">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="#ffe5e5e1"
+            android:layout_gravity="center">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:id="@+id/emailExportButton"
+                android:layout_gravity="center" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save To SD Card"
+                android:id="@+id/SDCardExportButton" />
+        </LinearLayout>
+    </FrameLayout>
+
 </RelativeLayout>
