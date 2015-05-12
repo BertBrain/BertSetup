@@ -88,33 +88,47 @@
                     android:layout_row="5"
                     android:layout_column="0" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Building"
-                    android:id="@+id/buildingTextView"
-                    android:layout_row="6"
-                    android:layout_column="0" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
 
-                <EditText
-                    android:singleLine="true"
-                    android:imeActionLabel="Done"
-                    android:imeOptions="actionDone"
-                    android:layout_width="370dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/building"
-                    android:layout_row="7"
-                    android:layout_column="0" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Building: "
+                        android:id="@+id/buildingTextView"
+                        android:layout_row="6"
+                        android:layout_column="0" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Bert Type"
-                    android:id="@+id/bertTypeTextView"
-                    android:layout_row="8"
-                    android:layout_column="0" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Building 1"
+                        android:id="@+id/currentBuildingDisplay" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Category: "
+                        android:id="@+id/bertTypeTextView"
+                        android:layout_row="8"
+                        android:layout_column="0" />
+
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/detailViewCategorySelector" />
+                </LinearLayout>
 
             </GridLayout>
         </FrameLayout>

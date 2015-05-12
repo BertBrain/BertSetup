@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 
 import bert.data.FileProvider;
@@ -138,13 +139,16 @@ public class ProjectDetailFragment extends Fragment {
         exportToBertConfigButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                File fileToShare;
                 try {
-                    CSVExporter.generateCSV(currentProject);
+                    fileToShare = CSVExporter.generateCSV(currentProject);
                     csvGeneratedAlert();
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.d("Project Detail Fragment", "Unable to generate Configurator CSV File");
+                    fileToShare = new File("test file");
                 }
+                ((ProjectListActivity)getActivity()).shareView.shareFile(fileToShare);
             }
         });
 
