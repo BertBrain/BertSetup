@@ -45,7 +45,6 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
-
         View gridCell;
         LayoutInflater inflater = activity.getLayoutInflater();
         if (position == deviceTypes.size()) {
@@ -95,15 +94,15 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         counts = new HashMap<Category, Integer>();
     }
 
-    void createNewCategory(){
+    void createNewCategory() {
         Intent intent = new Intent(activity, AddCategory.class);
         activity.startActivityForResult(intent, 1);
     }
 
     void addToDeviceType(Category deviceType, int numberToAdd) {
         int oldCount = counts.get(deviceType);
-        int newCount = 0;
-        if (oldCount > 0 || numberToAdd > 0){
+        int newCount;
+        if (oldCount > 0 || numberToAdd > 0) {
             newCount = oldCount + numberToAdd;
         } else {
             newCount = oldCount;
@@ -128,9 +127,9 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         return this.counts;
     }
 
-    public void updateBertTotal(){
+    public void updateBertTotal() {
         int totalCount = 0;
-        for (Integer i : counts.values()){
+        for (Integer i : counts.values()) {
             totalCount += i;
         }
         owner.setBertTotalCounter(totalCount);

@@ -59,10 +59,10 @@ public class DeviceEditorView extends Fragment {
      * @param location the room used to populate the bertlist.
      * @return A new instance of fragment DeviceEditorView.
      */
-    public static DeviceEditorView newInstance(String building, String location) {
+    public static DeviceEditorView newInstance(int buildingID, String location) {
         DeviceEditorView fragment = new DeviceEditorView();
         Bundle args = new Bundle();
-        args.putString(ARG_BUILDING, building);
+        args.putInt(ARG_BUILDING, buildingID);
         args.putString(ARG_LOCATION, location);
         fragment.setArguments(args);
         return fragment;
@@ -154,16 +154,6 @@ public class DeviceEditorView extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
     }

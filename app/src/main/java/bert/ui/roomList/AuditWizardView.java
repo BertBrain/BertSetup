@@ -43,10 +43,10 @@ public class AuditWizardView extends Fragment {
 
     private RoomListActivity activity;
 
-    public static AuditWizardView newInstance(String building) {
+    public static AuditWizardView newInstance(int buildingID) {
         AuditWizardView fragment = new AuditWizardView();
         Bundle args = new Bundle();
-        args.putString(ARG_BUILDING, building);
+        args.putInt(ARG_BUILDING, buildingID);
         fragment.setArguments(args);
         return fragment;
     }

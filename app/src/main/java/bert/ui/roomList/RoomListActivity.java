@@ -150,29 +150,17 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     public void openAuditWizardView(View view) {
-        auditWizardView = new AuditWizardView();
-        Bundle args = new Bundle();
-        args.putInt(AuditWizardView.ARG_BUILDING, currentBuildingID);
-        auditWizardView.setArguments(args);
+        auditWizardView = AuditWizardView.newInstance(currentBuildingID);
         AuditTallyBoxGVA.resetCounts();
         loadFragment(auditWizardView);
     }
 
     public void openDeviceEditorView(String locationName) {
-        DeviceEditorView deviceEditorView = new DeviceEditorView();
-        Bundle args = new Bundle();
-        args.putInt(DeviceEditorView.ARG_BUILDING, currentBuildingID);
-        args.putString(DeviceEditorView.ARG_LOCATION, locationName);
-        deviceEditorView.setArguments(args);
-        loadFragment(deviceEditorView);
+        loadFragment(DeviceEditorView.newInstance(currentBuildingID, locationName));
     }
 
-    public void openNoSelectionView(String message){
-        NoSelectionView noSelectionView = new NoSelectionView();
-        Bundle args = new Bundle();
-        args.putString("message", message);
-        noSelectionView.setArguments(args);
-        loadFragment(noSelectionView);
+    public void openNoSelectionView(String message) {
+        loadFragment(NoSelectionView.newInstance(message));
     }
 
     private void loadFragment(Fragment frag) {

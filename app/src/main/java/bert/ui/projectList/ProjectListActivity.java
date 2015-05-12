@@ -1,5 +1,6 @@
 package bert.ui.projectList;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -27,28 +28,21 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
 
     @Override
     public void openAddProjectView(View view) {
-        log("Opening New Project Fragment.");
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container_new_project, new AddProjectView());
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        loadFragment(new AddProjectView());
     }
 
     public void openProjectDetailView(int projectIndex) {
-        ProjectDetailFragment newView = new ProjectDetailFragment();
-        Bundle args = new Bundle();
-        args.putInt(ProjectDetailFragment.ARG_PROJECT_INDEX, projectIndex);
-        newView.setArguments(args);
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container_new_project, newView);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        loadFragment(ProjectDetailFragment.newInstance(projectIndex));
     }
 
     @Override
     public void closeAddProjectView() {
+        loadFragment(new NoSelectionView());
+    }
+
+    private void loadFragment(Fragment frag) {
         FragmentTransaction t = getFragmentManager().beginTransaction();
-        t.replace(R.id.fragment_container_new_project, new NoSelectionView());
+        t.replace(R.id.fragment_container_new_project, frag);
         t.addToBackStack(null);
         t.commit();
     }
@@ -92,9 +86,5 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
                 openProjectDetailView(position);
             }
         });
-    }
-
-    private void log(String output) {
-        Log.d("Project_List_Activity", output);
     }
 }
