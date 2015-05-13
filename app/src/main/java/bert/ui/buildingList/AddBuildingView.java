@@ -1,6 +1,7 @@
 package bert.ui.buildingList;
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,13 +12,19 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
+import bert.data.proj.CategoryPresets;
 import bert.data.proj.Project;
+import bert.data.proj.Time;
 import bert.ui.R;
 import bert.ui.roomList.RoomListActivity;
 
@@ -27,7 +34,7 @@ import bert.ui.roomList.RoomListActivity;
  * Use the {@link AddBuildingView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddBuildingView extends Fragment {
+public class AddBuildingView extends Fragment implements TimePickerDialog.OnTimeSetListener {
 
     private static final String PROJECT_ID_KEY = "PROJECT_ID_KEY";
 
@@ -35,6 +42,16 @@ public class AddBuildingView extends Fragment {
 
     EditText buildingNameTextField;
     Button addBuildingButton;
+    Spinner buildingTypeSpinner;
+
+
+    TextView startTimeDisplay;
+    TextView endTimeDisplay;
+    TextView activeTimeDisplay;
+
+    Time startTime;
+    Time endTime;
+    Time activeTime;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -66,6 +83,12 @@ public class AddBuildingView extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        startTime = new Time(9, 0);
+        endTime = new Time(17, 0);
+        buildingTypeSpinner = (Spinner)getView().findViewById(R.id.building_type_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, CategoryPresets.getNames());
+        buildingTypeSpinner.setAdapter(adapter);
+
         buildingNameTextField = (EditText) getView().findViewById(R.id.add_building_name_textfield);
         buildingNameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -85,12 +108,59 @@ public class AddBuildingView extends Fragment {
                 addBuilding();
             }
         });
+
+        startTimeDisplay = (TextView) getView().findViewById(R.id.start_time_textfield);
+        startTimeDisplay.setText(startTime.description());
+        startTimeDisplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("clicked start time display");
+                launchTimePicker((TextView) v, startTime);
+            }
+        });
+        endTimeDisplay =(TextView) getView().findViewById(R.id.end_time_text_field);
+        endTimeDisplay.setText(endTime.description());
+        endTimeDisplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("clicked end time display");
+                launchTimePicker((TextView)v, endTime);
+
+            }
+        });
+    }
+
+    private void launchTimePicker(TextView v, Time initialTime){
+        activeTimeDisplay = v;
+        activeTime = initialTime;
+
+
+        (new TimePickerDialog(getActivity(), this, initialTime.hour24(), initialTime.minute, false)).show();
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute){
+        System.out.println(hourOfDay);
+        activeTime = new Time(hourOfDay, minute);
+        if (endTime.greaterThan(startTime)){
+            AlertDialog.Builder noRoomNameSetAlert = new AlertDialog.Builder(getView().getContext());
+            noRoomNameSetAlert.setTitle("End Time Cannot be Before Start Time");
+            noRoomNameSetAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            launchTimePicker(activeTimeDisplay, activeTime);
+                        }
+            });
+        } else {
+            activeTimeDisplay.setText(activeTime.description());
+        }
+
     }
 
     private void addBuilding(){
         final String newName = buildingNameTextField.getText().toString();
         if (!ProjectProvider.getInstance().getProjectList().get(projectID).getBuildingNames().contains(newName)){
-            Building b = new Building(newName);
+            Building b = new Building(newName, startTime, endTime, CategoryPresets.getPresets().get(buildingTypeSpinner.getSelectedItem()));
             Project project = ProjectProvider.getInstance().getProjectList().get(projectID);
             project.addBuilding(b);
 

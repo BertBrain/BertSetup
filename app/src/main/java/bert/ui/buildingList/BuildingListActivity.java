@@ -10,15 +10,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.GridView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.List;
 
 import bert.data.ProjectProvider;
-import bert.data.proj.Building;
 import bert.ui.NoSelectionView;
 import bert.ui.R;
 
@@ -88,7 +84,7 @@ public class BuildingListActivity extends ActionBarActivity {
         buildingListView.setAdapter(adapter);
     }
 
-    private void loadFragment(Fragment frag) {
+    public void loadFragment(Fragment frag) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame_layout, frag);
         fragmentTransaction.addToBackStack(null);
