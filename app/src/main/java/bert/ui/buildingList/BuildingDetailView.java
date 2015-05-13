@@ -16,6 +16,7 @@ import android.widget.TextView;
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.ui.R;
+import bert.ui.categoryList.CategoryListActivity;
 import bert.ui.roomList.RoomListActivity;
 
 public class BuildingDetailView extends Fragment {
@@ -31,6 +32,7 @@ public class BuildingDetailView extends Fragment {
 
     EditText nameTextField;
     Button openBuildingButton;
+    Button openCategoryEditor;
 
     // TODO: Rename and change types and number of parameters
     /*
@@ -86,6 +88,14 @@ public class BuildingDetailView extends Fragment {
             }
         });
 
+        openCategoryEditor = (Button) getView().findViewById(R.id.open_category_list_button);
+        openCategoryEditor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         openBuildingButton = (Button) getView().findViewById(R.id.open_building_button);
         openBuildingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,8 +112,13 @@ public class BuildingDetailView extends Fragment {
         getActivity().startActivity(intent);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
+    }
+
+    public void openCategoryEditor() {
+        Intent i = new Intent(this.getActivity(), CategoryListActivity.class);
+        i.putExtra(CategoryListActivity.ARG_PROJECT_ID, projectID);
+        startActivity(i);
     }
 
     @Override

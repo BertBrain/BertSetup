@@ -18,6 +18,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import bert.data.ProjectProvider;
+import bert.data.proj.Building;
 import bert.ui.NoSelectionView;
 import bert.ui.R;
 

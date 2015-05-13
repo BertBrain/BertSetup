@@ -34,6 +34,10 @@
             android:name=".buildingList.BuildingListActivity"
             android:label="@string/title_activity_building_list" >
         </activity>
+        <activity
+            android:name=".categoryList.CategoryListActivity"
+            android:label="@string/title_activity_category_list" >
+        </activity>
     </application>
 
 </manifest>

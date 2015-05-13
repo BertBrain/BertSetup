@@ -1,10 +1,12 @@
 package bert.ui.buildingList;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,14 +88,38 @@ public class AddBuildingView extends Fragment {
     }
 
     private void addBuilding(){
-        Building b = new Building(buildingNameTextField.getText().toString());
-        Project project = ProjectProvider.getInstance().getProjectList().get(projectID);
-        project.addBuilding(b);
+        final String newName = buildingNameTextField.getText().toString();
+        if (!ProjectProvider.getInstance().getProjectList().get(projectID).getBuildingNames().contains(newName)){
+            Building b = new Building(newName);
+            Project project = ProjectProvider.getInstance().getProjectList().get(projectID);
+            project.addBuilding(b);
 
-        Intent intent = new Intent(getActivity(), RoomListActivity.class);
-        intent.putExtra(RoomListActivity.ARG_PROJECT_INDEX, projectID);
-        intent.putExtra(RoomListActivity.ARG_BUILDING_ID, project.getBuildings().size() - 1);
-        getActivity().startActivity(intent);
+            Intent intent = new Intent(getActivity(), RoomListActivity.class);
+            intent.putExtra(RoomListActivity.ARG_PROJECT_INDEX, projectID);
+            intent.putExtra(RoomListActivity.ARG_BUILDING_ID, project.getBuildings().size() - 1);
+            getActivity().startActivity(intent);
+        } else {
+            AlertDialog.Builder noRoomNameSetAlert = new AlertDialog.Builder(getView().getContext());
+            noRoomNameSetAlert.setTitle("This Building Already Exists");
+            noRoomNameSetAlert.setPositiveButton("Open Building", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    int buildingID  = ProjectProvider.getInstance().getProjectList().get(projectID).getBuildingNames().indexOf(newName);
+                    Intent intent = new Intent(getActivity(), RoomListActivity.class);
+                    intent.putExtra(RoomListActivity.ARG_PROJECT_INDEX, projectID);
+                    intent.putExtra(RoomListActivity.ARG_BUILDING_ID, buildingID);
+                    getActivity().startActivity(intent);
+                }
+            });
+            noRoomNameSetAlert.setNegativeButton("Change Name", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //possible TODO: directly open fullscreen text editing
+                }
+            });
+            noRoomNameSetAlert.create().show();
+        }
+
     }
 
     @Override

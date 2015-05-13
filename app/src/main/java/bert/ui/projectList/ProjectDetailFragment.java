@@ -24,9 +24,11 @@ import bert.data.ProjectProvider;
 import bert.data.utility.CSVExporter;
 import bert.data.utility.Cleaner;
 import bert.ui.R;
+
 import bert.ui.buildingList.AddBuildingView;
 import bert.ui.buildingList.BuildingListActivity;
-import bert.ui.categoryList.CategoryEditorActivity;
+
+import bert.ui.categoryList.CategoryListActivity;
 import bert.ui.roomList.RoomListActivity;
 
 //TODO use 1 save method for all writing to project done
@@ -53,8 +55,6 @@ public class ProjectDetailFragment extends Fragment {
     private Button exportToBertConfigButton;
     private Button exportToROIButton;
     private Button openProjectButton;
-    private Button categoryEditorButton;
-    private Button buildingEditorButton;
     
     private OnFragmentInteractionListener mListener;
 
@@ -159,14 +159,6 @@ public class ProjectDetailFragment extends Fragment {
                 openRoomList();
             }
         });
-
-        buildingEditorButton = (Button) getView().findViewById(R.id.buildingEditorButton);
-        buildingEditorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openBuildingEditor();
-            }
-        });
     }
 
     @Override
@@ -201,10 +193,6 @@ public class ProjectDetailFragment extends Fragment {
         Intent i = new Intent(this.getActivity(), BuildingListActivity.class);
         i.putExtra(BuildingListActivity.PROJECT_ID_KEY, projectIndex);
         startActivity(i);
-    }
-
-    public void openBuildingEditor() {
-        //TODO write
     }
 
     public interface OnFragmentInteractionListener {
