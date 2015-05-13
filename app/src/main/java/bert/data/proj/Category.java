@@ -26,13 +26,6 @@ public class Category implements Serializable {
 		this.bertTypeID = bertTypeID;
 		this.estimatedLoad = estimatedLoad;
 	}
-
-
-	public Category(Element e) {
-		this.name = e.getAttribute("Name");
-		this.bertTypeID = Integer.parseInt(e.getAttribute("BertType"));
-		this.estimatedLoad = Integer.parseInt(e.getAttribute("EstimatedLoad"));
-	}
 	
 	public String getName() {
 		return name;
