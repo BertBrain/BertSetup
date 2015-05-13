@@ -24,7 +24,7 @@ import bert.data.ProjectProvider;
 import bert.data.utility.CSVExporter;
 import bert.data.utility.Cleaner;
 import bert.ui.R;
-import bert.ui.categoryList.CategoryEditorActivity;
+import bert.ui.categoryList.CategoryListActivity;
 import bert.ui.roomList.RoomListActivity;
 
 //TODO use 1 save method for all writing to project done
@@ -215,8 +215,8 @@ public class ProjectDetailFragment extends Fragment {
     }
 
     public void openCategoryEditor() {
-        Intent i = new Intent(this.getActivity(), CategoryEditorActivity.class);
-        i.putExtra(CategoryEditorActivity.ARG_PROJECT_ID, projectIndex);
+        Intent i = new Intent(this.getActivity(), CategoryListActivity.class);
+        i.putExtra(CategoryListActivity.ARG_PROJECT_ID, projectIndex);
         startActivity(i);
     }
 
