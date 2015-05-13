@@ -24,6 +24,10 @@ import bert.data.ProjectProvider;
 import bert.data.utility.CSVExporter;
 import bert.data.utility.Cleaner;
 import bert.ui.R;
+
+import bert.ui.buildingList.AddBuildingView;
+import bert.ui.buildingList.BuildingListActivity;
+
 import bert.ui.categoryList.CategoryListActivity;
 import bert.ui.roomList.RoomListActivity;
 
@@ -51,8 +55,6 @@ public class ProjectDetailFragment extends Fragment {
     private Button exportToBertConfigButton;
     private Button exportToROIButton;
     private Button openProjectButton;
-    private Button categoryEditorButton;
-    private Button buildingEditorButton;
     
     private OnFragmentInteractionListener mListener;
 
@@ -157,22 +159,6 @@ public class ProjectDetailFragment extends Fragment {
                 openRoomList();
             }
         });
-
-        categoryEditorButton = (Button) getView().findViewById(R.id.categoryEditorButton);
-        categoryEditorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCategoryEditor();
-            }
-        });
-
-        buildingEditorButton = (Button) getView().findViewById(R.id.buildingEditorButton);
-        buildingEditorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openBuildingEditor();
-            }
-        });
     }
 
     @Override
@@ -204,19 +190,8 @@ public class ProjectDetailFragment extends Fragment {
     }
 
     public void openRoomList() {
-        Intent i = new Intent(this.getActivity(), RoomListActivity.class);
-        i.putExtra(RoomListActivity.ARG_PROJECT_ID, projectIndex);
-        i.putExtra(RoomListActivity.ARG_BUILDING_ID, 0);
-        startActivity(i);
-    }
-
-    public void openBuildingEditor() {
-        //TODO write
-    }
-
-    public void openCategoryEditor() {
-        Intent i = new Intent(this.getActivity(), CategoryListActivity.class);
-        i.putExtra(CategoryListActivity.ARG_PROJECT_ID, projectIndex);
+        Intent i = new Intent(this.getActivity(), BuildingListActivity.class);
+        i.putExtra(BuildingListActivity.PROJECT_ID_KEY, projectIndex);
         startActivity(i);
     }
 

@@ -19,6 +19,7 @@ import bert.data.utility.Cleaner;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
 import bert.ui.R;
+import bert.ui.buildingList.BuildingListActivity;
 import bert.ui.roomList.RoomListActivity;
 
 
@@ -124,8 +125,8 @@ public class AddProjectView extends Fragment {
             ProjectProvider.getInstance().addProject(newProject);
 
             ProjectListActivity activity = (ProjectListActivity) getActivity();
-            Intent intent = new Intent(activity, RoomListActivity.class);
-            intent.putExtra(RoomListActivity.ARG_PROJECT_ID, ProjectProvider.getInstance().getProjectList().size() - 1);
+            Intent intent = new Intent(activity, BuildingListActivity.class);
+            intent.putExtra(BuildingListActivity.PROJECT_ID_KEY, ProjectProvider.getInstance().getProjectList().size() - 1);
             activity.loadProjectList();
             activity.closeAddProjectView();
             startActivity(intent);
