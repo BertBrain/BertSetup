@@ -22,14 +22,6 @@ public class BertUnit {
 		this.categoryID = categoryID;
 	}
 	
-	public BertUnit(Element e) {
-		this.name = e.getAttribute("Name");
-		this.location = e.getAttribute("Location");
-		this.MAC = e.getAttribute("MAC");
-		this.buildingID = Integer.parseInt(e.getAttribute("BuildingID"));
-		this.categoryID = Integer.parseInt(e.getAttribute("CategoryID"));
-	}
-	
 	public String getName() {
 		return name;
 	}
