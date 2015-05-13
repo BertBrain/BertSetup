@@ -18,7 +18,7 @@ import bert.data.ProjectProvider;
 import bert.data.proj.Project;
 import bert.ui.R;
 
-public class CategoryListActivity extends ActionBarActivity implements CategoryDetailFragment.OnFragmentInteractionListener {
+public class CategoryListActivity extends ActionBarActivity implements CategoryDetailFragment.OnFragmentInteractionListener, CategoryAddFragment.OnFragmentInteractionListener {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
 
@@ -39,6 +39,13 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
 
         addCategoryButton = (Button) findViewById(R.id.create_list_item_button);
         addCategoryButton.setText("Add Category");
+        addCategoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCategoryAddFragment();
+            }
+        });
+
         createCategoryListView();
     }
 
@@ -80,6 +87,10 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
         loadFragment(new CategoryDetailFragment().newInstance(projectID, index));
     }
 
+    private void openCategoryAddFragment() {
+        loadFragment(CategoryAddFragment.newInstance(projectID));
+    }
+
     private void loadFragment(Fragment frag) {
         FragmentTransaction t = getFragmentManager().beginTransaction();
         t.replace(R.id.fragment_frame_layout, frag);
@@ -89,4 +100,17 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
 
     @Override
     public void onFragmentInteraction(Uri uri) {}
+
+    @Override
+    public void categoryCreationCanceled() {
+        if (project.getCategories().size() > 0) {
+            openCategoryDetailFragment(0);
+        }
+    }
+
+    @Override
+    public void categoryCreationSuccessful() {
+        createCategoryListView();
+        openCategoryDetailFragment(project.getCategories().size() - 1);
+    }
 }

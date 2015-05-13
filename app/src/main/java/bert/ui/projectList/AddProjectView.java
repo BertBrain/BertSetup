@@ -125,7 +125,7 @@ public class AddProjectView extends Fragment {
 
             ProjectListActivity activity = (ProjectListActivity) getActivity();
             Intent intent = new Intent(activity, RoomListActivity.class);
-            intent.putExtra(RoomListActivity.ARG_PROJECT_INDEX, ProjectProvider.getInstance().getProjectList().size() - 1);
+            intent.putExtra(RoomListActivity.ARG_PROJECT_ID, ProjectProvider.getInstance().getProjectList().size() - 1);
             activity.loadProjectList();
             activity.closeAddProjectView();
             startActivity(intent);

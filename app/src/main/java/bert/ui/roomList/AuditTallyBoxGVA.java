@@ -1,17 +1,12 @@
 package bert.ui.roomList;
 
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.app.Activity;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import bert.data.proj.Category;
@@ -31,12 +26,14 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
     List<Category> deviceTypes;
     Activity activity;
     AuditWizardView owner;
+    private int projectID;
 
-    public AuditTallyBoxGVA(AuditWizardView owner, Activity activity, int recourseId, List<Category> deviceTypes) {
+    public AuditTallyBoxGVA(AuditWizardView owner, Activity activity, int recourseId, List<Category> deviceTypes, int projectID) {
         super(activity, recourseId, deviceTypes);
         this.deviceTypes = deviceTypes;
         this.activity = activity;
         this.owner = owner;
+        this.projectID = projectID;
     }
 
     @Override
@@ -95,7 +92,8 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
     }
 
     void createNewCategory() {
-        Intent intent = new Intent(activity, AddCategory.class);
+        Intent intent = new Intent(activity, AddCategoryFrameActivity.class);
+        intent.putExtra(AddCategoryFrameActivity.ARG_PROJECT_ID, projectID);
         activity.startActivityForResult(intent, 1);
     }
 

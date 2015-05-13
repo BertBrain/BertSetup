@@ -36,11 +36,13 @@ import java.util.List;
 
 public class RoomListActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener {
 
-    public static final String ARG_PROJECT_INDEX = "projectIndex";
-    public static final String ARG_BUILDING_ID = "buildingID";
+    public static final String ARG_PROJECT_ID = "PROJECT_ID";
+    public static final String ARG_BUILDING_ID = "BUILDING_ID";
+
+    private int projectID;
+    private int buildingID;
 
     private Project project;
-    private int buildingID;
 
     private Button startAuditButton;
 
@@ -61,8 +63,9 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         if (savedInstanceState != null) return;//if restoring, don't replace
 
         Bundle extras = getIntent().getExtras();
+        projectID = extras.getInt(ARG_PROJECT_ID);
         buildingID = extras.getInt(ARG_BUILDING_ID);
-        project = ProjectProvider.getInstance().getProjectList().get(extras.getInt(ARG_PROJECT_INDEX));
+        project = ProjectProvider.getInstance().getProjectList().get(projectID);
 
         startAuditButton = (Button) findViewById(R.id.create_list_item_button);
         startAuditButton.setText("Audit Wizard");
@@ -91,19 +94,6 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (resultCode == RESULT_OK){
-            System.out.println("activty result achieved in activity: " + data.getExtras().get("category"));
-            Category newCategory = (Category) data.getExtras().get("category");
-            System.out.println("cateogry name: " + newCategory.getName());
-            project.addCategory(newCategory);
-
-        } if (resultCode == RESULT_CANCELED) {
-            System.out.println("add category canceled");
-        }
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -126,7 +116,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     public void openAuditWizardView() {
-        AuditWizardView auditWizardView = AuditWizardView.newInstance(buildingID);
+        AuditWizardView auditWizardView = AuditWizardView.newInstance(projectID, buildingID);
         AuditTallyBoxGVA.resetCounts();
         loadFragment(auditWizardView);
     }

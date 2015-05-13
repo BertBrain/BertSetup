@@ -205,7 +205,7 @@ public class ProjectDetailFragment extends Fragment {
 
     public void openRoomList() {
         Intent i = new Intent(this.getActivity(), RoomListActivity.class);
-        i.putExtra(RoomListActivity.ARG_PROJECT_INDEX, projectIndex);
+        i.putExtra(RoomListActivity.ARG_PROJECT_ID, projectIndex);
         i.putExtra(RoomListActivity.ARG_BUILDING_ID, 0);
         startActivity(i);
     }

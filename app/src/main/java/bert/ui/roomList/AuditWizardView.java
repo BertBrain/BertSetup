@@ -18,10 +18,13 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import bert.data.FileProvider;
+import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 
+import bert.data.proj.Building;
 import bert.data.proj.Category;
 
+import bert.data.proj.Project;
 import bert.ui.R;
 
 import java.util.ArrayList;
@@ -30,8 +33,13 @@ import java.util.List;
 
 public class AuditWizardView extends Fragment {
 
-    public static final String ARG_BUILDING = "building";
+    public static final String ARG_BUILDING_ID = "BUILDING_ID";
+    public static final String ARG_PROJECT_ID = "PROJECT_ID";
+
+    private int projectID;
     private int buildingID;
+
+    private Project project;
 
     private Button cancelButton;
     private Button finishedButton;
@@ -43,10 +51,11 @@ public class AuditWizardView extends Fragment {
 
     private RoomListActivity activity;
 
-    public static AuditWizardView newInstance(int buildingID) {
+    public static AuditWizardView newInstance(int projectID, int buildingID) {
         AuditWizardView fragment = new AuditWizardView();
         Bundle args = new Bundle();
-        args.putInt(ARG_BUILDING, buildingID);
+        args.putInt(ARG_PROJECT_ID, projectID);
+        args.putInt(ARG_BUILDING_ID, buildingID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,7 +67,9 @@ public class AuditWizardView extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            buildingID = getArguments().getInt(ARG_BUILDING);
+            projectID = getArguments().getInt(ARG_PROJECT_ID);
+            buildingID = getArguments().getInt(ARG_BUILDING_ID);
+            project = ProjectProvider.getInstance().getProjectList().get(projectID);
         }
         activity = (RoomListActivity) getActivity();
     }
@@ -71,7 +82,7 @@ public class AuditWizardView extends Fragment {
     @Override public void onResume() {
         super.onResume();
 
-        tallyGridAdapter = new AuditTallyBoxGVA(this, this.getActivity(), android.R.layout.simple_gallery_item, activity.getProject().getCategories());
+        tallyGridAdapter = new AuditTallyBoxGVA(this, this.getActivity(), android.R.layout.simple_gallery_item, project.getCategories(), projectID);
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(tallyGridAdapter);
 
@@ -167,7 +178,7 @@ public class AuditWizardView extends Fragment {
             HashMap<Category, Integer> categoryCounts = tallyGridAdapter.getCounts();
             List<BertUnit> berts = new ArrayList<BertUnit>();
             int categoryCount = 0;
-            for (Category category : activity.getProject().getCategories()) {
+            for (Category category : project.getCategories()) {
                 if (categoryCounts.get(category) != null) {
                     for (int i = 0; i < categoryCounts.get(category); i++) {
                         String name = location + " - " + category.getName() + " " + (i + 1);
@@ -178,15 +189,15 @@ public class AuditWizardView extends Fragment {
                 categoryCount++;
             }
 
-            activity.getProject().addBerts(berts);
+            project.addBerts(berts);
             activity.createLocationlistView(); //Refresh view
 
-            if (activity.getProject().getBertsByLocation(buildingID, location).size() > 0) {
+            if (project.getBertsByLocation(buildingID, location).size() > 0) {
                 activity.openDeviceEditorView(berts.get(0).getLocation());
             } else {
                 System.out.println("done button pressed but no berts to be added");
             }
-            FileProvider.saveProject(activity.getProject());
+            FileProvider.saveProject(project);
         }
     }
 }
