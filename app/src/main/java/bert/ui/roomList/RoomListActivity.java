@@ -55,6 +55,19 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        createLocationlistView();
+        clearFragmentContainer();
+    }
+
+    private void clearFragmentContainer(){
+        int numberOfRooms = project.getLocationNamesInBuilding(buildingID).size();
+        String message = numberOfRooms > 0 ? "Select or Create A Room" : "Create a Room";
+        loadFragment(NoSelectionView.newInstance(message));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail);

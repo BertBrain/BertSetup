@@ -106,6 +106,8 @@ public class Project {
         categories.add(category);
     }
 
+    public void addBuilding(Building building) {buildings.add(building);}
+
     //Getters and setters
     public String getProjectName() {
         return projectName;

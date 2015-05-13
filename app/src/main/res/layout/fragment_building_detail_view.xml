@@ -1,0 +1,48 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="bert.ui.buildingList.BuildingDetailView">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center">
+
+        <GridLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:columnCount="2"
+            android:orientation="vertical"
+            android:id="@+id/add_building_grid_view"
+            android:rowCount="4">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Building Name:"
+                android:id="@+id/n"
+                android:layout_row="0"
+                android:layout_column="0" />
+
+            <EditText
+                android:imeOptions="actionDone"
+                android:imeActionLabel="Done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_building_name_textfield"
+                android:layout_row="0"
+                android:layout_column="1" />
+        </GridLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open Building"
+            android:id="@+id/open_building_button"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+</FrameLayout>

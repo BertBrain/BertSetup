@@ -24,6 +24,8 @@ import bert.data.ProjectProvider;
 import bert.data.utility.CSVExporter;
 import bert.data.utility.Cleaner;
 import bert.ui.R;
+import bert.ui.buildingList.AddBuildingView;
+import bert.ui.buildingList.BuildingListActivity;
 import bert.ui.categoryList.CategoryEditorActivity;
 import bert.ui.roomList.RoomListActivity;
 
@@ -158,14 +160,6 @@ public class ProjectDetailFragment extends Fragment {
             }
         });
 
-        categoryEditorButton = (Button) getView().findViewById(R.id.categoryEditorButton);
-        categoryEditorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCategoryEditor();
-            }
-        });
-
         buildingEditorButton = (Button) getView().findViewById(R.id.buildingEditorButton);
         buildingEditorButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,20 +198,13 @@ public class ProjectDetailFragment extends Fragment {
     }
 
     public void openRoomList() {
-        Intent i = new Intent(this.getActivity(), RoomListActivity.class);
-        i.putExtra(RoomListActivity.ARG_PROJECT_INDEX, projectIndex);
-        i.putExtra(RoomListActivity.ARG_BUILDING_ID, 0);
+        Intent i = new Intent(this.getActivity(), BuildingListActivity.class);
+        i.putExtra(BuildingListActivity.PROJECT_ID_KEY, projectIndex);
         startActivity(i);
     }
 
     public void openBuildingEditor() {
         //TODO write
-    }
-
-    public void openCategoryEditor() {
-        Intent i = new Intent(this.getActivity(), CategoryEditorActivity.class);
-        i.putExtra(CategoryEditorActivity.ARG_PROJECT_ID, projectIndex);
-        startActivity(i);
     }
 
     public interface OnFragmentInteractionListener {
