@@ -1,10 +1,7 @@
 package bert.ui.projectList;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -27,6 +24,7 @@ import bert.data.ProjectProvider;
 import bert.data.utility.CSVExporter;
 import bert.data.utility.Cleaner;
 import bert.ui.R;
+import bert.ui.categoryList.CategoryEditorActivity;
 import bert.ui.roomList.RoomListActivity;
 
 //TODO use 1 save method for all writing to project done
@@ -138,7 +136,7 @@ public class ProjectDetailFragment extends Fragment {
         exportToBertConfigButton = (Button) getView().findViewById(R.id.exportToBertConfiguratorButton);
         exportToBertConfigButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {//TODO add alert
                 File fileToShare;
                 try {
                     fileToShare = CSVExporter.generateCSV(currentProject);
@@ -147,7 +145,6 @@ public class ProjectDetailFragment extends Fragment {
                     Log.d("Project Detail Fragment", "Unable to generate Configurator CSV File");
                     fileToShare = new File("test file");
                 }
-                ((ProjectListActivity)getActivity()).shareView.shareFile(fileToShare);
             }
         });
 
@@ -209,6 +206,7 @@ public class ProjectDetailFragment extends Fragment {
     public void openRoomList() {
         Intent i = new Intent(this.getActivity(), RoomListActivity.class);
         i.putExtra(RoomListActivity.ARG_PROJECT_INDEX, projectIndex);
+        i.putExtra(RoomListActivity.ARG_BUILDING_ID, 0);
         startActivity(i);
     }
 

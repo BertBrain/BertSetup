@@ -21,7 +21,7 @@ public class ShareOverlayView {
 
     ProjectListActivity activity;
 
-    ShareOverlayView(Button emailButton, Button saveToSDButton, FrameLayout layout, ProjectListActivity activity){
+    ShareOverlayView(Button emailButton, Button saveToSDButton, FrameLayout layout, ProjectListActivity activity) {
         this.emailButton = emailButton;
         this.saveToSDButton = saveToSDButton;
         this.layout = layout;
@@ -56,12 +56,12 @@ public class ShareOverlayView {
         layout.setVisibility(View.VISIBLE);
     }
 
-    public void shareFile(File file){
+    public void shareFile(File file) {
         show();
         this.fileToShare = file;
     }
 
-    private void shareByEmail(){
+    private void shareByEmail() {
         System.out.println("sharing by email");
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setType("message/rfc822");
@@ -69,9 +69,9 @@ public class ShareOverlayView {
         intent.putExtra(Intent.EXTRA_TEXT, "EXPORTED CSV FROM BERT SETUP APPLICATION");
         intent.putExtra(Intent.EXTRA_SUBJECT, "Exported CSV");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        try{
+        try {
             activity.startActivity(intent);
-        } catch (ActivityNotFoundException e){
+        } catch (ActivityNotFoundException e) {
             System.out.println("no email client installed");
             //TODO: make popup telling user to install email client
         }
@@ -79,12 +79,12 @@ public class ShareOverlayView {
         hide();
     }
 
-    private void shareBySD(){
+    private void shareBySD() {
         System.out.println("sharing by SD");
         hide();
     }
 
-    private void cancel(){
+    private void cancel() {
         fileToShare = null;
         hide();
     }

@@ -22,19 +22,16 @@ import bert.ui.roomList.RoomListActivity;
 
 public class ProjectListActivity extends ActionBarActivity implements AddProjectView.OnFragmentInteractionListener, ProjectDetailFragment.OnFragmentInteractionListener {
 
-    FrameLayout overlayLayout;
-    Button emailExportButton;
-    Button SDExportButton;
-    public ShareOverlayView shareView;
-
     private ListView projectListView;
+    private Button addProjectButton;
+    private FrameLayout detailFrame;
     private ArrayAdapter<String> projectTableAdapter;
 
     @Override
     public void onFragmentInteraction(android.net.Uri uri) {}
 
     @Override
-    public void openAddProjectView(View view) {
+    public void openAddProjectView() {
         loadFragment(new AddProjectView());
     }
 
@@ -49,7 +46,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
 
     private void loadFragment(Fragment frag) {
         FragmentTransaction t = getFragmentManager().beginTransaction();
-        t.replace(R.id.fragment_container_new_project, frag);
+        t.replace(R.id.fragment_frame_layout, frag);
         t.addToBackStack(null);
         t.commit();
     }
@@ -57,7 +54,15 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_menu);
+        setContentView(R.layout.activity_master_detail);
+        addProjectButton = (Button) findViewById(R.id.create_list_item_button);
+        addProjectButton.setText("Add Project");
+        addProjectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddProjectView();
+            }
+        });
     }
 
     @Override
@@ -70,12 +75,6 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main_menu, menu);
         loadProjectList();
-
-        overlayLayout = (FrameLayout) findViewById(R.id.shareOverlayView);
-        emailExportButton = (Button) findViewById(R.id.emailExportButton);
-        SDExportButton = (Button) findViewById(R.id.SDCardExportButton);
-        shareView = new ShareOverlayView(emailExportButton, SDExportButton, overlayLayout, this);
-
         return true;
     }
 
@@ -95,7 +94,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
 
     public void loadProjectList() {
         projectTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ProjectProvider.getInstance().getProjectNameList());
-        projectListView = (ListView) findViewById(R.id.projectListView);
+        projectListView = (ListView) findViewById(R.id.item_list_view);
         projectListView.setAdapter(projectTableAdapter);
         projectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -37,20 +37,15 @@ import java.util.List;
 public class RoomListActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener {
 
     public static final String ARG_PROJECT_INDEX = "projectIndex";
+    public static final String ARG_BUILDING_ID = "buildingID";
 
     private Project project;
-    private int currentBuildingID;
+    private int buildingID;
 
-    private Spinner buildingDropdown;
-    private Button addBuildingButton;
     private Button startAuditButton;
-    private EditText newBuildingName;
-    private ArrayAdapter<String> buildingAdapter;
 
     private ArrayAdapter<String> locationTableAdapter;
     private ListView locationListView;
-
-    private AuditWizardView auditWizardView;
 
     @Override
     public void onFragmentInteraction(android.net.Uri uri) {}
@@ -62,56 +57,35 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_room_list);
+        setContentView(R.layout.activity_master_detail);
         if (savedInstanceState != null) return;//if restoring, don't replace
 
         Bundle extras = getIntent().getExtras();
+        buildingID = extras.getInt(ARG_BUILDING_ID);
         project = ProjectProvider.getInstance().getProjectList().get(extras.getInt(ARG_PROJECT_INDEX));
-        addBuildingButton = (Button) findViewById(R.id.addBuildingButton);
-        newBuildingName = (EditText) findViewById(R.id.newBuildingName);
-        startAuditButton = (Button) findViewById(R.id.button_audit);
-        createLocationlistView();
-        createBuildingDropdown();
-        boolean isBuildingListEmpty = (project.getBuildingNames().size() == 0);
-        openNoSelectionView((isBuildingListEmpty) ? "Create a building" : "Select a Room or create a new one");
-        setBuildingDropdownVisibility(!isBuildingListEmpty);
-        startAuditButton.setEnabled(!isBuildingListEmpty);
-        if (!isBuildingListEmpty) {
-            currentBuildingID = 0; //TODO: make this get last viewed building
-        }
-        this.setTitle("Project: " + project.getProjectName());
-    }
 
-    private void createBuildingDropdown() {
-        buildingDropdown = (Spinner) findViewById(R.id.buildingDropdown);
-        buildingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getBuildingNames());
-        buildingDropdown.setAdapter(buildingAdapter);
-        buildingDropdown.setSelection(project.getBuildingNames().size() - 1);
-        buildingDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        startAuditButton = (Button) findViewById(R.id.create_list_item_button);
+        startAuditButton.setText("Audit Wizard");
+        startAuditButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                currentBuildingID = position;
-                createLocationlistView();
-                setBuildingDropdownVisibility(true);
-                openNoSelectionView("Select or Create a Room");
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                openNoSelectionView("No Building Selected");
+            public void onClick(View v) {
+                openAuditWizardView();
             }
         });
+
+        createLocationlistView();
+        this.setTitle("Project: [" + project.getProjectName() + "] Building: [" + project.getBuildings().get(buildingID).getName() + "]");
     }
 
     //TODO should be private
     public void createLocationlistView() {
-        locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getLocationNamesInBuilding(currentBuildingID));
-        locationListView = (ListView) findViewById(R.id.locationListView);
+        locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getLocationNamesInBuilding(buildingID));
+        locationListView = (ListView) findViewById(R.id.item_list_view);
         locationListView.setAdapter(locationTableAdapter);
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openDeviceEditorView(project.getLocationNamesInBuilding(currentBuildingID).get(position));
+                openDeviceEditorView(project.getLocationNamesInBuilding(buildingID).get(position));
             }
         });
     }
@@ -151,14 +125,14 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         return super.onOptionsItemSelected(item);
     }
 
-    public void openAuditWizardView(View view) {
-        auditWizardView = AuditWizardView.newInstance(currentBuildingID);
+    public void openAuditWizardView() {
+        AuditWizardView auditWizardView = AuditWizardView.newInstance(buildingID);
         AuditTallyBoxGVA.resetCounts();
         loadFragment(auditWizardView);
     }
 
     public void openDeviceEditorView(String locationName) {
-        loadFragment(DeviceEditorView.newInstance(currentBuildingID, locationName));
+        loadFragment(DeviceEditorView.newInstance(buildingID, locationName));
     }
 
     public void openNoSelectionView(String message) {
@@ -167,53 +141,8 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
 
     private void loadFragment(Fragment frag) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, frag);
+        fragmentTransaction.replace(R.id.fragment_frame_layout, frag);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-    }
-
-    public void launchBuildingNameTextField(View view) {
-        newBuildingName.setFocusable(true);
-        newBuildingName.requestFocus();
-        newBuildingName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    addBuilding();
-                }
-                return false;
-            }
-        });
-        InputMethodManager manager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        manager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
-
-    public void addBuilding() {
-        String input = newBuildingName.getText().toString().trim();
-        if (!input.isEmpty()) {
-            project.getBuildings().add(new Building(input));
-            currentBuildingID = project.getBuildingNames().size() - 1;
-            newBuildingName.setText("");
-            newBuildingName.clearFocus();
-            InputMethodManager manager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            manager.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
-
-            createBuildingDropdown();
-            setBuildingDropdownVisibility(true);
-            Button startAddWizardButton = (Button) findViewById(R.id.button_audit);
-            startAddWizardButton.setEnabled(true);
-            createLocationlistView();
-            FileProvider.saveProject(project);
-        }
-    }
-
-    public void setBuildingDropdownVisibility(boolean isVisible) {
-        buildingDropdown.setMinimumWidth(0);
-        addBuildingButton.setText((isVisible) ? "+" : "+ Add Building");
-        //addBuildingButton.setGravity((isVisible) ? Gravity.RIGHT : Gravity.CENTER);
-        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(((isVisible) ? 75 : LinearLayout.LayoutParams.MATCH_PARENT), LinearLayout.LayoutParams.MATCH_PARENT, 1);
-        LinearLayout.LayoutParams dropDownParams = new LinearLayout.LayoutParams((isVisible) ? locationListView.getWidth()-75 : 0, LinearLayout.LayoutParams.MATCH_PARENT);
-        addBuildingButton.setLayoutParams(buttonParams);
-        buildingDropdown.setLayoutParams(dropDownParams);
     }
 }

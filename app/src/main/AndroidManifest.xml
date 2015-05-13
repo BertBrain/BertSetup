@@ -30,6 +30,10 @@
             android:name=".projectList.CategoryEditorActivity"
             android:label="@string/title_activity_category_editor" >
         </activity>
+        <activity
+            android:name=".buildingList.BuildingListActivity"
+            android:label="@string/title_activity_building_list" >
+        </activity>
     </application>
 
 </manifest>

@@ -105,7 +105,7 @@ public class AddProjectView extends Fragment {
 
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
-        public void openAddProjectView(View view);
+        public void openAddProjectView();
         public void closeAddProjectView();
     }
 
