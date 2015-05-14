@@ -20,6 +20,7 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -29,6 +30,7 @@
                 android:layout_column="0" />
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="173dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -56,6 +58,7 @@
                 android:layout_column="1" />
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -75,6 +78,7 @@
                 android:layout_column="1" />
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -93,6 +97,7 @@
                 android:layout_column="1" />
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"

@@ -7,6 +7,7 @@
         android:layout_height="736dp">
 
         <GridLayout
+
             android:layout_width="fill_parent"
             android:layout_height="214dp"
             android:layout_gravity="left|top"
@@ -16,6 +17,7 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="253dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -36,6 +38,7 @@
                 />
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -55,6 +58,7 @@
                 android:layout_column="1" />
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
