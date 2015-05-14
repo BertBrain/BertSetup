@@ -40,6 +40,7 @@
                 android:layout_column="0" />
 
             <EditText
+                style="@style/ThinText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/projectNameEditText"
@@ -49,6 +50,7 @@
                 android:layout_column="1" />
 
             <EditText
+                style="@style/ThinText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/contactNameEditText"
@@ -68,6 +70,7 @@
                 android:layout_column="0" />
 
             <EditText
+                style="@style/ThinText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/contactNumberEditText"
@@ -88,6 +91,7 @@
                 android:layout_column="0" />
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -104,9 +108,11 @@
                 android:text="Date Acessed:"
                 android:id="@+id/textView9"
                 android:layout_row="5"
-                android:layout_column="0" />
+                android:layout_column="0"
+                android:textSize="20dp" />
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -116,27 +122,40 @@
                 android:layout_column="1" />
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/spacer"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Export:"
+                android:id="@+id/textView17"
                 android:layout_row="6"
                 android:layout_column="0" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Export ROI Sheet"
-                android:id="@+id/exportToROIButton"
-                android:layout_row="7"
-                android:layout_column="0"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_row="6"
+                android:layout_column="1">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Export Configurator CSV"
-                android:id="@+id/exportToBertConfiguratorButton"
-                android:layout_row="7"
-                android:layout_column="1"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ROI Sheet"
+                    android:id="@+id/exportToROIButton"
+                    android:layout_row="7"
+                    android:layout_column="0"
+                    android:layout_gravity="center_horizontal" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Configurator CSV"
+                    android:id="@+id/exportToBertConfiguratorButton"
+                    android:layout_row="7"
+                    android:layout_column="1"/>
+            </LinearLayout>
+
         </GridLayout>
 
         <Button
@@ -147,5 +166,6 @@
             android:layout_row="0"
             android:id="@+id/openProjectButton"
             android:layout_gravity="center_horizontal" />
+
     </LinearLayout>
 </FrameLayout>
