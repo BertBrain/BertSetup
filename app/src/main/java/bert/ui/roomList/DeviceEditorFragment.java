@@ -99,7 +99,7 @@ public class DeviceEditorFragment extends Fragment {
                 bertNameList.add(bert.getName());
             }
         }
-        ArrayAdapter<String> categoryTableAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, activity.getProject().getCategoryNames());
+        ArrayAdapter<String> categoryTableAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, activity.getProject().getBuildings().get(buildingID).getCategoryNames());
         categorySelector.setAdapter(categoryTableAdapter);
         categorySelector.setSelection(bertList.get(0).getCategoryID());
 

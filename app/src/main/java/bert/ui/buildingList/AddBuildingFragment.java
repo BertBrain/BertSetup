@@ -1,6 +1,7 @@
 package bert.ui.buildingList;
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,13 +12,19 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
+import bert.data.proj.CategoryPresets;
 import bert.data.proj.Project;
+import bert.data.proj.Time;
 import bert.ui.R;
 import bert.ui.roomList.RoomListActivity;
 
@@ -35,6 +42,12 @@ public class AddBuildingFragment extends Fragment {
 
     EditText buildingNameTextField;
     Button addBuildingButton;
+    Spinner buildingTypeSpinner;
+
+    TextView startTimeDisplay;
+    TextView endTimeDisplay;
+    TimeRangeDisplay timeDisplay;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -66,6 +79,17 @@ public class AddBuildingFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+
+        startTimeDisplay = (TextView) getView().findViewById(R.id.start_time_textfield);
+        endTimeDisplay =(TextView) getView().findViewById(R.id.end_time_text_field);
+        Time startTime = new Time(9, 0); //default start time
+        Time endTime = new Time(17, 0); // default end time
+        timeDisplay = new TimeRangeDisplay(getActivity(), startTimeDisplay, startTime, endTimeDisplay, endTime);
+
+        buildingTypeSpinner = (Spinner)getView().findViewById(R.id.building_type_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, CategoryPresets.getNames());
+        buildingTypeSpinner.setAdapter(adapter);
+
         buildingNameTextField = (EditText) getView().findViewById(R.id.add_building_name_textfield);
         buildingNameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -85,12 +109,18 @@ public class AddBuildingFragment extends Fragment {
                 addBuilding();
             }
         });
+
+
     }
+
+
+
+
 
     private void addBuilding(){
         final String newName = buildingNameTextField.getText().toString();
         if (!ProjectProvider.getInstance().getProjectList().get(projectID).getBuildingNames().contains(newName)){
-            Building b = new Building(newName);
+            Building b = new Building(newName, timeDisplay.getStartTime(), timeDisplay.getEndTime(), CategoryPresets.getPresets().get(buildingTypeSpinner.getSelectedItem()));
             Project project = ProjectProvider.getInstance().getProjectList().get(projectID);
             project.addBuilding(b);
 

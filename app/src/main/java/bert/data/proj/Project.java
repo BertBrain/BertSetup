@@ -1,5 +1,6 @@
 package bert.data.proj;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +11,7 @@ import bert.data.utility.DateUtil;
 /**
  * @author afiol-mahon
  */
-public class Project {
+public class Project implements Serializable{
 	private String projectName;
 	private String contactName;
 	private String contactNumber;
