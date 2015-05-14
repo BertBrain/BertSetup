@@ -42,7 +42,6 @@ public class ProjectSerializer {
             newProject.setModifiedDate(projectTag.getAttribute(TAG_MODIFIED_DATE));
 
             newProject.setBerts(BertUnitSerializer.getBertUnitList(document));
-            newProject.setCategories(CategorySerializer.getCategoryList(document));
             newProject.setBuildings(BuildingSerializer.getBuildingList(document));
 
             return newProject;
@@ -70,9 +69,6 @@ public class ProjectSerializer {
 
         Element buildingElementList = BuildingSerializer.getBuildingElementList(p.getBuildings(), projectDoc);
         root.appendChild(buildingElementList);
-
-        Element categories = CategorySerializer.getCategoryElementList(p.getCategories(), projectDoc);
-        root.appendChild(categories);
 
         projectDoc.appendChild(root);
         return projectDoc;

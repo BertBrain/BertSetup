@@ -81,7 +81,7 @@ public class AuditWizardFragment extends Fragment {
     @Override public void onResume() {
         super.onResume();
 
-        tallyGridAdapter = new AuditTallyBoxGVA(this, this.getActivity(), android.R.layout.simple_gallery_item, project.getBuildings().get(buildingID).getCategories(), projectID);
+        tallyGridAdapter = new AuditTallyBoxGVA(this, this.getActivity(), android.R.layout.simple_gallery_item, project.getBuildings().get(buildingID).getCategories(), projectID, buildingID);
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(tallyGridAdapter);
 

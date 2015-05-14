@@ -13,16 +13,19 @@ import bert.ui.categoryList.AddCategoryFragment;
 public class AddCategoryFrameActivity extends ActionBarActivity implements AddCategoryFragment.OnFragmentInteractionListener {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
+    public static final String ARG_BUILDING_ID = "ARG_BUILDING_ID";
 
     private int projectID;
+    private int buildingID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empty_frame_layout);
         projectID = getIntent().getExtras().getInt(ARG_PROJECT_ID);
+        buildingID = getIntent().getExtras().getInt(ARG_BUILDING_ID);
 
-        AddCategoryFragment frag = AddCategoryFragment.newInstance(projectID);
+        AddCategoryFragment frag = AddCategoryFragment.newInstance(projectID, buildingID);
 
         FragmentTransaction t = getFragmentManager().beginTransaction();
         t.replace(R.id.frame_layout, frag);

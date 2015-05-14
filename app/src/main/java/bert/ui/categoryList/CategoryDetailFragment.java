@@ -28,9 +28,11 @@ import bert.ui.R;
  */
 public class CategoryDetailFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
+    private static final String ARG_BUILDING_ID = "Buidling ID";
     private static final String ARG_CATEGORY_ID = "CATEGORY_ID";
 
     private int projectID;
+    private int buildingID;
     private int categoryID;
 
     private Project project;
@@ -44,10 +46,11 @@ public class CategoryDetailFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public static CategoryDetailFragment newInstance(int projectID, int categoryID) {
+    public static CategoryDetailFragment newInstance(int projectID, int buildingID, int categoryID) {
         CategoryDetailFragment fragment = new CategoryDetailFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT_ID, projectID);
+        args.putInt(ARG_BUILDING_ID, buildingID);
         args.putInt(ARG_CATEGORY_ID, categoryID);
         fragment.setArguments(args);
         return fragment;
@@ -61,8 +64,9 @@ public class CategoryDetailFragment extends Fragment {
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
             categoryID = getArguments().getInt(ARG_CATEGORY_ID);
+            buildingID = getArguments().getInt(ARG_BUILDING_ID);
             project = ProjectProvider.getInstance().getProjectList().get(projectID);
-            category = project.getCategories().get(categoryID);
+            category = project.getBuildings().get(buildingID).getCategories().get(categoryID);
         }
     }
 
@@ -73,7 +77,12 @@ public class CategoryDetailFragment extends Fragment {
         categoryNameEditText.setText(category.getName());
 
         estimatedLoadEditText = (EditText) getView().findViewById(R.id.estimated_load_edit_text);
-        estimatedLoadEditText.setText(String.valueOf(category.getEstimatedLoad()));
+        if (category.getEstimatedLoad() !=Category.UNSET){
+            estimatedLoadEditText.setText(String.valueOf(category.getEstimatedLoad()));
+        } else {
+            estimatedLoadEditText.setText("Undefined");
+        }
+
 
         bertTypeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, Category.bertTypes);
         bertTypeSpinner = (Spinner) getView().findViewById(R.id.bert_type_spinner);

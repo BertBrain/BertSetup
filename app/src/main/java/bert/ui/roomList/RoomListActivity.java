@@ -43,7 +43,6 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorF
     public void onResume(){
         super.onResume();
         createLocationlistView();
-        clearFragmentContainer();
     }
 
     private void clearFragmentContainer(){

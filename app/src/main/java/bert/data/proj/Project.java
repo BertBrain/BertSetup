@@ -18,7 +18,6 @@ public class Project implements Serializable{
 	private String creationDate;
 	private String modifiedDate;
 	private List<BertUnit> berts;
-	private List<Category> categories;
     private List<Building> buildings;
 	
 	public Project(String name) {
@@ -26,23 +25,7 @@ public class Project implements Serializable{
 	    this.creationDate = DateUtil.getDate();
 	    this.modifiedDate = creationDate;
 	    berts = new ArrayList<BertUnit>();
-	    categories = new ArrayList<Category>();
         buildings = new ArrayList<Building>();
-	    categories = new ArrayList<Category>(Arrays.asList(Category.DEFAULT_CATEGORIES));
-	}
-
-	public List<String> getCategoryNames() {
-		List<String> categoryNames = new ArrayList<String>();
-        for (Category cat : this.categories){
-            categoryNames.add(cat.getName());
-        }
-		for (BertUnit b : berts) {
-			String catName = categories.get(b.getCategoryID()).getName();
-			if (!categoryNames.contains(catName)) {
-				categoryNames.add(catName);
-			}
-		}
-		return categoryNames;
 	}
 
     public List<String> getLocationNames() {
@@ -103,10 +86,6 @@ public class Project implements Serializable{
         }
     }
 
-    public void addCategory(Category category){
-        categories.add(category);
-    }
-
     public void addBuilding(Building building) {buildings.add(building);}
 
     //Getters and setters
@@ -158,14 +137,6 @@ public class Project implements Serializable{
 
     public void setModifiedDate(String newModifiedDate) {
         this.modifiedDate = newModifiedDate;
-    }
-
-    public List<Category> getCategories() {
-        return this.categories;
-    }
-
-    public void setCategories(List<Category> newCategories) {
-        this.categories = newCategories;
     }
 
     public List<BertUnit> getBerts() {

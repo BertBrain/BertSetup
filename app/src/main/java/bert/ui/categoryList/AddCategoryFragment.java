@@ -1,9 +1,11 @@
 package bert.ui.categoryList;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,8 +32,10 @@ import bert.ui.R;
  */
 public class AddCategoryFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
+    private static final String ARG_BUILDING_ID = "BUILDING_ID";
 
     private int projectID;
+    private int buildingID;
     private Project project;
     private OnFragmentInteractionListener activity;
 
@@ -44,10 +48,11 @@ public class AddCategoryFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public static AddCategoryFragment newInstance(int projectID) {
+    public static AddCategoryFragment newInstance(int projectID, int buildingID) {
         AddCategoryFragment fragment = new AddCategoryFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT_ID, projectID);
+        args.putInt(ARG_BUILDING_ID, buildingID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,6 +65,7 @@ public class AddCategoryFragment extends Fragment {
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
             project = ProjectProvider.getInstance().getProjectList().get(projectID);
+            buildingID = getArguments().getInt(ARG_BUILDING_ID);
             activity = (OnFragmentInteractionListener) getActivity();
         }
     }
@@ -105,8 +111,28 @@ public class AddCategoryFragment extends Fragment {
     private void createCategoryAndFinish() {
         String name = categoryNameEditText.getText().toString();
         int bertType = bertTypeSpinner.getSelectedItemPosition();
-        int estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
-        project.addCategory(new Category(name, bertType, estimatedLoad));
+        int estimatedLoad;
+        if (estimatedLoadEditText.getText().toString().length() > 0){
+            try {
+                estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
+            } catch (NumberFormatException e){
+                estimatedLoad = Category.UNSET;
+                AlertDialog.Builder noRoomNameSetAlert = new AlertDialog.Builder(getView().getContext());
+                noRoomNameSetAlert.setTitle("Invalid Number Entered");
+                noRoomNameSetAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                noRoomNameSetAlert.create().show();
+                System.out.println("invalid number passed");
+                return;
+            }
+        } else {
+            estimatedLoad = Category.UNSET;
+        }
+        project.getBuildings().get(buildingID).addCategory(new Category(name, bertType, estimatedLoad));
         activity.categoryCreationSuccessful();
     }
 

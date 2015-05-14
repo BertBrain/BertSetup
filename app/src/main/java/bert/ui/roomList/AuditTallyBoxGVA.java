@@ -27,13 +27,15 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
     Activity activity;
     AuditWizardFragment owner;
     private int projectID;
+    private int buildingID;
 
-    public AuditTallyBoxGVA(AuditWizardFragment owner, Activity activity, int recourseId, List<Category> deviceTypes, int projectID) {
+    public AuditTallyBoxGVA(AuditWizardFragment owner, Activity activity, int recourseId, List<Category> deviceTypes, int projectID, int buildingID) {
         super(activity, recourseId, deviceTypes);
         this.deviceTypes = deviceTypes;
         this.activity = activity;
         this.owner = owner;
         this.projectID = projectID;
+        this.buildingID = buildingID;
     }
 
     @Override
@@ -94,6 +96,7 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
     void createNewCategory() {
         Intent intent = new Intent(activity, AddCategoryFrameActivity.class);
         intent.putExtra(AddCategoryFrameActivity.ARG_PROJECT_ID, projectID);
+        intent.putExtra(AddCategoryFrameActivity.ARG_BUILDING_ID, buildingID);
         activity.startActivityForResult(intent, 1);
     }
 

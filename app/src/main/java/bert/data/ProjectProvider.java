@@ -55,9 +55,9 @@ public class ProjectProvider {
     }
 
     private void loadProjectListFromFile() {
+        projectList = new ArrayList<Project>();
         try {
             File projectDir = FileProvider.getProjectDirectory();
-            projectList = new ArrayList<Project>();
             if (projectDir != null && projectDir.listFiles() != null) {
                 List<File> files = Arrays.asList(projectDir.listFiles());
                 if (files.size() > 0) {
@@ -75,6 +75,7 @@ public class ProjectProvider {
             log("Loaded " + projectList.size() + " projects from storage");
         } catch (IOException e) {
             e.printStackTrace();
+            log("Unable to complete loadProjectListFromFile()");
         }
     }
 

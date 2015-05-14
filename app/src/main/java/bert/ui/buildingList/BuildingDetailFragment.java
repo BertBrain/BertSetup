@@ -133,6 +133,7 @@ public class BuildingDetailFragment extends Fragment {
     public void openCategoryEditor() {
         Intent i = new Intent(this.getActivity(), CategoryListActivity.class);
         i.putExtra(CategoryListActivity.ARG_PROJECT_ID, projectID);
+        i.putExtra(CategoryListActivity.ARG_BUILDING_ID, buildingID);
         startActivity(i);
     }
 
