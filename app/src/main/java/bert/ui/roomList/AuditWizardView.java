@@ -82,7 +82,7 @@ public class AuditWizardView extends Fragment {
     @Override public void onResume() {
         super.onResume();
 
-        tallyGridAdapter = new AuditTallyBoxGVA(this, this.getActivity(), android.R.layout.simple_gallery_item, project.getCategories(), projectID);
+        tallyGridAdapter = new AuditTallyBoxGVA(this, this.getActivity(), android.R.layout.simple_gallery_item, project.getBuildings().get(buildingID).getCategories(), projectID);
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(tallyGridAdapter);
 
@@ -178,7 +178,7 @@ public class AuditWizardView extends Fragment {
             HashMap<Category, Integer> categoryCounts = tallyGridAdapter.getCounts();
             List<BertUnit> berts = new ArrayList<BertUnit>();
             int categoryCount = 0;
-            for (Category category : project.getCategories()) {
+            for (Category category : project.getBuildings().get(buildingID).getCategories()) {
                 if (categoryCounts.get(category) != null) {
                     for (int i = 0; i < categoryCounts.get(category); i++) {
                         String name = location + " - " + category.getName() + " " + (i + 1);

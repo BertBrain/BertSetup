@@ -18,6 +18,12 @@ public class Time implements Serializable{
         this.minute = minute;
     }
 
+    public void set(int hour, int minute){
+        isAM = hour < 13;
+        this.hour = isAM ? hour : hour - 12;
+        this.minute = minute;
+    }
+
     public int hour24(){
         return hour + (isAM ? 0 : 12);
     }
@@ -31,6 +37,8 @@ public class Time implements Serializable{
     }
 
     public boolean greaterThan(Time time){
+        System.out.println("this time: " + this.hour24());
+        System.out.println("time time: " + time.hour24());
         if (this.hour24() > time.hour24()) {
             return true;
         }
@@ -42,4 +50,5 @@ public class Time implements Serializable{
         }
         return false;
     }
+
 }

@@ -15,6 +15,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 import bert.data.utility.Cleaner;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
@@ -130,9 +135,23 @@ public class AddProjectView extends Fragment {
             activity.loadProjectList();
             activity.closeAddProjectView();
             startActivity(intent);
+
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(newProjectName);
+                ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
+                outputStream.writeObject(newProject);
+            } catch (FileNotFoundException e){
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         } else {
             createDuplicateProjectNamePopup();
         }
+
+        //Move to own class
+        //
     }
 
     private void createDuplicateProjectNamePopup() {

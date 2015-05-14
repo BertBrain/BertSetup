@@ -34,6 +34,10 @@ public class BuildingDetailView extends Fragment {
     Button openBuildingButton;
     Button openCategoryEditor;
 
+    TextView startTimeDisplay;
+    TextView endTimeDisplay;
+    TimeRangeDisplay timeDisplay;
+
     // TODO: Rename and change types and number of parameters
     /*
     @param projectID
@@ -72,6 +76,11 @@ public class BuildingDetailView extends Fragment {
     public void onResume(){
         super.onResume();
         building = ProjectProvider.getInstance().getProjectList().get(projectID).getBuildings().get(buildingID);
+
+        startTimeDisplay = (TextView) getView().findViewById(R.id.editor_start_time_textfield);
+        endTimeDisplay = (TextView) getView().findViewById(R.id.editor_end_time_text_field);
+        timeDisplay = new TimeRangeDisplay(getActivity(), startTimeDisplay, building.startTime, endTimeDisplay, building.endTime);
+
         nameTextField = (EditText) getView().findViewById(R.id.edit_building_name_textfield);
         nameTextField.setText(building.getName());
         nameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -110,6 +119,13 @@ public class BuildingDetailView extends Fragment {
         intent.putExtra(RoomListActivity.ARG_PROJECT_ID, projectID);
         intent.putExtra(RoomListActivity.ARG_BUILDING_ID, buildingID);
         getActivity().startActivity(intent);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        building.setStartTime(timeDisplay.getStartTime());
+        building.setEndTime(timeDisplay.getEndTime());
     }
 
     public void onButtonPressed(Uri uri) {

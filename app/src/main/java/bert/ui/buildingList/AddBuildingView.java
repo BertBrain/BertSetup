@@ -34,7 +34,7 @@ import bert.ui.roomList.RoomListActivity;
  * Use the {@link AddBuildingView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddBuildingView extends Fragment implements TimePickerDialog.OnTimeSetListener {
+public class AddBuildingView extends Fragment {
 
     private static final String PROJECT_ID_KEY = "PROJECT_ID_KEY";
 
@@ -44,14 +44,10 @@ public class AddBuildingView extends Fragment implements TimePickerDialog.OnTime
     Button addBuildingButton;
     Spinner buildingTypeSpinner;
 
-
     TextView startTimeDisplay;
     TextView endTimeDisplay;
-    TextView activeTimeDisplay;
+    TimeRangeDisplay timeDisplay;
 
-    Time startTime;
-    Time endTime;
-    Time activeTime;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -83,8 +79,13 @@ public class AddBuildingView extends Fragment implements TimePickerDialog.OnTime
     @Override
     public void onResume(){
         super.onResume();
-        startTime = new Time(9, 0);
-        endTime = new Time(17, 0);
+
+        startTimeDisplay = (TextView) getView().findViewById(R.id.start_time_textfield);
+        endTimeDisplay =(TextView) getView().findViewById(R.id.end_time_text_field);
+        Time startTime = new Time(9, 0); //default start time
+        Time endTime = new Time(17, 0); // default end time
+        timeDisplay = new TimeRangeDisplay(getActivity(), startTimeDisplay, startTime, endTimeDisplay, endTime);
+
         buildingTypeSpinner = (Spinner)getView().findViewById(R.id.building_type_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, CategoryPresets.getNames());
         buildingTypeSpinner.setAdapter(adapter);
@@ -109,58 +110,17 @@ public class AddBuildingView extends Fragment implements TimePickerDialog.OnTime
             }
         });
 
-        startTimeDisplay = (TextView) getView().findViewById(R.id.start_time_textfield);
-        startTimeDisplay.setText(startTime.description());
-        startTimeDisplay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("clicked start time display");
-                launchTimePicker((TextView) v, startTime);
-            }
-        });
-        endTimeDisplay =(TextView) getView().findViewById(R.id.end_time_text_field);
-        endTimeDisplay.setText(endTime.description());
-        endTimeDisplay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("clicked end time display");
-                launchTimePicker((TextView)v, endTime);
-
-            }
-        });
-    }
-
-    private void launchTimePicker(TextView v, Time initialTime){
-        activeTimeDisplay = v;
-        activeTime = initialTime;
-
-
-        (new TimePickerDialog(getActivity(), this, initialTime.hour24(), initialTime.minute, false)).show();
-    }
-
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute){
-        System.out.println(hourOfDay);
-        activeTime = new Time(hourOfDay, minute);
-        if (endTime.greaterThan(startTime)){
-            AlertDialog.Builder noRoomNameSetAlert = new AlertDialog.Builder(getView().getContext());
-            noRoomNameSetAlert.setTitle("End Time Cannot be Before Start Time");
-            noRoomNameSetAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int i) {
-                            launchTimePicker(activeTimeDisplay, activeTime);
-                        }
-            });
-        } else {
-            activeTimeDisplay.setText(activeTime.description());
-        }
 
     }
+
+
+
+
 
     private void addBuilding(){
         final String newName = buildingNameTextField.getText().toString();
         if (!ProjectProvider.getInstance().getProjectList().get(projectID).getBuildingNames().contains(newName)){
-            Building b = new Building(newName, startTime, endTime, CategoryPresets.getPresets().get(buildingTypeSpinner.getSelectedItem()));
+            Building b = new Building(newName, timeDisplay.getStartTime(), timeDisplay.getEndTime(), CategoryPresets.getPresets().get(buildingTypeSpinner.getSelectedItem()));
             Project project = ProjectProvider.getInstance().getProjectList().get(projectID);
             project.addBuilding(b);
 

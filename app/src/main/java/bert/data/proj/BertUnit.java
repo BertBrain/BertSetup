@@ -2,12 +2,14 @@ package bert.data.proj;
 
 import org.w3c.dom.Element;
 
+import java.io.Serializable;
+
 import bert.data.utility.Cleaner;
 
 /**
  * @author afiol-mahon
  */
-public class BertUnit {
+public class BertUnit implements Serializable{
 	private String name;
 	private String location;
 	private String MAC;

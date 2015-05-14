@@ -1,5 +1,6 @@
 package bert.data.proj;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by afiol-mahon on 5/8/15.
  * @author afiol-mahon
  */
-public class Building {
+public class Building implements Serializable{
     private String name;
     public Time startTime;
     public Time endTime;
@@ -35,6 +36,14 @@ public class Building {
     }
 
     public List<Category> getCategories() { return  categories; }
+
+    public List<String> getCategoryNames(){
+        ArrayList<String> names = new ArrayList<>();
+        for (Category category : getCategories()){
+            names.add(category.getName());
+        }
+        return names;
+    }
 
     public String getName() {
         return this.name;
