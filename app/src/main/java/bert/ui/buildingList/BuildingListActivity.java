@@ -12,8 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import java.util.List;
-
 import bert.data.ProjectProvider;
 import bert.data.proj.Project;
 import bert.ui.NoSelectionFragment;
@@ -24,6 +22,7 @@ public class BuildingListActivity extends ActionBarActivity {
     public static String ARG_PROJECT_ID = "PROJECT_ID";
 
     private Button addBuildingButton;
+    private ArrayAdapter<String> buildingListViewAdapter;
     private ListView buildingListView;
     private int projectID;
     private Project project;
@@ -60,7 +59,7 @@ public class BuildingListActivity extends ActionBarActivity {
     @Override
     public void onResume(){
         super.onResume();
-        reloadListView();
+        loadListView();
         clearFragmentContainer();
     }
 
@@ -78,13 +77,11 @@ public class BuildingListActivity extends ActionBarActivity {
         loadFragment(BuildingDetailFragment.newInstance(projectID, buildingID));
     }
 
-    public void reloadListView() {loadListView();}
-
-    private void loadListView() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+    public void loadListView() {
+        buildingListViewAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
                 project.getBuildingNames());
-        buildingListView.setAdapter(adapter);
+        buildingListView.setAdapter(buildingListViewAdapter);
     }
 
     private void loadFragment(Fragment frag) {
