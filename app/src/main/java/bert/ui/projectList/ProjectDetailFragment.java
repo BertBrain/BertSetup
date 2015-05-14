@@ -152,7 +152,7 @@ public class ProjectDetailFragment extends Fragment {
         openProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openRoomList();
+                openBuildingList();
             }
         });
     }
@@ -185,7 +185,7 @@ public class ProjectDetailFragment extends Fragment {
         mListener = null;
     }
 
-    public void openRoomList() {
+    public void openBuildingList() {
         Intent i = new Intent(this.getActivity(), BuildingListActivity.class);
         i.putExtra(BuildingListActivity.ARG_PROJECT_ID, projectID);
         startActivity(i);
