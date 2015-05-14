@@ -22,7 +22,6 @@ import java.util.List;
 
 import bert.data.FileProvider;
 import bert.data.proj.BertUnit;
-import bert.data.proj.Category;
 import bert.data.proj.Project;
 import bert.ui.R;
 
@@ -30,12 +29,12 @@ import bert.ui.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DeviceEditorView.OnFragmentInteractionListener} interface
+ * {@link DeviceEditorFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DeviceEditorView#newInstance} factory method to
+ * Use the {@link DeviceEditorFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DeviceEditorView extends Fragment {
+public class DeviceEditorFragment extends Fragment {
     public static final String ARG_LOCATION = "location";
     public static final String ARG_BUILDING = "building";
 
@@ -59,10 +58,10 @@ public class DeviceEditorView extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      * @param location the room used to populate the bertlist.
-     * @return A new instance of fragment DeviceEditorView.
+     * @return A new instance of fragment DeviceEditorFragment.
      */
-    public static DeviceEditorView newInstance(int buildingID, String location) {
-        DeviceEditorView fragment = new DeviceEditorView();
+    public static DeviceEditorFragment newInstance(int buildingID, String location) {
+        DeviceEditorFragment fragment = new DeviceEditorFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_BUILDING, buildingID);
         args.putString(ARG_LOCATION, location);
@@ -70,7 +69,7 @@ public class DeviceEditorView extends Fragment {
         return fragment;
     }
 
-    public DeviceEditorView() {}
+    public DeviceEditorFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

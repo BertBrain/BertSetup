@@ -19,7 +19,7 @@ import bert.ui.R;
 import bert.ui.categoryList.CategoryListActivity;
 import bert.ui.roomList.RoomListActivity;
 
-public class BuildingDetailView extends Fragment {
+public class BuildingDetailFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String PROJECT_ID_KEY = "PROJECT_ID_KEY";
@@ -39,8 +39,8 @@ public class BuildingDetailView extends Fragment {
     @param projectID
     @param buildingID
     */
-    public static BuildingDetailView newInstance(int projectID, int buildingID) {
-        BuildingDetailView fragment = new BuildingDetailView();
+    public static BuildingDetailFragment newInstance(int projectID, int buildingID) {
+        BuildingDetailFragment fragment = new BuildingDetailFragment();
         Bundle args = new Bundle();
         args.putInt(PROJECT_ID_KEY, projectID);
         args.putInt(BUILDING_ID_KEY, buildingID);
@@ -48,7 +48,7 @@ public class BuildingDetailView extends Fragment {
         return fragment;
     }
 
-    public BuildingDetailView() {
+    public BuildingDetailFragment() {
         // Required empty public constructor
     }
 

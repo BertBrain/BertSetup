@@ -11,14 +11,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import bert.data.ProjectProvider;
 import bert.data.proj.Project;
 import bert.ui.R;
 
-public class CategoryListActivity extends ActionBarActivity implements CategoryDetailFragment.OnFragmentInteractionListener, CategoryAddFragment.OnFragmentInteractionListener {
+public class CategoryListActivity extends ActionBarActivity implements CategoryDetailFragment.OnFragmentInteractionListener, AddCategoryFragment.OnFragmentInteractionListener {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
 
@@ -64,7 +63,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_category_list, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -88,7 +87,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     }
 
     private void openCategoryAddFragment() {
-        loadFragment(CategoryAddFragment.newInstance(projectID));
+        loadFragment(AddCategoryFragment.newInstance(projectID));
     }
 
     private void loadFragment(Fragment frag) {

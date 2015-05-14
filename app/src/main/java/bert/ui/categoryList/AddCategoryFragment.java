@@ -1,11 +1,9 @@
 package bert.ui.categoryList;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +23,12 @@ import bert.ui.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CategoryAddFragment.OnFragmentInteractionListener} interface
+ * {@link AddCategoryFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CategoryAddFragment#newInstance} factory method to
+ * Use the {@link AddCategoryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoryAddFragment extends Fragment {
+public class AddCategoryFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
 
     private int projectID;
@@ -46,15 +44,15 @@ public class CategoryAddFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public static CategoryAddFragment newInstance(int projectID) {
-        CategoryAddFragment fragment = new CategoryAddFragment();
+    public static AddCategoryFragment newInstance(int projectID) {
+        AddCategoryFragment fragment = new AddCategoryFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT_ID, projectID);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public CategoryAddFragment() {}
+    public AddCategoryFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

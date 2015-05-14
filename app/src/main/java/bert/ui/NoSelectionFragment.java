@@ -11,10 +11,10 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * Use the {@link NoSelectionView#newInstance} factory method to
+ * Use the {@link NoSelectionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NoSelectionView extends Fragment {
+public class NoSelectionFragment extends Fragment {
     private static final String ARG_MESSAGE = "message";
     private String mMessage;
 
@@ -22,17 +22,17 @@ public class NoSelectionView extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      * @param message message to display in fragment.
-     * @return A new instance of fragment NoSelectionView.
+     * @return A new instance of fragment NoSelectionFragment.
      */
-    public static NoSelectionView newInstance(String message) {
-        NoSelectionView fragment = new NoSelectionView();
+    public static NoSelectionFragment newInstance(String message) {
+        NoSelectionFragment fragment = new NoSelectionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_MESSAGE, message);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public NoSelectionView() {}
+    public NoSelectionFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

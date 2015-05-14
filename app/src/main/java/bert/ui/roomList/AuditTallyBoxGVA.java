@@ -25,10 +25,10 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
     static HashMap<Category, Integer> counts;
     List<Category> deviceTypes;
     Activity activity;
-    AuditWizardView owner;
+    AuditWizardFragment owner;
     private int projectID;
 
-    public AuditTallyBoxGVA(AuditWizardView owner, Activity activity, int recourseId, List<Category> deviceTypes, int projectID) {
+    public AuditTallyBoxGVA(AuditWizardFragment owner, Activity activity, int recourseId, List<Category> deviceTypes, int projectID) {
         super(activity, recourseId, deviceTypes);
         this.deviceTypes = deviceTypes;
         this.activity = activity;

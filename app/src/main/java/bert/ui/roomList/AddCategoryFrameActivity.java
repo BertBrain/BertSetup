@@ -1,27 +1,16 @@
 package bert.ui.roomList;
 
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-import bert.data.proj.Category;
 import bert.ui.R;
-import bert.ui.categoryList.CategoryAddFragment;
+import bert.ui.categoryList.AddCategoryFragment;
 
-public class AddCategoryFrameActivity extends ActionBarActivity implements CategoryAddFragment.OnFragmentInteractionListener {
+public class AddCategoryFrameActivity extends ActionBarActivity implements AddCategoryFragment.OnFragmentInteractionListener {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
 
@@ -33,7 +22,7 @@ public class AddCategoryFrameActivity extends ActionBarActivity implements Categ
         setContentView(R.layout.activity_empty_frame_layout);
         projectID = getIntent().getExtras().getInt(ARG_PROJECT_ID);
 
-        CategoryAddFragment frag = CategoryAddFragment.newInstance(projectID);
+        AddCategoryFragment frag = AddCategoryFragment.newInstance(projectID);
 
         FragmentTransaction t = getFragmentManager().beginTransaction();
         t.replace(R.id.frame_layout, frag);
@@ -44,7 +33,7 @@ public class AddCategoryFrameActivity extends ActionBarActivity implements Categ
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_category, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,18 +12,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.content.Intent;
 
 import bert.data.ProjectProvider;
+import bert.ui.NoSelectionFragment;
 import bert.ui.R;
-import bert.ui.NoSelectionView;
-import bert.ui.roomList.RoomListActivity;
 
-public class ProjectListActivity extends ActionBarActivity implements AddProjectView.OnFragmentInteractionListener, ProjectDetailFragment.OnFragmentInteractionListener {
+public class ProjectListActivity extends ActionBarActivity implements AddProjectFragment.OnFragmentInteractionListener, ProjectDetailFragment.OnFragmentInteractionListener {
 
     private ListView projectListView;
     private Button addProjectButton;
-    private FrameLayout detailFrame;
     private ArrayAdapter<String> projectTableAdapter;
 
     @Override
@@ -32,7 +28,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
 
     @Override
     public void openAddProjectView() {
-        loadFragment(new AddProjectView());
+        loadFragment(new AddProjectFragment());
     }
 
     public void openProjectDetailView(int projectIndex) {
@@ -41,7 +37,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
 
     @Override
     public void closeAddProjectView() {
-        loadFragment(new NoSelectionView());
+        loadFragment(new NoSelectionFragment());
     }
 
     private void loadFragment(Fragment frag) {
@@ -55,6 +51,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail);
+        this.setTitle("Projects (" + ProjectProvider.getInstance().getProjectList().size() + ")");
         addProjectButton = (Button) findViewById(R.id.create_list_item_button);
         addProjectButton.setText("Add Project");
         addProjectButton.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +70,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         loadProjectList();
         return true;
     }
@@ -93,7 +90,9 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     }
 
     public void loadProjectList() {
-        projectTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ProjectProvider.getInstance().getProjectNameList());
+        projectTableAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,
+                ProjectProvider.getInstance().getProjectNameList());
         projectListView = (ListView) findViewById(R.id.item_list_view);
         projectListView.setAdapter(projectTableAdapter);
         projectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

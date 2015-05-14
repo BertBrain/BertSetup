@@ -21,7 +21,6 @@ import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 
-import bert.data.proj.Building;
 import bert.data.proj.Category;
 
 import bert.data.proj.Project;
@@ -31,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AuditWizardView extends Fragment {
+public class AuditWizardFragment extends Fragment {
 
     public static final String ARG_BUILDING_ID = "BUILDING_ID";
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
@@ -51,8 +50,8 @@ public class AuditWizardView extends Fragment {
 
     private RoomListActivity activity;
 
-    public static AuditWizardView newInstance(int projectID, int buildingID) {
-        AuditWizardView fragment = new AuditWizardView();
+    public static AuditWizardFragment newInstance(int projectID, int buildingID) {
+        AuditWizardFragment fragment = new AuditWizardFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT_ID, projectID);
         args.putInt(ARG_BUILDING_ID, buildingID);
@@ -60,7 +59,7 @@ public class AuditWizardView extends Fragment {
         return fragment;
     }
 
-    public AuditWizardView() {}
+    public AuditWizardFragment() {}
 
     public AuditTallyBoxGVA getViewAdapter(){ return  tallyGridAdapter;}
     @Override

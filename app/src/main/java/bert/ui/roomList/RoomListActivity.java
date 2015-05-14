@@ -2,39 +2,22 @@ package bert.ui.roomList;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.GridLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-import bert.data.FileProvider;
-import bert.data.proj.Building;
-import bert.data.proj.Category;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
-import bert.ui.NoSelectionView;
+import bert.ui.NoSelectionFragment;
 import bert.ui.R;
 
-import java.util.List;
-
-public class RoomListActivity extends ActionBarActivity implements DeviceEditorView.OnFragmentInteractionListener, AuditWizardView.OnFragmentInteractionListener {
+public class RoomListActivity extends ActionBarActivity implements DeviceEditorFragment.OnFragmentInteractionListener, AuditWizardFragment.OnFragmentInteractionListener {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
     public static final String ARG_BUILDING_ID = "BUILDING_ID";
@@ -66,7 +49,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     private void clearFragmentContainer(){
         int numberOfRooms = project.getLocationNamesInBuilding(buildingID).size();
         String message = numberOfRooms > 0 ? "Select or Create A Room" : "Create a Room";
-        loadFragment(NoSelectionView.newInstance(message));
+        loadFragment(NoSelectionFragment.newInstance(message));
     }
 
     @Override
@@ -90,10 +73,9 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
         });
 
         createLocationlistView();
-        this.setTitle("Project: [" + project.getProjectName() + "] Building: [" + project.getBuildings().get(buildingID).getName() + "]");
+        this.setTitle(project.getProjectName() + " " + project.getBuildings().get(buildingID).getName() + " Building " + " (" + locationTableAdapter.getCount() + " Rooms)");
     }
 
-    //TODO should be private
     public void createLocationlistView() {
         locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getLocationNamesInBuilding(buildingID));
         locationListView = (ListView) findViewById(R.id.item_list_view);
@@ -129,17 +111,17 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorV
     }
 
     public void openAuditWizardView() {
-        AuditWizardView auditWizardView = AuditWizardView.newInstance(projectID, buildingID);
+        AuditWizardFragment auditWizardView = AuditWizardFragment.newInstance(projectID, buildingID);
         AuditTallyBoxGVA.resetCounts();
         loadFragment(auditWizardView);
     }
 
     public void openDeviceEditorView(String locationName) {
-        loadFragment(DeviceEditorView.newInstance(buildingID, locationName));
+        loadFragment(DeviceEditorFragment.newInstance(buildingID, locationName));
     }
 
     public void openNoSelectionView(String message) {
-        loadFragment(NoSelectionView.newInstance(message));
+        loadFragment(NoSelectionFragment.newInstance(message));
     }
 
     private void loadFragment(Fragment frag) {

@@ -24,10 +24,10 @@ import bert.ui.roomList.RoomListActivity;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * Use the {@link AddBuildingView#newInstance} factory method to
+ * Use the {@link AddBuildingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddBuildingView extends Fragment {
+public class AddBuildingFragment extends Fragment {
 
     private static final String PROJECT_ID_KEY = "PROJECT_ID_KEY";
 
@@ -40,18 +40,18 @@ public class AddBuildingView extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @return A new instance of fragment AddBuildingView.
+     * @return A new instance of fragment AddBuildingFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddBuildingView newInstance(int param1) {
-        AddBuildingView fragment = new AddBuildingView();
+    public static AddBuildingFragment newInstance(int param1) {
+        AddBuildingFragment fragment = new AddBuildingFragment();
         Bundle args = new Bundle();
         args.putInt(PROJECT_ID_KEY, param1);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public AddBuildingView() {
+    public AddBuildingFragment() {
         // Required empty public constructor
     }
 

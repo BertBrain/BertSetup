@@ -20,18 +20,17 @@ import bert.data.proj.Project;
 import bert.data.ProjectProvider;
 import bert.ui.R;
 import bert.ui.buildingList.BuildingListActivity;
-import bert.ui.roomList.RoomListActivity;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AddProjectView.OnFragmentInteractionListener} interface
+ * {@link AddProjectFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AddProjectView#newInstance} factory method to
+ * Use the {@link AddProjectFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddProjectView extends Fragment {
+public class AddProjectFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
@@ -43,13 +42,13 @@ public class AddProjectView extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @return A new instance of fragment AddProjectView.
+     * @return A new instance of fragment AddProjectFragment.
      */
-    public static AddProjectView newInstance() {
-        return new AddProjectView();
+    public static AddProjectFragment newInstance() {
+        return new AddProjectFragment();
     }
 
-    public AddProjectView() {}
+    public AddProjectFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,7 +125,7 @@ public class AddProjectView extends Fragment {
 
             ProjectListActivity activity = (ProjectListActivity) getActivity();
             Intent intent = new Intent(activity, BuildingListActivity.class);
-            intent.putExtra(BuildingListActivity.PROJECT_ID_KEY, ProjectProvider.getInstance().getProjectList().size() - 1);
+            intent.putExtra(BuildingListActivity.ARG_PROJECT_ID, ProjectProvider.getInstance().getProjectList().size() - 1);
             activity.loadProjectList();
             activity.closeAddProjectView();
             startActivity(intent);

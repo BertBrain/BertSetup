@@ -25,11 +25,7 @@ import bert.data.utility.CSVExporter;
 import bert.data.utility.Cleaner;
 import bert.ui.R;
 
-import bert.ui.buildingList.AddBuildingView;
 import bert.ui.buildingList.BuildingListActivity;
-
-import bert.ui.categoryList.CategoryListActivity;
-import bert.ui.roomList.RoomListActivity;
 
 //TODO use 1 save method for all writing to project done
 /**
@@ -42,9 +38,9 @@ import bert.ui.roomList.RoomListActivity;
  */
 public class ProjectDetailFragment extends Fragment {
 
-    public static final String ARG_PROJECT_INDEX = "PROJECT_INDEX";
+    public static final String ARG_PROJECT_ID = "PROJECT_ID";
 
-    private int projectIndex;
+    private int projectID;
     private Project currentProject;
 
     private EditText projectNameEditText;
@@ -61,7 +57,7 @@ public class ProjectDetailFragment extends Fragment {
     public static ProjectDetailFragment newInstance(int projectIndex) {
         ProjectDetailFragment fragment = new ProjectDetailFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT_INDEX, projectIndex);
+        args.putInt(ARG_PROJECT_ID, projectIndex);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,8 +68,8 @@ public class ProjectDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            this.projectIndex = getArguments().getInt(ARG_PROJECT_INDEX);
-            currentProject = ProjectProvider.getInstance().getProjectList().get(projectIndex);
+            this.projectID = getArguments().getInt(ARG_PROJECT_ID);
+            currentProject = ProjectProvider.getInstance().getProjectList().get(projectID);
         }
     }
     
@@ -191,7 +187,7 @@ public class ProjectDetailFragment extends Fragment {
 
     public void openRoomList() {
         Intent i = new Intent(this.getActivity(), BuildingListActivity.class);
-        i.putExtra(BuildingListActivity.PROJECT_ID_KEY, projectIndex);
+        i.putExtra(BuildingListActivity.ARG_PROJECT_ID, projectID);
         startActivity(i);
     }
 

@@ -10,25 +10,23 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.GridView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.List;
 
 import bert.data.ProjectProvider;
-import bert.data.proj.Building;
-import bert.ui.NoSelectionView;
+import bert.data.proj.Project;
+import bert.ui.NoSelectionFragment;
 import bert.ui.R;
 
 public class BuildingListActivity extends ActionBarActivity {
 
-    public static String PROJECT_ID_KEY = "PROJECT_ID_KEY";
+    public static String ARG_PROJECT_ID = "PROJECT_ID";
 
-    Button addBuildingButton;
-    ListView buildingListView;
-    int projectID;
+    private Button addBuildingButton;
+    private ListView buildingListView;
+    private int projectID;
+    private Project project;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +34,9 @@ public class BuildingListActivity extends ActionBarActivity {
         setContentView(R.layout.activity_master_detail);
 
         Bundle extras = getIntent().getExtras();
-        projectID = extras.getInt(PROJECT_ID_KEY);
-
-        setTitle("Project: " + ProjectProvider.getInstance().getProjectList().get(projectID).getProjectName());
+        projectID = extras.getInt(ARG_PROJECT_ID);
+        project = ProjectProvider.getInstance().getProjectList().get(projectID);
+        setTitle(project.getProjectName() + " Buildings (" + project.getBuildings().size() + ")");
 
         addBuildingButton = (Button) findViewById(R.id.create_list_item_button);
         addBuildingButton.setText("Add Building");
@@ -66,25 +64,26 @@ public class BuildingListActivity extends ActionBarActivity {
         clearFragmentContainer();
     }
 
-    public void clearFragmentContainer(){
-        int numberOfBuildings = ProjectProvider.getInstance().getProjectList().get(projectID).getBuildings().size();
+    public void clearFragmentContainer() {
+        int numberOfBuildings = project.getBuildings().size();
         String message = numberOfBuildings > 0 ? "Select or Create A Building" : "Create a Building";
-        loadFragment(NoSelectionView.newInstance(message));
+        loadFragment(NoSelectionFragment.newInstance(message));
     }
 
     private void openAddBuildingView(){
-        loadFragment(AddBuildingView.newInstance(projectID));
+        loadFragment(AddBuildingFragment.newInstance(projectID));
     }
 
     private void openBuildingDetailView(int buildingID){
-        loadFragment(BuildingDetailView.newInstance(projectID, buildingID));
+        loadFragment(BuildingDetailFragment.newInstance(projectID, buildingID));
     }
 
     public void reloadListView() {loadListView();}
 
-    private void loadListView(){
-        List<String> buildingNames = ProjectProvider.getInstance().getProjectList().get(projectID).getBuildingNames();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, buildingNames);
+    private void loadListView() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,
+                project.getBuildingNames());
         buildingListView.setAdapter(adapter);
     }
 
@@ -98,7 +97,7 @@ public class BuildingListActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_building_list, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
