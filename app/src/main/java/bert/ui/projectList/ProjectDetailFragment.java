@@ -1,6 +1,8 @@
 package bert.ui.projectList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import bert.data.proj.Project;
 import bert.data.ProjectProvider;
 import bert.data.utility.CSVExporter;
 import bert.data.utility.Cleaner;
+import bert.ui.BertAlert;
 import bert.ui.R;
 
 import bert.ui.buildingList.BuildingListActivity;
@@ -88,6 +91,7 @@ public class ProjectDetailFragment extends Fragment {
                         currentProject.setProjectName(text);
                         FileProvider.saveProject(currentProject);
                     } else {
+                        BertAlert.show(getActivity(), "A project with the same name already exists");
                         v.setText(currentProject.getProjectName());
                     }
                 }
@@ -201,5 +205,4 @@ public class ProjectDetailFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
     }
-
 }

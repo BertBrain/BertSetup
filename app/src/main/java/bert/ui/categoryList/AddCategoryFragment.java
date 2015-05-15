@@ -20,6 +20,7 @@ import android.widget.TextView;
 import bert.data.ProjectProvider;
 import bert.data.proj.Category;
 import bert.data.proj.Project;
+import bert.ui.BertAlert;
 import bert.ui.R;
 
 /**
@@ -117,15 +118,7 @@ public class AddCategoryFragment extends Fragment {
                 estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
             } catch (NumberFormatException e){
                 estimatedLoad = Category.UNSET;
-                AlertDialog.Builder noRoomNameSetAlert = new AlertDialog.Builder(getView().getContext());
-                noRoomNameSetAlert.setTitle("Invalid Number Entered");
-                noRoomNameSetAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                noRoomNameSetAlert.create().show();
+                BertAlert.show(getActivity(), "Invalid number entered");
                 System.out.println("invalid number passed");
                 return;
             }

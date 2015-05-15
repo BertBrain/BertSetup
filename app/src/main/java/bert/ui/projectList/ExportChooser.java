@@ -18,7 +18,6 @@ public class ExportChooser {
 
     public ExportChooser(Activity activity){
         this.activity = activity;
-
     }
 
     public void exportFile(String name) { //TODO: pass a file

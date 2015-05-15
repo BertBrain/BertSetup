@@ -23,6 +23,7 @@ import java.io.ObjectOutputStream;
 import bert.data.utility.Cleaner;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
+import bert.ui.BertAlert;
 import bert.ui.R;
 import bert.ui.buildingList.BuildingListActivity;
 
@@ -146,20 +147,7 @@ public class AddProjectFragment extends Fragment {
             }
 
         } else {
-            createDuplicateProjectNamePopup();
+            BertAlert.show(getActivity(), "A project with the same name already exists");
         }
-
-        //Move to own class
-        //
-    }
-
-    private void createDuplicateProjectNamePopup() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(getView().getContext());
-        alert.setTitle("A Project with the same name already exists");
-        alert.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {}
-        });
-        alert.create().show();
     }
 }

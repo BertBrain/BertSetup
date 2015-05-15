@@ -1,8 +1,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="75dp" tools:context="com.example.liamcook.test.AddCategoryCell"
-    android:background="#ffffffff">
+    android:background="#9fe1e2dc">
     <TextView
+        android:fontFamily="sans-serif-light"
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:textAppearance="?android:attr/textAppearanceLarge"

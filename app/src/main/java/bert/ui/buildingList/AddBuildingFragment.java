@@ -25,6 +25,7 @@ import bert.data.proj.Building;
 import bert.data.proj.CategoryPresets;
 import bert.data.proj.Project;
 import bert.data.proj.Time;
+import bert.ui.BertAlert;
 import bert.ui.R;
 import bert.ui.roomList.RoomListActivity;
 
@@ -113,10 +114,6 @@ public class AddBuildingFragment extends Fragment {
 
     }
 
-
-
-
-
     private void addBuilding(){
         final String newName = buildingNameTextField.getText().toString();
         if (!ProjectProvider.getInstance().getProjectList().get(projectID).getBuildingNames().contains(newName)){
@@ -129,25 +126,7 @@ public class AddBuildingFragment extends Fragment {
             intent.putExtra(RoomListActivity.ARG_BUILDING_ID, project.getBuildings().size() - 1);
             getActivity().startActivity(intent);
         } else {
-            AlertDialog.Builder noRoomNameSetAlert = new AlertDialog.Builder(getView().getContext());
-            noRoomNameSetAlert.setTitle("This Building Already Exists");
-            noRoomNameSetAlert.setPositiveButton("Open Building", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    int buildingID  = ProjectProvider.getInstance().getProjectList().get(projectID).getBuildingNames().indexOf(newName);
-                    Intent intent = new Intent(getActivity(), RoomListActivity.class);
-                    intent.putExtra(RoomListActivity.ARG_PROJECT_ID, projectID);
-                    intent.putExtra(RoomListActivity.ARG_BUILDING_ID, buildingID);
-                    getActivity().startActivity(intent);
-                }
-            });
-            noRoomNameSetAlert.setNegativeButton("Change Name", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //possible TODO: directly open fullscreen text editing
-                }
-            });
-            noRoomNameSetAlert.create().show();
+            BertAlert.show(getActivity(), "This Building Already Exists");
         }
 
     }

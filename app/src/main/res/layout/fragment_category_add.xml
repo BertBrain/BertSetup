@@ -18,6 +18,7 @@
             android:id="@+id/createCategoryGridView">
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -27,6 +28,7 @@
                 android:layout_column="0" />
 
             <EditText
+                style="@style/ThinText"
                 android:imeActionLabel="Done"
                 android:imeOptions="actionDone"
                 android:layout_width="match_parent"
@@ -36,16 +38,18 @@
                 android:layout_column="1" />
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Standby Power Draw: (W)"
+                android:text="Standby Power Draw (W) :"
                 android:id="@+id/textView13"
                 android:layout_row="1"
                 android:layout_column="0"
                 android:numeric="integer" />
 
             <EditText
+                style="@style/ThinText"
                 android:inputType="phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,15 +59,17 @@
                 android:numeric="integer" />
 
             <TextView
+                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Bert Type"
+                android:text="Bert Type:"
                 android:id="@+id/textView14"
                 android:layout_row="2"
                 android:layout_column="0" />
 
             <Spinner
+                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/bertTypeSpinner"

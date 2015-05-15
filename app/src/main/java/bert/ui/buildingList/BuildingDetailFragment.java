@@ -86,9 +86,13 @@ public class BuildingDetailFragment extends Fragment {
         nameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (nameTextField.getText().toString().length() > 0) {
-                    building.setName(nameTextField.getText().toString());
-                    ((BuildingListActivity)getActivity()).loadListView();
+                if (nameTextField.getText().toString().length() > 0 ) {
+                    if (!ProjectProvider.getInstance().getProjectList().get(projectID).getBuildingNames().contains(nameTextField.getText().toString())) {
+                        building.setName(nameTextField.getText().toString());
+                        ((BuildingListActivity)getActivity()).loadListView();
+                    } else {
+
+                    }
                 } else {
                     nameTextField.setText(building.getName());
                 }

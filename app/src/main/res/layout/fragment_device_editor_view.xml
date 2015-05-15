@@ -16,12 +16,14 @@
             android:id="@+id/bertList" />
 
         <FrameLayout
+
             android:id="@+id/bertDeviceDetailViewFrame"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.88">
 
             <GridLayout
+                style="@style/ThinText"
                 android:layout_width="300dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="left|center_vertical"
@@ -32,6 +34,7 @@
                 android:isScrollContainer="true">
 
                 <TextView
+                    style="@style/ThinText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -41,6 +44,7 @@
                     android:layout_column="0" />
 
                 <EditText
+                    style="@style/ThinText"
                     android:singleLine="true"
                     android:imeActionLabel="Done"
                     android:imeOptions="actionDone"
@@ -51,6 +55,7 @@
                     android:layout_column="0" />
 
                 <TextView
+                    style="@style/ThinText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -60,6 +65,7 @@
                     android:layout_column="0" />
 
                 <EditText
+                    style="@style/ThinText"
                     android:singleLine="true"
                     android:imeActionLabel="Done"
                     android:imeOptions="actionDone"
@@ -70,6 +76,7 @@
                     android:layout_column="0" />
 
                 <TextView
+                    style="@style/ThinText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -79,6 +86,7 @@
                     android:layout_column="0" />
 
                 <EditText
+                    style="@style/ThinText"
                     android:singleLine="true"
                     android:imeActionLabel="Done"
                     android:imeOptions="actionDone"
@@ -94,6 +102,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        style="@style/ThinText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -103,6 +112,7 @@
                         android:layout_column="0" />
 
                     <TextView
+                        style="@style/ThinText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -116,6 +126,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        style="@style/ThinText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -125,6 +136,7 @@
                         android:layout_column="0" />
 
                     <Spinner
+                        style="@style/ThinText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/detailViewCategorySelector" />

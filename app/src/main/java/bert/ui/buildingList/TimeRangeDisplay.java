@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import bert.data.proj.Time;
+import bert.ui.BertAlert;
 import bert.ui.R;
 
 /**
@@ -67,15 +68,12 @@ public class TimeRangeDisplay implements TimePickerDialog.OnTimeSetListener {
             activeTimeDisplay.setText(activeTime.description());
         } else {
             System.out.println("starting end/start time alert");
-            AlertDialog.Builder startTimeAlert = new AlertDialog.Builder(activity);
-            startTimeAlert.setTitle("End Time Cannot be Before Start Time");
-            startTimeAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            BertAlert.show(activity, "End time cannot be before start time", "OK", new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int i) {
+                public void onClick(DialogInterface dialog, int which) {
                     launchTimePicker(activeTimeDisplay, activeTime);
                 }
             });
-            startTimeAlert.create().show();
         }
     }
 
