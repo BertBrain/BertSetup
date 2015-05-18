@@ -29,6 +29,9 @@ import bert.data.proj.Project;
  * @author afiol-mahon
  */
 public class FileProvider {
+    public static final String EXPORT_DIR_NAME = "BertExports";
+    public static final String PROJECT_DIR_NAME = "BertProjects";
+
 	public static void printDocument(Document document) {
 		try {
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -76,6 +79,7 @@ public class FileProvider {
 
 	public static void saveProject(Project project) {
 		log("Saving Project: " + project.getProjectName() + " to XML file");
+
 		Document d = ProjectSerializer.exportToXML(project);
 		String fileName = project.getProjectName() + ".xml";
 		try {
@@ -101,9 +105,16 @@ public class FileProvider {
 
 	public static File getProjectDirectory() throws IOException {
 		if (isExternalStorageAvailable()) {
-			File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "BertProjects");
-			f.mkdir();
-			return f;
+			File docs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            docs.mkdir();
+
+			File bertProjects = new File(docs, PROJECT_DIR_NAME);
+			bertProjects.mkdir();
+            if (bertProjects.isDirectory()) {
+                return bertProjects;
+            } else {
+                throw new IOException();
+            }
 		} else {
 			log("Unable to load Project Folder");
 			throw new IOException();
@@ -112,11 +123,17 @@ public class FileProvider {
 
 	public static File getExportsDirectory() throws IOException {
 		if (isExternalStorageAvailable()) {
-			File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "BertExports");
-			f.mkdir();
-			return f;
-		} else {
-			log("Unable to load Exports Folder");
+            File docs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            docs.mkdir();
+			File exportDir = new File(docs, EXPORT_DIR_NAME);
+            exportDir.mkdir();
+            if (exportDir.isDirectory()) {
+                return exportDir;
+            } else {
+                throw new IOException();
+            }
+        } else {
+            log("Unable to load Exports Folder");
 			throw new IOException();
 		}
 	}

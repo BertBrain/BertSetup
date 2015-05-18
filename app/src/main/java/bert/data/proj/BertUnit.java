@@ -9,7 +9,7 @@ import bert.data.utility.Cleaner;
 /**
  * @author afiol-mahon
  */
-public class BertUnit implements Serializable{
+public class BertUnit {
 	private String name;
 	private String location;
 	private String MAC;

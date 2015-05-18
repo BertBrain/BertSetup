@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Category implements Serializable {
+public class Category {
 
     public final static int UNSET = -1;
 
