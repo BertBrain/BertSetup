@@ -29,15 +29,6 @@ import bert.ui.R;
 
 import bert.ui.buildingList.BuildingListActivity;
 
-//TODO use 1 save method for all writing to project done
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ProjectDetailFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ProjectDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ProjectDetailFragment extends Fragment {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
@@ -169,7 +160,6 @@ public class ProjectDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_project_detail_view, container, false);
     }
 

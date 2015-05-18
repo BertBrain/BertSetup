@@ -8,9 +8,12 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import java.util.ArrayList;
 
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
@@ -102,6 +105,9 @@ public class DeviceDetailAddFragment extends Fragment {
             }
             @Override public void afterTextChanged(Editable s) { }
         });
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, building.getCategoryNames());
+        categorySpinner.setAdapter(adapter);
     }
 
     private void finish(){

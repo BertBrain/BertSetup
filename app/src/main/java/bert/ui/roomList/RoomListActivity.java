@@ -17,7 +17,7 @@ import bert.data.ProjectProvider;
 import bert.ui.NoSelectionFragment;
 import bert.ui.R;
 
-public class RoomListActivity extends ActionBarActivity implements DeviceEditorFragment.OnFragmentInteractionListener, AuditWizardFragment.OnFragmentInteractionListener {
+public class RoomListActivity extends ActionBarActivity implements AuditWizardFragment.OnFragmentInteractionListener {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
     public static final String ARG_BUILDING_ID = "BUILDING_ID";

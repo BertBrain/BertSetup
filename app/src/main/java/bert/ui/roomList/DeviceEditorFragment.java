@@ -50,8 +50,6 @@ public class DeviceEditorFragment extends Fragment {
     private int position;
     private List<BertUnit> bertList;
 
-    private OnFragmentInteractionListener mListener;
-
     private ArrayAdapter<String> deviceTableAdapter;
     private ListView locationListView;
     private FrameLayout detailView;
@@ -91,14 +89,12 @@ public class DeviceEditorFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-
         List<String> bertNameList = new ArrayList<String>();
         if (getArguments() != null) {
             for (BertUnit bert : bertList) {
                 bertNameList.add(bert.getName());
             }
         }
-
 
         final ArrayList<String> listStrings = new ArrayList<String>(bertNameList);
         listStrings.add(ADD_BUILDING_STRING);
@@ -118,58 +114,33 @@ public class DeviceEditorFragment extends Fragment {
             }
         });
 
-
     }
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_device_editor_view, container, false);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener. in device editor");
-        }
     }
 
     @Override
     public void onDetach() {
-        super.onDetach();
-        mListener = null;
+
     }
-
-    public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
-    }
-
-
 
     private void loadDeviceAtPosition(int position) {
         System.out.println("editing device");
         DeviceDetailEditFragment fragment = DeviceDetailEditFragment.newInstance(projectID, buildingID, location, position);
         loadFragment(fragment);
-        /*
-        this.position = position;
-        BertUnit b = bertList.get(position);
-        deviceNameTextField.setText(b.getName());
-        macAddressTextField.setText(b.getMAC());
-        roomTextField.setText(b.getLocation());
-        buildingTextField.setText(project.getBuildings().get(b.getBuildingID()).getName());
-        categorySelector.setSelection(bertList.get(position).getCategoryID());
-        setDetailViewVisibility(true);(/*/
     }
 
     private void addDevice(){
         System.out.println("adding device");
-        DeviceDetailAddFragment fragment = new DeviceDetailAddFragment();
+        DeviceDetailAddFragment fragment = DeviceDetailAddFragment.newInstance(projectID, buildingID, location);
         loadFragment(fragment);
     }
 
@@ -178,9 +149,5 @@ public class DeviceEditorFragment extends Fragment {
         t.replace(R.id.bertDeviceDetailViewFrame, frag);
         t.addToBackStack(null);
         t.commit();
-    }
-
-    private void saveChanges() {
-
     }
 }

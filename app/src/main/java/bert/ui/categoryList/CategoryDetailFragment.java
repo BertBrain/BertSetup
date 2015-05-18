@@ -30,6 +30,7 @@ public class CategoryDetailFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "Buidling ID";
     private static final String ARG_CATEGORY_ID = "CATEGORY_ID";
+
     private static final String UNDEFINED_LOAD_STRING = "Undefined";
 
     private int projectID;
@@ -86,7 +87,7 @@ public class CategoryDetailFragment extends Fragment {
                 }
             }
         });
-        if (category.getEstimatedLoad() != Category.UNSET){
+        if (category.getEstimatedLoad() != Category.UNSET) {
             estimatedLoadEditText.setText(String.valueOf(category.getEstimatedLoad()));
         } else {
             estimatedLoadEditText.setText(UNDEFINED_LOAD_STRING);
@@ -109,7 +110,6 @@ public class CategoryDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_category_detail, container, false);
     }
 
@@ -150,7 +150,6 @@ public class CategoryDetailFragment extends Fragment {
             if (!estimatedLoadEditText.hasFocus()){
                 estimatedLoadEditText.setText(UNDEFINED_LOAD_STRING);
             }
-
         }
 
         category.setBertTypeID(bertTypeSpinner.getSelectedItemPosition());
