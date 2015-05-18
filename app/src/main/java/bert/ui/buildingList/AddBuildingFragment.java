@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,14 +94,16 @@ public class AddBuildingFragment extends Fragment {
         buildingTypeSpinner.setAdapter(adapter);
 
         buildingNameTextField = (EditText) getView().findViewById(R.id.add_building_name_textfield);
-        buildingNameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        buildingNameTextField.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (buildingNameTextField.getText().toString().length() > 0){
-                    addBuildingButton.setEnabled(true);
-                }
-                return false;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //TODO: add whitespace cleaner
+                addBuildingButton.setEnabled(buildingNameTextField.getText().toString().length() != 0);
             }
+
+            @Override public void afterTextChanged(Editable s) {}
         });
 
         addBuildingButton = (Button) getView().findViewById(R.id.add_building_button);

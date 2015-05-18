@@ -43,6 +43,7 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         return deviceTypes.size() + 1;
     }
 
+    public int getTotal() { return  updateBertTotal(); }
     @Override public View getView(int position, View convertView, ViewGroup parent) {
         View gridCell;
         LayoutInflater inflater = activity.getLayoutInflater();
@@ -128,12 +129,14 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         return this.counts;
     }
 
-    public void updateBertTotal() {
+    public int updateBertTotal() {
         int totalCount = 0;
         for (Integer i : counts.values()) {
             totalCount += i;
         }
+        owner.setCanFinish(totalCount != 0);
         owner.setBertTotalCounter(totalCount);
+        return totalCount;
     }
 }
 

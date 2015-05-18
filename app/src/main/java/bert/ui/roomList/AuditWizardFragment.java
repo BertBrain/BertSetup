@@ -88,6 +88,7 @@ public class AuditWizardFragment extends Fragment {
         totalBertsCounter = (TextView) getView().findViewById(R.id.totalCounterTextField);
 
         finishedButton = (Button) getView().findViewById(R.id.finisedAuditWizardButton);
+        finishedButton.setEnabled(tallyGridAdapter.getTotal() != 0);
         finishedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,14 +104,6 @@ public class AuditWizardFragment extends Fragment {
            }
         });
 
-        finishedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finishAuditWizard();
-            }
-        });
-
-
         locationTextView = (TextView)getView().findViewById(R.id.locationNameTextField);
         locationTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -118,6 +111,10 @@ public class AuditWizardFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    public void setCanFinish(boolean canFinish){
+        finishedButton.setEnabled(canFinish);
     }
 
     @Override
@@ -170,33 +167,30 @@ public class AuditWizardFragment extends Fragment {
     }
 
     private void finishAuditWizard() {
+
         String location = locationTextView.getText().toString();
         if (location.length() == 0) {
-            openNoRoomPopup();
+        openNoRoomPopup();
         } else {
-            HashMap<Category, Integer> categoryCounts = tallyGridAdapter.getCounts();
-            List<BertUnit> berts = new ArrayList<BertUnit>();
-            int categoryCount = 0;
-            for (Category category : project.getBuildings().get(buildingID).getCategories()) {
-                if (categoryCounts.get(category) != null) {
-                    for (int i = 0; i < categoryCounts.get(category); i++) {
-                        String name = location + " - " + category.getName() + " " + (i + 1);
-                        BertUnit bert = new BertUnit(name, location, "", buildingID, categoryCount);
-                        berts.add(bert);
-                    }
-                }
-                categoryCount++;
-            }
+           HashMap<Category, Integer> categoryCounts = tallyGridAdapter.getCounts();
+           List<BertUnit> berts = new ArrayList<BertUnit>();
+           int categoryCount = 0;
+           for (Category category : project.getBuildings().get(buildingID).getCategories()) {
+               if (categoryCounts.get(category) != null) {
+                   for (int i = 0; i < categoryCounts.get(category); i++) {
+                       String name = location + " - " + category.getName() + " " + (i + 1);
+                       BertUnit bert = new BertUnit(name, location, "", buildingID, categoryCount);
+                       berts.add(bert);
+                   }
+               }
+               categoryCount++;
+           }
 
-            project.addBerts(berts);
-            activity.createLocationlistView(); //Refresh view
-
-            if (project.getBertsByLocation(buildingID, location).size() > 0) {
-                activity.openDeviceEditorView(berts.get(0).getLocation());
-            } else {
-                System.out.println("done button pressed but no berts to be added");
-            }
-            FileProvider.saveProject(project);
+           project.addBerts(berts);
+           activity.createLocationlistView(); //Refresh view
+           activity.openDeviceEditorView(berts.get(0).getLocation());
+           FileProvider.saveProject(project);
         }
+
     }
 }

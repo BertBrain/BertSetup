@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,14 +97,18 @@ public class AddCategoryFragment extends Fragment {
         });
 
         categoryNameEditText = (EditText) getView().findViewById(R.id.categoryNameTextField);
-        categoryNameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        categoryNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-               finishButton.setEnabled(categoryNameEditText.getText().toString().length() > 0);
-
-                return false;
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //TODO: clean whitespace
+                finishButton.setEnabled(categoryNameEditText.getText().toString().length() > 0);
             }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
     }
 

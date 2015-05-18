@@ -30,6 +30,7 @@ public class CategoryDetailFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "Buidling ID";
     private static final String ARG_CATEGORY_ID = "CATEGORY_ID";
+    private static final String UNDEFINED_LOAD_STRING = "Undefined";
 
     private int projectID;
     private int buildingID;
@@ -77,10 +78,18 @@ public class CategoryDetailFragment extends Fragment {
         categoryNameEditText.setText(category.getName());
 
         estimatedLoadEditText = (EditText) getView().findViewById(R.id.estimated_load_edit_text);
-        if (category.getEstimatedLoad() !=Category.UNSET){
+        estimatedLoadEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus && estimatedLoadEditText.getText().toString().contentEquals(UNDEFINED_LOAD_STRING) ){
+                    estimatedLoadEditText.setText("");
+                }
+            }
+        });
+        if (category.getEstimatedLoad() != Category.UNSET){
             estimatedLoadEditText.setText(String.valueOf(category.getEstimatedLoad()));
         } else {
-            estimatedLoadEditText.setText("Undefined");
+            estimatedLoadEditText.setText(UNDEFINED_LOAD_STRING);
         }
 
 
@@ -133,7 +142,17 @@ public class CategoryDetailFragment extends Fragment {
 
     private void saveChanges() {
         category.setName(categoryNameEditText.getText().toString());
-        category.setEstimatedLoad(Integer.valueOf(estimatedLoadEditText.getText().toString()));
+
+        try {
+          category.setEstimatedLoad(Integer.valueOf(estimatedLoadEditText.getText().toString()));
+        } catch (NumberFormatException e) {
+            category.setEstimatedLoad(Category.UNSET);
+            if (!estimatedLoadEditText.hasFocus()){
+                estimatedLoadEditText.setText(UNDEFINED_LOAD_STRING);
+            }
+
+        }
+
         category.setBertTypeID(bertTypeSpinner.getSelectedItemPosition());
         FileProvider.saveProject(project);
         ((CategoryListActivity) getActivity()).createCategoryListView();

@@ -8,6 +8,7 @@
 
         <GridLayout
 
+            android:paddingRight="@dimen/right_margin"
             android:layout_width="fill_parent"
             android:layout_height="214dp"
             android:layout_gravity="left|top"
@@ -28,7 +29,7 @@
 
             <EditText
                 android:singleLine="true"
-                android:layout_width="284dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/projectNameTextField"
                 android:imeActionLabel="Done"
@@ -49,7 +50,7 @@
 
             <EditText
                 android:singleLine="true"
-                android:layout_width="283dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/contactTextField"
                 android:imeActionLabel="Done"
@@ -69,7 +70,7 @@
 
             <EditText
                 android:singleLine="true"
-                android:layout_width="280dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:ems="10"
