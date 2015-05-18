@@ -11,9 +11,7 @@ import bert.data.proj.BertUnit;
 import bert.data.proj.BertUnitSerializer;
 import bert.data.proj.Building;
 import bert.data.proj.BuildingSerializer;
-import bert.data.proj.Category;
-import bert.data.proj.CategorySerializer;
-import bert.data.proj.InvalidProjectNameException;
+import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.proj.Project;
 
 /**
@@ -46,6 +44,7 @@ public class ProjectSerializer {
             newProject.setCreationDate(projectTag.getAttribute(TAG_CREATION_DATE));
             newProject.setModifiedDate(projectTag.getAttribute(TAG_MODIFIED_DATE));
 
+            //BERT DESERIALIZATION
             List<BertUnit> bertList = new ArrayList<>();
             for (int i = 0; i < bertNodeList.getLength(); i++) {
                 Element e = (Element) bertNodeList.item(i);
@@ -53,6 +52,7 @@ public class ProjectSerializer {
             }
             newProject.setBerts(bertList);
 
+            //BUILDING DESERIALIZATION
             List<Building> buildingList = new ArrayList<>();
             for (int i = 0; i < buildingNodeList.getLength(); i++) {
                 Element e = (Element) buildingNodeList.item(i);

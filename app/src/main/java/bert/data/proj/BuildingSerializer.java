@@ -28,7 +28,9 @@ public class BuildingSerializer {
         NodeList categoryElements = e.getElementsByTagName(CategorySerializer.TAG_CATEGORY);
         for (int i = 0; i < categoryElements.getLength(); i++) {
             Element categoryElement = (Element) categoryElements.item(i);
-            categories.add(CategorySerializer.getCategoryFromElement(categoryElement));
+            int id = Integer.valueOf(categoryElement.getAttribute(CategorySerializer.ATTR_ID));
+            Category cat = CategorySerializer.getCategoryFromElement(categoryElement);
+            categories.add(id, cat);
         }
         return new Building(name, startTime, endTime, categories);
     }

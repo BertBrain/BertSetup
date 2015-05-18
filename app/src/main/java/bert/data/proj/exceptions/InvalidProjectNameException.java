@@ -1,4 +1,4 @@
-package bert.data.proj;
+package bert.data.proj.exceptions;
 
 /**
  * Created by afiolmahon on 5/18/15.

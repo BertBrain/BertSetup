@@ -1,11 +1,10 @@
 package bert.data.proj;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import bert.data.ProjectProvider;
+import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.utility.Cleaner;
 import bert.data.utility.DateUtil;
 

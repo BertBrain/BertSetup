@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 
 import bert.data.FileProvider;
-import bert.data.proj.InvalidProjectNameException;
+import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
 import bert.data.utility.CSVExporter;
