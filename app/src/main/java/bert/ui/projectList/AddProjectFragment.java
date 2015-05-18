@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,16 +73,18 @@ public class AddProjectFragment extends Fragment {
         });
         createButton.setEnabled(false);
         nameTextField = (TextView) getView().findViewById(R.id.projectNameTextField);
-        nameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        nameTextField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-                    nameTextField.setText(Cleaner.cleanProjectName(nameTextField.getText().toString()));
-                    createButton.setEnabled(!nameTextField.getText().toString().trim().isEmpty());
-
-                return false;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String cleanedName = Cleaner.cleanProjectName(nameTextField.getText().toString());
+                createButton.setEnabled(!cleanedName.isEmpty());
             }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
         contactTextField = (TextView) getView().findViewById(R.id.contactTextField);
         contactNumberTextField = (TextView) getView().findViewById(R.id.contactNumberTextField);

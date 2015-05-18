@@ -137,10 +137,11 @@ public class ProjectDetailFragment extends Fragment {
         exportToBertConfigButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//TODO add alert
-                (new ExportChooser(getActivity())).exportFile("CSV to Bert Configurator");
+
                 File fileToShare;
                 try {
                     fileToShare = CSVExporter.generateCSV(currentProject);
+                    (new ExportChooser(getActivity())).exportFile("CSV to Bert Configurator", fileToShare);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.d("Project Detail Fragment", "Unable to generate Configurator CSV File");
@@ -153,7 +154,7 @@ public class ProjectDetailFragment extends Fragment {
         exportToROIButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                (new ExportChooser(getActivity())).exportFile("ROI Spreadsheet");
+                (new ExportChooser(getActivity())).exportFile("ROI Spreadsheet", null);
             }
         });
 
