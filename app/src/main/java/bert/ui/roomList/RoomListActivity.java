@@ -118,7 +118,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorF
     }
 
     public void openDeviceEditorView(String locationName) {
-        loadFragment(DeviceEditorFragment.newInstance(buildingID, locationName));
+        loadFragment(DeviceEditorFragment.newInstance(projectID, buildingID, locationName));
     }
 
     public void openNoSelectionView(String message) {

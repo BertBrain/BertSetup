@@ -1,6 +1,7 @@
 package bert.ui.roomList;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -37,32 +38,34 @@ import bert.ui.R;
 public class DeviceEditorFragment extends Fragment {
     public static final String ARG_LOCATION = "location";
     public static final String ARG_BUILDING = "building";
+    public static final String ARG_PROJECT = "projectkey";
+
+    public static final String ADD_BUILDING_STRING = "+ Add Building";
 
     private RoomListActivity activity;
     private Project project;
+    private int projectID;
     private int buildingID;
     private String location;
     private int position;
     private List<BertUnit> bertList;
 
     private OnFragmentInteractionListener mListener;
-    private EditText deviceNameTextField;
-    private EditText macAddressTextField;
-    private EditText roomTextField;
-    private TextView buildingTextField;
+
     private ArrayAdapter<String> deviceTableAdapter;
     private ListView locationListView;
     private FrameLayout detailView;
-    private Spinner categorySelector;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      * @param location the room used to populate the bertlist.
      * @return A new instance of fragment DeviceEditorFragment.
      */
-    public static DeviceEditorFragment newInstance(int buildingID, String location) {
+    public static DeviceEditorFragment newInstance(int projectID, int buildingID, String location) {
         DeviceEditorFragment fragment = new DeviceEditorFragment();
         Bundle args = new Bundle();
+        args.putInt(ARG_PROJECT, projectID);
         args.putInt(ARG_BUILDING, buildingID);
         args.putString(ARG_LOCATION, location);
         fragment.setArguments(args);
@@ -77,6 +80,7 @@ public class DeviceEditorFragment extends Fragment {
         project = activity.getProject();
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            projectID = getArguments().getInt(ARG_PROJECT);
             buildingID = getArguments().getInt(ARG_BUILDING);
             location = getArguments().getString(ARG_LOCATION);
             bertList = project.getBertsByLocation(buildingID, location);
@@ -86,12 +90,7 @@ public class DeviceEditorFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        macAddressTextField = (EditText) getView().findViewById(R.id.macAddress);
-        deviceNameTextField = (EditText) getView().findViewById(R.id.deviceName);
-        roomTextField = (EditText) getView().findViewById(R.id.room);
-        buildingTextField = (TextView) getView().findViewById(R.id.currentBuildingDisplay);
-        categorySelector = (Spinner) getView().findViewById(R.id.detailViewCategorySelector);
-        setDetailViewVisibility(false);
+
 
         List<String> bertNameList = new ArrayList<String>();
         if (getArguments() != null) {
@@ -99,11 +98,11 @@ public class DeviceEditorFragment extends Fragment {
                 bertNameList.add(bert.getName());
             }
         }
-        ArrayAdapter<String> categoryTableAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, activity.getProject().getBuildings().get(buildingID).getCategoryNames());
-        categorySelector.setAdapter(categoryTableAdapter);
-        categorySelector.setSelection(bertList.get(0).getCategoryID());
 
-        deviceTableAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, bertNameList);
+
+        final ArrayList<String> listStrings = new ArrayList<String>(bertNameList);
+        listStrings.add(ADD_BUILDING_STRING);
+        deviceTableAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, listStrings);
 
         locationListView = (ListView) getView().findViewById(R.id.bertList);
         locationListView.setAdapter(deviceTableAdapter);
@@ -111,46 +110,18 @@ public class DeviceEditorFragment extends Fragment {
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                loadDeviceAtPosition(position);
-            }
-        });
-
-        macAddressTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE && v == macAddressTextField) {
-                    updateMAC();
+                if (position == listStrings.size() -1 ) {
+                    addDevice();
+                } else {
+                    loadDeviceAtPosition(position);
                 }
-                return false;
             }
         });
 
-        deviceNameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-           @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-               if (actionId == EditorInfo.IME_ACTION_DONE && v == deviceNameTextField) {
-                   updateName();
-               }
-               return false;
-           }
-        });
-        categorySelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectCategory(position);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
-    void selectCategory(int categoryID){
-        BertUnit bert = bertList.get(this.position);
-        bert.setCategoryID(categoryID);
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -179,22 +150,13 @@ public class DeviceEditorFragment extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
-    private void updateMAC() {
-        if (bertList.size() > 0) {
-            bertList.get(position).setMAC(macAddressTextField.getText().toString());
-            FileProvider.saveProject(project);
-        }
-    }
 
-    private void updateName() {
-        if (bertList.size() > 0) {
-            bertList.get(position).setName(deviceNameTextField.getText().toString());
-            FileProvider.saveProject(project);
-        }
-        onResume();
-    }
 
     private void loadDeviceAtPosition(int position) {
+        System.out.println("editing device");
+        DeviceDetailEditFragment fragment = DeviceDetailEditFragment.newInstance(projectID, buildingID, location, position);
+        loadFragment(fragment);
+        /*
         this.position = position;
         BertUnit b = bertList.get(position);
         deviceNameTextField.setText(b.getName());
@@ -202,12 +164,20 @@ public class DeviceEditorFragment extends Fragment {
         roomTextField.setText(b.getLocation());
         buildingTextField.setText(project.getBuildings().get(b.getBuildingID()).getName());
         categorySelector.setSelection(bertList.get(position).getCategoryID());
-        setDetailViewVisibility(true);
+        setDetailViewVisibility(true);(/*/
     }
 
-    private void setDetailViewVisibility(boolean isVisible) {
-        detailView = (FrameLayout) getView().findViewById(R.id.bertDeviceDetailViewFrame);
-        detailView.setVisibility((isVisible) ? View.VISIBLE : View.INVISIBLE);
+    private void addDevice(){
+        System.out.println("adding device");
+        DeviceDetailAddFragment fragment = new DeviceDetailAddFragment();
+        loadFragment(fragment);
+    }
+
+    private void loadFragment(Fragment frag) {
+        FragmentTransaction t = getFragmentManager().beginTransaction();
+        t.replace(R.id.bertDeviceDetailViewFrame, frag);
+        t.addToBackStack(null);
+        t.commit();
     }
 
     private void saveChanges() {
