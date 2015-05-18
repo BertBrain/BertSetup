@@ -138,7 +138,7 @@ public class AddProjectFragment extends Fragment {
             startActivity(intent);
 
             try {
-                FileOutputStream fileOutputStream = new FileOutputStream(getActivity.getExternalFilesDir());
+                FileOutputStream fileOutputStream = new FileOutputStream(newProjectName);
                 ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
                 outputStream.writeObject(newProject);
             } catch (FileNotFoundException e){
