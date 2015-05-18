@@ -80,12 +80,13 @@ public class AddProjectFragment extends Fragment {
         createButton.setEnabled(false);
         nameTextField = (TextView) getView().findViewById(R.id.projectNameTextField);
         nameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
                     nameTextField.setText(Cleaner.cleanProjectName(nameTextField.getText().toString()));
                     createButton.setEnabled(!nameTextField.getText().toString().trim().isEmpty());
-                }
+
                 return false;
             }
         });
@@ -137,7 +138,7 @@ public class AddProjectFragment extends Fragment {
             startActivity(intent);
 
             try {
-                FileOutputStream fileOutputStream = new FileOutputStream(newProjectName);
+                FileOutputStream fileOutputStream = new FileOutputStream(getActivity.getExternalFilesDir());
                 ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
                 outputStream.writeObject(newProject);
             } catch (FileNotFoundException e){

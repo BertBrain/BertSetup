@@ -54,16 +54,5 @@ public class Category implements Serializable {
 		this.estimatedLoad = newEstimatedLoad;
 	}
 
-	public static Category[] DEFAULT_CATEGORIES = {
-			new Category("Projector", 3, 0),
-			new Category("Smart Board", 3, 0),
-			new Category("Printer Monitor Combo", 3, 0),
-			new Category("TV", 3, 0),
-			new Category("Amplifier SmartBoard", 3, 0),
-			new Category("Medium Priner", 3, 0),
-			new Category("Large Printer/Copier 110V", 3, 0),
-			new Category("Large Printer/Copier 220V", 3, 0)
-	};
-
-	public static List<String> bertTypes = Arrays.asList("WALL_15", "WALL_20", "INLINE", "UNDEFINED");
+	public static List<String> bertTypes = Arrays.asList("To Be Determined", "Smart Plug 15 Amp", "Smart Plug 20 Amp", "Inline");
 }

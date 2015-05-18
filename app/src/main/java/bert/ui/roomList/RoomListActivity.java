@@ -76,6 +76,8 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorF
     }
 
     public void createLocationlistView() {
+        System.out.println( buildingID);
+        project = ProjectProvider.getInstance().getProjectList().get(projectID);
         locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getLocationNamesInBuilding(buildingID));
         locationListView = (ListView) findViewById(R.id.item_list_view);
         locationListView.setAdapter(locationTableAdapter);

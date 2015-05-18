@@ -101,9 +101,9 @@ public class AddCategoryFragment extends Fragment {
         categoryNameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    finishButton.setEnabled(categoryNameEditText.getText().toString().length() > 0);
-                }
+
+               finishButton.setEnabled(categoryNameEditText.getText().toString().length() > 0);
+
                 return false;
             }
         });
