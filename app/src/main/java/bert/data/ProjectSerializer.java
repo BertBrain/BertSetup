@@ -1,5 +1,7 @@
 package bert.data;
 
+import android.util.Log;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -26,6 +28,8 @@ public class ProjectSerializer {
     public static final String TAG_MODIFIED_DATE = "ModifiedDate";
     public static final String TAG_CONTACT_NAME = "ContactName";
     public static final String TAG_CONTACT_NUMBER = "ContactNumber";
+    public static final String TAG_BERTS = "Berts";
+    public static final String TAG_BUILDINGS = "Buildings";
 
 
     public static Project getProjectFromDocument(Document document) {
@@ -86,22 +90,30 @@ public class ProjectSerializer {
         root.appendChild(client);
 
         //BERT SERIALIZATION
-        Element bertElementList = projectDoc.createElement("Berts");
+        Element bertElementList = projectDoc.createElement(TAG_BERTS);
         for (int i = 0; i < p.getBerts().size(); i++) {
-            BertUnit b = p.getBerts().get(i);
-            bertElementList.appendChild(BertUnitSerializer.getElementFromBertUnit(b, projectDoc));
+            BertUnit bert = p.getBerts().get(i);
+            Element bertElement = BertUnitSerializer.getElementFromBertUnit(bert, projectDoc);
+            bertElementList.appendChild(bertElement);
         }
         root.appendChild(bertElementList);
+        log("Saved " + bertElementList.getElementsByTagName("Bert").getLength() +" BertUnits");
 
         //BUILDING SERIALIZATION
-        Element buildingElementList = projectDoc.createElement("Buildings");
+        Element buildingElementList = projectDoc.createElement(TAG_BUILDINGS);
         for (int i = 0; i < p.getBuildings().size(); i++) {
             Building b = p.getBuildings().get(i);
-            buildingElementList.appendChild(BuildingSerializer.getElementFromBuilding(b, projectDoc, i));
+            Element buildingElement = BuildingSerializer.getElementFromBuilding(b, projectDoc, i);
+            buildingElementList.appendChild(buildingElement);
         }
         root.appendChild(buildingElementList);
+        log("Saved " + buildingElementList.getElementsByTagName("Building").getLength() + " Buildings");
 
         projectDoc.appendChild(root);
         return projectDoc;
+    }
+
+    private static void log(String output) {
+        Log.d("Project Serializer", output);
     }
 }

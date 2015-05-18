@@ -41,7 +41,7 @@ public class DeviceEditorFragment extends Fragment {
     private RoomListActivity activity;
     private Project project;
     private int buildingID;
-    private String location;
+    private String roomName;
     private int position;
     private List<BertUnit> bertList;
 
@@ -78,8 +78,8 @@ public class DeviceEditorFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             buildingID = getArguments().getInt(ARG_BUILDING);
-            location = getArguments().getString(ARG_LOCATION);
-            bertList = project.getBertsByLocation(buildingID, location);
+            roomName = getArguments().getString(ARG_LOCATION);
+            bertList = project.getBertsByLocation(buildingID, roomName);
         }
     }
 
@@ -134,6 +134,7 @@ public class DeviceEditorFragment extends Fragment {
                return false;
            }
         });
+
         categorySelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -147,14 +148,13 @@ public class DeviceEditorFragment extends Fragment {
         });
     }
 
-    void selectCategory(int categoryID){
+    void selectCategory(int categoryID) {
         BertUnit bert = bertList.get(this.position);
         bert.setCategoryID(categoryID);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_device_editor_view, container, false);
     }
 
@@ -208,9 +208,5 @@ public class DeviceEditorFragment extends Fragment {
     private void setDetailViewVisibility(boolean isVisible) {
         detailView = (FrameLayout) getView().findViewById(R.id.bertDeviceDetailViewFrame);
         detailView.setVisibility((isVisible) ? View.VISIBLE : View.INVISIBLE);
-    }
-
-    private void saveChanges() {
-
     }
 }
