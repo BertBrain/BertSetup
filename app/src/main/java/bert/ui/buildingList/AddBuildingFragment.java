@@ -22,11 +22,18 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.io.File;
+import java.util.List;
+
+import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
+import bert.data.proj.Category;
 import bert.data.proj.CategoryPresets;
 import bert.data.proj.Project;
 import bert.data.proj.Time;
+import bert.data.proj.exceptions.DuplicateBuildingInProjectException;
+import bert.data.utility.Cleaner;
 import bert.ui.BertAlert;
 import bert.ui.R;
 import bert.ui.roomList.RoomListActivity;
@@ -39,59 +46,57 @@ import bert.ui.roomList.RoomListActivity;
  */
 public class AddBuildingFragment extends Fragment {
 
-    private static final String PROJECT_ID_KEY = "PROJECT_ID_KEY";
+    private static final String PROJECT_ID = "PROJECT_ID";
 
     private int projectID;
+    private Project project;
 
-    EditText buildingNameTextField;
-    Button addBuildingButton;
-    Spinner buildingTypeSpinner;
+    private EditText buildingNameTextField;
+    private Button addBuildingButton;
+    private Spinner buildingTypeSpinner;
+    private ArrayAdapter<String> buildingTypeArrayAdapter;
 
-    TextView startTimeDisplay;
-    TextView endTimeDisplay;
-    TimeRangeDisplay timeDisplay;
+    private Time defaultStartTime = new Time(9, 0);
+    private Time defaultEndTime = new Time(17, 0);
+    private TextView startTimeDisplay;
+    private TextView endTimeDisplay;
+    private TimeRangeDisplay timeDisplay;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment AddBuildingFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AddBuildingFragment newInstance(int param1) {
+    public static AddBuildingFragment newInstance(int projectID) {
         AddBuildingFragment fragment = new AddBuildingFragment();
         Bundle args = new Bundle();
-        args.putInt(PROJECT_ID_KEY, param1);
+        args.putInt(PROJECT_ID, projectID);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public AddBuildingFragment() {
-        // Required empty public constructor
-    }
+    public AddBuildingFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            projectID = getArguments().getInt(PROJECT_ID_KEY);
+            projectID = getArguments().getInt(PROJECT_ID);
+            project = ProjectProvider.getInstance().getProjectList().get(projectID);
         }
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-
         startTimeDisplay = (TextView) getView().findViewById(R.id.start_time_textfield);
-        endTimeDisplay =(TextView) getView().findViewById(R.id.end_time_text_field);
-        Time startTime = new Time(9, 0); //default start time
-        Time endTime = new Time(17, 0); // default end time
-        timeDisplay = new TimeRangeDisplay(getActivity(), startTimeDisplay, startTime, endTimeDisplay, endTime);
+        endTimeDisplay = (TextView) getView().findViewById(R.id.end_time_text_field);
+        timeDisplay = new TimeRangeDisplay(
+                getActivity(),
+                startTimeDisplay,
+                defaultStartTime,
+                endTimeDisplay,
+                defaultEndTime
+        );
 
         buildingTypeSpinner = (Spinner)getView().findViewById(R.id.building_type_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, CategoryPresets.getNames());
-        buildingTypeSpinner.setAdapter(adapter);
+        buildingTypeArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, CategoryPresets.getNames());
+        buildingTypeSpinner.setAdapter(buildingTypeArrayAdapter);
 
         buildingNameTextField = (EditText) getView().findViewById(R.id.add_building_name_textfield);
         buildingNameTextField.addTextChangedListener(new TextWatcher() {
@@ -99,8 +104,7 @@ public class AddBuildingFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //TODO: add whitespace cleaner
-                addBuildingButton.setEnabled(buildingNameTextField.getText().toString().length() != 0);
+                addBuildingButton.setEnabled(Cleaner.isValid(buildingNameTextField.getText().toString()));
             }
 
             @Override public void afterTextChanged(Editable s) {}
@@ -114,37 +118,32 @@ public class AddBuildingFragment extends Fragment {
                 addBuilding();
             }
         });
-
-
     }
 
-    private void addBuilding(){
-        final String newName = buildingNameTextField.getText().toString();
-        if (!ProjectProvider.getInstance().getProjectList().get(projectID).getBuildingNames().contains(newName)){
-            Building b = new Building(newName, timeDisplay.getStartTime(), timeDisplay.getEndTime(), CategoryPresets.getPresets().get(buildingTypeSpinner.getSelectedItem()));
-            Project project = ProjectProvider.getInstance().getProjectList().get(projectID);
-            project.addBuilding(b);
-
-            Intent intent = new Intent(getActivity(), RoomListActivity.class);
-            intent.putExtra(RoomListActivity.ARG_PROJECT_ID, projectID);
-            intent.putExtra(RoomListActivity.ARG_BUILDING_ID, project.getBuildings().size() - 1);
-            getActivity().startActivity(intent);
-        } else {
+    private void addBuilding() {
+        try {
+            String newName = buildingNameTextField.getText().toString();
+            Time startTime = timeDisplay.getStartTime();
+            Time endTime = timeDisplay.getEndTime();
+            List<Category> presetCategories = CategoryPresets.getPresets().get(buildingTypeSpinner.getSelectedItem());
+            Building building = new Building(newName, startTime, endTime, presetCategories);
+            project.addBuilding(building);
+            FileProvider.saveProject(project);
+            BuildingListActivity activity = (BuildingListActivity) getActivity();
+            activity.loadListView();
+            activity.openBuildingDetailView(project.getBuildings().size() - 1);
+        } catch(DuplicateBuildingInProjectException e) {
             BertAlert.show(getActivity(), "This Building Already Exists");
         }
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_building_view, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-    }
+    public void onButtonPressed(Uri uri) {}
 
     @Override
     public void onAttach(Activity activity) {

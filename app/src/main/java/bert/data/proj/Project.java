@@ -3,7 +3,9 @@ package bert.data.proj;
 import java.util.ArrayList;
 import java.util.List;
 
+import bert.data.FileProvider;
 import bert.data.ProjectProvider;
+import bert.data.proj.exceptions.DuplicateBuildingInProjectException;
 import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.utility.Cleaner;
 import bert.data.utility.DateUtil;
@@ -86,7 +88,13 @@ public class Project {
         }
     }
 
-    public void addBuilding(Building building) {buildings.add(building);}
+    public void addBuilding(Building building) throws DuplicateBuildingInProjectException {
+        if (getBuildingNames().contains(building.getName())) {
+            throw new DuplicateBuildingInProjectException();
+        } else {
+            buildings.add(building);
+        }
+    }
 
     //Getters and setters
     public String getProjectName() {

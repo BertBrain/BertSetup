@@ -73,7 +73,7 @@ public class BuildingListActivity extends ActionBarActivity {
         loadFragment(AddBuildingFragment.newInstance(projectID));
     }
 
-    private void openBuildingDetailView(int buildingID){
+    protected void openBuildingDetailView(int buildingID){
         loadFragment(BuildingDetailFragment.newInstance(projectID, buildingID));
     }
 

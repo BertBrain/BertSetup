@@ -28,7 +28,6 @@ public class CategoryPresets {
 
     public static HashMap<String, List<Category>> getPresets(){
         if (!isInit) { init(); }
-
         return presets;
     }
 

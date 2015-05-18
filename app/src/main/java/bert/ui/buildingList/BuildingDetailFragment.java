@@ -20,25 +20,21 @@ import bert.ui.categoryList.CategoryListActivity;
 import bert.ui.roomList.RoomListActivity;
 
 public class BuildingDetailFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String PROJECT_ID_KEY = "PROJECT_ID_KEY";
-    private static final String BUILDING_ID_KEY = "BUILDING_ID_KEY";
+    private static final String ARG_PROJECT_ID = "PROJECT_ID";
+    private static final String ARG_BUILDING_ID = "BUILDING_ID";
 
-    // TODO: Rename and change types of parameters
     private int projectID;
     private int buildingID;
-    Building building;
+    private Building building;
 
-    EditText nameTextField;
-    Button openBuildingButton;
-    Button openCategoryEditor;
+    private EditText nameTextField;
+    private Button openBuildingButton;
+    private Button openCategoryEditor;
 
-    TextView startTimeDisplay;
-    TextView endTimeDisplay;
-    TimeRangeDisplay timeDisplay;
+    private TextView startTimeDisplay;
+    private TextView endTimeDisplay;
+    private TimeRangeDisplay timeDisplay;
 
-    // TODO: Rename and change types and number of parameters
     /*
     @param projectID
     @param buildingID
@@ -46,8 +42,8 @@ public class BuildingDetailFragment extends Fragment {
     public static BuildingDetailFragment newInstance(int projectID, int buildingID) {
         BuildingDetailFragment fragment = new BuildingDetailFragment();
         Bundle args = new Bundle();
-        args.putInt(PROJECT_ID_KEY, projectID);
-        args.putInt(BUILDING_ID_KEY, buildingID);
+        args.putInt(ARG_PROJECT_ID, projectID);
+        args.putInt(ARG_BUILDING_ID, buildingID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,20 +56,18 @@ public class BuildingDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            projectID = getArguments().getInt(PROJECT_ID_KEY);
-            buildingID = getArguments().getInt(BUILDING_ID_KEY);
+            projectID = getArguments().getInt(ARG_PROJECT_ID);
+            buildingID = getArguments().getInt(ARG_BUILDING_ID);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_building_detail_view, container, false);
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         building = ProjectProvider.getInstance().getProjectList().get(projectID).getBuildings().get(buildingID);
 
@@ -90,8 +84,6 @@ public class BuildingDetailFragment extends Fragment {
                     if (!ProjectProvider.getInstance().getProjectList().get(projectID).getBuildingNames().contains(nameTextField.getText().toString())) {
                         building.setName(nameTextField.getText().toString());
                         ((BuildingListActivity)getActivity()).loadListView();
-                    } else {
-
                     }
                 } else {
                     nameTextField.setText(building.getName());
@@ -117,7 +109,7 @@ public class BuildingDetailFragment extends Fragment {
         });
     }
 
-    private void openBuilding(){
+    private void openBuilding() {
         Intent intent = new Intent(getActivity(), RoomListActivity.class);
         intent.putExtra(RoomListActivity.ARG_PROJECT_ID, projectID);
         intent.putExtra(RoomListActivity.ARG_BUILDING_ID, buildingID);
@@ -125,7 +117,7 @@ public class BuildingDetailFragment extends Fragment {
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         building.setStartTime(timeDisplay.getStartTime());
         building.setEndTime(timeDisplay.getEndTime());
