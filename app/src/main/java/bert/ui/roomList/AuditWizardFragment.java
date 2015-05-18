@@ -24,6 +24,7 @@ import bert.data.proj.BertUnit;
 import bert.data.proj.Category;
 
 import bert.data.proj.Project;
+import bert.data.utility.Cleaner;
 import bert.ui.R;
 
 import java.util.ArrayList;
@@ -135,7 +136,7 @@ public class AuditWizardFragment extends Fragment {
         totalBertsCounter.setText("Total: " + count);
     }
 
-    private void openNoRoomPopup() {
+    private void openNoRoomNamePopup() {
         AlertDialog.Builder noRoomNameSetAlert = new AlertDialog.Builder(getView().getContext());
         noRoomNameSetAlert.setTitle("Room Name Not Specified");
         noRoomNameSetAlert.setPositiveButton("Set Room Name", new DialogInterface.OnClickListener() {
@@ -167,29 +168,27 @@ public class AuditWizardFragment extends Fragment {
     }
 
     private void finishAuditWizard() {
-
         String location = locationTextView.getText().toString();
-        if (location.length() == 0) {
-        openNoRoomPopup();
+        if (Cleaner.isValid(location)) {
+            HashMap<Category, Integer> categoryCounts = tallyGridAdapter.getCounts();
+            List<BertUnit> bertList = new ArrayList<>();
+            int categoryCount = 0;
+            for (Category category : project.getBuildings().get(buildingID).getCategories()) {
+                if (categoryCounts.get(category) != null) {
+                    for (int i = 0; i < categoryCounts.get(category); i++) {
+                        String name = location + " - " + category.getName() + " " + (i + 1);
+                        BertUnit bert = new BertUnit(name, location, "", buildingID, categoryCount);
+                        bertList.add(bert);
+                    }
+                }
+                categoryCount++;
+            }
+            project.addBerts(bertList);
+            activity.createLocationlistView(); //Refresh view
+            activity.openDeviceEditorView(bertList.get(0).getLocation());
+            FileProvider.saveProject(project);
         } else {
-           HashMap<Category, Integer> categoryCounts = tallyGridAdapter.getCounts();
-           List<BertUnit> berts = new ArrayList<BertUnit>();
-           int categoryCount = 0;
-           for (Category category : project.getBuildings().get(buildingID).getCategories()) {
-               if (categoryCounts.get(category) != null) {
-                   for (int i = 0; i < categoryCounts.get(category); i++) {
-                       String name = location + " - " + category.getName() + " " + (i + 1);
-                       BertUnit bert = new BertUnit(name, location, "", buildingID, categoryCount);
-                       berts.add(bert);
-                   }
-               }
-               categoryCount++;
-           }
-
-           project.addBerts(berts);
-           activity.createLocationlistView(); //Refresh view
-           activity.openDeviceEditorView(berts.get(0).getLocation());
-           FileProvider.saveProject(project);
+            openNoRoomNamePopup();
         }
 
     }

@@ -22,8 +22,8 @@ public class TimeRangeDisplay implements TimePickerDialog.OnTimeSetListener {
     private TextView endTimeDisplay;
     private TextView activeTimeDisplay;
 
-    public Time startTime;
-    Time endTime;
+    private Time startTime;
+    private Time endTime;
     private Time activeTime;
 
     public TimeRangeDisplay(Activity activity, TextView startTimeDisplay, Time nStartTime, TextView endTimeDisplay, Time nEndTime){

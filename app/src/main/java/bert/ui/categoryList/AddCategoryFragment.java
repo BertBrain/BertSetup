@@ -16,9 +16,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.proj.Category;
 import bert.data.proj.Project;
+import bert.data.utility.Cleaner;
 import bert.ui.BertAlert;
 import bert.ui.R;
 
@@ -75,7 +77,7 @@ public class AddCategoryFragment extends Fragment {
         super.onResume();
         estimatedLoadEditText = (EditText) getView().findViewById(R.id.standyPowerTextField);
 
-        bertTypeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, Category.bertTypes);
+        bertTypeSpinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, Category.bertTypes);
         bertTypeSpinner = (Spinner) getView().findViewById(R.id.bertTypeSpinner);
         bertTypeSpinner.setAdapter(bertTypeSpinnerAdapter);
 
@@ -99,16 +101,19 @@ public class AddCategoryFragment extends Fragment {
         categoryNameEditText = (EditText) getView().findViewById(R.id.categoryNameTextField);
         categoryNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //TODO: clean whitespace
-                finishButton.setEnabled(categoryNameEditText.getText().toString().length() > 0);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                categoryNameEditText.setText(Cleaner.clean(categoryNameEditText.getText().toString()));
+                boolean hasValidName = Cleaner.isValid(categoryNameEditText.getText().toString());
+                finishButton.setEnabled(hasValidName);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 
@@ -116,25 +121,22 @@ public class AddCategoryFragment extends Fragment {
         String name = categoryNameEditText.getText().toString();
         int bertType = bertTypeSpinner.getSelectedItemPosition();
         int estimatedLoad;
-        if (estimatedLoadEditText.getText().toString().length() > 0){
-            try {
-                estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
-            } catch (NumberFormatException e){
-                estimatedLoad = Category.UNSET;
-                BertAlert.show(getActivity(), "Invalid number entered");
-                System.out.println("invalid number passed");
-                return;
-            }
-        } else {
+        try {
+            estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
+        } catch (NumberFormatException e) {
             estimatedLoad = Category.UNSET;
+            BertAlert.show(getActivity(), "Invalid number entered");
+            System.out.println("invalid number passed");
+            return;
         }
-        project.getBuildings().get(buildingID).addCategory(new Category(name, bertType, estimatedLoad));
+        Category cat = new Category (name, bertType, estimatedLoad);
+        project.getBuildings().get(buildingID).addCategory(cat);
+        FileProvider.saveProject(project);
         activity.categoryCreationSuccessful();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_category_add, container, false);
     }
 
