@@ -13,8 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
+import bert.data.proj.Project;
+import bert.data.utility.Cleaner;
 import bert.ui.R;
 import bert.ui.categoryList.CategoryListActivity;
 import bert.ui.roomList.RoomListActivity;
@@ -25,9 +28,10 @@ public class BuildingDetailFragment extends Fragment {
 
     private int projectID;
     private int buildingID;
+    private Project project;
     private Building building;
 
-    private EditText nameTextField;
+    private EditText nameEditText;
     private Button openBuildingButton;
     private Button openCategoryEditor;
 
@@ -35,10 +39,6 @@ public class BuildingDetailFragment extends Fragment {
     private TextView endTimeDisplay;
     private TimeRangeDisplay timeDisplay;
 
-    /*
-    @param projectID
-    @param buildingID
-    */
     public static BuildingDetailFragment newInstance(int projectID, int buildingID) {
         BuildingDetailFragment fragment = new BuildingDetailFragment();
         Bundle args = new Bundle();
@@ -48,9 +48,7 @@ public class BuildingDetailFragment extends Fragment {
         return fragment;
     }
 
-    public BuildingDetailFragment() {
-        // Required empty public constructor
-    }
+    public BuildingDetailFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +56,8 @@ public class BuildingDetailFragment extends Fragment {
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
             buildingID = getArguments().getInt(ARG_BUILDING_ID);
+            project = ProjectProvider.getInstance().getProjectList().get(projectID);
+            building = project.getBuildings().get(buildingID);
         }
     }
 
@@ -69,25 +69,25 @@ public class BuildingDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        building = ProjectProvider.getInstance().getProjectList().get(projectID).getBuildings().get(buildingID);
-
         startTimeDisplay = (TextView) getView().findViewById(R.id.editor_start_time_textfield);
         endTimeDisplay = (TextView) getView().findViewById(R.id.editor_end_time_text_field);
         timeDisplay = new TimeRangeDisplay(getActivity(), startTimeDisplay, building.startTime, endTimeDisplay, building.endTime);
 
-        nameTextField = (EditText) getView().findViewById(R.id.edit_building_name_textfield);
-        nameTextField.setText(building.getName());
-        nameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        nameEditText = (EditText) getView().findViewById(R.id.edit_building_name_textfield);
+        nameEditText.setText(building.getName());
+        nameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (nameTextField.getText().toString().length() > 0 ) {
-                    if (!ProjectProvider.getInstance().getProjectList().get(projectID).getBuildingNames().contains(nameTextField.getText().toString())) {
-                        building.setName(nameTextField.getText().toString());
-                        ((BuildingListActivity)getActivity()).loadListView();
-                    }
+                boolean validName = Cleaner.isValid(nameEditText.getText().toString());
+                boolean nameNotTaken = !project.getBuildingNames().contains(nameEditText.getText().toString());
+                if (validName && nameNotTaken) {
+                    building.setName(nameEditText.getText().toString());
+                    FileProvider.saveProject(project);
+                    ((BuildingListActivity) getActivity()).loadListView();
                 } else {
-                    nameTextField.setText(building.getName());
+                    nameEditText.setText(building.getName());
                 }
+
                 return false;
             }
         });
@@ -96,7 +96,7 @@ public class BuildingDetailFragment extends Fragment {
         openCategoryEditor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openCategoryEditor();
+                openCategoryListActivity();
             }
         });
 
@@ -104,12 +104,12 @@ public class BuildingDetailFragment extends Fragment {
         openBuildingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openBuilding();
+                openRoomListActivity();
             }
         });
     }
 
-    private void openBuilding() {
+    private void openRoomListActivity() {
         Intent intent = new Intent(getActivity(), RoomListActivity.class);
         intent.putExtra(RoomListActivity.ARG_PROJECT_ID, projectID);
         intent.putExtra(RoomListActivity.ARG_BUILDING_ID, buildingID);
@@ -126,7 +126,7 @@ public class BuildingDetailFragment extends Fragment {
     public void onButtonPressed(Uri uri) {
     }
 
-    public void openCategoryEditor() {
+    public void openCategoryListActivity() {
         Intent i = new Intent(this.getActivity(), CategoryListActivity.class);
         i.putExtra(CategoryListActivity.ARG_PROJECT_ID, projectID);
         i.putExtra(CategoryListActivity.ARG_BUILDING_ID, buildingID);

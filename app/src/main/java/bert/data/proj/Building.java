@@ -17,7 +17,7 @@ public class Building {
     public Time getStartTime() { return startTime; }
     public void setStartTime(Time startTime){ this.startTime = startTime; }
 
-    public Time getEndTime() { return  endTime; }
+    public Time getEndTime() {return  endTime; }
     public void setEndTime(Time endTime) { this.endTime = endTime; }
 
     public Building(String name, Time startTime, Time endTime, List<Category> presetCategories) {
