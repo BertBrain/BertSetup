@@ -8,7 +8,7 @@ import java.util.List;
  * Created by afiol-mahon on 5/8/15.
  * @author afiol-mahon
  */
-public class Building implements Serializable{
+public class Building {
     private String name;
     public Time startTime;
     public Time endTime;

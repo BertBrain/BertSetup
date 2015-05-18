@@ -16,7 +16,7 @@ public class BertAlert {
         }
     };
 
-    public static void show(Activity activity, String title){
+    public static void show(Activity activity, String title) {
         show(activity, title, "Ok");
     }
 

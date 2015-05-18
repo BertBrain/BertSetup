@@ -11,7 +11,7 @@ import bert.data.utility.DateUtil;
 /**
  * @author afiol-mahon
  */
-public class Project implements Serializable{
+public class Project {
 	private String projectName;
 	private String contactName;
 	private String contactNumber;
