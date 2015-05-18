@@ -77,7 +77,7 @@ public class CategoryDetailFragment extends Fragment {
         categoryNameEditText.setText(category.getName());
 
         estimatedLoadEditText = (EditText) getView().findViewById(R.id.estimated_load_edit_text);
-        if (category.getEstimatedLoad() !=Category.UNSET){
+        if (category.getEstimatedLoad() != Category.UNSET){
             estimatedLoadEditText.setText(String.valueOf(category.getEstimatedLoad()));
         } else {
             estimatedLoadEditText.setText("Undefined");
@@ -133,7 +133,13 @@ public class CategoryDetailFragment extends Fragment {
 
     private void saveChanges() {
         category.setName(categoryNameEditText.getText().toString());
-        category.setEstimatedLoad(Integer.valueOf(estimatedLoadEditText.getText().toString()));
+
+        try {
+          category.setEstimatedLoad(Integer.valueOf(estimatedLoadEditText.getText().toString()));
+        } catch (NumberFormatException e) {
+            category.setEstimatedLoad(Category.UNSET);
+        }
+
         category.setBertTypeID(bertTypeSpinner.getSelectedItemPosition());
         FileProvider.saveProject(project);
         ((CategoryListActivity) getActivity()).createCategoryListView();

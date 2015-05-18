@@ -133,20 +133,10 @@ public class AddProjectFragment extends Fragment {
             ProjectListActivity activity = (ProjectListActivity) getActivity();
             Intent intent = new Intent(activity, BuildingListActivity.class);
             intent.putExtra(BuildingListActivity.ARG_PROJECT_ID, ProjectProvider.getInstance().getProjectList().size() - 1);
+
             activity.loadProjectList();
             activity.closeAddProjectView();
             startActivity(intent);
-
-            try {
-                FileOutputStream fileOutputStream = new FileOutputStream(newProjectName);
-                ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
-                outputStream.writeObject(newProject);
-            } catch (FileNotFoundException e){
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
         } else {
             BertAlert.show(getActivity(), "A project with the same name already exists");
         }

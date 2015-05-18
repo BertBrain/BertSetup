@@ -5,12 +5,14 @@
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
+
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center">
 
         <GridLayout
+            android:paddingRight="@dimen/right_margin"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"

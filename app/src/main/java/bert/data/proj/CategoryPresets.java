@@ -33,25 +33,25 @@ public class CategoryPresets {
     }
 
     private static Category[] OFFICE = {
-            new Category("TV", 3, 0),
-            new Category("Medium Printer", 3, 0),
-            new Category("Large Printer/Copier 110V", 3, 0),
-            new Category("Large Printer/Copier 220V", 3, 0)
+            new Category("TV", 3, 15),
+            new Category("Medium Printer", 3, 10),
+            new Category("Large Printer/Copier 110V", 3, 15),
+            new Category("Large Printer/Copier 220V", 3, 15)
     };
     private static Category[] SCHOOL = {
-            new Category("Projector", 3, 0),
-            new Category("Smart Board", 3, 0),
-            new Category("Printer Monitor Combo", 3, 0),
+            new Category("Projector", 3, 5),
+            new Category("Smart Board", 3, 7),
+            new Category("Printer Monitor Combo", 3, 10),
     };
     public static Category[] DEFAULT_CATEGORIES = {
-            new Category("Projector", 3, 0),
-            new Category("Smart Board", 3, 0),
-            new Category("Printer Monitor Combo", 3, 0),
-            new Category("TV", 3, 0),
-            new Category("Amplifier SmartBoard", 3, 0),
-            new Category("Medium Priner", 3, 0),
-            new Category("Large Printer/Copier 110V", 3, 0),
-            new Category("Large Printer/Copier 220V", 3, 0)
+            new Category("Projector", 3, 5),
+            new Category("Smart Board", 3, 7),
+            new Category("Printer Monitor Combo", 3, 10),
+            new Category("TV", 3, 15),
+            new Category("Amplifier SmartBoard", 3, 20),
+            new Category("Medium Printer", 3, 10),
+            new Category("Large Printer/Copier 110V", 3, 15),
+            new Category("Large Printer/Copier 220V", 3, 15)
     };
 
 }

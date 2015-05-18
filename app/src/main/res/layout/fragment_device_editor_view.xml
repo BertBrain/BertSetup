@@ -10,23 +10,25 @@
         android:weightSum="1">
 
         <ListView
-            android:layout_width="150dp"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:isScrollContainer="true"
             android:id="@+id/bertList" />
 
         <FrameLayout
 
+            android:paddingRight="@dimen/right_margin"
             android:id="@+id/bertDeviceDetailViewFrame"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.88">
 
             <GridLayout
+
                 style="@style/ThinText"
-                android:layout_width="300dp"
+                android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_gravity="left|center_vertical"
+                android:layout_gravity="center_vertical|left|right"
                 android:rowCount="11"
                 android:columnCount="1"
                 android:orientation="vertical"
@@ -48,7 +50,7 @@
                     android:singleLine="true"
                     android:imeActionLabel="Done"
                     android:imeOptions="actionDone"
-                    android:layout_width="366dp"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/deviceName"
                     android:layout_row="1"
@@ -69,7 +71,7 @@
                     android:singleLine="true"
                     android:imeActionLabel="Done"
                     android:imeOptions="actionDone"
-                    android:layout_width="370dp"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/macAddress"
                     android:layout_row="3"
@@ -90,7 +92,7 @@
                     android:singleLine="true"
                     android:imeActionLabel="Done"
                     android:imeOptions="actionDone"
-                    android:layout_width="370dp"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/room"
                     android:layout_row="5"
