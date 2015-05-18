@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 
 import bert.data.FileProvider;
+import bert.data.proj.InvalidProjectNameException;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
 import bert.data.utility.CSVExporter;
@@ -83,15 +84,14 @@ public class ProjectDetailFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    String text = Cleaner.cleanProjectName(v.getText().toString());
-                    if (ProjectProvider.getInstance().projectNameCheck(text)) {
-                        v.setText(text);
-                        currentProject.setProjectName(text);
+                    try {
+                        currentProject.setProjectName(v.getText().toString());
                         FileProvider.saveProject(currentProject);
-                    } else {
-                        BertAlert.show(getActivity(), "A project with the same name already exists");
+                    } catch (InvalidProjectNameException e) {
+                        BertAlert.show(getActivity(), "Invalid Project Name");
                         v.setText(currentProject.getProjectName());
                     }
+                    v.setText(currentProject.getProjectName());
                 }
                 return false;
             }

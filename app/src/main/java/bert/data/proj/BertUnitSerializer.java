@@ -18,36 +18,23 @@ public class BertUnitSerializer {
     public static final String TAG_BUILDING_ID = "BuildingID";
     public static final String TAG_CATEGORY_ID = "CategoryID";
 
-    public static List<BertUnit> getBertUnitList(Document d ) {
-        List<BertUnit> berts = new ArrayList<BertUnit>();
-        NodeList bertNodeList = d.getElementsByTagName(TAG_BERT);
-
-        for (int i = 0; i < bertNodeList.getLength(); i++) {
-            Element e = (Element) bertNodeList.item(i);
-
-            String name = e.getAttribute(TAG_NAME);
-            String location = e.getAttribute(TAG_LOCATION);
-            String MAC = e.getAttribute(TAG_MAC);
-            int buildingID = Integer.parseInt(e.getAttribute(TAG_BUILDING_ID));
-            int categoryID = Integer.parseInt(e.getAttribute(TAG_CATEGORY_ID));
-
-            BertUnit b = new BertUnit(name, location, MAC, buildingID, categoryID);
-            berts.add(b);
-        }
-        return berts;
+    public static BertUnit getBertUnitFromElement(Element e) {
+        String name = e.getAttribute(TAG_NAME);
+        String location = e.getAttribute(TAG_LOCATION);
+        String MAC = e.getAttribute(TAG_MAC);
+        int buildingID = Integer.parseInt(e.getAttribute(TAG_BUILDING_ID));
+        int categoryID = Integer.parseInt(e.getAttribute(TAG_CATEGORY_ID));
+        BertUnit b = new BertUnit(name, location, MAC, buildingID, categoryID);
+        return b;
     }
 
-    public static Element getBertUnitElementList(List<BertUnit> list, Document d) {
-        Element bertUnitElementList = d.createElement("BertList");
-        for (BertUnit b : list) {
-            Element e = d.createElement(TAG_BERT);
-            e.setAttribute(TAG_NAME, b.getName());
-            e.setAttribute(TAG_LOCATION, b.getLocation());
-            e.setAttribute(TAG_BUILDING_ID, String.valueOf(b.getBuildingID()));
-            e.setAttribute(TAG_MAC, b.getMAC());
-            e.setAttribute(TAG_CATEGORY_ID, String.valueOf(b.getCategoryID()));
-            bertUnitElementList.appendChild(e);
-        }
-        return bertUnitElementList;
+    public static Element getElementFromBertUnit(BertUnit b, Document d) {
+        Element e = d.createElement(TAG_BERT);
+        e.setAttribute(TAG_NAME, b.getName());
+        e.setAttribute(TAG_LOCATION, b.getLocation());
+        e.setAttribute(TAG_BUILDING_ID, String.valueOf(b.getBuildingID()));
+        e.setAttribute(TAG_MAC, b.getMAC());
+        e.setAttribute(TAG_CATEGORY_ID, String.valueOf(b.getCategoryID()));
+        return e;
     }
 }

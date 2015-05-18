@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import bert.data.ProjectProvider;
 import bert.data.utility.Cleaner;
 import bert.data.utility.DateUtil;
 
@@ -20,7 +21,7 @@ public class Project {
 	private List<BertUnit> berts;
     private List<Building> buildings;
 	
-	public Project(String name) {
+	public Project(String name) throws InvalidProjectNameException {
 		setProjectName(name);
 	    this.creationDate = DateUtil.getDate();
 	    this.modifiedDate = creationDate;
@@ -93,11 +94,12 @@ public class Project {
         return projectName;
     }
 
-    public void setProjectName(String newProjectName) {
+    public void setProjectName(String newProjectName) throws InvalidProjectNameException {
         Cleaner.cleanProjectName(newProjectName);
-        boolean goodName = Cleaner.isValid(newProjectName);
-        if (goodName) {
+        if (ProjectProvider.getInstance().projectNameCheck(newProjectName)) {
             this.projectName = newProjectName;
+        } else {
+            throw new InvalidProjectNameException();
         }
     }
 

@@ -12,8 +12,7 @@ public class Building {
     private String name;
     public Time startTime;
     public Time endTime;
-    private List<Category> categories; //TODO: use this
-
+    private List<Category> categories;
 
     public Time getStartTime() { return startTime; }
     public void setStartTime(Time startTime){ this.startTime = startTime; }
@@ -21,10 +20,7 @@ public class Building {
     public Time getEndTime() {return  endTime; }
     public void setEndTime(Time endTime) { this.endTime = endTime; }
 
-
-    public Building(String name){} //stubbed out for project loader
     public Building(String name, Time startTime, Time endTime, List<Category> presetCategories) {
-
         this.startTime = startTime;
         this.endTime = endTime;
         this.categories = new ArrayList<>(presetCategories);

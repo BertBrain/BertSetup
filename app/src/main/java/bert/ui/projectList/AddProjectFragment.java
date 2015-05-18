@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import bert.data.proj.InvalidProjectNameException;
 import bert.data.utility.Cleaner;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
@@ -111,7 +112,7 @@ public class AddProjectFragment extends Fragment {
     private void createProjectAndFinish() {
         String newProjectName = nameTextField.getText().toString();
 
-        if (ProjectProvider.getInstance().projectNameCheck(newProjectName)) {
+        try {
             Project newProject = new Project(newProjectName);
             newProject.setContactName(contactTextField.getText().toString());
             newProject.setContactNumber(contactNumberTextField.getText().toString());
@@ -128,8 +129,8 @@ public class AddProjectFragment extends Fragment {
             activity.loadProjectList();
             activity.closeAddProjectView();
             startActivity(intent);
-        } else {
-            BertAlert.show(getActivity(), "A project with the same name already exists");
+        } catch (InvalidProjectNameException e) {
+            BertAlert.show(getActivity(), "Invalid project name");
         }
     }
 }

@@ -18,6 +18,25 @@ public class Time {
         this.minute = minute;
     }
 
+    public Time(int minutes) {
+        if (minutes >= 720) {
+            this.isAM = false;
+            minutes -= 720;
+        } else {
+            this.isAM = true;
+        }
+
+        this.hour = minutes / 60;
+        this.minute = minutes % 60;
+    }
+
+    public int getMinutes() {
+        int minutes = (isAM) ? 0 : 720;
+        minutes += (hour * 60);
+        minutes += minute;
+        return minutes;
+    }
+
     public void set(int hour, int minute) {
         isAM = hour < 13;
         this.hour = isAM ? hour : hour - 12;

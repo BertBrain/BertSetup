@@ -67,14 +67,17 @@ public class FileProvider {
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			document = builder.parse(file);
+            return ProjectSerializer.getProjectFromDocument(document);
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
+            return null;
 		} catch (SAXException e) {
 			e.printStackTrace();
+            return null;
 		} catch (IOException e) {
 			e.printStackTrace();
+            return null;
 		}
-		return ProjectSerializer.getProjectFromDocument(document);
 	}
 
 	public static void saveProject(Project project) {
@@ -85,7 +88,8 @@ public class FileProvider {
 		try {
 			TransformerFactory factory = TransformerFactory.newInstance();
 			Transformer transformer = factory.newTransformer();
-			Result result = new StreamResult(new File(getProjectDirectory(), fileName));
+            File outputFile = new File(getProjectDirectory(), fileName);
+			Result result = new StreamResult(outputFile);
 			Source source = new DOMSource(d);
 			transformer.transform(source, result);
 		} catch(TransformerConfigurationException e) {
@@ -97,13 +101,13 @@ public class FileProvider {
 		}
 	}
 
-	public static boolean isExternalStorageAvailable() {
+	private static boolean isExternalStorageAvailable() {
 		String state = Environment.getExternalStorageState();
 		log("External storage state: " + state);
 		return Environment.MEDIA_MOUNTED.equals(state);
 	}
 
-	public static File getProjectDirectory() throws IOException {
+	protected static File getProjectDirectory() throws IOException {
 		if (isExternalStorageAvailable()) {
 			File docs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
             docs.mkdir();

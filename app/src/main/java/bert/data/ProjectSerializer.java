@@ -13,6 +13,7 @@ import bert.data.proj.Building;
 import bert.data.proj.BuildingSerializer;
 import bert.data.proj.Category;
 import bert.data.proj.CategorySerializer;
+import bert.data.proj.InvalidProjectNameException;
 import bert.data.proj.Project;
 
 /**
@@ -34,6 +35,10 @@ public class ProjectSerializer {
             Element projectTag = (Element) document.getElementsByTagName(TAG_PROJECT).item(0);
             Element contactTag = (Element) document.getElementsByTagName(TAG_CONTACT).item(0);
 
+            NodeList bertNodeList = document.getElementsByTagName(BertUnitSerializer.TAG_BERT);
+            NodeList buildingNodeList = document.getElementsByTagName(BuildingSerializer.TAG_BUILDING);
+
+
             Project newProject = new Project(projectTag.getAttribute(TAG_PROJECT_NAME));
 
             newProject.setContactName(contactTag.getAttribute(TAG_CONTACT_NAME));
@@ -41,11 +46,26 @@ public class ProjectSerializer {
             newProject.setCreationDate(projectTag.getAttribute(TAG_CREATION_DATE));
             newProject.setModifiedDate(projectTag.getAttribute(TAG_MODIFIED_DATE));
 
-            newProject.setBerts(BertUnitSerializer.getBertUnitList(document));
-            newProject.setBuildings(BuildingSerializer.getBuildingList(document));
+            List<BertUnit> bertList = new ArrayList<>();
+            for (int i = 0; i < bertNodeList.getLength(); i++) {
+                Element e = (Element) bertNodeList.item(i);
+                bertList.add(BertUnitSerializer.getBertUnitFromElement(e));
+            }
+            newProject.setBerts(bertList);
+
+            List<Building> buildingList = new ArrayList<>();
+            for (int i = 0; i < buildingNodeList.getLength(); i++) {
+                Element e = (Element) buildingNodeList.item(i);
+                int id = Integer.valueOf(e.getAttribute(BuildingSerializer.ATTR_ID));
+                buildingList.add(id, BuildingSerializer.getBuildingFromElement(e));
+            }
+            newProject.setBuildings(buildingList);
 
             return newProject;
         } catch (NullPointerException e) {
+            return null;
+        } catch (InvalidProjectNameException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -53,6 +73,7 @@ public class ProjectSerializer {
     public static Document exportToXML(Project p) {
         Document projectDoc = FileProvider.createDocument();
         Element root = projectDoc.createElement(TAG_PROJECT);
+
         //Project
         root.setAttribute(TAG_PROJECT_NAME, p.getProjectName());
         root.setAttribute(TAG_CREATION_DATE, p.getCreationDate());
@@ -61,13 +82,23 @@ public class ProjectSerializer {
         //Client
         Element client = projectDoc.createElement(TAG_CONTACT);
         client.setAttribute(TAG_CONTACT_NAME, (p.getContactName() != null) ? p.getContactName() : "");
-        client.setAttribute(TAG_CONTACT_NUMBER, (p.getContactNumber() != null) ? p.getContactNumber(): "");
+        client.setAttribute(TAG_CONTACT_NUMBER, (p.getContactNumber() != null) ? p.getContactNumber() : "");
         root.appendChild(client);
 
-        Element berts = BertUnitSerializer.getBertUnitElementList(p.getBerts(), projectDoc);
-        root.appendChild(berts);
+        //BERT SERIALIZATION
+        Element bertElementList = projectDoc.createElement("Berts");
+        for (int i = 0; i < p.getBerts().size(); i++) {
+            BertUnit b = p.getBerts().get(i);
+            bertElementList.appendChild(BertUnitSerializer.getElementFromBertUnit(b, projectDoc));
+        }
+        root.appendChild(bertElementList);
 
-        Element buildingElementList = BuildingSerializer.getBuildingElementList(p.getBuildings(), projectDoc);
+        //BUILDING SERIALIZATION
+        Element buildingElementList = projectDoc.createElement("Buildings");
+        for (int i = 0; i < p.getBuildings().size(); i++) {
+            Building b = p.getBuildings().get(i);
+            buildingElementList.appendChild(BuildingSerializer.getElementFromBuilding(b, projectDoc, i));
+        }
         root.appendChild(buildingElementList);
 
         projectDoc.appendChild(root);

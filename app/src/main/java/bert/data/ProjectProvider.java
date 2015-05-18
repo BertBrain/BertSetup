@@ -62,9 +62,9 @@ public class ProjectProvider {
                 List<File> files = Arrays.asList(projectDir.listFiles());
                 if (files.size() > 0) {
                     for (File f : files) {
-                        log("Loading file <" + f.getName() + "> from project directory");
                         Project nextProject = FileProvider.loadProject(f);
                         if (nextProject != null) {
+                            log("Loading file <" + f.getName() + "> from project directory");
                             projectList.add(nextProject);
                         } else {
                             log("File <" + f.getName() + "> is not a valid project... Skipping");
