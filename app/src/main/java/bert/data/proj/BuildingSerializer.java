@@ -21,8 +21,21 @@ public class BuildingSerializer {
 
     public static Building getBuildingFromElement(Element e) {
         String name = e.getAttribute(ATTR_NAME);
-        Time startTime = new Time(Integer.valueOf(e.getAttribute(ATTR_START_TIME)));
-        Time endTime = new Time(Integer.valueOf(e.getAttribute(ATTR_END_TIME)));
+        Time startTime;
+        try{
+            startTime = new Time(Integer.valueOf(e.getAttribute(ATTR_START_TIME)));
+        } catch ( NumberFormatException ex) {
+            ex.printStackTrace();
+            startTime = new Time(9, 0);
+        }
+
+        Time endTime;
+        try{
+            endTime = new Time(Integer.valueOf(e.getAttribute(ATTR_END_TIME)));
+        } catch ( NumberFormatException e2) {
+            e2.printStackTrace();
+            endTime = new Time(20, 0);
+        }
 
         List<Category> categories = new ArrayList<>();
         NodeList categoryElements = e.getElementsByTagName(CategorySerializer.TAG_CATEGORY);

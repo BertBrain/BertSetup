@@ -1,0 +1,102 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="bert.ui.roomList.DeviceDetailAddFragment">
+
+    <GridLayout
+
+        style="@style/ThinText"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_vertical|left|right"
+        android:rowCount="11"
+        android:columnCount="1"
+        android:orientation="vertical"
+        android:id="@+id/grid"
+        android:isScrollContainer="true">
+
+        <TextView
+            style="@style/ThinText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Device Name"
+            android:id="@+id/deviceNameTextView"
+            android:layout_row="0"
+            android:layout_column="0" />
+
+        <EditText
+            style="@style/ThinText"
+            android:singleLine="true"
+            android:imeActionLabel="Done"
+            android:imeOptions="actionDone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/addDeviceNameTextField"
+            android:layout_row="1"
+            android:layout_column="0" />
+
+        <TextView
+            style="@style/ThinText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="MAC Address"
+            android:id="@+id/macAddressTextView"
+            android:layout_row="2"
+            android:layout_column="0" />
+
+        <EditText
+            style="@style/ThinText"
+            android:singleLine="true"
+            android:imeActionLabel="Done"
+            android:imeOptions="actionDone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/addDeviceMacAdressTextField"
+            android:layout_row="3"
+            android:layout_column="0" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/ThinText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Category: "
+                android:id="@+id/bertTypeTextView"
+                android:layout_row="8"
+                android:layout_column="0" />
+
+            <Spinner
+                style="@style/ThinText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/addDeviceCategorySpinner" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/addDeviceCancelButton" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Done"
+                android:id="@+id/addDeviceDoneButton" />
+        </LinearLayout>
+
+    </GridLayout>
+
+</FrameLayout>
