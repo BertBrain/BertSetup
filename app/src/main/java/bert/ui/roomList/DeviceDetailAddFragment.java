@@ -108,7 +108,7 @@ public class DeviceDetailAddFragment extends Fragment {
                 false
         );
         project.addBert(bert);
-        ((RoomListActivity)getActivity()).deviceEditorFragment.loadNewDevice();
+        ((RoomListActivity)getActivity()).deviceListFragment.loadNewDevice();
     }
 
     public DeviceDetailAddFragment() {}

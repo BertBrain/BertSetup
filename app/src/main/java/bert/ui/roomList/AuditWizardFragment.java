@@ -187,8 +187,8 @@ public class AuditWizardFragment extends Fragment {
                 categoryCount++;
             }
             project.addBerts(bertList);
-            activity.createLocationlistView(); //Refresh view
-            activity.openDeviceEditorView(bertList.get(0).getLocation());
+            activity.onResume(); //Refresh view
+            activity.openDeviceListFragment(bertList.get(0).getLocation());
             FileProvider.saveProject(project);
         } else {
             openNoRoomNamePopup();

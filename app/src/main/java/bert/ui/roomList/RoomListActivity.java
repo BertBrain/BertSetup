@@ -29,10 +29,9 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
 
     private Project project;
 
-    public DeviceListFragment deviceEditorFragment;
+    public DeviceListFragment deviceListFragment;
 
     private Button startAuditButton;
-
     private ArrayAdapter<String> locationTableAdapter;
     private ListView locationListView;
 
@@ -43,13 +42,7 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
         return project;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        createLocationlistView();
-    }
-
-    private void clearFragmentContainer(){
+    private void clearFragmentContainer() {
         int numberOfRooms = project.getLocationNamesInBuilding(buildingID).size();
         String message = numberOfRooms > 0 ? "Select or Create A Room" : "Create a Room";
         loadFragment(NoSelectionFragment.newInstance(message));
@@ -65,7 +58,11 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
         projectID = extras.getInt(ARG_PROJECT_ID);
         buildingID = extras.getInt(ARG_BUILDING_ID);
         project = ProjectProvider.getInstance().getProjectList().get(projectID);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
         startAuditButton = (Button) findViewById(R.id.create_list_item_button);
         startAuditButton.setText("Audit Wizard");
         startAuditButton.setOnClickListener(new View.OnClickListener() {
@@ -75,22 +72,38 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
             }
         });
 
-        createLocationlistView();
-        this.setTitle(project.getProjectName() + " " + project.getBuildings().get(buildingID).getName() + " Building " + " (" + locationTableAdapter.getCount() + " Rooms)");
-    }
-
-    public void createLocationlistView() {
-        System.out.println( buildingID);
-        project = ProjectProvider.getInstance().getProjectList().get(projectID);
-        locationTableAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getLocationNamesInBuilding(buildingID));
+        locationTableAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getLocationNamesInBuilding(buildingID));
         locationListView = (ListView) findViewById(R.id.item_list_view);
         locationListView.setAdapter(locationTableAdapter);
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openDeviceEditorView(project.getLocationNamesInBuilding(buildingID).get(position));
+                openDeviceListFragment(project.getLocationNamesInBuilding(buildingID).get(position));
             }
         });
+        this.setTitle(project.getProjectName() + " " + project.getBuildings().get(buildingID).getName() + " Building " + " (" + locationTableAdapter.getCount() + " Rooms)");
+    }
+
+    public void openAuditWizardView() {
+        AuditWizardFragment auditWizardView = AuditWizardFragment.newInstance(projectID, buildingID);
+        AuditTallyBoxGVA.resetCounts();
+        loadFragment(auditWizardView);
+    }
+
+    public void openDeviceListFragment(String locationName) {
+        deviceListFragment = DeviceListFragment.newInstance(projectID, buildingID, locationName);
+        loadFragment(deviceListFragment);
+    }
+
+    public void openNoSelectionView(String message) {
+        loadFragment(NoSelectionFragment.newInstance(message));
+    }
+
+    private void loadFragment(Fragment frag) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_frame_layout, frag);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -106,34 +119,10 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    public void openAuditWizardView() {
-        AuditWizardFragment auditWizardView = AuditWizardFragment.newInstance(projectID, buildingID);
-        AuditTallyBoxGVA.resetCounts();
-        loadFragment(auditWizardView);
-    }
-
-    public void openDeviceEditorView(String locationName) {
-        deviceEditorFragment = DeviceListFragment.newInstance(projectID, buildingID, locationName);
-        loadFragment(deviceEditorFragment);
-    }
-
-    public void openNoSelectionView(String message) {
-        loadFragment(NoSelectionFragment.newInstance(message));
-    }
-
-    private void loadFragment(Fragment frag) {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_frame_layout, frag);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
     }
 }

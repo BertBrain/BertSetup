@@ -51,10 +51,9 @@ public class DeviceListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         activity = (RoomListActivity) getActivity();
         project = activity.getProject();
-        super.onCreate(savedInstanceState);
-
         loadFromArgs();
     }
 
@@ -111,7 +110,7 @@ public class DeviceListFragment extends Fragment {
         super.onAttach(activity);
     }
 
-    public void loadNewDevice(){
+    public void loadNewDevice() {
         loadFromArgs();
         loadList();
         loadDeviceAtPosition(deviceTableAdapter.getCount() - 2);

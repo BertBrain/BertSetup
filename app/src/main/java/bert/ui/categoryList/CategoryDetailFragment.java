@@ -30,7 +30,7 @@ import bert.ui.R;
  */
 public class CategoryDetailFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
-    private static final String ARG_BUILDING_ID = "Buidling ID";
+    private static final String ARG_BUILDING_ID = "BUILDING_ID";
     private static final String ARG_CATEGORY_ID = "CATEGORY_ID";
 
     private static final String UNDEFINED_LOAD_STRING = "Undefined";
@@ -84,7 +84,7 @@ public class CategoryDetailFragment extends Fragment {
         estimatedLoadEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus && estimatedLoadEditText.getText().toString().contentEquals(UNDEFINED_LOAD_STRING) ){
+                if (hasFocus && estimatedLoadEditText.getText().toString().contentEquals(UNDEFINED_LOAD_STRING) ) {
                     estimatedLoadEditText.setText("");
                 }
             }

@@ -36,10 +36,10 @@ import bert.ui.R;
  * create an instance of this fragment.
  */
 public class DeviceDetailEditFragment extends Fragment {
-    private static final String ARG_PROJECT_KEY = "PROJECT_ID";
-    private static final String ARG_BUILDING_KEY = "BUILDING_ID";
-    private static final String ARG_BERT_KEY = "BERTKEY";
-    private static final String ARG_LOCATION_KEY = "LOCATIONKEY";
+    private static final String ARG_PROJECT_ID = "PROJECT_ID";
+    private static final String ARG_BUILDING_ID = "BUILDING_ID";
+    private static final String ARG_BERT_ID = "BERT_ID";
+    private static final String ARG_LOCATION_ID = "LOCATION";
 
     private int projectID;
     private int buildingID;
@@ -62,10 +62,10 @@ public class DeviceDetailEditFragment extends Fragment {
     public static DeviceDetailEditFragment newInstance(int projectID, int buildingID, String location, int bertID) {
         DeviceDetailEditFragment fragment = new DeviceDetailEditFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT_KEY, projectID);
-        args.putInt(ARG_BUILDING_KEY, buildingID);
-        args.putString(ARG_LOCATION_KEY, location);
-        args.putInt(ARG_BERT_KEY, bertID);
+        args.putInt(ARG_PROJECT_ID, projectID);
+        args.putInt(ARG_BUILDING_ID, buildingID);
+        args.putString(ARG_LOCATION_ID, location);
+        args.putInt(ARG_BERT_ID, bertID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,10 +74,11 @@ public class DeviceDetailEditFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            projectID = getArguments().getInt(ARG_PROJECT_KEY);
-            buildingID = getArguments().getInt(ARG_BUILDING_KEY);
-            this.location = getArguments().getString(ARG_LOCATION_KEY);
-            bertID = getArguments().getInt(ARG_BERT_KEY);
+            projectID = getArguments().getInt(ARG_PROJECT_ID);
+            buildingID = getArguments().getInt(ARG_BUILDING_ID);
+            location = getArguments().getString(ARG_LOCATION_ID);
+            bertID = getArguments().getInt(ARG_BERT_ID);
+
             project = ProjectProvider.getInstance().getProjectList().get(projectID);
             building = project.getBuildings().get(buildingID);
             bert = project.getBertsByLocation(buildingID, location).get(bertID);
@@ -114,8 +115,8 @@ public class DeviceDetailEditFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         bert.deleteBert();
-                        activity.createLocationlistView();
-                        activity.openDeviceEditorView(location);
+                        activity.onResume();
+                        activity.openDeviceListFragment(location);
                         FileProvider.saveProject(project);
                     }
                 });
@@ -163,7 +164,7 @@ public class DeviceDetailEditFragment extends Fragment {
         bert.setName(deviceNameTextField.getText().toString());
         bert.setCategoryID(categorySelector.getSelectedItemPosition());
         FileProvider.saveProject(project);
-        activity.deviceEditorFragment.onResume();
+        activity.deviceListFragment.onResume();
         onResume();
     }
 
