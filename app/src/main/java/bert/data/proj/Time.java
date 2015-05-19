@@ -1,12 +1,9 @@
 package bert.data.proj;
 
-import java.io.Serializable;
-
 /**
  * Created by liamcook on 5/13/15.
  */
 public class Time {
-
 
     private int hour;
     public int minute;
@@ -43,11 +40,11 @@ public class Time {
         this.minute = minute;
     }
 
-    public int hour24(){
+    public int hour24() {
         return hour + (isAM ? 0 : 12);
     }
 
-    public int hour12(){
+    public int hour12() {
         return hour;
     }
 

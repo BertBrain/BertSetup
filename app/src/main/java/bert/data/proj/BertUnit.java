@@ -15,13 +15,15 @@ public class BertUnit {
 	private String MAC;
 	private int categoryID;
 	private int buildingID;
+	private boolean deleted;
 	
-	public BertUnit(String name, String location, String MAC, int buildingID, int categoryID) {
+	public BertUnit(String name, String location, String MAC, int buildingID, int categoryID, boolean deleted) {
 		this.name = name;
 		this.location = location;
 		this.MAC = MAC;
 		this.buildingID = buildingID;
 		this.categoryID = categoryID;
+        this.deleted = deleted;
 	}
 	
 	public String getName() {
@@ -73,5 +75,13 @@ public class BertUnit {
 
     public void setCategoryID(int newCategoryID) {
         this.categoryID = newCategoryID;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void deleteBert() {
+        deleted = true;
     }
 }

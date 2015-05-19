@@ -40,7 +40,7 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         createLocationlistView();
     }

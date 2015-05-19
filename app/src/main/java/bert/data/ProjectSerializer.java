@@ -54,7 +54,7 @@ public class ProjectSerializer {
                 Element e = (Element) bertNodeList.item(i);
                 bertList.add(BertUnitSerializer.getBertUnitFromElement(e));
             }
-            newProject.setBerts(bertList);
+            newProject.setBertList(bertList);
 
             //BUILDING DESERIALIZATION
             List<Building> buildingList = new ArrayList<>();
@@ -91,8 +91,8 @@ public class ProjectSerializer {
 
         //BERT SERIALIZATION
         Element bertElementList = projectDoc.createElement(TAG_BERTS);
-        for (int i = 0; i < p.getBerts().size(); i++) {
-            BertUnit bert = p.getBerts().get(i);
+        for (int i = 0; i < p.getAllBertsAndDeleted().size(); i++) {
+            BertUnit bert = p.getAllBertsAndDeleted().get(i);
             Element bertElement = BertUnitSerializer.getElementFromBertUnit(bert, projectDoc);
             bertElementList.appendChild(bertElement);
         }
