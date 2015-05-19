@@ -6,14 +6,19 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import bert.data.FileProvider;
 import bert.data.ProjectProvider;
@@ -48,7 +53,7 @@ public class DeviceDetailEditFragment extends Fragment {
 
     private EditText deviceNameTextField;
     private EditText macAddressTextField;
-    private EditText roomTextField;
+    private TextView roomTextField;
     private TextView buildingTextField;
     private Spinner categorySelector;
     private Button deleteButton;
@@ -87,7 +92,7 @@ public class DeviceDetailEditFragment extends Fragment {
         super.onResume();
         macAddressTextField = (EditText) getView().findViewById(R.id.macAddress);
         deviceNameTextField = (EditText) getView().findViewById(R.id.deviceName);
-        roomTextField = (EditText) getView().findViewById(R.id.room);
+        roomTextField = (TextView) getView().findViewById(R.id.room);
         buildingTextField = (TextView) getView().findViewById(R.id.currentBuildingDisplay);
         categorySelector = (Spinner) getView().findViewById(R.id.detailViewCategorySelector);
 
@@ -128,9 +133,29 @@ public class DeviceDetailEditFragment extends Fragment {
 
         roomTextField.setText(location);
 
+        buildingTextField.setText(building.getName());
+
         macAddressTextField.setText(bert.getMAC());
+        macAddressTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    //TODO close keyboard
+                }
+                return false;
+            }
+        });
 
         deviceNameTextField.setText(bert.getName());
+        deviceNameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    //TODO close keyboard
+                }
+                return false;
+            }
+        });
 
         categorySelector.setSelection(bert.getCategoryID());
     }
