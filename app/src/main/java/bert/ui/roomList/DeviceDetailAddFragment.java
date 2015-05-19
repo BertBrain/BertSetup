@@ -49,6 +49,7 @@ public class DeviceDetailAddFragment extends Fragment {
     EditText macAdressTextField;
     Spinner categorySpinner;
 
+    static DeviceEditorFragment owner;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -58,13 +59,14 @@ public class DeviceDetailAddFragment extends Fragment {
      * @return A new instance of fragment DeviceDetailAddFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DeviceDetailAddFragment newInstance(int projectID, int buildingID, String location) {
+    public static DeviceDetailAddFragment newInstance(DeviceEditorFragment owner, int projectID, int buildingID, String location) {
         DeviceDetailAddFragment fragment = new DeviceDetailAddFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT, projectID);
         args.putInt(ARG_BUILDING, buildingID);
         args.putString(ARG_LOCATION, location);
         fragment.setArguments(args);
+        DeviceDetailAddFragment.owner = owner;
         return fragment;
     }
 
@@ -107,12 +109,14 @@ public class DeviceDetailAddFragment extends Fragment {
         });
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, building.getCategoryNames());
+        System.out.println("number of caterogies in building: " + building.getCategories().size());
         categorySpinner.setAdapter(adapter);
     }
 
     private void finish(){
         BertUnit bert = new BertUnit(nameTextField.getText().toString(), location, macAdressTextField.getText().toString(), buildingID, categorySpinner.getSelectedItemPosition());
         project.addBert(bert);
+        owner.loadNewDevice();
     }
 
     public DeviceDetailAddFragment() {

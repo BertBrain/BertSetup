@@ -40,7 +40,7 @@ public class DeviceEditorFragment extends Fragment {
     public static final String ARG_BUILDING = "building";
     public static final String ARG_PROJECT = "projectkey";
 
-    public static final String ADD_BUILDING_STRING = "+ Add Building";
+    public static final String ADD_BUILDING_STRING = "+ Add Bert";
 
     private RoomListActivity activity;
     private Project project;
@@ -77,6 +77,11 @@ public class DeviceEditorFragment extends Fragment {
         activity = (RoomListActivity) getActivity();
         project = activity.getProject();
         super.onCreate(savedInstanceState);
+
+        loadFromArgs();
+    }
+
+    private void loadFromArgs(){
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT);
             buildingID = getArguments().getInt(ARG_BUILDING);
@@ -88,7 +93,11 @@ public class DeviceEditorFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        locationListView = (ListView) getView().findViewById(R.id.bertList);
+        loadList();
+    }
 
+    private void loadList(){
         List<String> bertNameList = new ArrayList<String>();
         if (getArguments() != null) {
             for (BertUnit bert : bertList) {
@@ -97,10 +106,10 @@ public class DeviceEditorFragment extends Fragment {
         }
 
         final ArrayList<String> listStrings = new ArrayList<String>(bertNameList);
-        listStrings.add(ADD_BUILDING_STRING);
+        if (listStrings.size() != 0){
+            listStrings.add(ADD_BUILDING_STRING);
+        }
         deviceTableAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, listStrings);
-
-        locationListView = (ListView) getView().findViewById(R.id.bertList);
         locationListView.setAdapter(deviceTableAdapter);
 
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -113,7 +122,6 @@ public class DeviceEditorFragment extends Fragment {
                 }
             }
         });
-
     }
 
 
@@ -129,7 +137,13 @@ public class DeviceEditorFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        super.onDetach();
+    }
 
+    public void loadNewDevice(){
+        loadFromArgs();
+        loadList();
+        loadDeviceAtPosition(deviceTableAdapter.getCount() - 2);
     }
 
     private void loadDeviceAtPosition(int position) {
@@ -140,7 +154,7 @@ public class DeviceEditorFragment extends Fragment {
 
     private void addDevice(){
         System.out.println("adding device");
-        DeviceDetailAddFragment fragment = DeviceDetailAddFragment.newInstance(projectID, buildingID, location);
+        DeviceDetailAddFragment fragment = DeviceDetailAddFragment.newInstance(this, projectID, buildingID, location);
         loadFragment(fragment);
     }
 
