@@ -2,43 +2,27 @@ package bert.ui.roomList;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import bert.data.FileProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Project;
 import bert.ui.R;
 
-//TODO edit detail fragment shouldnt be available if bert list for location is empty
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DeviceEditorFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DeviceEditorFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class DeviceEditorFragment extends Fragment {
-    public static final String ARG_LOCATION = "location";
-    public static final String ARG_BUILDING = "building";
-    public static final String ARG_PROJECT = "projectkey";
+public class DeviceListFragment extends Fragment {
+    public static final String ARG_LOCATION = "LOCATION";
+    public static final String ARG_BUILDING = "BUILDING_ID";
+    public static final String ARG_PROJECT = "PROJECT_ID";
 
     public static final String ADD_BUILDING_STRING = "+ Add Building";
 
@@ -47,21 +31,14 @@ public class DeviceEditorFragment extends Fragment {
     private int projectID;
     private int buildingID;
     private String location;
-    private int position;
     private List<BertUnit> bertList;
 
     private ArrayAdapter<String> deviceTableAdapter;
     private ListView locationListView;
     private FrameLayout detailView;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @param location the room used to populate the bertlist.
-     * @return A new instance of fragment DeviceEditorFragment.
-     */
-    public static DeviceEditorFragment newInstance(int projectID, int buildingID, String location) {
-        DeviceEditorFragment fragment = new DeviceEditorFragment();
+    public static DeviceListFragment newInstance(int projectID, int buildingID, String location) {
+        DeviceListFragment fragment = new DeviceListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT, projectID);
         args.putInt(ARG_BUILDING, buildingID);
@@ -70,7 +47,7 @@ public class DeviceEditorFragment extends Fragment {
         return fragment;
     }
 
-    public DeviceEditorFragment() {}
+    public DeviceListFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,17 +65,16 @@ public class DeviceEditorFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        List<String> bertNameList = new ArrayList<String>();
+        List<String> bertNameList = new ArrayList<>();
         if (getArguments() != null) {
             for (BertUnit bert : bertList) {
                 bertNameList.add(bert.getName());
             }
         }
 
-        final ArrayList<String> listStrings = new ArrayList<String>(bertNameList);
+        final ArrayList<String> listStrings = new ArrayList<>(bertNameList);
         listStrings.add(ADD_BUILDING_STRING);
-        deviceTableAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, listStrings);
+        deviceTableAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, listStrings);
 
         locationListView = (ListView) getView().findViewById(R.id.bertList);
         locationListView.setAdapter(deviceTableAdapter);
@@ -106,7 +82,7 @@ public class DeviceEditorFragment extends Fragment {
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == listStrings.size() -1 ) {
+                if (position == listStrings.size() - 1) {
                     addDevice();
                 } else {
                     loadDeviceAtPosition(position);
@@ -115,7 +91,6 @@ public class DeviceEditorFragment extends Fragment {
         });
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -127,18 +102,13 @@ public class DeviceEditorFragment extends Fragment {
         super.onAttach(activity);
     }
 
-    @Override
-    public void onDetach() {
-
-    }
-
     private void loadDeviceAtPosition(int position) {
         System.out.println("editing device");
         DeviceDetailEditFragment fragment = DeviceDetailEditFragment.newInstance(projectID, buildingID, location, position);
         loadFragment(fragment);
     }
 
-    private void addDevice(){
+    private void addDevice() {
         System.out.println("adding device");
         DeviceDetailAddFragment fragment = DeviceDetailAddFragment.newInstance(projectID, buildingID, location);
         loadFragment(fragment);
@@ -149,5 +119,10 @@ public class DeviceEditorFragment extends Fragment {
         t.replace(R.id.bertDeviceDetailViewFrame, frag);
         t.addToBackStack(null);
         t.commit();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 }

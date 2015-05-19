@@ -27,6 +27,8 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
 
     private Project project;
 
+    public DeviceListFragment deviceEditorFragment;
+
     private Button startAuditButton;
 
     private ArrayAdapter<String> locationTableAdapter;
@@ -118,7 +120,8 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
     }
 
     public void openDeviceEditorView(String locationName) {
-        loadFragment(DeviceEditorFragment.newInstance(projectID, buildingID, locationName));
+        deviceEditorFragment = DeviceListFragment.newInstance(projectID, buildingID, locationName);
+        loadFragment(deviceEditorFragment);
     }
 
     public void openNoSelectionView(String message) {

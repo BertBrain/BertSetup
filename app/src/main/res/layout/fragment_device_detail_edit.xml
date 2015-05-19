@@ -1,10 +1,11 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="bert.ui.roomList.DeviceDetailEditFragment">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="bert.ui.roomList.DeviceDetailEditFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <GridLayout
-
         style="@style/ThinText"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -124,6 +125,21 @@
                 android:id="@+id/detailViewCategorySelector" />
         </LinearLayout>
 
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Changes"
+            android:id="@+id/saveButton"
+            android:layout_row="9"
+            android:layout_column="0" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Bert"
+            android:id="@+id/deleteButton"
+            android:layout_row="10"
+            android:layout_column="0" />
     </GridLayout>
 
 </FrameLayout>

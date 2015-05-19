@@ -28,13 +28,10 @@ import bert.ui.R;
  * create an instance of this fragment.
  */
 public class DeviceDetailAddFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PROJECT = "project";
     private static final String ARG_BUILDING = "building";
     private static final String ARG_LOCATION = "loaciton";
 
-    // TODO: Rename and change types of parameters
     private int projectID;
     private int buildingID;
 
@@ -49,15 +46,6 @@ public class DeviceDetailAddFragment extends Fragment {
     EditText macAdressTextField;
     Spinner categorySpinner;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param projectID Parameter 1.
-     * @param buildingID Parameter 2.
-     * @return A new instance of fragment DeviceDetailAddFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static DeviceDetailAddFragment newInstance(int projectID, int buildingID, String location) {
         DeviceDetailAddFragment fragment = new DeviceDetailAddFragment();
         Bundle args = new Bundle();
@@ -106,25 +94,26 @@ public class DeviceDetailAddFragment extends Fragment {
             @Override public void afterTextChanged(Editable s) { }
         });
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, building.getCategoryNames());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, building.getCategoryNames());
         categorySpinner.setAdapter(adapter);
     }
 
-    private void finish(){
-        BertUnit bert = new BertUnit(nameTextField.getText().toString(), location, macAdressTextField.getText().toString(), buildingID, categorySpinner.getSelectedItemPosition());
+    private void finish() {
+        BertUnit bert = new BertUnit(
+                nameTextField.getText().toString(),
+                location,
+                macAdressTextField.getText().toString(),
+                buildingID,
+                categorySpinner.getSelectedItemPosition(),
+                false
+        );
         project.addBert(bert);
     }
 
-    public DeviceDetailAddFragment() {
-        // Required empty public constructor
-    }
+    public DeviceDetailAddFragment() {}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_device_detail_add, container, false);
     }
-
-
 }

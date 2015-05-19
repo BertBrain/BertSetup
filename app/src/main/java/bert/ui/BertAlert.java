@@ -11,21 +11,18 @@ public class BertAlert {
 
     static DialogInterface.OnClickListener emptyListener = new DialogInterface.OnClickListener() {
         @Override
-        public void onClick(DialogInterface dialog, int which) {
-
-        }
+        public void onClick(DialogInterface dialog, int which) {}
     };
 
     public static void show(Activity activity, String title) {
         show(activity, title, "Ok");
     }
 
-    public static void show(Activity activity, String title, String button1){
-
+    public static void show(Activity activity, String title, String button1) {
         show(activity, title, button1, emptyListener, "", emptyListener);
     }
 
-    public static void show(Activity activity, String title, String button1, DialogInterface.OnClickListener listener){
+    public static void show(Activity activity, String title, String button1, DialogInterface.OnClickListener listener) {
         show(activity, title, button1, listener, "", emptyListener);
     }
 
