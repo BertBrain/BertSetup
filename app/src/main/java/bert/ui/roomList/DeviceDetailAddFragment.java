@@ -114,7 +114,7 @@ public class DeviceDetailAddFragment extends Fragment {
     }
 
     private void finish(){
-        BertUnit bert = new BertUnit(nameTextField.getText().toString(), location, macAdressTextField.getText().toString(), buildingID, categorySpinner.getSelectedItemPosition());
+        BertUnit bert = new BertUnit(nameTextField.getText().toString(), location, macAdressTextField.getText().toString(), buildingID, categorySpinner.getSelectedItemPosition(), false);
         project.addBert(bert);
         owner.loadNewDevice();
     }
