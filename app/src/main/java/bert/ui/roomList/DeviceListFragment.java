@@ -58,7 +58,7 @@ public class DeviceListFragment extends Fragment {
         loadFromArgs();
     }
 
-    private void loadFromArgs(){
+    private void loadFromArgs() {
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT);
             buildingID = getArguments().getInt(ARG_BUILDING);

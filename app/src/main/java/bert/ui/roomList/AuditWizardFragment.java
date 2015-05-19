@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -47,7 +48,7 @@ public class AuditWizardFragment extends Fragment {
     private TextView totalBertsCounter;
 
     private AuditTallyBoxGVA tallyGridAdapter;
-    private TextView locationTextView;
+    private EditText locationEditText;
 
     private RoomListActivity activity;
 
@@ -105,10 +106,12 @@ public class AuditWizardFragment extends Fragment {
            }
         });
 
-        locationTextView = (TextView)getView().findViewById(R.id.locationNameTextField);
-        locationTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        locationEditText = (EditText) getView().findViewById(R.id.locationNameTextField);
+        locationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                mgr.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 return false;
             }
         });
@@ -144,9 +147,9 @@ public class AuditWizardFragment extends Fragment {
             public void onClick(DialogInterface dialog, int i) {
                 InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 manager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                locationTextView.setFocusable(true);
-                locationTextView.requestFocus();
-                locationTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                locationEditText.setFocusable(true);
+                locationEditText.requestFocus();
+                locationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -168,7 +171,7 @@ public class AuditWizardFragment extends Fragment {
     }
 
     private void finishAuditWizard() {
-        String location = locationTextView.getText().toString();
+        String location = locationEditText.getText().toString();
         if (Cleaner.isValid(location)) {
             HashMap<Category, Integer> categoryCounts = tallyGridAdapter.getCounts();
             List<BertUnit> bertList = new ArrayList<>();
