@@ -12,29 +12,32 @@ import java.util.List;
  */
 public class BertUnitSerializer {
     public static final String TAG_BERT = "Bert";
-    public static final String TAG_NAME = "Name";
-    public static final String TAG_LOCATION = "Location";
-    public static final String TAG_MAC = "MAC";
-    public static final String TAG_BUILDING_ID = "BuildingID";
-    public static final String TAG_CATEGORY_ID = "CategoryID";
+    public static final String ATTR_NAME = "Name";
+    public static final String ATTR_LOCATION = "Location";
+    public static final String ATTR_MAC = "MAC";
+    public static final String ATTR_BUILDING_ID = "BuildingID";
+    public static final String ATTR_CATEGORY_ID = "CategoryID";
+    public static final String ATTR_DELETED = "Deleted";
 
     public static BertUnit getBertUnitFromElement(Element e) {
-        String name = e.getAttribute(TAG_NAME);
-        String location = e.getAttribute(TAG_LOCATION);
-        String MAC = e.getAttribute(TAG_MAC);
-        int buildingID = Integer.parseInt(e.getAttribute(TAG_BUILDING_ID));
-        int categoryID = Integer.parseInt(e.getAttribute(TAG_CATEGORY_ID));
-        BertUnit b = new BertUnit(name, location, MAC, buildingID, categoryID);
+        String name = e.getAttribute(ATTR_NAME);
+        String location = e.getAttribute(ATTR_LOCATION);
+        String MAC = e.getAttribute(ATTR_MAC);
+        int buildingID = Integer.parseInt(e.getAttribute(ATTR_BUILDING_ID));
+        int categoryID = Integer.parseInt(e.getAttribute(ATTR_CATEGORY_ID));
+        boolean deleted = Boolean.parseBoolean(e.getAttribute(ATTR_DELETED));
+        BertUnit b = new BertUnit(name, location, MAC, buildingID, categoryID, deleted);
         return b;
     }
 
     public static Element getElementFromBertUnit(BertUnit b, Document d) {
         Element e = d.createElement(TAG_BERT);
-        e.setAttribute(TAG_NAME, b.getName());
-        e.setAttribute(TAG_LOCATION, b.getLocation());
-        e.setAttribute(TAG_BUILDING_ID, String.valueOf(b.getBuildingID()));
-        e.setAttribute(TAG_MAC, b.getMAC());
-        e.setAttribute(TAG_CATEGORY_ID, String.valueOf(b.getCategoryID()));
+        e.setAttribute(ATTR_NAME, b.getName());
+        e.setAttribute(ATTR_LOCATION, b.getLocation());
+        e.setAttribute(ATTR_MAC, b.getMAC());
+        e.setAttribute(ATTR_BUILDING_ID, String.valueOf(b.getBuildingID()));
+        e.setAttribute(ATTR_CATEGORY_ID, String.valueOf(b.getCategoryID()));
+        e.setAttribute(ATTR_DELETED, Boolean.toString(b.isDeleted()));
         return e;
     }
 }

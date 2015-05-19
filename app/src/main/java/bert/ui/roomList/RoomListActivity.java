@@ -40,7 +40,7 @@ public class RoomListActivity extends ActionBarActivity implements DeviceEditorF
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         createLocationlistView();
     }

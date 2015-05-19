@@ -177,7 +177,7 @@ public class AuditWizardFragment extends Fragment {
                 if (categoryCounts.get(category) != null) {
                     for (int i = 0; i < categoryCounts.get(category); i++) {
                         String name = location + " - " + category.getName() + " " + (i + 1);
-                        BertUnit bert = new BertUnit(name, location, "", buildingID, categoryCount);
+                        BertUnit bert = new BertUnit(name, location, "", buildingID, categoryCount, false);
                         bertList.add(bert);
                     }
                 }

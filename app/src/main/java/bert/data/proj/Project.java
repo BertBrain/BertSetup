@@ -19,31 +19,20 @@ public class Project {
 	private String contactNumber;
 	private String creationDate;
 	private String modifiedDate;
-	private List<BertUnit> berts;
+	private List<BertUnit> bertList;
     private List<Building> buildings;
 	
 	public Project(String name) throws InvalidProjectNameException {
 		setProjectName(name);
 	    this.creationDate = DateUtil.getDate();
 	    this.modifiedDate = creationDate;
-	    berts = new ArrayList<BertUnit>();
-        buildings = new ArrayList<Building>();
+        bertList = new ArrayList<>();
+        buildings = new ArrayList<>();
 	}
 
-    public List<String> getLocationNames() {
-        List<String> locationNames = new ArrayList<String>();
-        for (BertUnit b : berts) {
-            String n = b.getLocation();
-            if (!locationNames.contains(n)) {
-                locationNames.add(n);
-            }
-        }
-        return locationNames;
-    }
-
-    public List<String> getLocationNamesInBuilding(int building){
-        List<String> locationNames = new ArrayList<String>();
-        for (BertUnit b : berts) {
+    public List<String> getLocationNamesInBuilding(int building) {
+        List<String> locationNames = new ArrayList<>();
+        for (BertUnit b : getBerts()) {
             String n = b.getLocation();
             if (!locationNames.contains(n) && b.getBuildingID() == building) {
                 locationNames.add(n);
@@ -53,7 +42,7 @@ public class Project {
     }
 
     public List<String> getBuildingNames() {
-        List<String> buildingNames = new ArrayList<String>();
+        List<String> buildingNames = new ArrayList<>();
         for (Building b : buildings) {
             buildingNames.add(b.getName());
         }
@@ -61,28 +50,20 @@ public class Project {
     }
 
     public List<BertUnit> getBertsByLocation(int building, String location) {
-        List<BertUnit> returnList = new ArrayList<BertUnit>();
-        for (BertUnit b : berts) {
+        List<BertUnit> returnList = new ArrayList<>();
+        for (BertUnit b : getBerts()) {
             if (b.getBuildingID() == building && b.getLocation() == location) {
                 returnList.add(b);
             }
         }
         return returnList;
     }
-
-	public void exportBertConfiguratorCSV() {
-	    //TODO write
-	}
-	
-	public void exportROI() {
-	    //TODO write
-	}
 	  
 	public void addBert(BertUnit bert) {
-		berts.add(bert);
+		bertList.add(bert);
 	}
 
-    public void addBerts(List<BertUnit> berts){
+    public void addBerts(List<BertUnit> berts) {
         for (BertUnit b : berts){
             addBert(b);
         }
@@ -100,7 +81,6 @@ public class Project {
     public String getProjectName() {
         return projectName;
     }
-
     public void setProjectName(String newProjectName) throws InvalidProjectNameException {
         Cleaner.cleanProjectName(newProjectName);
         if (ProjectProvider.getInstance().projectNameCheck(newProjectName)) {
@@ -113,7 +93,6 @@ public class Project {
     public String getContactName() {
         return contactName;
     }
-
     public void setContactName(String newContactName) {
         Cleaner.clean(newContactName);
         if (Cleaner.isValid(newContactName)) {
@@ -124,7 +103,6 @@ public class Project {
     public String getContactNumber() {
         return contactNumber;
     }
-
     public void setContactNumber(String newContactNumber) {
         Cleaner.clean(newContactNumber);
         if (Cleaner.isValid(newContactNumber)) {
@@ -135,7 +113,6 @@ public class Project {
     public String getCreationDate() {
         return this.creationDate;
     }
-
     public void setCreationDate(String newCreationDate) {
         this.creationDate = newCreationDate;
     }
@@ -143,17 +120,26 @@ public class Project {
     public String getModifiedDate() {
         return this.modifiedDate;
     }
-
     public void setModifiedDate(String newModifiedDate) {
         this.modifiedDate = newModifiedDate;
     }
 
-    public List<BertUnit> getBerts() {
-        return this.berts;
+    public List<BertUnit> getAllBertsAndDeleted() {
+        return this.bertList;
     }
 
-    public void setBerts(List<BertUnit> newBerts) {
-        this.berts = newBerts;
+    public List<BertUnit> getBerts() {
+        List<BertUnit> output = new ArrayList<>();
+        for (BertUnit b : bertList) {
+            if (b.isDeleted() == false) {
+                output.add(b);
+            }
+        }
+        return output;
+    }
+
+    public void setBertList(List<BertUnit> newBertList) {
+        this.bertList = newBertList;
     }
 
     public List<Building> getBuildings() {
