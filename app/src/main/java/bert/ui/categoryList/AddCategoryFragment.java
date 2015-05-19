@@ -106,7 +106,6 @@ public class AddCategoryFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                categoryNameEditText.setText(Cleaner.clean(categoryNameEditText.getText().toString()));
                 boolean hasValidName = Cleaner.isValid(categoryNameEditText.getText().toString());
                 finishButton.setEnabled(hasValidName);
             }
@@ -122,7 +121,12 @@ public class AddCategoryFragment extends Fragment {
         int bertType = bertTypeSpinner.getSelectedItemPosition();
         int estimatedLoad;
         try {
-            estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
+            if (estimatedLoadEditText.getText().toString().length() != 0){
+                estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
+            } else {
+                estimatedLoad = Category.UNSET;
+            }
+
         } catch (NumberFormatException e) {
             estimatedLoad = Category.UNSET;
             BertAlert.show(getActivity(), "Invalid number entered");

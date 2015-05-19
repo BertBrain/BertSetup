@@ -24,7 +24,7 @@ public class DeviceListFragment extends Fragment {
     public static final String ARG_BUILDING = "BUILDING_ID";
     public static final String ARG_PROJECT = "PROJECT_ID";
 
-    public static final String ADD_BUILDING_STRING = "+ Add Building";
+    public static final String ADD_BUILDING_STRING = "+ Add Bert";
 
     private RoomListActivity activity;
     private Project project;
@@ -54,6 +54,11 @@ public class DeviceListFragment extends Fragment {
         activity = (RoomListActivity) getActivity();
         project = activity.getProject();
         super.onCreate(savedInstanceState);
+
+        loadFromArgs();
+    }
+
+    private void loadFromArgs(){
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT);
             buildingID = getArguments().getInt(ARG_BUILDING);
@@ -66,19 +71,24 @@ public class DeviceListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         List<String> bertNameList = new ArrayList<>();
+        locationListView = (ListView) getView().findViewById(R.id.bertList);
+        loadList();
+    }
+
+    private void loadList() {
+        List<String> bertNameList = new ArrayList<String>();
         if (getArguments() != null) {
             for (BertUnit bert : bertList) {
                 bertNameList.add(bert.getName());
             }
         }
-
         final ArrayList<String> listStrings = new ArrayList<>(bertNameList);
-        listStrings.add(ADD_BUILDING_STRING);
-        deviceTableAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, listStrings);
-
+        if (listStrings.size() != 0){
+            listStrings.add(ADD_BUILDING_STRING);
+        }
+        deviceTableAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, listStrings);
         locationListView = (ListView) getView().findViewById(R.id.bertList);
         locationListView.setAdapter(deviceTableAdapter);
-
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,7 +99,6 @@ public class DeviceListFragment extends Fragment {
                 }
             }
         });
-
     }
 
     @Override
@@ -100,6 +109,12 @@ public class DeviceListFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+    }
+
+    public void loadNewDevice(){
+        loadFromArgs();
+        loadList();
+        loadDeviceAtPosition(deviceTableAdapter.getCount() - 2);
     }
 
     private void loadDeviceAtPosition(int position) {
