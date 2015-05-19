@@ -88,6 +88,7 @@ public class FileProvider {
 		try {
 			TransformerFactory factory = TransformerFactory.newInstance();
 			Transformer transformer = factory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             File outputFile = new File(getProjectDirectory(), fileName);
 			Result result = new StreamResult(outputFile);
 			Source source = new DOMSource(d);
