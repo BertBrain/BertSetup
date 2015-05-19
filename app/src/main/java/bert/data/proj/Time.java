@@ -5,6 +5,7 @@ package bert.data.proj;
  */
 public class Time {
 
+    //TODO convert to use 1 integer internally
     private int hour;
     public int minute;
     public boolean isAM;
@@ -13,6 +14,13 @@ public class Time {
         isAM = hour < 13;
         this.hour = isAM ? hour : hour - 12;
         this.minute = minute;
+    }
+
+    public static void main(String[] args) {
+        Time t = new Time(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+        int i = t.getMinutes();
+        Time t2 = new Time(i);
+        System.out.println(t2.description());
     }
 
     public Time(int minutes) {

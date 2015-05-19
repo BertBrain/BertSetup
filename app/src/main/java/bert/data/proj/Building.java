@@ -17,7 +17,7 @@ public class Building {
     public Time getStartTime() { return startTime; }
     public void setStartTime(Time startTime){ this.startTime = startTime; }
 
-    public Time getEndTime() {return  endTime; }
+    public Time getEndTime() { return  endTime; }
     public void setEndTime(Time endTime) { this.endTime = endTime; }
 
     public Building(String name, Time startTime, Time endTime, List<Category> presetCategories) {
@@ -33,12 +33,12 @@ public class Building {
 
     public List<Category> getCategories() { return  categories; }
 
-    public List<String> getCategoryNames(){
-        ArrayList<String> names = new ArrayList<>();
-        for (Category category : getCategories()){
-            names.add(category.getName());
+    public List<String> getCategoryNames() {
+        ArrayList<String> categoryNames = new ArrayList<>();
+        for (Category category : getCategories()) {
+            categoryNames.add(category.getName());
         }
-        return names;
+        return categoryNames;
     }
 
     public String getName() {

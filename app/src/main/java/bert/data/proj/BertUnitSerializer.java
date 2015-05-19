@@ -2,10 +2,6 @@ package bert.data.proj;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by afiol-mahon on 5/13/15.

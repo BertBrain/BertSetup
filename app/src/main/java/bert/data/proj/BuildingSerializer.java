@@ -2,7 +2,6 @@ package bert.data.proj;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
@@ -22,16 +21,16 @@ public class BuildingSerializer {
     public static Building getBuildingFromElement(Element e) {
         String name = e.getAttribute(ATTR_NAME);
         Time startTime;
-        try{
-            startTime = new Time(Integer.valueOf(e.getAttribute(ATTR_START_TIME)));
+        try {
+            startTime = new Time(Integer.parseInt(e.getAttribute(ATTR_START_TIME)));
         } catch ( NumberFormatException ex) {
             ex.printStackTrace();
             startTime = new Time(9, 0);
         }
 
         Time endTime;
-        try{
-            endTime = new Time(Integer.valueOf(e.getAttribute(ATTR_END_TIME)));
+        try {
+            endTime = new Time(Integer.parseInt(e.getAttribute(ATTR_END_TIME)));
         } catch ( NumberFormatException e2) {
             e2.printStackTrace();
             endTime = new Time(20, 0);
@@ -41,7 +40,7 @@ public class BuildingSerializer {
         NodeList categoryElements = e.getElementsByTagName(CategorySerializer.TAG_CATEGORY);
         for (int i = 0; i < categoryElements.getLength(); i++) {
             Element categoryElement = (Element) categoryElements.item(i);
-            int id = Integer.valueOf(categoryElement.getAttribute(CategorySerializer.ATTR_ID));
+            int id = Integer.parseInt(categoryElement.getAttribute(CategorySerializer.ATTR_ID));
             Category cat = CategorySerializer.getCategoryFromElement(categoryElement);
             categories.add(id, cat);
         }
@@ -51,15 +50,15 @@ public class BuildingSerializer {
     public static Element getElementFromBuilding(Building b, Document d, int index) {
         Element e = d.createElement(TAG_BUILDING);
         e.setAttribute(ATTR_NAME, b.getName());
-        e.setAttribute(ATTR_START_TIME, String.valueOf(b.getStartTime().getMinutes()));
-        e.setAttribute(ATTR_END_TIME, String.valueOf(b.getEndTime().getMinutes()));
+        e.setAttribute(ATTR_START_TIME, Integer.toString(b.getStartTime().getMinutes()));
+        e.setAttribute(ATTR_END_TIME, Integer.toString(b.getEndTime().getMinutes()));
 
         List<Category> categories = b.getCategories();
         for(int i = 0; i < categories.size(); i++) {
             e.appendChild(CategorySerializer.getElementFromCategory(categories.get(i), d, i));
         }
 
-        e.setAttribute(ATTR_ID, String.valueOf(index));
+        e.setAttribute(ATTR_ID, Integer.toString(index));
         return e;
     }
 }
