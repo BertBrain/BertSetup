@@ -21,7 +21,7 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -31,7 +31,7 @@
                 android:layout_column="0" />
 
             <TextView
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="173dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -41,7 +41,7 @@
                 android:layout_column="0" />
 
             <EditText
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/projectNameEditText"
@@ -51,7 +51,7 @@
                 android:layout_column="1" />
 
             <EditText
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/contactNameEditText"
@@ -61,7 +61,7 @@
                 android:layout_column="1" />
 
             <TextView
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -71,7 +71,7 @@
                 android:layout_column="0" />
 
             <EditText
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/contactNumberEditText"
@@ -82,7 +82,7 @@
                 android:layout_column="1" />
 
             <TextView
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -92,7 +92,7 @@
                 android:layout_column="0" />
 
             <TextView
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -102,7 +102,7 @@
                 android:layout_column="1" />
 
             <TextView
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -113,7 +113,7 @@
                 android:textSize="20dp" />
 
             <TextView
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -124,17 +124,17 @@
         </GridLayout>
 
         <Button
-            style="@style/NormalButton"
+            style="@style/OpenButton"
             android:text="View Buildings"
             android:id="@+id/openProjectButton" />
 
         <Button
-            style="@style/NormalButton"
+            style="@style/ActionButton"
             android:text="Export an ROI Sheet"
             android:id="@+id/exportToROIButton" />
 
         <Button
-            style="@style/NormalButton"
+            style="@style/ActionButton"
             android:text="Export a Configurator CSV"
             android:id="@+id/exportToBertConfiguratorButton" />
 

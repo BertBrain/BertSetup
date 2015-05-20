@@ -3,7 +3,7 @@
     android:layout_height="match_parent" tools:context="bert.ui.NoSelectionFragment">
 
     <TextView
-        style="@style/ThinText"
+        style="@style/DefaultText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"

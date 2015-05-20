@@ -4,7 +4,7 @@
 
     <GridLayout
 
-        style="@style/ThinText"
+        style="@style/DefaultText"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical|left|right"
@@ -15,7 +15,7 @@
         android:isScrollContainer="true">
 
         <TextView
-            style="@style/ThinText"
+            style="@style/DefaultText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -25,7 +25,7 @@
             android:layout_column="0" />
 
         <EditText
-            style="@style/ThinText"
+            style="@style/DefaultText"
             android:singleLine="true"
             android:imeActionLabel="Done"
             android:imeOptions="actionDone"
@@ -36,7 +36,7 @@
             android:layout_column="0" />
 
         <TextView
-            style="@style/ThinText"
+            style="@style/DefaultText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -46,7 +46,7 @@
             android:layout_column="0" />
 
         <EditText
-            style="@style/ThinText"
+            style="@style/DefaultText"
             android:singleLine="true"
             android:imeActionLabel="Done"
             android:imeOptions="actionDone"
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -72,7 +72,7 @@
                 android:layout_column="0" />
 
             <Spinner
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/addDeviceCategorySpinner" />

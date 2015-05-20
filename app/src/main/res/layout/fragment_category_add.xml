@@ -19,7 +19,7 @@
             android:id="@+id/createCategoryGridView">
 
             <TextView
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -29,7 +29,7 @@
                 android:layout_column="0" />
 
             <EditText
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:imeActionLabel="Done"
                 android:imeOptions="actionDone"
                 android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                 android:layout_column="1" />
 
             <TextView
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -50,7 +50,7 @@
                 android:numeric="integer" />
 
             <EditText
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:inputType="phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 android:numeric="integer" />
 
             <TextView
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -70,7 +70,7 @@
                 android:layout_column="0" />
 
             <Spinner
-                style="@style/ThinText"
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/bertTypeSpinner"

@@ -1,6 +1,9 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.example.liamcook.ui.AddProject">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.liamcook.ui.AddProject">
 
     <LinearLayout
         android:orientation="vertical"
@@ -8,7 +11,6 @@
         android:layout_height="736dp">
 
         <GridLayout
-
             android:paddingRight="@dimen/right_margin"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -19,7 +21,6 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/ThinText"
                 android:layout_width="253dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -40,7 +41,6 @@
                 />
 
             <TextView
-                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -60,7 +60,6 @@
                 android:layout_column="1" />
 
             <TextView
-                style="@style/ThinText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"

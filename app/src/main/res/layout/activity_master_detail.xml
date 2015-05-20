@@ -14,26 +14,29 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:focusableInTouchMode="false"
-        android:id="@+id/master_layout">
+        android:id="@+id/master_layout" >
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:id="@+id/list_layout"
-            android:background="@android:color/holo_green_dark">
+            android:background="@color/LightGreen" >
 
             <Button
-                style="@style/BertButton"
+                android:background="@color/DarkGreen"
+                android:textColor="@color/LightGreen"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="New"
-                android:id="@+id/create_list_item_button"/>
+                android:id="@+id/create_list_item_button" />
 
             <ListView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_list_view" />
+                android:id="@+id/item_list_view"
+                android:textColor="@color/DarkGreen" />
+
         </LinearLayout>
 
         <FrameLayout
@@ -41,6 +44,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:id="@+id/fragment_frame_layout" />
+
     </LinearLayout>
 
 </RelativeLayout>
