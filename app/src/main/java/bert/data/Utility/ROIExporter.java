@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import bert.data.FileProvider;
@@ -34,7 +33,7 @@ public class ROIExporter {
             rows.add(firstLine);
 
             rows.add(Arrays.asList("", "Bert Cost ($):", "80", "Average Electricity Cost ($/kwh): ", "0.1"));
-            rows.add(Arrays.asList("Bert Type", "Number Of Devices", "Daily Time On", "Wattage Draw", "Energy/Year Without Bert", "Energy/Year With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "Savings/Year", "Payback Time (months)"));
+            rows.add(Arrays.asList("Equipment", "Number Of Devices", "Daily Time On", "Wattage Draw", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "Savings/Year", "Payback Time (months)"));
 
             for (int categoryID = 0; categoryID < building.getCategories().size(); categoryID++) {
                 Log.d("ROI_EXPORT", "adding category");
@@ -44,7 +43,8 @@ public class ROIExporter {
                 info.add(category.getName());
                 info.add(String.valueOf(project.getBertsByCategory(buildingID, categoryID).size()));
                 info.add(String.valueOf(building.getTimeOccupied().hour24()));
-                info.add(String.valueOf(category.getEstimatedLoad()));
+                int load = category.getEstimatedLoad();
+                info.add(load > 0 ? String.valueOf(load) : "Undefined Load");
                 info.add("=365*24*INDIRECT(CONCATENATE(\"\"D\"\",ROW()))/1000");
                 info.add("=365*INDIRECT(CONCATENATE(\"\"C\"\",ROW()))*INDIRECT(CONCATENATE(\"\"D\"\",ROW()))/1000");
                 info.add("=INDIRECT(CONCATENATE(\"\"E\"\",ROW())) * INDIRECT(CONCATENATE(\"\"E\"\",ROW()" + String.valueOf(-categoryID - 2) + "))");

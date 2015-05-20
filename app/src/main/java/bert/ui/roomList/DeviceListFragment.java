@@ -30,9 +30,8 @@ public class DeviceListFragment extends Fragment {
     private int projectID;
     private int buildingID;
     private String location;
-    private List<String> bertNames;
 
-    private ArrayAdapter<String> deviceTableAdapter;
+    private DeviceDetailListGVA deviceTableAdapter;
     private ListView locationListView;
 
     public static DeviceListFragment newInstance(int projectID, int buildingID, String location) {
@@ -63,19 +62,14 @@ public class DeviceListFragment extends Fragment {
         super.onResume();
         project = activity.getProject();
         locationListView = (ListView) getView().findViewById(R.id.bertList);
-        bertNames = new ArrayList<>();
-        for (BertUnit bert : project.getBertsByLocation(buildingID, location)) {
-            bertNames.add(bert.getName());
-        }
-        bertNames.add(ADD_BUILDING_STRING);
 
-        deviceTableAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, bertNames);
+        deviceTableAdapter = new DeviceDetailListGVA(getActivity(), this, project.getBertsByLocation(buildingID, location));
         locationListView = (ListView) getView().findViewById(R.id.bertList);
         locationListView.setAdapter(deviceTableAdapter);
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == bertNames.size() - 1) {
+                if (position == project.getBertsByLocation(buildingID, location).size()) {
                     addDevice();
                 } else {
                     loadDeviceAtPosition(position);
@@ -104,7 +98,7 @@ public class DeviceListFragment extends Fragment {
         loadFragment(fragment);
     }
 
-    private void addDevice() {
+    public void addDevice() {
         System.out.println("adding device");
         DeviceDetailAddFragment fragment = DeviceDetailAddFragment.newInstance(projectID, buildingID, location);
         loadFragment(fragment);
