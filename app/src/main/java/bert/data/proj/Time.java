@@ -23,6 +23,11 @@ public class Time {
         System.out.println(t2.description());
     }
 
+    public Time subtract(Time time){
+        int minuteDifference = this.getMinutes() - time.getMinutes();
+        return new Time(minuteDifference);
+    }
+
     public Time(int minutes) {
         if (minutes >= 720) {
             this.isAM = false;

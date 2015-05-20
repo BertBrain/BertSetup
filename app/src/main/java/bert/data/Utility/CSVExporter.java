@@ -16,18 +16,20 @@ import bert.data.proj.Project;
 public class CSVExporter {
     public static File generateCSV(Project project) throws IOException {
         File exportCSV = new File(FileProvider.getExportsDirectory(), project.getProjectName() + "_Configurator.csv");
+        exportCSV.setWritable(true);
         FileWriter writer = new FileWriter(exportCSV);
         for (BertUnit b : project.getBerts()) {
-            writer.append(b.getMAC());
-            writer.append(',');
-            writer.append(b.getCSVName());
-            writer.append(',');
-            writer.append(b.getLocation());
-            writer.append(';');
-            writer.append(project.getBuildings().get(b.getBuildingID()).getName());
-            writer.append('\n');
+            writer.write(b.getMAC());
+            writer.write(',');
+            writer.write(b.getCSVName());
+            writer.write(',');
+            writer.write(b.getLocation());
+            writer.write(';');
+            writer.write(project.getBuildings().get(b.getBuildingID()).getName());
+            writer.write('\n');
             Log.d("CSV EXPORT", "Exported Bert " + b.getName() + " to CSV File");
         }
+        writer.close();
         return exportCSV;
     }
 }
