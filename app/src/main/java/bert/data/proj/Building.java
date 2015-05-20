@@ -41,6 +41,10 @@ public class Building {
         return categoryNames;
     }
 
+    public Time getTimeOccupied(){
+        return endTime.subtract(startTime);
+    }
+
     public String getName() {
         return this.name;
     }

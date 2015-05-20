@@ -58,7 +58,17 @@ public class Project {
         }
         return returnList;
     }
-	  
+
+    public List<BertUnit> getBertsByCategory(int building, int categoryID) {
+        List<BertUnit> returnList = new ArrayList<>();
+        for (BertUnit b : getBerts()) {
+            if (b.getBuildingID() == building && b.getCategoryID() == categoryID) {
+                returnList.add(b);
+            }
+        }
+        return returnList;
+    }
+
 	public void addBert(BertUnit bert) {
 		bertList.add(bert);
 	}

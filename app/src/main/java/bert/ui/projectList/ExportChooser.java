@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.File;
 import java.net.URI;
@@ -19,9 +20,9 @@ public class ExportChooser {
     String[] exportOptions = {"Wireless", "Save to SD"};
 
 
-    private Activity activity;
+    private ProjectListActivity activity;
 
-    public ExportChooser(Activity activity){
+    public ExportChooser(ProjectListActivity activity){
         this.activity = activity;
     }
 
@@ -49,11 +50,13 @@ public class ExportChooser {
 
     private void email(File file){
         System.out.println("emailing file");
+        file.setReadable(true, false);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("message/rfc822");
         intent.putExtra(Intent.EXTRA_SUBJECT, "Bert Setup Export");
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
-        activity.startActivity(intent);
+        Log.d("EMAIL_SENDER", Uri.fromFile(file).toString());
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        activity.startActivity(Intent.createChooser(intent, "Choose Export Method"));
     }
 
     private void saveToSD(File file)

@@ -24,6 +24,7 @@ import bert.data.proj.Project;
 import bert.data.ProjectProvider;
 import bert.data.utility.CSVExporter;
 import bert.data.utility.Cleaner;
+import bert.data.utility.ROIExporter;
 import bert.ui.BertAlert;
 import bert.ui.R;
 
@@ -132,7 +133,7 @@ public class ProjectDetailFragment extends Fragment {
                 File fileToShare;
                 try {
                     fileToShare = CSVExporter.generateCSV(currentProject);
-                    (new ExportChooser(getActivity())).exportFile("CSV to Bert Configurator", fileToShare);
+                    (new ExportChooser((ProjectListActivity)getActivity())).exportFile("CSV to Bert Configurator", fileToShare);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.d("Project Detail Fragment", "Unable to generate Configurator CSV File");
@@ -145,7 +146,13 @@ public class ProjectDetailFragment extends Fragment {
         exportToROIButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                (new ExportChooser(getActivity())).exportFile("ROI Spreadsheet", null);
+                File fileToShare;
+                try {
+                    fileToShare = ROIExporter.generateROI(currentProject);
+                    (new ExportChooser((ProjectListActivity)getActivity())).exportFile("ROI SpreadSheet", fileToShare);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
             }
         });
 
