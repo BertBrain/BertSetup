@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="bert.ui.projectList.ProjectDetailFragment">
+    android:layout_height="match_parent" tools:context="bert.ui.projectList.ProjectDetailFragment"
+    android:id="@+id/viewFrame">
 
     <LinearLayout
         android:orientation="vertical"
@@ -8,15 +9,15 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center_horizontal|top"
         android:weightSum="1"
-        android:id="@+id/deviceEditorViewLayout">
+        android:id="@+id/detailViewLayout">
 
         <GridLayout
             android:paddingRight="@dimen/right_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:rowCount="8"
-            android:id="@+id/projectDetailGridLayout"
+            android:rowCount="5"
+            android:id="@+id/detailGridLayout"
             android:columnCount="2"
             android:orientation="vertical">
 
@@ -24,37 +25,37 @@
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Project Name:"
-                android:id="@+id/textView5"
+                android:id="@+id/nameLabel"
                 android:layout_row="0"
-                android:layout_column="0" />
-
-            <TextView
-                style="@style/DefaultText"
-                android:layout_width="173dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Contact Name"
-                android:id="@+id/textView6"
-                android:layout_row="1"
                 android:layout_column="0" />
 
             <EditText
                 style="@style/DefaultText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/projectNameEditText"
+                android:id="@+id/nameEditText"
                 android:imeActionLabel="Done"
                 android:imeOptions="actionDone"
                 android:layout_row="0"
                 android:layout_column="1" />
 
+            <TextView
+                style="@style/DefaultText"
+                android:layout_width="173dp"
+                android:layout_height="wrap_content"
+                android:text="Contact Name"
+                android:id="@+id/contactLabel"
+                android:layout_row="1"
+                android:layout_column="0" />
+
+
+
             <EditText
                 style="@style/DefaultText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/contactNameEditText"
+                android:id="@+id/contactEditText"
                 android:imeActionLabel="Done"
                 android:imeOptions="actionDone"
                 android:layout_row="1"
@@ -64,10 +65,9 @@
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Contact Number:"
-                android:id="@+id/textView7"
-                android:layout_row="3"
+                android:id="@+id/contactNumberLabel"
+                android:layout_row="2"
                 android:layout_column="0" />
 
             <EditText
@@ -78,6 +78,24 @@
                 android:imeActionLabel="Done"
                 android:imeOptions="actionDone"
                 android:inputType="phone"
+                android:layout_row="2"
+                android:layout_column="1" />
+
+            <TextView
+                style="@style/DefaultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date Created:"
+                android:id="@+id/dateCreatedLabel"
+                android:layout_row="3"
+                android:layout_column="0" />
+
+            <TextView
+                style="@style/DefaultText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="4/3/4"
+                android:id="@+id/dateCreatedTextView"
                 android:layout_row="3"
                 android:layout_column="1" />
 
@@ -85,41 +103,18 @@
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Date Created:"
-                android:id="@+id/textView8"
+                android:text="Date Acessed:"
+                android:id="@+id/dateAccessedLabel"
                 android:layout_row="4"
                 android:layout_column="0" />
 
             <TextView
                 style="@style/DefaultText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="4/3/4"
-                android:id="@+id/dateCreatedTextField"
-                android:layout_row="4"
-                android:layout_column="1" />
-
-            <TextView
-                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Date Acessed:"
-                android:id="@+id/textView9"
-                android:layout_row="5"
-                android:layout_column="0"
-                android:textSize="20dp" />
-
-            <TextView
-                style="@style/DefaultText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="4/9/14"
-                android:id="@+id/dateAcessedTextField"
-                android:layout_row="5"
+                android:id="@+id/dateAccessedTextView"
+                android:layout_row="4"
                 android:layout_column="1" />
         </GridLayout>
 

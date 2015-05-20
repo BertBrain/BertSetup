@@ -122,13 +122,13 @@ public class ProjectDetailFragment extends Fragment {
         dateCreatedTextField = (TextView) getView().findViewById(R.id.dateCreatedTextField);
         dateCreatedTextField.setText(currentProject.getCreationDate());
 
-        dateModifiedTextField = (TextView) getView().findViewById(R.id.dateAcessedTextField);
+        dateModifiedTextField = (TextView) getView().findViewById(R.id.dateAccessedTextField);
         dateModifiedTextField.setText(currentProject.getModifiedDate());
 
         exportToBertConfigButton = (Button) getView().findViewById(R.id.exportToBertConfiguratorButton);
         exportToBertConfigButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {//TODO add alert
+            public void onClick(View v) {
 
                 File fileToShare;
                 try {
