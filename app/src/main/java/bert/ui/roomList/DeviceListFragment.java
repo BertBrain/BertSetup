@@ -7,7 +7,6 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -31,11 +30,10 @@ public class DeviceListFragment extends Fragment {
     private int projectID;
     private int buildingID;
     private String location;
-    private List<BertUnit> bertList;
+    private List<String> bertNames;
 
     private ArrayAdapter<String> deviceTableAdapter;
     private ListView locationListView;
-    private FrameLayout detailView;
 
     public static DeviceListFragment newInstance(int projectID, int buildingID, String location) {
         DeviceListFragment fragment = new DeviceListFragment();
@@ -53,45 +51,31 @@ public class DeviceListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (RoomListActivity) getActivity();
-        project = activity.getProject();
-        loadFromArgs();
-    }
-
-    private void loadFromArgs() {
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT);
             buildingID = getArguments().getInt(ARG_BUILDING);
             location = getArguments().getString(ARG_LOCATION);
-            bertList = project.getBertsByLocation(buildingID, location);
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        List<String> bertNameList = new ArrayList<>();
+        project = activity.getProject();
         locationListView = (ListView) getView().findViewById(R.id.bertList);
-        loadList();
-    }
+        bertNames = new ArrayList<>();
+        for (BertUnit bert : project.getBertsByLocation(buildingID, location)) {
+            bertNames.add(bert.getName());
+        }
+        bertNames.add(ADD_BUILDING_STRING);
 
-    private void loadList() {
-        List<String> bertNameList = new ArrayList<String>();
-        if (getArguments() != null) {
-            for (BertUnit bert : bertList) {
-                bertNameList.add(bert.getName());
-            }
-        }
-        final ArrayList<String> listStrings = new ArrayList<>(bertNameList);
-        if (listStrings.size() != 0){
-            listStrings.add(ADD_BUILDING_STRING);
-        }
-        deviceTableAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, listStrings);
+        deviceTableAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, bertNames);
         locationListView = (ListView) getView().findViewById(R.id.bertList);
         locationListView.setAdapter(deviceTableAdapter);
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == listStrings.size() - 1) {
+                if (position == bertNames.size() - 1) {
                     addDevice();
                 } else {
                     loadDeviceAtPosition(position);
@@ -102,7 +86,7 @@ public class DeviceListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_device_editor_view, container, false);
+        return inflater.inflate(R.layout.fragment_device_list, container, false);
     }
 
     @Override
@@ -110,13 +94,11 @@ public class DeviceListFragment extends Fragment {
         super.onAttach(activity);
     }
 
-    public void loadNewDevice() {
-        loadFromArgs();
-        loadList();
+    public void openNewestDeviceDetailFragment() {
         loadDeviceAtPosition(deviceTableAdapter.getCount() - 2);
     }
 
-    private void loadDeviceAtPosition(int position) {
+    public void loadDeviceAtPosition(int position) {
         System.out.println("editing device");
         DeviceDetailEditFragment fragment = DeviceDetailEditFragment.newInstance(projectID, buildingID, location, position);
         loadFragment(fragment);

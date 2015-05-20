@@ -3,7 +3,6 @@ package bert.data.proj;
 import java.util.ArrayList;
 import java.util.List;
 
-import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.proj.exceptions.DuplicateBuildingInProjectException;
 import bert.data.proj.exceptions.InvalidProjectNameException;
@@ -33,9 +32,9 @@ public class Project {
     public List<String> getLocationNamesInBuilding(int building) {
         List<String> locationNames = new ArrayList<>();
         for (BertUnit b : getBerts()) {
-            String n = b.getLocation();
-            if (!locationNames.contains(n) && b.getBuildingID() == building) {
-                locationNames.add(n);
+            String nextLocation = b.getLocation();
+            if (!locationNames.contains(nextLocation) && b.getBuildingID() == building) {
+                locationNames.add(nextLocation);
             }
         }
         return locationNames;

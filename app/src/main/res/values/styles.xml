@@ -19,4 +19,24 @@
         <item name="android:background">@android:color/holo_green_light</item>
     </style>
 
+    <style name="SaveButton" parent="NormalButton">
+        <item name="android:textColor">#1C3C03</item>
+        <item name="android:background">#8AC45E</item>
+    </style>
+
+    <style name="DeleteButton" parent="NormalButton">
+        <item name="android:textColor">#FFAB9E</item>
+        <item name="android:background">#772417</item>
+    </style>
+
+    <style name="NormalButton">
+        <item name="android:textColor">#022B24</item>
+        <item name="android:background">#70B5A9</item>
+
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
 </resources>

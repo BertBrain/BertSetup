@@ -2,17 +2,17 @@ package bert.ui.roomList;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import java.util.List;
 
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
@@ -32,7 +32,7 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
     public DeviceListFragment deviceListFragment;
 
     private Button startAuditButton;
-    private ArrayAdapter<String> locationTableAdapter;
+    private ArrayAdapter<String> locationListAdapter;
     private ListView locationListView;
 
     @Override
@@ -53,41 +53,44 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail);
         if (savedInstanceState != null) return;//if restoring, don't replace
-
         Bundle extras = getIntent().getExtras();
         projectID = extras.getInt(ARG_PROJECT_ID);
         buildingID = extras.getInt(ARG_BUILDING_ID);
-        project = ProjectProvider.getInstance().getProjectList().get(projectID);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        project = ProjectProvider.getInstance().getProjectList().get(projectID);
         startAuditButton = (Button) findViewById(R.id.create_list_item_button);
         startAuditButton.setText("Audit Wizard");
         startAuditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAuditWizardView();
+                openAuditWizardFragment();
             }
         });
 
-        locationTableAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getLocationNamesInBuilding(buildingID));
-        locationListView = (ListView) findViewById(R.id.item_list_view);
-        locationListView.setAdapter(locationTableAdapter);
-        locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openDeviceListFragment(project.getLocationNamesInBuilding(buildingID).get(position));
-            }
-        });
-        this.setTitle(project.getProjectName() + " " + project.getBuildings().get(buildingID).getName() + " Building " + " (" + locationTableAdapter.getCount() + " Rooms)");
+        List<String> roomNames = project.getLocationNamesInBuilding(buildingID);
+
+        if (roomNames.size() != 0) {
+            locationListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getLocationNamesInBuilding(buildingID));
+            locationListView = (ListView) findViewById(R.id.item_list_view);
+            locationListView.setAdapter(locationListAdapter);
+            locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    openDeviceListFragment(project.getLocationNamesInBuilding(buildingID).get(position));
+                }
+            });
+        }
+        this.setTitle(project.getProjectName() + " " + project.getBuildings().get(buildingID).getName() + " Building " + " (" + roomNames.size() + " Rooms)");
     }
 
-    public void openAuditWizardView() {
-        AuditWizardFragment auditWizardView = AuditWizardFragment.newInstance(projectID, buildingID);
+    public void openAuditWizardFragment() {
+        AuditWizardFragment fragment = AuditWizardFragment.newInstance(projectID, buildingID);
         AuditTallyBoxGVA.resetCounts();
-        loadFragment(auditWizardView);
+        loadFragment(fragment);
     }
 
     public void openDeviceListFragment(String locationName) {
@@ -108,18 +111,13 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

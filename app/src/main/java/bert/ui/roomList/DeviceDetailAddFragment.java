@@ -13,8 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import java.util.ArrayList;
-
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
@@ -28,13 +26,14 @@ import bert.ui.R;
  * create an instance of this fragment.
  */
 public class DeviceDetailAddFragment extends Fragment {
-    private static final String ARG_PROJECT = "project";
-    private static final String ARG_BUILDING = "building";
-    private static final String ARG_LOCATION = "loaciton";
+    private static final String ARG_PROJECT_ID = "PROJECT_ID";
+    private static final String ARG_BUILDING_ID = "BUILDING_ID";
+    private static final String ARG_LOCATION = "location";
 
     private int projectID;
     private int buildingID;
 
+    private RoomListActivity activity;
     private Project project;
     private Building building;
     private String location;
@@ -42,15 +41,15 @@ public class DeviceDetailAddFragment extends Fragment {
     private Button addDeviceDoneButton;
     private Button addDeviceCancelButton;
 
-    EditText nameTextField;
-    EditText macAdressTextField;
-    Spinner categorySpinner;
+    private EditText nameEditText;
+    private EditText macAddressEditText;
+    private Spinner categorySpinner;
 
     public static DeviceDetailAddFragment newInstance(int projectID, int buildingID, String location) {
         DeviceDetailAddFragment fragment = new DeviceDetailAddFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT, projectID);
-        args.putInt(ARG_BUILDING, buildingID);
+        args.putInt(ARG_PROJECT_ID, projectID);
+        args.putInt(ARG_BUILDING_ID, buildingID);
         args.putString(ARG_LOCATION, location);
         fragment.setArguments(args);
         return fragment;
@@ -59,20 +58,22 @@ public class DeviceDetailAddFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = (RoomListActivity)getActivity();
         if (getArguments() != null) {
-            projectID = getArguments().getInt(ARG_PROJECT);
-            buildingID = getArguments().getInt(ARG_BUILDING);
+            projectID = getArguments().getInt(ARG_PROJECT_ID);
+            buildingID = getArguments().getInt(ARG_BUILDING_ID);
             location = getArguments().getString(ARG_LOCATION);
+
             project = ProjectProvider.getInstance().getProjectList().get(projectID);
             building = project.getBuildings().get(buildingID);
         }
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        nameTextField = (EditText) getView().findViewById(R.id.addDeviceNameTextField);
-        macAdressTextField = (EditText) getView().findViewById(R.id.addDeviceMacAdressTextField);
+        nameEditText = (EditText) getView().findViewById(R.id.addDeviceNameTextField);
+        macAddressEditText = (EditText) getView().findViewById(R.id.addDeviceMacAddressTextField);
         categorySpinner = (Spinner) getView().findViewById(R.id.addDeviceCategorySpinner);
         addDeviceDoneButton = (Button) getView().findViewById(R.id.addDeviceDoneButton);
         addDeviceCancelButton = (Button) getView().findViewById(R.id.addDeviceCancelButton);
@@ -85,36 +86,37 @@ public class DeviceDetailAddFragment extends Fragment {
             }
         });
 
-        nameTextField.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+        nameEditText.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String cleanedString = Cleaner.clean(nameTextField.getText().toString());
+                String cleanedString = Cleaner.clean(nameEditText.getText().toString());
                 addDeviceDoneButton.setEnabled(Cleaner.isValid(cleanedString));
             }
-            @Override public void afterTextChanged(Editable s) { }
         });
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, building.getCategoryNames());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, building.getCategoryNames());
         categorySpinner.setAdapter(adapter);
     }
 
     private void finish() {
         BertUnit bert = new BertUnit(
-                nameTextField.getText().toString(),
+                nameEditText.getText().toString(),
                 location,
-                macAdressTextField.getText().toString(),
+                macAddressEditText.getText().toString(),
                 buildingID,
                 categorySpinner.getSelectedItemPosition(),
                 false
         );
         project.addBert(bert);
-        ((RoomListActivity)getActivity()).deviceListFragment.loadNewDevice();
+        activity.deviceListFragment.onResume();
+        activity.deviceListFragment.openNewestDeviceDetailFragment();
     }
 
     public DeviceDetailAddFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_device_detail_add, container, false);
+        return inflater.inflate(R.layout.fragment_device_add, container, false);
     }
 }

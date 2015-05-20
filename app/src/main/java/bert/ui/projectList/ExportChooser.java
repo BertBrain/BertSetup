@@ -7,10 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 
 import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.lang.System.*;
 /**
  * Created by liamcook on 5/14/15.
  */

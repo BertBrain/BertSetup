@@ -27,7 +27,7 @@
             android:label="@string/title_activity_add_category" >
         </activity>
         <activity
-            android:name=".projectList.CategoryEditorActivity"
+            android:name=".categoryList.CategoryDetailFragment"
             android:label="@string/title_activity_category_editor" >
         </activity>
         <activity

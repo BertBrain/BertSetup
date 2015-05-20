@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.example.liamcook.ui.AddProject">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -10,9 +11,9 @@
 
             android:paddingRight="@dimen/right_margin"
             android:layout_width="fill_parent"
-            android:layout_height="214dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="left|top"
-            android:rowCount="4"
+            android:rowCount="3"
             android:id="@+id/grid"
             android:columnCount="2"
             android:orientation="vertical">
@@ -73,21 +74,19 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:ems="10"
                 android:id="@+id/contactNumberTextField"
                 android:imeActionLabel="Done"
                 android:imeOptions="actionDone"
                 android:layout_row="2"
                 android:layout_column="1" />
+
         </GridLayout>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/SaveButton"
             android:text="Create Project"
-            android:id="@+id/createProjectButton"
-            android:layout_gravity="center_horizontal"
-            style="@android:style/Widget.Holo.Light.Button" />
+            android:id="@+id/createProjectButton" />
 
     </LinearLayout>
+
 </FrameLayout>

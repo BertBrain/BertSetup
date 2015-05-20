@@ -63,34 +63,33 @@ public class AuditWizardFragment extends Fragment {
 
     public AuditWizardFragment() {}
 
-    public AuditTallyBoxGVA getViewAdapter(){ return  tallyGridAdapter;}
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
             buildingID = getArguments().getInt(ARG_BUILDING_ID);
-            project = ProjectProvider.getInstance().getProjectList().get(projectID);
         }
         activity = (RoomListActivity) getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_audit_wizard_view, container, false);
+        return inflater.inflate(R.layout.fragment_audit_wizard, container, false);
     }
 
     @Override public void onResume() {
         super.onResume();
+        project = ProjectProvider.getInstance().getProjectList().get(projectID);
 
-        tallyGridAdapter = new AuditTallyBoxGVA(this, this.getActivity(), android.R.layout.simple_gallery_item, project.getBuildings().get(buildingID).getCategories(), projectID, buildingID);
+        tallyGridAdapter = new AuditTallyBoxGVA(this, activity, android.R.layout.simple_gallery_item, project.getBuildings().get(buildingID).getCategories(), projectID, buildingID);
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(tallyGridAdapter);
 
         totalBertsCounter = (TextView) getView().findViewById(R.id.totalCounterTextField);
 
         finishedButton = (Button) getView().findViewById(R.id.finisedAuditWizardButton);
-        finishedButton.setEnabled(tallyGridAdapter.getTotal() != 0);
+        finishedButton.setEnabled(tallyGridAdapter.updateBertTotal() != 0);
         finishedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,7 +116,7 @@ public class AuditWizardFragment extends Fragment {
         });
     }
 
-    public void setCanFinish(boolean canFinish){
+    public void setCanFinish(boolean canFinish) {
         finishedButton.setEnabled(canFinish);
     }
 

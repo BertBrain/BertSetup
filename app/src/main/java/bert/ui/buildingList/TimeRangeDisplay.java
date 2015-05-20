@@ -3,14 +3,12 @@ package bert.ui.buildingList;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import bert.data.proj.Time;
 import bert.ui.BertAlert;
-import bert.ui.R;
 
 /**
  * Created by liamcook on 5/14/15.
@@ -26,7 +24,7 @@ public class TimeRangeDisplay implements TimePickerDialog.OnTimeSetListener {
     private Time endTime;
     private Time activeTime;
 
-    public TimeRangeDisplay(Activity activity, TextView startTimeDisplay, Time nStartTime, TextView endTimeDisplay, Time nEndTime){
+    public TimeRangeDisplay(Activity activity, TextView startTimeDisplay, Time nStartTime, TextView endTimeDisplay, Time nEndTime) {
         this.activity = activity;
         this.startTimeDisplay = startTimeDisplay;
         this.endTimeDisplay = endTimeDisplay;

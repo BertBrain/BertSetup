@@ -1,11 +1,11 @@
 package bert.ui.roomList;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.app.Activity;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,50 +21,53 @@ import java.util.List;
  */
 public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
 
-    HashMap<Category, View> cells = new HashMap<Category, View>();
-    static HashMap<Category, Integer> counts;
-    List<Category> deviceTypes;
-    Activity activity;
-    AuditWizardFragment owner;
+    private HashMap<Category, View> categoryCells = new HashMap<>();
+    private static HashMap<Category, Integer> counts;
+    private List<Category> deviceTypes;
+    private RoomListActivity activity;
+    private AuditWizardFragment parent;
     private int projectID;
     private int buildingID;
 
-    public AuditTallyBoxGVA(AuditWizardFragment owner, Activity activity, int recourseId, List<Category> deviceTypes, int projectID, int buildingID) {
+    public AuditTallyBoxGVA(AuditWizardFragment parent, RoomListActivity activity, int recourseId, List<Category> deviceTypes, int projectID, int buildingID) {
         super(activity, recourseId, deviceTypes);
+        this.parent = parent;
         this.deviceTypes = deviceTypes;
         this.activity = activity;
-        this.owner = owner;
         this.projectID = projectID;
         this.buildingID = buildingID;
     }
 
+    public HashMap<Category, Integer> getCounts() {
+        return this.counts;
+    }
+
     @Override
-    public int getCount(){
+    public int getCount() {
         return deviceTypes.size() + 1;
     }
 
-    public int getTotal() { return  updateBertTotal(); }
-    @Override public View getView(int position, View convertView, ViewGroup parent) {
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
         View gridCell;
         LayoutInflater inflater = activity.getLayoutInflater();
         if (position == deviceTypes.size()) {
-            gridCell = inflater.inflate(R.layout.fragment_add_category_cell, parent, false);
+            gridCell = inflater.inflate(R.layout.fragment_audit_wizard_add_category_cell, parent, false);
             gridCell.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println("creating new category");
+                    log("creating new category");
                     createNewCategory();
                 }
             });
         } else {
-            if (!cells.keySet().contains(deviceTypes.get(position))) {
-                System.out.println("creating grid cell at position for category: " + deviceTypes.get(position).getName());
-
+            if (!categoryCells.keySet().contains(deviceTypes.get(position))) {
+                log("creating grid cell at position for category: " + deviceTypes.get(position).getName());
                 if (!counts.keySet().contains(deviceTypes.get(position))){
                     counts.put(deviceTypes.get(position), 0);
                 }
 
-                gridCell = inflater.inflate(R.layout.fragment_grid_cell, parent, false);
+                gridCell = inflater.inflate(R.layout.fragment_audit_wizard_category_cell, parent, false);
 
                 TextView deviceTypeTextField = (TextView) gridCell.findViewById(R.id.deviceTypeTextField);
                 deviceTypeTextField.setText(deviceTypes.get(position).getName());
@@ -75,23 +78,20 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
                 TextView deviceTypeCounter = (TextView) gridCell.findViewById(R.id.deviceCounterTextField);
                 deviceTypeCounter.setText(counts.get(deviceTypes.get(position)).toString());
 
-                System.out.println("creating click listeners");
+                log("creating click listeners");
                 incrementButton.setOnClickListener(new buttonListener(deviceTypes.get(position), 1, this));
                 decrementButton.setOnClickListener(new buttonListener(deviceTypes.get(position), -1, this));
-
-
-
-                cells.put(deviceTypes.get(position), gridCell);
+                categoryCells.put(deviceTypes.get(position), gridCell);
             } else {
-                gridCell = cells.get(deviceTypes.get(position));
+                gridCell = categoryCells.get(deviceTypes.get(position));
             }
         }
-        System.out.println("grid cell to return: " + gridCell);
+        log("grid cell to return: " + gridCell);
         return gridCell;
     }
 
     static public void resetCounts(){
-        counts = new HashMap<Category, Integer>();
+        counts = new HashMap<>();
     }
 
     void createNewCategory() {
@@ -113,20 +113,15 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         counts.put(deviceType, newCount);
         setCountForDeviceType(deviceType, newCount);
 
-        System.out.println("count for: " + deviceType.getName() + " is now: " + counts.get(deviceType));
+        log("count for: " + deviceType.getName() + " is now: " + counts.get(deviceType));
     }
 
     void setCountForDeviceType(Category deviceType, int count) {
-        System.out.println("setting count for device type: " + deviceType.getName() + " " + count);
-        View gridCell = cells.get(deviceType);
-        System.out.println(gridCell);
+        log("setting count for device type: " + deviceType.getName() + " " + count);
+        View gridCell = categoryCells.get(deviceType);
         TextView deviceTypeCounter = (TextView) gridCell.findViewById(R.id.deviceCounterTextField);
-        System.out.println("deviceTypeCounter old count" + deviceTypeCounter.getText().toString());
+        log("deviceTypeCounter old count" + deviceTypeCounter.getText().toString());
         deviceTypeCounter.setText(String.valueOf(count));
-    }
-
-    public HashMap<Category, Integer> getCounts(){
-        return this.counts;
     }
 
     public int updateBertTotal() {
@@ -134,14 +129,17 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
         for (Integer i : counts.values()) {
             totalCount += i;
         }
-        owner.setCanFinish(totalCount != 0);
-        owner.setBertTotalCounter(totalCount);
+        parent.setCanFinish(totalCount != 0);
+        parent.setBertTotalCounter(totalCount);
         return totalCount;
+    }
+
+    private void log(String message) {
+        Log.d("AuditTallyBox", message);
     }
 }
 
 class buttonListener implements View.OnClickListener {
-
     int incrementAmount = 0;
     AuditTallyBoxGVA owner;
     Category deviceType;
@@ -151,7 +149,6 @@ class buttonListener implements View.OnClickListener {
         this.owner = owner;
         this.incrementAmount = incrementAmount;
     }
-
 
     @Override
     public void onClick(View v) {

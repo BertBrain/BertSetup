@@ -16,15 +16,11 @@
             android:id="@+id/bertList" />
 
         <FrameLayout
-
             android:paddingRight="@dimen/right_margin"
             android:id="@+id/bertDeviceDetailViewFrame"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.88">
-
-
-        </FrameLayout>
+            android:layout_weight="0.88" />
 
     </LinearLayout>
 

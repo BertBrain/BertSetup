@@ -1,18 +1,20 @@
 package bert.ui.categoryList;
 
 import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import bert.data.FileProvider;
 import bert.data.ProjectProvider;
@@ -20,14 +22,6 @@ import bert.data.proj.Category;
 import bert.data.proj.Project;
 import bert.ui.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CategoryDetailFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CategoryDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CategoryDetailFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
@@ -79,8 +73,24 @@ public class CategoryDetailFragment extends Fragment {
         super.onResume();
         categoryNameEditText = (EditText) getView().findViewById(R.id.category_name_edit_text);
         categoryNameEditText.setText(category.getName());
+        categoryNameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                mgr.hideSoftInputFromWindow(textView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                return false;
+            }
+        });
 
         estimatedLoadEditText = (EditText) getView().findViewById(R.id.estimated_load_edit_text);
+        estimatedLoadEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                mgr.hideSoftInputFromWindow(textView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                return false;
+            }
+        });
         estimatedLoadEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {

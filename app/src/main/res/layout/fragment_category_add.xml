@@ -79,27 +79,14 @@
                 android:spinnerMode="dropdown" />
         </GridLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+        <Button
+            style="@style/SaveButton"
+            android:text="Create Category"
+            android:id="@+id/finshCreateCategoryButton" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cancel"
-                android:id="@+id/cancelAddCategoryButton" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Create Category"
-                android:id="@+id/finshCreateCategoryButton"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-        </LinearLayout>
-
+        <Button
+            style="@style/DeleteButton"
+            android:text="Discard"
+            android:id="@+id/cancelAddCategoryButton" />
     </LinearLayout>
 </FrameLayout>
