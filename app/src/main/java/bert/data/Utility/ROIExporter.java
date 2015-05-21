@@ -33,13 +33,15 @@ public class ROIExporter {
             rows.add(firstLine);
 
             rows.add(Arrays.asList("", "Bert Cost ($):", "80", "Average Electricity Cost ($/kwh): ", "0.1"));
-            rows.add(Arrays.asList("Equipment", "Number Of Devices", "Daily Time On", "Wattage Draw", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "Savings/Year", "Payback Time (months)"));
+            rows.add(Arrays.asList("Equipment", "Number Of Devices", "Daily Time On", "Wattage Draw", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "$ Savings/Year", "Payback Time (Years)"));
 
+            int numCategories = 0;
             for (int categoryID = 0; categoryID < building.getCategories().size(); categoryID++) {
 
                 Log.d("ROI_EXPORT", "adding category");
                 Category category = building.getCategories().get(categoryID);
                 if (project.getBertsByCategory(buildingID, categoryID).size() != 0){
+                    numCategories++;
                     List<String> info = new ArrayList<>();
 
                     info.add(category.getName());
@@ -47,15 +49,28 @@ public class ROIExporter {
                     info.add(String.valueOf(building.getTimeOccupied().hour24()));
                     int load = category.getEstimatedLoad();
                     info.add(load > 0 ? String.valueOf(load) : "Undefined Load");
-                    info.add("=365*24*INDIRECT(CONCATENATE(\"\"D\"\",ROW()))/1000");
-                    info.add("=365*INDIRECT(CONCATENATE(\"\"C\"\",ROW()))*INDIRECT(CONCATENATE(\"\"D\"\",ROW()))/1000");
-                    info.add("=INDIRECT(CONCATENATE(\"\"E\"\",ROW())) * INDIRECT(CONCATENATE(\"\"E\"\",ROW()" + String.valueOf(-categoryID - 2) + "))");
-                    info.add("=INDIRECT(CONCATENATE(\"\"F\"\",ROW())) * INDIRECT(CONCATENATE(\"\"E\"\",ROW()" + String.valueOf(-categoryID - 2) + "))");
-                    info.add("=INDIRECT(CONCATENATE(\"\"G\"\",ROW())) - INDIRECT(CONCATENATE(\"\"H\"\",ROW()))");
-                    info.add("=INDIRECT(CONCATENATE(\"\"B\"\",ROW())) * INDIRECT(CONCATENATE(\"\"C\"\",ROW()" + String.valueOf(-categoryID - 2) + ")) / INDIRECT(CONCATENATE(\"\"I\"\",ROW()))");
+                    info.add("=365*24*"+ getCell("B") +"*" + getCell("D")+ "/1000");
+                    info.add("=365*"+ getCell("C") + "*" + getCell("B") + " * " + getCell("D") + "/1000");
+                    info.add("=" + getCell("E") + "*" + getCell("E", -2 -categoryID));
+                    info.add("=" + getCell("F") + "*" + getCell("E", -2 -categoryID));
+                    info.add("=" + getCell("G") + "-" + getCell("H"));
+                    info.add("=" + getCell("B") + "*" + getCell("C", -categoryID - 2) + "/ " + getCell("I"));
                     rows.add(info);
                 }
             }
+
+            List<String> totals = new ArrayList<>();
+            totals.add("Totals: ");
+            totals.add(sumColumn(numCategories));
+            totals.add("");
+            totals.add("");
+            totals.add(sumColumn(numCategories));
+            totals.add(sumColumn(numCategories));
+            totals.add(sumColumn(numCategories));
+            totals.add(sumColumn(numCategories));
+            totals.add(sumColumn(numCategories));
+            totals.add("=" + getCell("B") + "*" + getCell("C", -numCategories - 2) + "/ " + getCell("I"));
+            rows.add(totals);
             rows.add(Arrays.asList(""));
         }
 
@@ -82,7 +97,19 @@ public class ROIExporter {
         return exportROI;
     }
 
-    private String getCellWithColumn(String column){
+    private static String getCell(String column, int offset){
+        return "INDIRECT(CONCATENATE(\"\"" + column + "\"\",ROW() +" + String.valueOf(offset)+ " ))";
+    }
+
+    private static String getCell(String column){
         return "INDIRECT(CONCATENATE(\"\"" + column + "\"\",ROW()))";
+    }
+
+    private static String sumColumn(int columnHieght){
+        String equasion = "=SUM(INDIRECT(CONCATENATE(CHAR(COLUMN() + 64), ROW() - 1 - ";
+        equasion += String.valueOf(columnHieght);
+        equasion += ", \"\":\"\", CHAR(COLUMN() + 64), ROW()-1)))";
+
+        return equasion;
     }
 }
