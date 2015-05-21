@@ -22,7 +22,7 @@ public class ExportChooser {
         this.activity = activity;
     }
 
-    public void exportFile(String name, final File dataToSend) { //TODO: pass a file
+    public void exportFile(String name, final File dataToSend) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Exporting " + name);
         builder.setItems(exportOptions, new DialogInterface.OnClickListener() {
