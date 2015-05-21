@@ -4,3 +4,10 @@
 /.idea/libraries
 .DS_Store
 /build
+*.idea/gradle.xml
+*.idea/misc.xml
+*.idea/modules.xml
+*BertSetup.iml
+*test.iml
+*app/app.iml
+*.idea/vcs.xml
