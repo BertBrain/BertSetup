@@ -63,37 +63,8 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     @Override
     protected void onResume() {
         super.onResume();
-        if (ProjectProvider.getInstance().getProjectList().size() == 1) {
-            this.setTitle("1 Project");
-        } else {
-            this.setTitle(ProjectProvider.getInstance().getProjectList().size() + " Projects");
-        }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        loadProjectList();
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void loadProjectList() {
-        projectTableAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                ProjectProvider.getInstance().getProjectNameList());
+        projectTableAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ProjectProvider.getInstance().getProjectNameList());
         projectListView = (ListView) findViewById(R.id.item_list_view);
         projectListView.setAdapter(projectTableAdapter);
         projectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,5 +73,8 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
                 openProjectDetailView(position);
             }
         });
+
+        int projectListSize = ProjectProvider.getInstance().getProjectList().size();
+        this.setTitle((projectListSize == 1) ? ("1 Project") : (projectListSize + " Projects"));
     }
 }

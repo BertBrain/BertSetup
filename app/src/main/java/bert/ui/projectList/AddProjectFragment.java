@@ -107,7 +107,6 @@ public class AddProjectFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
         public void openAddProjectView();
         public void closeAddProjectView();
     }
@@ -130,7 +129,6 @@ public class AddProjectFragment extends Fragment {
             Intent intent = new Intent(activity, BuildingListActivity.class);
             intent.putExtra(BuildingListActivity.ARG_PROJECT_ID, ProjectProvider.getInstance().getProjectList().size() - 1);
 
-            activity.loadProjectList();
             activity.closeAddProjectView();
             startActivity(intent);
         } catch (InvalidProjectNameException e) {

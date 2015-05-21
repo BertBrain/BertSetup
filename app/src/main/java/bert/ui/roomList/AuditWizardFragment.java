@@ -3,7 +3,6 @@ package bert.ui.roomList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -128,10 +127,6 @@ public class AuditWizardFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-    }
-
-    public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
     }
 
     public void setBertTotalCounter(int count) {

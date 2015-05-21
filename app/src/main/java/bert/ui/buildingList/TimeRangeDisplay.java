@@ -14,7 +14,8 @@ import bert.ui.BertAlert;
  * Created by liamcook on 5/14/15.
  */
 public class TimeRangeDisplay implements TimePickerDialog.OnTimeSetListener {
-    Activity activity;
+
+    private Activity activity;
 
     private TextView startTimeDisplay;
     private TextView endTimeDisplay;
@@ -51,7 +52,7 @@ public class TimeRangeDisplay implements TimePickerDialog.OnTimeSetListener {
         });
     }
 
-    private void launchTimePicker(TextView v, Time initialTime){
+    private void launchTimePicker(TextView v, Time initialTime) {
         activeTimeDisplay = v;
         activeTime = initialTime;
 
@@ -59,7 +60,7 @@ public class TimeRangeDisplay implements TimePickerDialog.OnTimeSetListener {
     }
 
     @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute){
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         System.out.println(hourOfDay);
         activeTime.set(hourOfDay, minute); //activetime = new Time() disconnets active time from the start time or end time
         if (endTime.greaterThan(startTime)) {

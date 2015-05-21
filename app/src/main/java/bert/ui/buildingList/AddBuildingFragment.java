@@ -37,18 +37,18 @@ import bert.ui.R;
  */
 public class AddBuildingFragment extends Fragment {
 
-    private static final String PROJECT_ID = "PROJECT_ID";
+    private static final String ARG_PROJECT_ID = "PROJECT_ID";
 
     private int projectID;
     private Project project;
 
+    private Time defaultStartTime = new Time(9, 0);
+    private Time defaultEndTime = new Time(17, 0);
+    private ArrayAdapter<String> buildingTypeArrayAdapter;
+
     private EditText buildingNameTextField;
     private Button addBuildingButton;
     private Spinner buildingTypeSpinner;
-    private ArrayAdapter<String> buildingTypeArrayAdapter;
-
-    private Time defaultStartTime = new Time(9, 0);
-    private Time defaultEndTime = new Time(17, 0);
     private TextView startTimeDisplay;
     private TextView endTimeDisplay;
     private TimeRangeDisplay timeDisplay;
@@ -56,7 +56,7 @@ public class AddBuildingFragment extends Fragment {
     public static AddBuildingFragment newInstance(int projectID) {
         AddBuildingFragment fragment = new AddBuildingFragment();
         Bundle args = new Bundle();
-        args.putInt(PROJECT_ID, projectID);
+        args.putInt(ARG_PROJECT_ID, projectID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,7 +67,7 @@ public class AddBuildingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            projectID = getArguments().getInt(PROJECT_ID);
+            projectID = getArguments().getInt(ARG_PROJECT_ID);
             project = ProjectProvider.getInstance().getProjectList().get(projectID);
         }
     }
@@ -133,8 +133,6 @@ public class AddBuildingFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_building_add, container, false);
     }
-
-    public void onButtonPressed(Uri uri) {}
 
     @Override
     public void onAttach(Activity activity) {

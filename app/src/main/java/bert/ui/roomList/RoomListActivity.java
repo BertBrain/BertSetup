@@ -19,7 +19,7 @@ import bert.data.ProjectProvider;
 import bert.ui.NoSelectionFragment;
 import bert.ui.R;
 
-public class RoomListActivity extends ActionBarActivity implements AuditWizardFragment.OnFragmentInteractionListener {
+public class RoomListActivity extends ActionBarActivity {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
     public static final String ARG_BUILDING_ID = "BUILDING_ID";
@@ -35,9 +35,6 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
     private ArrayAdapter<String> locationListAdapter;
     private ListView locationListView;
 
-    @Override
-    public void onFragmentInteraction(android.net.Uri uri) {}
-
     public Project getProject() {
         return project;
     }
@@ -52,10 +49,11 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail);
-        if (savedInstanceState != null) return;//if restoring, don't replace
-        Bundle extras = getIntent().getExtras();
-        projectID = extras.getInt(ARG_PROJECT_ID);
-        buildingID = extras.getInt(ARG_BUILDING_ID);
+        if (savedInstanceState == null) {//if restoring, don't replace
+            Bundle extras = getIntent().getExtras();
+            projectID = extras.getInt(ARG_PROJECT_ID);
+            buildingID = extras.getInt(ARG_BUILDING_ID);
+        }
     }
 
     @Override
@@ -71,16 +69,16 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
             }
         });
 
-        List<String> roomNames = project.getLocationNamesInBuilding(buildingID);
+        final List<String> roomNames = project.getLocationNamesInBuilding(buildingID);
 
         if (roomNames.size() != 0) {
-            locationListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getLocationNamesInBuilding(buildingID));
+            locationListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, roomNames);
             locationListView = (ListView) findViewById(R.id.item_list_view);
             locationListView.setAdapter(locationListAdapter);
             locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    openDeviceListFragment(project.getLocationNamesInBuilding(buildingID).get(position));
+                    openDeviceListFragment(roomNames.get(position));
                 }
             });
         }
@@ -107,20 +105,5 @@ public class RoomListActivity extends ActionBarActivity implements AuditWizardFr
         fragmentTransaction.replace(R.id.fragment_frame_layout, frag);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

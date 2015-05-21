@@ -6,11 +6,9 @@
     <color name="LightRed">#FFAB9E</color>
     <color name="DarkRed">#772417</color>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar" />
 
-    <style name="Fragment" parent="AppTheme">
-    </style>
+    <style name="Fragment" parent="AppTheme" />
 
     <style name="DefaultText" parent="AppTheme">
         <item name="android:textSize">20dp</item>
@@ -34,11 +32,9 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="OpenButton" parent="NormalButton">
-    </style>
+    <style name="OpenButton" parent="NormalButton" />
 
-    <style name="ActionButton" parent="NormalButton">
-    </style>
+    <style name="ActionButton" parent="NormalButton" />
 
     <style name="SaveButton" parent="NormalButton">
         <item name="android:textColor">@color/DarkGreen</item>

@@ -4,8 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,7 +35,6 @@ public class BuildingListActivity extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
         projectID = extras.getInt(ARG_PROJECT_ID);
         project = ProjectProvider.getInstance().getProjectList().get(projectID);
-        setTitle(project.getProjectName() + " Buildings (" + project.getBuildings().size() + ")");
 
         addBuildingButton = (Button) findViewById(R.id.create_list_item_button);
         addBuildingButton.setText("Add Building");
@@ -47,7 +46,6 @@ public class BuildingListActivity extends ActionBarActivity {
         });
 
         buildingListView = (ListView) findViewById(R.id.item_list_view);
-        loadListView();
         buildingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,6 +57,7 @@ public class BuildingListActivity extends ActionBarActivity {
     @Override
     public void onResume(){
         super.onResume();
+        setTitle(project.getProjectName() + " Buildings (" + project.getBuildings().size() + ")");
         loadListView();
         clearFragmentContainer();
     }
@@ -69,20 +68,18 @@ public class BuildingListActivity extends ActionBarActivity {
         loadFragment(NoSelectionFragment.newInstance(message));
     }
 
-    private void openAddBuildingView(){
+    private void openAddBuildingView() {
         loadFragment(AddBuildingFragment.newInstance(projectID));
     }
 
-    protected void openBuildingDetailView(int buildingID){
+    protected void openBuildingDetailView(int buildingID) {
         loadFragment(BuildingDetailFragment.newInstance(projectID, buildingID));
     }
 
-    public void loadListView() {
-        buildingListViewAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                project.getBuildingNames());
+    public void loadListView()w {
+        buildingListViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getBuildingNames());
         buildingListView.setAdapter(buildingListViewAdapter);
-        System.out.println("Loaded: " + project.getBuildingNames().size() + " buildings");
+        Log.d("BuildingListActivity", "Loaded: " + project.getBuildingNames().size() + " buildings");
     }
 
     private void loadFragment(Fragment frag) {
@@ -90,26 +87,5 @@ public class BuildingListActivity extends ActionBarActivity {
         fragmentTransaction.replace(R.id.fragment_frame_layout, frag);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
