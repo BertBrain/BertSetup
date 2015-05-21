@@ -63,7 +63,6 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     @Override
     protected void onResume() {
         super.onResume();
-
         projectTableAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ProjectProvider.getInstance().getProjectNameList());
         projectListView = (ListView) findViewById(R.id.item_list_view);
         projectListView.setAdapter(projectTableAdapter);
@@ -74,7 +73,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
             }
         });
 
-        int projectListSize = ProjectProvider.getInstance().getProjectList().size();
+        int projectListSize = ProjectProvider.getInstance().getTotalProjects();
         this.setTitle((projectListSize == 1) ? ("1 Project") : (projectListSize + " Projects"));
     }
 }

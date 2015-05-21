@@ -76,7 +76,7 @@ public class DeviceDetailEditFragment extends Fragment {
             location = getArguments().getString(ARG_LOCATION_ID);
             bertID = getArguments().getInt(ARG_BERT_ID);
 
-            project = ProjectProvider.getInstance().getProjectList().get(projectID);
+            project = ProjectProvider.getInstance().getProject(projectID);
             building = project.getBuildings().get(buildingID);
             bert = project.getBertsByLocation(buildingID, location).get(bertID);
             activity = (RoomListActivity)getActivity();

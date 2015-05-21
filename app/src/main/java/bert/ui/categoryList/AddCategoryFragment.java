@@ -64,7 +64,7 @@ public class AddCategoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
-            project = ProjectProvider.getInstance().getProjectList().get(projectID);
+            project = ProjectProvider.getInstance().getProject(projectID);
             buildingID = getArguments().getInt(ARG_BUILDING_ID);
             activity = (OnFragmentInteractionListener) getActivity();
         }

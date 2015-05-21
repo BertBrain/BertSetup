@@ -65,7 +65,7 @@ public class CategoryDetailFragment extends Fragment {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
             categoryID = getArguments().getInt(ARG_CATEGORY_ID);
             buildingID = getArguments().getInt(ARG_BUILDING_ID);
-            project = ProjectProvider.getInstance().getProjectList().get(projectID);
+            project = ProjectProvider.getInstance().getProject(projectID);
             category = project.getBuildings().get(buildingID).getCategories().get(categoryID);
         }
         activity = (CategoryListActivity)getActivity();

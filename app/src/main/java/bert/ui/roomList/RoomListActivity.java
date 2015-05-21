@@ -59,7 +59,7 @@ public class RoomListActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
-        project = ProjectProvider.getInstance().getProjectList().get(projectID);
+        project = ProjectProvider.getInstance().getProject(projectID);
         startAuditButton = (Button) findViewById(R.id.create_list_item_button);
         startAuditButton.setText("Audit Wizard");
         startAuditButton.setOnClickListener(new View.OnClickListener() {

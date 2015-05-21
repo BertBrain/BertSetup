@@ -36,7 +36,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
         setContentView(R.layout.activity_master_detail);
 
         projectID = getIntent().getExtras().getInt(ARG_PROJECT_ID);
-        project = ProjectProvider.getInstance().getProjectList().get(projectID);
+        project = ProjectProvider.getInstance().getProject(projectID);
         buildingID = getIntent().getExtras().getInt(ARG_BUILDING_ID);
 
         addCategoryButton = (Button) findViewById(R.id.create_list_item_button);

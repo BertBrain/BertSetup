@@ -61,7 +61,7 @@ public class BuildingDetailFragment extends Fragment {
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
             buildingID = getArguments().getInt(ARG_BUILDING_ID);
-            project = ProjectProvider.getInstance().getProjectList().get(projectID);
+            project = ProjectProvider.getInstance().getProject(projectID);
             building = project.getBuildings().get(buildingID);
         }
     }

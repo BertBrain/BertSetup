@@ -80,16 +80,18 @@ public class FileProvider {
 		}
 	}
 
+    public static String getProjectFileName (Project p) {
+        return p.getProjectName() + ".xml";
+    }
+
 	public static void saveProject(Project project) {
 		log("Saving Project: " + project.getProjectName() + " to XML file");
-
 		Document d = ProjectSerializer.exportToXML(project);
-		String fileName = project.getProjectName() + ".xml";
 		try {
 			TransformerFactory factory = TransformerFactory.newInstance();
 			Transformer transformer = factory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            File outputFile = new File(getProjectDirectory(), fileName);
+            File outputFile = new File(getProjectDirectory(), getProjectFileName(project));
 			Result result = new StreamResult(outputFile);
 			Source source = new DOMSource(d);
 			transformer.transform(source, result);
@@ -126,6 +128,16 @@ public class FileProvider {
 		}
 	}
 
+	public static boolean deleteProjectFile(Project project) {
+        try {
+            File projectFile = new File(getProjectDirectory(), getProjectFileName(project));
+            return projectFile.delete();
+        } catch(IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 	public static File getExportsDirectory() throws IOException {
 		if (isExternalStorageAvailable()) {
             File docs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
@@ -142,9 +154,7 @@ public class FileProvider {
 			throw new IOException();
 		}
 	}
-
 	private static void log(String output) {
 		Log.d("File_Provider", output);
 	}
-
 }

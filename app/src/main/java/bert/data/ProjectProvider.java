@@ -1,24 +1,12 @@
 package bert.data;
 
-import android.os.Environment;
 import android.util.Log;
-
-import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import bert.data.proj.Project;
 import bert.data.utility.Cleaner;
@@ -42,20 +30,24 @@ public class ProjectProvider {
         return instance;
     }
 
-    public List<Project> getProjectList() {
-        return projectList;
+    public Project getProject(int projectID) {
+        return projectList.get(projectID);
+    }
+
+    public int getTotalProjects() {
+        return projectList.size();
     }
 
     public List<String> getProjectNameList() {
         List<String> nameList = new ArrayList<>();
-        for (Project p : getProjectList()) {
+        for (Project p : projectList) {
             nameList.add(p.getProjectName());
         }
         return nameList;
     }
 
     private void loadProjectListFromFile() {
-        projectList = new ArrayList<Project>();
+        projectList = new ArrayList<>();
         try {
             File projectDir = FileProvider.getProjectDirectory();
             if (projectDir != null && projectDir.listFiles() != null) {
@@ -93,6 +85,20 @@ public class ProjectProvider {
             }
         }
         return canCreate;
+    }
+
+    public void deleteProject(int projectID) {
+        String name = projectList.get(projectID).getProjectName();
+        if (FileProvider.deleteProjectFile(projectList.get(projectID))) {
+            projectList.remove(projectID);
+
+            List<Project> newList = new ArrayList<>();
+            for (Project p : projectList) {
+                newList.add(p);
+            }
+            projectList = newList;
+        }
+        log("Deleted Project " + name);
     }
 
     private static void log(String output) {

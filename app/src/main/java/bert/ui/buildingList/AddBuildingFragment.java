@@ -68,7 +68,7 @@ public class AddBuildingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
-            project = ProjectProvider.getInstance().getProjectList().get(projectID);
+            project = ProjectProvider.getInstance().getProject(projectID);
         }
     }
 

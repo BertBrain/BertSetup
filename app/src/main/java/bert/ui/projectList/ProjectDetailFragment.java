@@ -1,6 +1,8 @@
 package bert.ui.projectList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,10 +31,13 @@ import bert.ui.BertAlert;
 import bert.ui.R;
 
 import bert.ui.buildingList.BuildingListActivity;
+import bert.ui.roomList.RoomListActivity;
 
 public class ProjectDetailFragment extends Fragment {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
+
+    private ProjectListActivity activity;
 
     private int projectID;
     private Project currentProject;
@@ -40,15 +45,15 @@ public class ProjectDetailFragment extends Fragment {
     private EditText projectNameEditText;
     private EditText contactNameEditText;
     private EditText contactNumberEditText;
-    private TextView dateCreatedTextField;
-    private TextView dateModifiedTextField;
+    private TextView dateCreatedTextView;
+    private TextView dateModifiedTextView;
+    private TextView roomCountTextView;
+    private TextView bertCountTextView;
     private Button exportToBertConfigButton;
     private Button exportToROIButton;
     private Button openProjectButton;
+    private Button deleteProjectButton;
 
-    private TextView roomCountTextView;
-    private TextView bertCountTextView;
-    
     private OnFragmentInteractionListener mListener;
 
     public static ProjectDetailFragment newInstance(int projectIndex) {
@@ -64,9 +69,10 @@ public class ProjectDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = (ProjectListActivity)this.getActivity();
         if (getArguments() != null) {
             this.projectID = getArguments().getInt(ARG_PROJECT_ID);
-            currentProject = ProjectProvider.getInstance().getProjectList().get(projectID);
+            currentProject = ProjectProvider.getInstance().getProject(projectID);
         }
     }
     
@@ -122,11 +128,11 @@ public class ProjectDetailFragment extends Fragment {
             }
         });
 
-        dateCreatedTextField = (TextView) getView().findViewById(R.id.dateCreatedTextView);
-        dateCreatedTextField.setText(currentProject.getCreationDate());
+        dateCreatedTextView = (TextView) getView().findViewById(R.id.dateCreatedTextView);
+        dateCreatedTextView.setText(currentProject.getCreationDate());
 
-        dateModifiedTextField = (TextView) getView().findViewById(R.id.dateAccessedTextView);
-        dateModifiedTextField.setText(currentProject.getModifiedDate());
+        dateModifiedTextView = (TextView) getView().findViewById(R.id.dateAccessedTextView);
+        dateModifiedTextView.setText(currentProject.getModifiedDate());
 
         roomCountTextView = (TextView) getView().findViewById(R.id.roomCountTextView);
         roomCountTextView.setText(Integer.toString(currentProject.getLocationCount()));
@@ -138,11 +144,10 @@ public class ProjectDetailFragment extends Fragment {
         exportToBertConfigButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 File fileToShare;
                 try {
                     fileToShare = CSVExporter.generateCSV(currentProject);
-                    (new ExportChooser((ProjectListActivity)getActivity())).exportFile("CSV to Bert Configurator", fileToShare);
+                    new ExportChooser(activity).exportFile("CSV to Bert Configurator", fileToShare);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.d("Project Detail Fragment", "Unable to generate Configurator CSV File");
@@ -151,15 +156,14 @@ public class ProjectDetailFragment extends Fragment {
             }
         });
 
-        exportToROIButton = (Button) getView().findViewById(R.id.exportToROIButton);//TODO implement
+        exportToROIButton = (Button) getView().findViewById(R.id.exportToROIButton);
         exportToROIButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File fileToShare;
                 try {
-                    fileToShare = ROIExporter.generateROI(currentProject);
-                    (new ExportChooser((ProjectListActivity)getActivity())).exportFile("ROI SpreadSheet", fileToShare);
-                } catch (IOException e){
+                    File fileToShare = ROIExporter.generateROI(currentProject);
+                    new ExportChooser(activity).exportFile("ROI SpreadSheet", fileToShare);
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -171,6 +175,26 @@ public class ProjectDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openBuildingList();
+            }
+        });
+
+        deleteProjectButton = (Button) getView().findViewById(R.id.deleteProjectButton);
+        deleteProjectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Delete Project? (Cannot be undone)");
+                alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ProjectProvider.getInstance().deleteProject(projectID);
+                        activity.onResume();
+                    }
+                });
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialogInterface, int i) {}
+                });
+                alert.create().show();
             }
         });
     }
