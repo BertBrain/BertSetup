@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:rowCount="5"
+            android:rowCount="8"
             android:id="@+id/detailGridLayout"
             android:columnCount="2"
             android:orientation="vertical">
@@ -105,6 +105,61 @@
                 android:id="@+id/dateAccessedTextView"
                 android:layout_row="4"
                 android:layout_column="1" />
+
+            <TextView
+                style="@style/DefaultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Building Count:"
+                android:id="@+id/buildingCountLabel"
+                android:layout_row="5"
+                android:layout_column="0" />
+
+            <TextView
+                style="@style/DefaultText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="building#"
+                android:id="@+id/buildingCountTextView"
+                android:layout_row="5"
+                android:layout_column="1" />
+
+            <TextView
+                style="@style/DefaultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Room Count:"
+                android:id="@+id/roomCountLabel"
+                android:layout_row="6"
+                android:layout_column="0" />
+
+            <TextView
+                style="@style/DefaultText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="building#"
+                android:id="@+id/roomCountTextView"
+                android:layout_row="6"
+                android:layout_column="1" />
+
+            <TextView
+                style="@style/DefaultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bert Count:"
+                android:id="@+id/bertCountLabel"
+                android:layout_row="7"
+                android:layout_column="0" />
+
+            <TextView
+                style="@style/DefaultText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="bert#"
+                android:id="@+id/bertCountTextView"
+                android:layout_row="7"
+                android:layout_column="1" />
+
         </GridLayout>
 
         <Button
