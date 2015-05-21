@@ -46,7 +46,6 @@ public class ProjectDetailFragment extends Fragment {
     private Button exportToROIButton;
     private Button openProjectButton;
 
-    private TextView buildingCountTextView;
     private TextView roomCountTextView;
     private TextView bertCountTextView;
     
@@ -129,9 +128,6 @@ public class ProjectDetailFragment extends Fragment {
         dateModifiedTextField = (TextView) getView().findViewById(R.id.dateAccessedTextView);
         dateModifiedTextField.setText(currentProject.getModifiedDate());
 
-        buildingCountTextView = (TextView) getView().findViewById(R.id.buildingCountTextView);
-        buildingCountTextView.setText(Integer.toString(currentProject.getBuildings().size()));
-
         roomCountTextView = (TextView) getView().findViewById(R.id.roomCountTextView);
         roomCountTextView.setText(Integer.toString(currentProject.getLocationCount()));
 
@@ -170,6 +166,7 @@ public class ProjectDetailFragment extends Fragment {
         });
 
         openProjectButton = (Button) getView().findViewById(R.id.openProjectButton);
+        openProjectButton.setText("View Buildings (" + currentProject.getBuildings().size() + ")");
         openProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

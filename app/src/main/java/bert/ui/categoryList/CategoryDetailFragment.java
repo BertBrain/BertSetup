@@ -33,6 +33,8 @@ public class CategoryDetailFragment extends Fragment {
     private int buildingID;
     private int categoryID;
 
+    private CategoryListActivity activity;
+
     private Project project;
     private Category category;
 
@@ -66,6 +68,7 @@ public class CategoryDetailFragment extends Fragment {
             project = ProjectProvider.getInstance().getProjectList().get(projectID);
             category = project.getBuildings().get(buildingID).getCategories().get(categoryID);
         }
+        activity = (CategoryListActivity)getActivity();
     }
 
     @Override
@@ -118,6 +121,7 @@ public class CategoryDetailFragment extends Fragment {
                 saveChanges();
             }
         });
+        activity.onResume();
     }
 
     @Override

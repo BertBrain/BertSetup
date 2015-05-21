@@ -64,6 +64,12 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        this.setTitle(project.getBuildings().get(buildingID).getCategories().size() + " Categories");
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);

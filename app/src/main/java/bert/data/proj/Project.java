@@ -58,6 +58,16 @@ public class Project {
         return returnList;
     }
 
+    public List<BertUnit> getBertsByBuilding(int buildingID) {
+        List<BertUnit> returnList = new ArrayList<>();
+        for (BertUnit b : getBerts()) {
+            if (b.getBuildingID() == buildingID) {
+                returnList.add(b);
+            }
+        }
+        return returnList;
+    }
+
     public int getLocationCount() {
         List<String> locationNames = new ArrayList<>();
         for (BertUnit b : getBerts()) {

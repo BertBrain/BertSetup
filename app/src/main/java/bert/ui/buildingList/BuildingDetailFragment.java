@@ -9,9 +9,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import bert.data.FileProvider;
 import bert.data.ProjectProvider;
@@ -32,8 +35,10 @@ public class BuildingDetailFragment extends Fragment {
     private Building building;
 
     private EditText nameEditText;
-    private Button openBuildingButton;
-    private Button openCategoryEditor;
+    private Button buildingButton;
+    private Button categoryButton;
+
+    private TextView bertCountTextView;
 
     private TextView startTimeDisplay;
     private TextView endTimeDisplay;
@@ -69,11 +74,15 @@ public class BuildingDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        startTimeDisplay = (TextView) getView().findViewById(R.id.editor_start_time_textfield);
-        endTimeDisplay = (TextView) getView().findViewById(R.id.editor_end_time_text_field);
+        startTimeDisplay = (TextView) getView().findViewById(R.id.openingTimeTextView);
+
+        endTimeDisplay = (TextView) getView().findViewById(R.id.closingTimeTextView);
         timeDisplay = new TimeRangeDisplay(getActivity(), startTimeDisplay, building.startTime, endTimeDisplay, building.endTime);
 
-        nameEditText = (EditText) getView().findViewById(R.id.edit_building_name_textfield);
+        bertCountTextView = (TextView) getView().findViewById(R.id.bertCountTextView);
+        bertCountTextView.setText(Integer.toString(project.getBertsByBuilding(buildingID).size()));
+
+        nameEditText = (EditText) getView().findViewById(R.id.buildingNameEditText);
         nameEditText.setText(building.getName());
         nameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -87,21 +96,24 @@ public class BuildingDetailFragment extends Fragment {
                 } else {
                     nameEditText.setText(building.getName());
                 }
-
+                InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                mgr.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 return false;
             }
         });
 
-        openCategoryEditor = (Button) getView().findViewById(R.id.open_category_list_button);
-        openCategoryEditor.setOnClickListener(new View.OnClickListener() {
+        categoryButton = (Button) getView().findViewById(R.id.categoryListButton);
+        categoryButton.setText("View Categories (" + project.getBuildings().get(buildingID).getCategories().size() + ")");
+        categoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openCategoryListActivity();
             }
         });
 
-        openBuildingButton = (Button) getView().findViewById(R.id.open_building_button);
-        openBuildingButton.setOnClickListener(new View.OnClickListener() {
+        buildingButton = (Button) getView().findViewById(R.id.roomListButton);
+        buildingButton.setText("View Rooms (" + project.getLocationNamesInBuilding(buildingID).size() + ")");
+        buildingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openRoomListActivity();

@@ -50,7 +50,6 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail);
-        this.setTitle("Projects (" + ProjectProvider.getInstance().getProjectList().size() + ")");
         addProjectButton = (Button) findViewById(R.id.create_list_item_button);
         addProjectButton.setText("Add Project");
         addProjectButton.setOnClickListener(new View.OnClickListener() {
@@ -64,11 +63,15 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     @Override
     protected void onResume() {
         super.onResume();
+        if (ProjectProvider.getInstance().getProjectList().size() == 1) {
+            this.setTitle("1 Project");
+        } else {
+            this.setTitle(ProjectProvider.getInstance().getProjectList().size() + " Projects");
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         loadProjectList();
         return true;
@@ -80,7 +83,6 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;

@@ -2,6 +2,7 @@ package bert.ui.roomList;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.support.annotation.StyleRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,13 @@ import bert.ui.R;
 /**
  * Created by liamcook on 5/20/15.
  */
-public class DeviceDetailListGVA extends ArrayAdapter<BertUnit>{
+public class DeviceDetailListGVA extends ArrayAdapter<BertUnit> {
+
     List <BertUnit> berts;
     Activity activity;
     DeviceListFragment owner;
-    public DeviceDetailListGVA(Activity activity, DeviceListFragment owner, List<BertUnit> berts){
+
+    public DeviceDetailListGVA(Activity activity, DeviceListFragment owner, List<BertUnit> berts) {
         super(activity, android.R.layout.simple_list_item_1, berts);
         this.owner = owner;
         this.activity = activity;
@@ -32,18 +35,21 @@ public class DeviceDetailListGVA extends ArrayAdapter<BertUnit>{
 
     @Override
     public int getCount(){
-        return berts.size()+1;
+        return berts.size() + 1;
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent){
-        View listCell;
-        LayoutInflater inflater = activity.getLayoutInflater();
-        if (convertView == null){
-            listCell = inflater.inflate(R.layout.fragment_device_list_cell, parent, false);
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        if (convertView != null) {
+            return convertView;
+        } else {
+            View listCell = activity.getLayoutInflater().inflate(R.layout.fragment_device_list_cell, parent, false);
             TextView textView = (TextView) listCell.findViewById(R.id.deviceListTextField);
             Button indicator = (Button) listCell.findViewById(R.id.hasMACIndicator);
-            if (position == getCount() - 1){
+
+            boolean isAddBertButton = (position == getCount() - 1);
+
+            if (isAddBertButton) {
                 textView.setText(DeviceListFragment.ADD_BUILDING_STRING);
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -62,9 +68,7 @@ public class DeviceDetailListGVA extends ArrayAdapter<BertUnit>{
                 });
                 indicator.setVisibility(berts.get(position).getMAC().length() == 0 ? View.VISIBLE : View.INVISIBLE);
             }
-        } else {
-            listCell = convertView;
+            return listCell;
         }
-        return  listCell;
     }
 }
