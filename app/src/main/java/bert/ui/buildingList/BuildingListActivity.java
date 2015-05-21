@@ -76,7 +76,7 @@ public class BuildingListActivity extends ActionBarActivity {
         loadFragment(BuildingDetailFragment.newInstance(projectID, buildingID));
     }
 
-    public void loadListView()w {
+    public void loadListView() {
         buildingListViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getBuildingNames());
         buildingListView.setAdapter(buildingListViewAdapter);
         Log.d("BuildingListActivity", "Loaded: " + project.getBuildingNames().size() + " buildings");
