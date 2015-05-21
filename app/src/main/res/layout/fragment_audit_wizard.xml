@@ -1,8 +1,9 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.example.liamcook.ui.AuditWizardView">
-
-    <!-- TODO: Update blank fragment layout -->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.liamcook.ui.AuditWizardView">
 
     <LinearLayout
         android:orientation="vertical"
@@ -27,14 +28,9 @@
                 android:id="@+id/textView" />
 
             <EditText
-                style="@style/DefaultText"
-                android:imeActionLabel="Done"
-                android:imeOptions="actionDone"
-                android:singleLine="true"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/locationNameTextField"
-                android:layout_weight="0.93" />
+                style="@style/EditText"
+                android:id="@+id/locationNameTextField" />
+
         </LinearLayout>
 
         <GridView
@@ -67,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Done"
-                android:id="@+id/finisedAuditWizardButton" />
+                android:id="@+id/finishAuditWizardButton" />
 
         </LinearLayout>
 
@@ -83,4 +79,5 @@
         android:singleLine="true"
         android:gravity="center_vertical|left"
         android:textSize="20dp" />
+
 </FrameLayout>

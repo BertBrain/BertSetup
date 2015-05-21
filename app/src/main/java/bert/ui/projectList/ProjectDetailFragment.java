@@ -45,6 +45,10 @@ public class ProjectDetailFragment extends Fragment {
     private Button exportToBertConfigButton;
     private Button exportToROIButton;
     private Button openProjectButton;
+
+    private TextView buildingCountTextView;
+    private TextView roomCountTextView;
+    private TextView bertCountTextView;
     
     private OnFragmentInteractionListener mListener;
 
@@ -70,7 +74,7 @@ public class ProjectDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        projectNameEditText = (EditText) getView().findViewById(R.id.projectNameEditText);
+        projectNameEditText = (EditText) getView().findViewById(R.id.nameEditText);
         projectNameEditText.setText(currentProject.getProjectName());
         projectNameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -89,7 +93,7 @@ public class ProjectDetailFragment extends Fragment {
             }
         });
 
-        contactNameEditText = (EditText) getView().findViewById(R.id.contactNameEditText);
+        contactNameEditText = (EditText) getView().findViewById(R.id.contactEditText);
         contactNameEditText.setText(currentProject.getContactName());
         contactNameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -119,11 +123,20 @@ public class ProjectDetailFragment extends Fragment {
             }
         });
 
-        dateCreatedTextField = (TextView) getView().findViewById(R.id.dateCreatedTextField);
+        dateCreatedTextField = (TextView) getView().findViewById(R.id.dateCreatedTextView);
         dateCreatedTextField.setText(currentProject.getCreationDate());
 
-        dateModifiedTextField = (TextView) getView().findViewById(R.id.dateAccessedTextField);
+        dateModifiedTextField = (TextView) getView().findViewById(R.id.dateAccessedTextView);
         dateModifiedTextField.setText(currentProject.getModifiedDate());
+
+        buildingCountTextView = (TextView) getView().findViewById(R.id.buildingCountTextView);
+        buildingCountTextView.setText(Integer.toString(currentProject.getBuildings().size()));
+
+        roomCountTextView = (TextView) getView().findViewById(R.id.roomCountTextView);
+        roomCountTextView.setText(Integer.toString(currentProject.getLocationCount()));
+
+        bertCountTextView = (TextView) getView().findViewById(R.id.bertCountTextView);
+        bertCountTextView.setText(Integer.toString(currentProject.getBerts().size()));
 
         exportToBertConfigButton = (Button) getView().findViewById(R.id.exportToBertConfiguratorButton);
         exportToBertConfigButton.setOnClickListener(new View.OnClickListener() {

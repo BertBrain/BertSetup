@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/deviceListCell">
 
     <LinearLayout
@@ -22,14 +24,12 @@
             style="@style/DefaultText"
             android:layout_width="227dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Bert Name"
             android:id="@+id/deviceListTextField"
             android:layout_gravity="left|right"
             android:layout_weight="1"
             android:paddingRight="0dp"
             android:paddingLeft="5dp" />
-
 
     </LinearLayout>
 

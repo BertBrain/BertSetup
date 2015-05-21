@@ -1,11 +1,15 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="bert.ui.categoryList.CategoryDetailFragment">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <GridLayout
             android:paddingRight="@dimen/right_margin"
             android:layout_width="match_parent"
@@ -27,11 +31,7 @@
                 android:layout_row="0" />
 
             <EditText
-                style="@style/DefaultText"
-                android:imeActionLabel="Done"
-                android:imeOptions="actionDone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/EditText"
                 android:id="@+id/category_name_edit_text"
                 android:layout_column="1"
                 android:layout_row="0" />
@@ -40,16 +40,15 @@
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bert Type:"
-                android:id="@+id/bert_type_text_view"
+                android:text="Estimated Load:"
+                android:id="@+id/estimated_load_text_view"
                 android:layout_row="1"
                 android:layout_column="0" />
 
-            <Spinner
-                style="@style/DefaultText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/bert_type_spinner"
+            <EditText
+                style="@style/EditText"
+                android:inputType="number"
+                android:id="@+id/estimated_load_edit_text"
                 android:layout_row="1"
                 android:layout_column="1" />
 
@@ -57,26 +56,26 @@
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Estimated Load:"
-                android:id="@+id/estimated_load_text_view"
+                android:text="Bert Type:"
+                android:id="@+id/bert_type_text_view"
                 android:layout_row="2"
                 android:layout_column="0" />
 
-            <EditText
+            <Spinner
                 style="@style/DefaultText"
-                android:imeActionLabel="Done"
-                android:imeOptions="actionDone"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:id="@+id/estimated_load_edit_text"
+                android:id="@+id/bert_type_spinner"
                 android:layout_row="2"
                 android:layout_column="1" />
 
         </GridLayout>
+
         <Button
             style="@style/SaveButton"
             android:text="Save Changes"
             android:id="@+id/save_button" />
+
     </LinearLayout>
+
 </FrameLayout>

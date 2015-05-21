@@ -1,6 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="wrap_content" tools:context="com.example.liamcook.ui.GridCell" android:id="@+id/gridCellLayout">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.example.liamcook.ui.GridCell"
+    android:id="@+id/gridCellLayout">
 
     <LinearLayout
         android:id="@+id/gridCellInnerLayout"
@@ -57,6 +61,9 @@
                 android:id="@+id/incrementButton"
                 android:layout_gravity="left"
                 android:background="#00e1e2dc" />
+
         </LinearLayout>
+
     </LinearLayout>
+
 </FrameLayout>
