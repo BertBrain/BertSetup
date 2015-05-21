@@ -1,60 +1,36 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="bert.ui.roomList.DeviceDetailAddFragment">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="bert.ui.roomList.DeviceDetailAddFragment">
 
-    <GridLayout
-
-        style="@style/DefaultText"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center_vertical|left|right"
-        android:rowCount="11"
-        android:columnCount="1"
+    <LinearLayout
         android:orientation="vertical"
-        android:id="@+id/grid"
-        android:isScrollContainer="true">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
         <TextView
             style="@style/DefaultText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Device Name"
-            android:id="@+id/deviceNameTextView"
-            android:layout_row="0"
-            android:layout_column="0" />
+            android:id="@+id/deviceNameTextView" />
 
         <EditText
-            style="@style/DefaultText"
-            android:singleLine="true"
-            android:imeActionLabel="Done"
-            android:imeOptions="actionDone"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/addDeviceNameTextField"
-            android:layout_row="1"
-            android:layout_column="0" />
+            style="@style/EditText"
+            android:id="@+id/addDeviceNameTextField" />
 
         <TextView
             style="@style/DefaultText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="MAC Address"
-            android:id="@+id/macAddressTextView"
-            android:layout_row="2"
-            android:layout_column="0" />
+            android:id="@+id/macAddressTextView" />
 
         <EditText
-            style="@style/DefaultText"
-            android:singleLine="true"
-            android:imeActionLabel="Done"
-            android:imeOptions="actionDone"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/addDeviceMacAddressTextField"
-            android:layout_row="3"
-            android:layout_column="0" />
+            style="@style/EditText"
+            android:id="@+id/addDeviceMacAddressTextField" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -65,17 +41,15 @@
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Category: "
-                android:id="@+id/bertTypeTextView"
-                android:layout_row="8"
-                android:layout_column="0" />
+                android:id="@+id/bertTypeTextView" />
 
             <Spinner
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/addDeviceCategorySpinner" />
+
         </LinearLayout>
 
         <Button
@@ -88,5 +62,6 @@
             android:text="Discard"
             android:id="@+id/addDeviceCancelButton" />
 
-    </GridLayout>
+    </LinearLayout>
+
 </FrameLayout>

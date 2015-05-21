@@ -88,7 +88,7 @@ public class AuditWizardFragment extends Fragment {
 
         totalBertsCounter = (TextView) getView().findViewById(R.id.totalCounterTextField);
 
-        finishedButton = (Button) getView().findViewById(R.id.finisedAuditWizardButton);
+        finishedButton = (Button) getView().findViewById(R.id.finishAuditWizardButton);
         finishedButton.setEnabled(tallyGridAdapter.updateBertTotal() != 0);
         finishedButton.setOnClickListener(new View.OnClickListener() {
             @Override

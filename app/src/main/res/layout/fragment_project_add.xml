@@ -8,7 +8,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="736dp">
+        android:layout_height="fill_parent">
 
         <GridLayout
             android:paddingRight="@dimen/right_margin"
@@ -21,61 +21,48 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="253dp"
+                style="@style/DefaultText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Project Name:"
                 android:id="@+id/textView3"
                 android:layout_row="0"
                 android:layout_column="0" />
 
             <EditText
-                android:singleLine="true"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                style="@style/EditText"
                 android:id="@+id/projectNameTextField"
-                android:imeActionLabel="Done"
-                android:imeOptions="actionDone"
                 android:layout_row="0"
-                android:layout_column="1"
-                />
+                android:layout_column="1" />
 
             <TextView
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Project Contact:"
                 android:id="@+id/textView2"
                 android:layout_row="1"
                 android:layout_column="0" />
 
             <EditText
-                android:singleLine="true"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                style="@style/EditText"
                 android:id="@+id/contactTextField"
-                android:imeActionLabel="Done"
-                android:imeOptions="actionDone"
                 android:layout_row="1"
                 android:layout_column="1" />
 
             <TextView
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Contact Phone Number:"
                 android:id="@+id/textView4"
                 android:layout_row="2"
                 android:layout_column="0" />
 
             <EditText
-                android:singleLine="true"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                style="@style/EditText"
                 android:inputType="phone"
                 android:id="@+id/contactNumberTextField"
-                android:imeActionLabel="Done"
-                android:imeOptions="actionDone"
                 android:layout_row="2"
                 android:layout_column="1" />
 

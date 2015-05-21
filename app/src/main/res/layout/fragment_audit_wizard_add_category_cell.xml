@@ -1,7 +1,11 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="75dp" tools:context="com.example.liamcook.test.AddCategoryCell"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="75dp"
+    tools:context="com.example.liamcook.test.AddCategoryCell"
     android:background="#9fe1e2dc">
+
     <TextView
         android:fontFamily="sans-serif-light"
         android:layout_width="match_parent"
@@ -12,4 +16,5 @@
         android:layout_gravity="center"
         android:gravity="center_vertical|center_horizontal"
         android:textSize="18dp" />
+
 </FrameLayout>
