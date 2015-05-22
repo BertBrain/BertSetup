@@ -1,10 +1,13 @@
 package bert.ui.buildingList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
 import bert.data.utility.Cleaner;
+import bert.ui.NoSelectionFragment;
 import bert.ui.R;
 import bert.ui.categoryList.CategoryListActivity;
 import bert.ui.roomList.RoomListActivity;
@@ -37,6 +39,7 @@ public class BuildingDetailFragment extends Fragment {
     private EditText nameEditText;
     private Button buildingButton;
     private Button categoryButton;
+    private Button deleteButton;
 
     private TextView bertCountTextView;
 
@@ -63,6 +66,7 @@ public class BuildingDetailFragment extends Fragment {
             buildingID = getArguments().getInt(ARG_BUILDING_ID);
             project = ProjectProvider.getInstance().getProject(projectID);
             building = project.getBuildings().get(buildingID);
+            Log.d("Building List Activity", String.valueOf(buildingID));
         }
     }
 
@@ -88,7 +92,7 @@ public class BuildingDetailFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean validName = Cleaner.isValid(nameEditText.getText().toString());
-                boolean nameNotTaken = !project.getBuildingNames().contains(nameEditText.getText().toString());
+                boolean nameNotTaken = !project.getBuildingNames().values().contains(nameEditText.getText().toString());
                 if (validName && nameNotTaken) {
                     building.setName(nameEditText.getText().toString());
                     FileProvider.saveProject(project);
@@ -117,6 +121,29 @@ public class BuildingDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openRoomListActivity();
+            }
+        });
+
+        deleteButton = (Button) getView().findViewById(R.id.buildingDeleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Are you sure you want to delete this building?");
+                alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        project.deleteBuilding(buildingID);
+                        ((BuildingListActivity)getActivity()).loadFragment(NoSelectionFragment.newInstance("Select or Create a Building"));
+                        ((BuildingListActivity)getActivity()).loadListView();
+                    }
+                });
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+                alert.create().show();
             }
         });
     }

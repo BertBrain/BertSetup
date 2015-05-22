@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import bert.data.proj.BertUnit;
@@ -57,11 +58,11 @@ public class ProjectSerializer {
             newProject.setBertList(bertList);
 
             //BUILDING DESERIALIZATION
-            List<Building> buildingList = new ArrayList<>();
+            HashMap<Integer, Building> buildingList = new HashMap<>();
             for (int i = 0; i < buildingNodeList.getLength(); i++) {
                 Element e = (Element) buildingNodeList.item(i);
                 int id = Integer.valueOf(e.getAttribute(BuildingSerializer.ATTR_ID));
-                buildingList.add(id, BuildingSerializer.getBuildingFromElement(e));
+                buildingList.put(id, BuildingSerializer.getBuildingFromElement(e));
             }
             newProject.setBuildings(buildingList);
 
@@ -101,7 +102,8 @@ public class ProjectSerializer {
 
         //BUILDING SERIALIZATION
         Element buildingElementList = projectDoc.createElement(TAG_BUILDINGS);
-        for (int i = 0; i < p.getBuildings().size(); i++) {
+        List<Integer> keys = p.getOrderedBuildingKeys();
+        for (Integer i : keys) {
             Building b = p.getBuildings().get(i);
             Element buildingElement = BuildingSerializer.getElementFromBuilding(b, projectDoc, i);
             buildingElementList.appendChild(buildingElement);

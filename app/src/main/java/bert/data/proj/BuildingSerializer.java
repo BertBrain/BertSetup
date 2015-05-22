@@ -53,6 +53,7 @@ public class BuildingSerializer {
         e.setAttribute(ATTR_START_TIME, Integer.toString(b.getStartTime().getMinutes()));
         e.setAttribute(ATTR_END_TIME, Integer.toString(b.getEndTime().getMinutes()));
 
+
         List<Category> categories = b.getCategories();
         for(int i = 0; i < categories.size(); i++) {
             e.appendChild(CategorySerializer.getElementFromCategory(categories.get(i), d, i));

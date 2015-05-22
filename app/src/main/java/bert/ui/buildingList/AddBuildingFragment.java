@@ -1,7 +1,6 @@
 package bert.ui.buildingList;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.Editable;
@@ -122,7 +121,7 @@ public class AddBuildingFragment extends Fragment {
             FileProvider.saveProject(project);
             BuildingListActivity activity = (BuildingListActivity) getActivity();
             activity.loadListView();
-            activity.openBuildingDetailView(project.getBuildings().size() - 1);
+            activity.openBuildingDetailView(project.highestBuildingIndex());
         } catch(DuplicateBuildingInProjectException e) {
             BertAlert.show(getActivity(), "This Building Already Exists");
         }

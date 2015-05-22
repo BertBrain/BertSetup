@@ -1,8 +1,10 @@
 package bert.data.proj;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.proj.exceptions.DuplicateBuildingInProjectException;
 import bert.data.proj.exceptions.InvalidProjectNameException;
@@ -19,14 +21,14 @@ public class Project {
 	private String creationDate;
 	private String modifiedDate;
 	private List<BertUnit> bertList;
-    private List<Building> buildings;
+    private HashMap<Integer, Building> buildings;
 	
 	public Project(String name) throws InvalidProjectNameException {
 		setProjectName(name);
 	    this.creationDate = DateUtil.getDate();
 	    this.modifiedDate = creationDate;
         bertList = new ArrayList<>();
-        buildings = new ArrayList<>();
+        buildings = new HashMap<>();
 	}
 
     public List<String> getLocationNamesInBuilding(int building) {
@@ -40,10 +42,20 @@ public class Project {
         return locationNames;
     }
 
-    public List<String> getBuildingNames() {
-        List<String> buildingNames = new ArrayList<>();
-        for (Building b : buildings) {
-            buildingNames.add(b.getName());
+    public int highestBuildingIndex(){
+        int maxIndex = 0;
+        for (Integer i : buildings.keySet()){
+            if (i > maxIndex){
+                maxIndex = i;
+            }
+        }
+        return  maxIndex;
+    }
+
+    public HashMap<Integer, String> getBuildingNames() {
+        HashMap<Integer, String> buildingNames = new HashMap<>();
+        for (Integer i : buildings.keySet()) {
+            buildingNames.put(i, buildings.get(i).getName());
         }
         return buildingNames;
     }
@@ -100,11 +112,18 @@ public class Project {
     }
 
     public void addBuilding(Building building) throws DuplicateBuildingInProjectException {
-        if (getBuildingNames().contains(building.getName())) {
+        if (getBuildingNames().values().contains(building.getName())) {
             throw new DuplicateBuildingInProjectException();
         } else {
-            buildings.add(building);
+            buildings.put(highestBuildingIndex()+1, building);
         }
+    }
+    public void deleteBuilding(int ID){
+        for (BertUnit b : getBertsByBuilding(ID)){
+            b.deleteBert();
+        }
+        buildings.remove(ID);
+        FileProvider.saveProject(this);
     }
 
     //Getters and setters
@@ -172,11 +191,29 @@ public class Project {
         this.bertList = newBertList;
     }
 
-    public List<Building> getBuildings() {
+    public HashMap<Integer, Building> getBuildings() {
         return this.buildings;
     }
 
-    public void setBuildings(List<Building> newBuildings) {
+    public List<Integer> getOrderedBuildingKeys(){
+        List<Integer> keys = new ArrayList<>();
+        for (int i = 0; i<highestBuildingIndex()+1; i++){
+            if (buildings.keySet().contains(i)){
+                keys.add(i);
+            }
+        }
+        return keys;
+    }
+
+    public List<String> getOrderedBuildingNames(){
+        List<String> names = new ArrayList<>();
+        for (Integer i : getOrderedBuildingKeys()){
+            names.add(buildings.get(i).getName());
+        }
+        return names;
+    }
+
+    public void setBuildings(HashMap<Integer, Building> newBuildings) {
         this.buildings = newBuildings;
     }
 }

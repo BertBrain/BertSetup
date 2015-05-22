@@ -12,6 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import bert.data.ProjectProvider;
 import bert.data.proj.Project;
 import bert.ui.NoSelectionFragment;
@@ -49,7 +55,8 @@ public class BuildingListActivity extends ActionBarActivity {
         buildingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openBuildingDetailView(position);
+                int index = project.getOrderedBuildingKeys().get(position);
+                openBuildingDetailView(index);
             }
         });
     }
@@ -77,12 +84,12 @@ public class BuildingListActivity extends ActionBarActivity {
     }
 
     public void loadListView() {
-        buildingListViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getBuildingNames());
+        buildingListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getOrderedBuildingNames());
         buildingListView.setAdapter(buildingListViewAdapter);
         Log.d("BuildingListActivity", "Loaded: " + project.getBuildingNames().size() + " buildings");
     }
 
-    private void loadFragment(Fragment frag) {
+    public void loadFragment(Fragment frag) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame_layout, frag);
         fragmentTransaction.addToBackStack(null);

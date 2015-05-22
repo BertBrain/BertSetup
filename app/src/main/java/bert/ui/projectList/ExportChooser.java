@@ -57,6 +57,8 @@ public class ExportChooser {
 
     private void saveToSD(File file)
     {
+        //posible TODO: let user choose file path
+        //currently just pressing this generates csv that is automatically stored on device
         System.out.println("saving file to SD");
     }
 }
