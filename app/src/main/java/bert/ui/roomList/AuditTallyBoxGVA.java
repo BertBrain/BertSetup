@@ -27,9 +27,9 @@ public class AuditTallyBoxGVA extends ArrayAdapter<Category> {
     private RoomListActivity activity;
     private AuditWizardFragment parent;
     private int projectID;
-    private int buildingID;
+    private String buildingID;
 
-    public AuditTallyBoxGVA(AuditWizardFragment parent, RoomListActivity activity, int recourseId, List<Category> deviceTypes, int projectID, int buildingID) {
+    public AuditTallyBoxGVA(AuditWizardFragment parent, RoomListActivity activity, int recourseId, List<Category> deviceTypes, int projectID, String buildingID) {
         super(activity, recourseId, deviceTypes);
         this.parent = parent;
         this.deviceTypes = deviceTypes;

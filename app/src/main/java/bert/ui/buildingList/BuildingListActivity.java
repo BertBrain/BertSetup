@@ -60,8 +60,7 @@ public class BuildingListActivity extends ActionBarActivity {
         buildingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int index = project.getOrderedBuildingKeys().get(position);
-                openBuildingDetailView(index);
+                openBuildingDetailView(buildingListViewAdapter.getItem(position));
             }
         });
 
@@ -81,12 +80,12 @@ public class BuildingListActivity extends ActionBarActivity {
         loadFragment(AddBuildingFragment.newInstance(projectID));
     }
 
-    protected void openBuildingDetailView(int buildingID) {
+    protected void openBuildingDetailView(String buildingID) {
         loadFragment(BuildingDetailFragment.newInstance(projectID, buildingID));
     }
 
     public void loadListView() {
-        buildingListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getOrderedBuildingNames());
+        buildingListViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getBuildingNames());
         buildingListView.setAdapter(buildingListViewAdapter);
         Log.d("BuildingListActivity", "Loaded: " + project.getBuildingNames().size() + " buildings");
     }

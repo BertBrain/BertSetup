@@ -30,7 +30,7 @@ public class DeviceDetailEditFragment extends Fragment {
     private static final String ARG_LOCATION_ID = "LOCATION";
 
     private int projectID;
-    private int buildingID;
+    private String buildingID;
     private int bertID;
     private String location;
 
@@ -49,11 +49,11 @@ public class DeviceDetailEditFragment extends Fragment {
     private Button deleteButton;
     private Button saveButton;
 
-    public static DeviceDetailEditFragment newInstance(int projectID, int buildingID, String location, int bertID) {
+    public static DeviceDetailEditFragment newInstance(int projectID, String buildingID, String location, int bertID) {
         DeviceDetailEditFragment fragment = new DeviceDetailEditFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT_ID, projectID);
-        args.putInt(ARG_BUILDING_ID, buildingID);
+        args.putString(ARG_BUILDING_ID, buildingID);
         args.putString(ARG_LOCATION_ID, location);
         args.putInt(ARG_BERT_ID, bertID);
         fragment.setArguments(args);
@@ -65,7 +65,7 @@ public class DeviceDetailEditFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
-            buildingID = getArguments().getInt(ARG_BUILDING_ID);
+            buildingID = getArguments().getString(ARG_BUILDING_ID);
             location = getArguments().getString(ARG_LOCATION_ID);
             bertID = getArguments().getInt(ARG_BERT_ID);
 

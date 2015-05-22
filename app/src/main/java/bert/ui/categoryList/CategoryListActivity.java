@@ -21,7 +21,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     public static final String ARG_BUILDING_ID = "Building_ID";
 
     private int projectID;
-    private int buildingID;
+    private String buildingID;
     private Project project;
 
     private Button addCategoryButton;
@@ -35,7 +35,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
 
         projectID = getIntent().getExtras().getInt(ARG_PROJECT_ID);
         project = ProjectProvider.getInstance().getProject(projectID);
-        buildingID = getIntent().getExtras().getInt(ARG_BUILDING_ID);
+        buildingID = getIntent().getExtras().getString(ARG_BUILDING_ID);
 
         addCategoryButton = (Button) findViewById(R.id.create_list_item_button);
         addCategoryButton.setText("Add Category");

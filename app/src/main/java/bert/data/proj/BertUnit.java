@@ -11,10 +11,10 @@ public class BertUnit {
 	private String location;
 	private String MAC;
 	private int categoryID;
-	private int buildingID;
+	private String buildingID;
 	private boolean deleted;
 	
-	public BertUnit(String name, String location, String MAC, int buildingID, int categoryID, boolean deleted) {
+	public BertUnit(String name, String location, String MAC, String buildingID, int categoryID, boolean deleted) {
 		this.name = name;
 		this.location = location;
 		this.MAC = MAC;
@@ -42,11 +42,11 @@ public class BertUnit {
 		return location;
 	}
 
-	public int getBuildingID() {
+	public String getBuildingID() {
 		return buildingID;
 	}
 
-	public void setBuildingID(int newBuildingID) {
+	public void setBuildingID(String newBuildingID) {
 		this.buildingID = newBuildingID;
 	}
 	

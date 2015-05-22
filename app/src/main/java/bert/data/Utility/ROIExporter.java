@@ -27,7 +27,7 @@ public class ROIExporter {
         rows.add(Arrays.asList("Bert ROI Sheet For: ", project.getProjectName()));
         rows.add(Arrays.asList(""));
 
-        for (int buildingID = 0; buildingID < project.getBuildingCount(); buildingID++) {
+        for (String buildingID : project.getBuildingNames()) {
             Log.d("ROI_EXPORT", "adding building");
             Building building = project.getBuilding(buildingID);
             List<String> firstLine = new ArrayList<>();

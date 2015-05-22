@@ -20,18 +20,13 @@ import bert.data.proj.Project;
 import bert.data.utility.Cleaner;
 import bert.ui.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DeviceDetailAddFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DeviceDetailAddFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
     private static final String ARG_LOCATION = "location";
 
     private int projectID;
-    private int buildingID;
+    private String buildingID;
 
     private RoomListActivity activity;
     private Project project;
@@ -45,11 +40,11 @@ public class DeviceDetailAddFragment extends Fragment {
     private EditText macAddressEditText;
     private Spinner categorySpinner;
 
-    public static DeviceDetailAddFragment newInstance(int projectID, int buildingID, String location) {
+    public static DeviceDetailAddFragment newInstance(int projectID, String buildingID, String location) {
         DeviceDetailAddFragment fragment = new DeviceDetailAddFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT_ID, projectID);
-        args.putInt(ARG_BUILDING_ID, buildingID);
+        args.putString(ARG_BUILDING_ID, buildingID);
         args.putString(ARG_LOCATION, location);
         fragment.setArguments(args);
         return fragment;
@@ -61,7 +56,7 @@ public class DeviceDetailAddFragment extends Fragment {
         activity = (RoomListActivity)getActivity();
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
-            buildingID = getArguments().getInt(ARG_BUILDING_ID);
+            buildingID = getArguments().getString(ARG_BUILDING_ID);
             location = getArguments().getString(ARG_LOCATION);
 
             project = ProjectProvider.getInstance().getProject(projectID);

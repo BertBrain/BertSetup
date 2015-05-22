@@ -19,7 +19,7 @@ public class BertUnitSerializer {
         String name = e.getAttribute(ATTR_NAME);
         String location = e.getAttribute(ATTR_LOCATION);
         String MAC = e.getAttribute(ATTR_MAC);
-        int buildingID = Integer.parseInt(e.getAttribute(ATTR_BUILDING_ID));
+        String buildingID = e.getAttribute(ATTR_BUILDING_ID);
         int categoryID = Integer.parseInt(e.getAttribute(ATTR_CATEGORY_ID));
         boolean deleted = Boolean.parseBoolean(e.getAttribute(ATTR_DELETED));
         BertUnit b = new BertUnit(name, location, MAC, buildingID, categoryID, deleted);
@@ -31,7 +31,7 @@ public class BertUnitSerializer {
         e.setAttribute(ATTR_NAME, b.getName());
         e.setAttribute(ATTR_LOCATION, b.getLocation());
         e.setAttribute(ATTR_MAC, b.getMAC());
-        e.setAttribute(ATTR_BUILDING_ID, String.valueOf(b.getBuildingID()));
+        e.setAttribute(ATTR_BUILDING_ID, b.getBuildingID());
         e.setAttribute(ATTR_CATEGORY_ID, String.valueOf(b.getCategoryID()));
         e.setAttribute(ATTR_DELETED, Boolean.toString(b.isDeleted()));
         return e;

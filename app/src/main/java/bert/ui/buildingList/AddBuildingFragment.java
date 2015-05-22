@@ -115,7 +115,7 @@ public class AddBuildingFragment extends Fragment {
             project.save();
             BuildingListActivity activity = (BuildingListActivity) getActivity();
             activity.loadListView();
-            activity.openBuildingDetailView(project.highestBuildingIndex());
+            activity.openBuildingDetailView(building.getName());
         } catch(DuplicateBuildingInProjectException e) {
             BertAlert.show(getActivity(), "This Building Already Exists");
         }
