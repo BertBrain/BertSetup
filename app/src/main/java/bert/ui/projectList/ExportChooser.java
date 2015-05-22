@@ -22,7 +22,7 @@ public class ExportChooser {
         this.activity = activity;
     }
 
-    public void exportFile(String name, final File dataToSend) {
+    public void exportFile(final String name, final File dataToSend) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Exporting " + name);
         builder.setItems(exportOptions, new DialogInterface.OnClickListener() {
@@ -30,7 +30,7 @@ public class ExportChooser {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case 0:
-                        email(dataToSend);
+                        email(name + " export", dataToSend);
                         break;
                     case 1:
                         saveToSD(dataToSend);
@@ -44,12 +44,12 @@ public class ExportChooser {
         builder.create().show();
     }
 
-    private void email(File file){
+    private void email(String title, File file){
         System.out.println("emailing file");
         file.setReadable(true, false);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("message/rfc822");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Bert Setup Export");
+        intent.putExtra(Intent.EXTRA_SUBJECT, title);
         Log.d("EMAIL_SENDER", Uri.fromFile(file).toString());
         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
         activity.startActivity(Intent.createChooser(intent, "Choose Export Method"));

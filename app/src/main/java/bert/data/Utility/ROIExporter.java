@@ -20,6 +20,8 @@ import bert.data.proj.Project;
 public class ROIExporter {
     public static File generateROI(Project project) throws IOException {
 
+        ArrayList<Integer> totalRows = new ArrayList();
+
         ArrayList<List<String>> rows = new ArrayList<>();
 
         rows.add(Arrays.asList("Bert ROI Sheet For: ", project.getProjectName()));
@@ -41,7 +43,7 @@ public class ROIExporter {
                 Log.d("ROI_EXPORT", "adding category");
                 Category category = building.getCategory(categoryID);
                 if (project.getBertsByCategory(buildingID, categoryID).size() != 0){
-                    numCategories++;
+
                     List<String> info = new ArrayList<>();
 
                     info.add(category.getName());
@@ -51,11 +53,12 @@ public class ROIExporter {
                     info.add(load > 0 ? String.valueOf(load) : "Undefined Load");
                     info.add("=365*24*"+ getCell("B") +"*" + getCell("D")+ "/1000");
                     info.add("=365*"+ getCell("C") + "*" + getCell("B") + " * " + getCell("D") + "/1000");
-                    info.add("=" + getCell("E") + "*" + getCell("E", -2 -categoryID));
-                    info.add("=" + getCell("F") + "*" + getCell("E", -2 -categoryID));
+                    info.add("=" + getCell("E") + "*" + getCell("E", -2 -numCategories));
+                    info.add("=" + getCell("F") + "*" + getCell("E", -2 -numCategories));
                     info.add("=" + getCell("G") + "-" + getCell("H"));
-                    info.add("=" + getCell("B") + "*" + getCell("C", -categoryID - 2) + "/ " + getCell("I"));
+                    info.add("=" + getCell("B") + "*" + getCell("C", -numCategories - 2) + "/ " + getCell("I"));
                     rows.add(info);
+                    numCategories++;
                 }
             }
 
@@ -72,8 +75,24 @@ public class ROIExporter {
             totals.add("=" + getCell("B") + "*" + getCell("C", -numCategories - 2) + "/ " + getCell("I"));
             rows.add(totals);
             rows.add(Arrays.asList(""));
+            totalRows.add(rows.size() - 1);
         }
+        rows.add(Arrays.asList(""));
+        rows.add(Arrays.asList("", "Total # Of Devices", "", "", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "$ Savings/Year", "Payback Time (Years)"));
 
+        List<String> projectTotals = new ArrayList<>();
+        projectTotals.add("Project Totals: ");
+        projectTotals.add(sumRowsAndColumn(totalRows, "B"));
+        projectTotals.add("");
+        projectTotals.add("");
+        projectTotals.add(sumRowsAndColumn(totalRows, "E"));
+        projectTotals.add(sumRowsAndColumn(totalRows, "F"));
+        projectTotals.add(sumRowsAndColumn(totalRows, "G"));
+        projectTotals.add(sumRowsAndColumn(totalRows, "H"));
+        projectTotals.add(sumRowsAndColumn(totalRows, "I"));
+        projectTotals.add("=" + getCell("B") + "*" + "C4" + "/ " + getCell("I"));
+
+        rows.add(projectTotals);
         String ROIString = "";
         for (List<String> row : rows){
             for (String str: row){
@@ -111,5 +130,16 @@ public class ROIExporter {
         equasion += ", \"\":\"\", CHAR(COLUMN() + 64), ROW()-1)))";
 
         return equasion;
+    }
+
+    private static String sumRowsAndColumn(List<Integer> rows, String column){
+        String totalBerts = "=SUM(";
+        for (Integer i : rows) {
+            totalBerts += column;
+            totalBerts += i;
+            totalBerts += ", ";
+        }
+        totalBerts += ")";
+        return totalBerts;
     }
 }

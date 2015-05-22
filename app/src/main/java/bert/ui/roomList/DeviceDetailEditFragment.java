@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
@@ -128,6 +127,9 @@ public class DeviceDetailEditFragment extends Fragment {
         buildingTextField.setText(building.getName());
 
         macAddressTextField.setText(bert.getMAC());
+        if (bert.getMAC().length() == 0){
+            macAddressTextField.requestFocus();
+        }
         macAddressTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
