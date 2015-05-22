@@ -49,5 +49,6 @@ public class Category {
 		this.estimatedLoad = newEstimatedLoad;
 	}
 
-	public static List<String> bertTypes = Arrays.asList("To Be Determined", "Smart Plug 15 Amp", "Smart Plug 20 Amp", "Inline");
+	public static List<String> bertTypes = Arrays.asList("Undecided", "Smart Plug 15 Amp", "Smart Plug 20 Amp", "Inline");
+    public static List<Integer> bertTypeCosts = Arrays.asList(0, 80, 85, 100);
 }
