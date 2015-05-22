@@ -81,7 +81,7 @@ public class AuditWizardFragment extends Fragment {
         super.onResume();
         project = ProjectProvider.getInstance().getProject(projectID);
 
-        tallyGridAdapter = new AuditTallyBoxGVA(this, activity, android.R.layout.simple_gallery_item, project.getBuildings().get(buildingID).getCategories(), projectID, buildingID);
+        tallyGridAdapter = new AuditTallyBoxGVA(this, activity, android.R.layout.simple_gallery_item, project.getBuilding(buildingID).getCategories(), projectID, buildingID);
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(tallyGridAdapter);
 
@@ -170,10 +170,10 @@ public class AuditWizardFragment extends Fragment {
             HashMap<Category, Integer> categoryCounts = tallyGridAdapter.getCounts();
             List<BertUnit> bertList = new ArrayList<>();
             int categoryCount = 0;
-            for (Category category : project.getBuildings().get(buildingID).getCategories()) {
+            for (Category category : project.getBuilding(buildingID).getCategories()) {
                 if (categoryCounts.get(category) != null) {
                     for (int i = 0; i < categoryCounts.get(category); i++) {
-                        String countString = i == 0 ? "" : String.valueOf(i+1);
+                        String countString = i == 0 ? "" : String.valueOf(i + 1);
                         String name = location + " - " + category.getName() + " " + countString;
                         BertUnit bert = new BertUnit(name, location, "", buildingID, categoryCount, false);
                         bertList.add(bert);
@@ -184,7 +184,7 @@ public class AuditWizardFragment extends Fragment {
             project.addBerts(bertList);
             activity.onResume(); //Refresh view
             activity.openDeviceListFragment(bertList.get(0).getLocation());
-            FileProvider.saveProject(project);
+            project.save();
         } else {
             openNoRoomNamePopup();
         }

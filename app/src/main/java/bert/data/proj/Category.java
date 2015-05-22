@@ -1,9 +1,5 @@
 package bert.data.proj;
 
-import org.w3c.dom.Element;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +12,6 @@ public class Category {
 	private int estimatedLoad;
 	
 	/**
-	 *
 	 * @param name Name of device
 	 * @param bertTypeID
 	 * @param estimatedLoad in watts

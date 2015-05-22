@@ -4,8 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -82,22 +80,25 @@ public class RoomListActivity extends ActionBarActivity {
                 }
             });
         }
-        this.setTitle(project.getProjectName() + " " + project.getBuildings().get(buildingID).getName() + " Building " + " (" + roomNames.size() + " Rooms)");
+        setDefaultTitle();
     }
 
     public void openAuditWizardFragment() {
         AuditWizardFragment fragment = AuditWizardFragment.newInstance(projectID, buildingID);
         AuditTallyBoxGVA.resetCounts();
         loadFragment(fragment);
+        setTitle("Audit a new Room");
     }
 
     public void openDeviceListFragment(String locationName) {
         deviceListFragment = DeviceListFragment.newInstance(projectID, buildingID, locationName);
         loadFragment(deviceListFragment);
+        setTitle("Room " + locationName + " (" + project.getBertsByLocation(buildingID, locationName).size() + " Berts)");
     }
 
     public void openNoSelectionView(String message) {
         loadFragment(NoSelectionFragment.newInstance(message));
+        setDefaultTitle();
     }
 
     private void loadFragment(Fragment frag) {
@@ -105,5 +106,12 @@ public class RoomListActivity extends ActionBarActivity {
         fragmentTransaction.replace(R.id.fragment_frame_layout, frag);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    private void setDefaultTitle() {
+        int rooms = project.getLocationNamesInBuilding(buildingID).size();
+        String roomName = (rooms == 1) ? " Room)" : " Rooms)";
+        this.setTitle(project.getProjectName() + " " + project.getBuilding(buildingID).getName() + " (" + rooms + roomName);
+
     }
 }

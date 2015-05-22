@@ -158,11 +158,6 @@
             android:text="Export a Configurator CSV"
             android:id="@+id/exportToBertConfiguratorButton" />
 
-        <Button
-            style="@style/DeleteButton"
-            android:text="Delete Project"
-            android:id="@+id/deleteProjectButton" />
-
     </LinearLayout>
 
 </FrameLayout>

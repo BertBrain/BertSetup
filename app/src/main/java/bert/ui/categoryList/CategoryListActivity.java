@@ -5,8 +5,6 @@ import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -52,7 +50,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     }
 
     public void createCategoryListView() {
-        categoryListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getBuildings().get(buildingID).getCategoryNames());
+        categoryListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getBuilding(buildingID).getCategoryNames());
         categoryListView = (ListView) findViewById(R.id.item_list_view);
         categoryListView.setAdapter(categoryListViewAdapter);
         categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -66,7 +64,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     @Override
     public void onResume() {
         super.onResume();
-        this.setTitle(project.getBuildings().get(buildingID).getCategories().size() + " Categories");
+        this.setTitle(project.getBuilding(buildingID).getCategoryCount() + " Categories");
     }
 
     private void openCategoryDetailFragment(int index) {
@@ -89,7 +87,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
 
     @Override
     public void categoryCreationCanceled() {
-        if (project.getBuildings().get(buildingID).getCategories().size() > 0) {
+        if (project.getBuilding(buildingID).getCategoryCount() > 0) {
             openCategoryDetailFragment(0);
         }
     }
@@ -97,6 +95,6 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     @Override
     public void categoryCreationSuccessful() {
         createCategoryListView();
-        openCategoryDetailFragment(project.getBuildings().get(buildingID).getCategories().size() - 1);
+        openCategoryDetailFragment(project.getBuilding(buildingID).getCategoryCount() - 1);
     }
 }

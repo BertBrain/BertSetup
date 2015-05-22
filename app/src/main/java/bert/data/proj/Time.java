@@ -2,82 +2,57 @@ package bert.data.proj;
 
 /**
  * Created by liamcook on 5/13/15.
+ * @author lcook
+ * @author afiolmahon
  */
 public class Time {
 
-    //TODO convert to use 1 integer internally
-    private int hour;
-    public int minute;
-    public boolean isAM;
+    private int rawTime;
 
     public Time(int hour, int minute) {
-        isAM = hour < 13;
-        this.hour = isAM ? hour : hour - 12;
-        this.minute = minute;
+        set(hour, minute);
     }
 
-    public static void main(String[] args) {
-        Time t = new Time(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
-        int i = t.getMinutes();
-        Time t2 = new Time(i);
-        System.out.println(t2.description());
+    public int getHour24() {
+        return rawTime / 60;
     }
 
-    public Time subtract(Time time){
-        int minuteDifference = this.getMinutes() - time.getMinutes();
+    public int getMinute() {
+        return rawTime % 60;
+    }
+
+    public Time subtract(Time time) {
+        int minuteDifference = this.getRaw() - time.getRaw();
         return new Time(minuteDifference);
     }
 
-    public Time(int minutes) {
-        if (minutes >= 720) {
-            this.isAM = false;
-            minutes -= 720;
-        } else {
-            this.isAM = true;
-        }
-
-        this.hour = minutes / 60;
-        this.minute = minutes % 60;
+    public Time(int rawTime) {
+        this.rawTime = rawTime;
     }
 
-    public int getMinutes() {
-        int minutes = (isAM) ? 0 : 720;
-        minutes += (hour * 60);
-        minutes += minute;
-        return minutes;
+    public int getRaw() {
+        return this.rawTime;
     }
 
     public void set(int hour, int minute) {
-        isAM = hour < 13;
-        this.hour = isAM ? hour : hour - 12;
-        this.minute = minute;
-    }
-
-    public int hour24() {
-        return hour + (isAM ? 0 : 12);
-    }
-
-    public int hour12() {
-        return hour;
+        rawTime = (hour * 60);
+        rawTime += minute;
     }
 
     public String description() {
-        return hour + " : " + (minute < 10 ? "0" + minute : minute) + (isAM ? "  AM" : "  PM");
+        boolean isPM = (getHour24() > 12);
+        String hourDisplay = Integer.toString(getHour24() - (isPM ? 12 : 0));
+        if (hourDisplay.length() < 2) {
+            hourDisplay = "0" + hourDisplay;
+        }
+        String minuteDisplay = Integer.toString(getMinute());
+        if (minuteDisplay.length() < 2) {
+            minuteDisplay = "0" + minuteDisplay;
+        }
+        return hourDisplay + " : "  + minuteDisplay + ((isPM) ? " PM" : " AM");
     }
 
     public boolean greaterThan(Time time) {
-        System.out.println("this time: " + this.hour24());
-        System.out.println("time time: " + time.hour24());
-        if (this.hour24() > time.hour24()) {
-            return true;
-        }
-        if (this.hour24() == time.hour24()) {
-            return this.minute > time.minute;
-        }
-        if (this.hour24() < time.hour24()) {
-            return false;
-        }
-        return false;
+        return this.getRaw() > time.getRaw();
     }
-
 }

@@ -3,6 +3,7 @@ package bert.ui.buildingList;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -32,8 +33,8 @@ public class TimeRangeDisplay implements TimePickerDialog.OnTimeSetListener {
         this.startTime = nStartTime;
         this.endTime = nEndTime;
 
-        startTimeDisplay.setText(startTime.description());
-        startTimeDisplay.setOnClickListener(new View.OnClickListener() {
+        this.startTimeDisplay.setText(startTime.description());
+        this.startTimeDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("clicked start time display");
@@ -41,13 +42,12 @@ public class TimeRangeDisplay implements TimePickerDialog.OnTimeSetListener {
             }
         });
 
-        endTimeDisplay.setText(endTime.description());
-        endTimeDisplay.setOnClickListener(new View.OnClickListener() {
+        this.endTimeDisplay.setText(endTime.description());
+        this.endTimeDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("clicked end time display");
                 launchTimePicker((TextView)v, endTime);
-
             }
         });
     }
@@ -55,18 +55,16 @@ public class TimeRangeDisplay implements TimePickerDialog.OnTimeSetListener {
     private void launchTimePicker(TextView v, Time initialTime) {
         activeTimeDisplay = v;
         activeTime = initialTime;
-
-        (new TimePickerDialog(activity, this, initialTime.hour24(), initialTime.minute, false)).show();
+        (new TimePickerDialog(activity, this, initialTime.getHour24(), initialTime.getMinute(), false)).show();
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        System.out.println(hourOfDay);
         activeTime.set(hourOfDay, minute); //activetime = new Time() disconnets active time from the start time or end time
         if (endTime.greaterThan(startTime)) {
             activeTimeDisplay.setText(activeTime.description());
         } else {
-            System.out.println("starting end/start time alert");
+            log("starting end/start time alert");
             BertAlert.show(activity, "End time cannot be before start time", "OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -78,4 +76,8 @@ public class TimeRangeDisplay implements TimePickerDialog.OnTimeSetListener {
 
     public Time getStartTime() { return  startTime; }
     public Time getEndTime() {return  endTime; }
+
+    private void log(String message) {
+        Log.d("TimeRangeDisplay", message);
+    }
 }

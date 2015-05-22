@@ -50,8 +50,8 @@ public class BuildingSerializer {
     public static Element getElementFromBuilding(Building b, Document d, int index) {
         Element e = d.createElement(TAG_BUILDING);
         e.setAttribute(ATTR_NAME, b.getName());
-        e.setAttribute(ATTR_START_TIME, Integer.toString(b.getStartTime().getMinutes()));
-        e.setAttribute(ATTR_END_TIME, Integer.toString(b.getEndTime().getMinutes()));
+        e.setAttribute(ATTR_START_TIME, Integer.toString(b.getStartTime().getRaw()));
+        e.setAttribute(ATTR_END_TIME, Integer.toString(b.getEndTime().getRaw()));
 
 
         List<Category> categories = b.getCategories();

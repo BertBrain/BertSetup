@@ -17,18 +17,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
 import bert.ui.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DeviceDetailEditFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DeviceDetailEditFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
@@ -38,12 +32,14 @@ public class DeviceDetailEditFragment extends Fragment {
     private int projectID;
     private int buildingID;
     private int bertID;
+    private String location;
 
     private RoomListActivity activity;
     private Project project;
     private Building building;
-    private String location;
     private BertUnit bert;
+
+    private ArrayAdapter<String> categoryAdapter;
 
     private EditText deviceNameTextField;
     private EditText macAddressTextField;
@@ -74,7 +70,7 @@ public class DeviceDetailEditFragment extends Fragment {
             bertID = getArguments().getInt(ARG_BERT_ID);
 
             project = ProjectProvider.getInstance().getProject(projectID);
-            building = project.getBuildings().get(buildingID);
+            building = project.getBuilding(buildingID);
             bert = project.getBertsByLocation(buildingID, location).get(bertID);
             activity = (RoomListActivity)getActivity();
         }
@@ -111,7 +107,7 @@ public class DeviceDetailEditFragment extends Fragment {
                         bert.deleteBert();
                         activity.onResume();
                         activity.openDeviceListFragment(location);
-                        FileProvider.saveProject(project);
+                        project.save();
                     }
                 });
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -123,8 +119,8 @@ public class DeviceDetailEditFragment extends Fragment {
             }
         });
 
-        ArrayAdapter<String> categoryTableAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, building.getCategoryNames());
-        categorySelector.setAdapter(categoryTableAdapter);
+        categoryAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, building.getCategoryNames());
+        categorySelector.setAdapter(categoryAdapter);
 
         roomTextField.setText(location);
 
@@ -160,7 +156,7 @@ public class DeviceDetailEditFragment extends Fragment {
         bert.setMAC(macAddressTextField.getText().toString());
         bert.setName(deviceNameTextField.getText().toString());
         bert.setCategoryID(categorySelector.getSelectedItemPosition());
-        FileProvider.saveProject(project);
+        project.save();
         activity.deviceListFragment.onResume();
         onResume();
     }

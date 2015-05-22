@@ -28,12 +28,6 @@ import bert.data.utility.Cleaner;
 import bert.ui.BertAlert;
 import bert.ui.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * Use the {@link AddBuildingFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddBuildingFragment extends Fragment {
 
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
@@ -118,7 +112,7 @@ public class AddBuildingFragment extends Fragment {
             List<Category> presetCategories = CategoryPresets.getPresets().get(buildingTypeSpinner.getSelectedItem());
             Building building = new Building(newName, startTime, endTime, presetCategories);
             project.addBuilding(building);
-            FileProvider.saveProject(project);
+            project.save();
             BuildingListActivity activity = (BuildingListActivity) getActivity();
             activity.loadListView();
             activity.openBuildingDetailView(project.highestBuildingIndex());
@@ -129,7 +123,6 @@ public class AddBuildingFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_building_add, container, false);
     }
 

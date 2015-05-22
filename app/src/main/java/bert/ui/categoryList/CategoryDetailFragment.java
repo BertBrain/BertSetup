@@ -66,7 +66,7 @@ public class CategoryDetailFragment extends Fragment {
             categoryID = getArguments().getInt(ARG_CATEGORY_ID);
             buildingID = getArguments().getInt(ARG_BUILDING_ID);
             project = ProjectProvider.getInstance().getProject(projectID);
-            category = project.getBuildings().get(buildingID).getCategories().get(categoryID);
+            category = project.getBuilding(buildingID).getCategory(categoryID);
         }
         activity = (CategoryListActivity)getActivity();
     }
@@ -169,7 +169,7 @@ public class CategoryDetailFragment extends Fragment {
         }
 
         category.setBertTypeID(bertTypeSpinner.getSelectedItemPosition());
-        FileProvider.saveProject(project);
+        project.save();
         ((CategoryListActivity) getActivity()).createCategoryListView();
     }
 }

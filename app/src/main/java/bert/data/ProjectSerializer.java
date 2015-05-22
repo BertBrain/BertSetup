@@ -104,7 +104,7 @@ public class ProjectSerializer {
         Element buildingElementList = projectDoc.createElement(TAG_BUILDINGS);
         List<Integer> keys = p.getOrderedBuildingKeys();
         for (Integer i : keys) {
-            Building b = p.getBuildings().get(i);
+            Building b = p.getBuilding(i);
             Element buildingElement = BuildingSerializer.getElementFromBuilding(b, projectDoc, i);
             buildingElementList.appendChild(buildingElement);
         }

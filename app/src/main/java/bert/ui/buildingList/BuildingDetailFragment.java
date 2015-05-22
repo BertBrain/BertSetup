@@ -28,6 +28,7 @@ import bert.ui.categoryList.CategoryListActivity;
 import bert.ui.roomList.RoomListActivity;
 
 public class BuildingDetailFragment extends Fragment {
+
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
 
@@ -65,14 +66,8 @@ public class BuildingDetailFragment extends Fragment {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
             buildingID = getArguments().getInt(ARG_BUILDING_ID);
             project = ProjectProvider.getInstance().getProject(projectID);
-            building = project.getBuildings().get(buildingID);
-            Log.d("Building List Activity", String.valueOf(buildingID));
+            building = project.getBuilding(buildingID);
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_building_detail, container, false);
     }
 
     @Override
@@ -81,7 +76,7 @@ public class BuildingDetailFragment extends Fragment {
         startTimeDisplay = (TextView) getView().findViewById(R.id.openingTimeTextView);
 
         endTimeDisplay = (TextView) getView().findViewById(R.id.closingTimeTextView);
-        timeDisplay = new TimeRangeDisplay(getActivity(), startTimeDisplay, building.startTime, endTimeDisplay, building.endTime);
+        timeDisplay = new TimeRangeDisplay(getActivity(), startTimeDisplay, building.getStartTime(), endTimeDisplay, building.getEndTime());
 
         bertCountTextView = (TextView) getView().findViewById(R.id.bertCountTextView);
         bertCountTextView.setText(Integer.toString(project.getBertsByBuilding(buildingID).size()));
@@ -95,7 +90,7 @@ public class BuildingDetailFragment extends Fragment {
                 boolean nameNotTaken = !project.getBuildingNames().values().contains(nameEditText.getText().toString());
                 if (validName && nameNotTaken) {
                     building.setName(nameEditText.getText().toString());
-                    FileProvider.saveProject(project);
+                    project.save();
                     ((BuildingListActivity) getActivity()).loadListView();
                 } else {
                     nameEditText.setText(building.getName());
@@ -107,7 +102,7 @@ public class BuildingDetailFragment extends Fragment {
         });
 
         categoryButton = (Button) getView().findViewById(R.id.categoryListButton);
-        categoryButton.setText("View Categories (" + project.getBuildings().get(buildingID).getCategories().size() + ")");
+        categoryButton.setText("View Categories (" + project.getBuilding(buildingID).getCategoryCount() + ")");
         categoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +150,13 @@ public class BuildingDetailFragment extends Fragment {
         getActivity().startActivity(intent);
     }
 
+    public void openCategoryListActivity() {
+        Intent i = new Intent(this.getActivity(), CategoryListActivity.class);
+        i.putExtra(CategoryListActivity.ARG_PROJECT_ID, projectID);
+        i.putExtra(CategoryListActivity.ARG_BUILDING_ID, buildingID);
+        startActivity(i);
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -162,15 +164,12 @@ public class BuildingDetailFragment extends Fragment {
         building.setEndTime(timeDisplay.getEndTime());
     }
 
-    public void onButtonPressed(Uri uri) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_building_detail, container, false);
     }
 
-    public void openCategoryListActivity() {
-        Intent i = new Intent(this.getActivity(), CategoryListActivity.class);
-        i.putExtra(CategoryListActivity.ARG_PROJECT_ID, projectID);
-        i.putExtra(CategoryListActivity.ARG_BUILDING_ID, buildingID);
-        startActivity(i);
-    }
+    public void onButtonPressed(Uri uri) {}
 
     @Override
     public void onAttach(Activity activity) {
@@ -181,5 +180,4 @@ public class BuildingDetailFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-
 }
