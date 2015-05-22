@@ -26,9 +26,6 @@ import bert.ui.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DeviceDetailEditFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
  * Use the {@link DeviceDetailEditFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -134,6 +131,9 @@ public class DeviceDetailEditFragment extends Fragment {
         buildingTextField.setText(building.getName());
 
         macAddressTextField.setText(bert.getMAC());
+        if (bert.getMAC().length() == 0){
+            macAddressTextField.requestFocus();
+        }
         macAddressTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {

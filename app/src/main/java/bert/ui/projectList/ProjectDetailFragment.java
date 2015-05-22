@@ -147,7 +147,7 @@ public class ProjectDetailFragment extends Fragment {
                 File fileToShare;
                 try {
                     fileToShare = CSVExporter.generateCSV(currentProject);
-                    new ExportChooser(activity).exportFile("CSV to Bert Configurator", fileToShare);
+                    new ExportChooser(activity).exportFile("CSV for bert configurator", fileToShare);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.d("Project Detail Fragment", "Unable to generate Configurator CSV File");
@@ -162,7 +162,7 @@ public class ProjectDetailFragment extends Fragment {
             public void onClick(View v) {
                 try {
                     File fileToShare = ROIExporter.generateROI(currentProject);
-                    new ExportChooser(activity).exportFile("ROI SpreadSheet", fileToShare);
+                    new ExportChooser(activity).exportFile("ROI spreadsheet", fileToShare);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
