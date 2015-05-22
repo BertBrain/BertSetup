@@ -25,9 +25,9 @@ public class ROIExporter {
         rows.add(Arrays.asList("Bert ROI Sheet For: ", project.getProjectName()));
         rows.add(Arrays.asList(""));
 
-        for (int buildingID = 0; buildingID < project.getBuildings().size(); buildingID++) {
+        for (int buildingID = 0; buildingID < project.getBuildingCount(); buildingID++) {
             Log.d("ROI_EXPORT", "adding building");
-            Building building = project.getBuildings().get(buildingID);
+            Building building = project.getBuilding(buildingID);
             List<String> firstLine = new ArrayList<>();
             firstLine.add(building.getName());
             rows.add(firstLine);
@@ -36,17 +36,17 @@ public class ROIExporter {
             rows.add(Arrays.asList("Equipment", "Number Of Devices", "Daily Time On", "Wattage Draw", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "$ Savings/Year", "Payback Time (Years)"));
 
             int numCategories = 0;
-            for (int categoryID = 0; categoryID < building.getCategories().size(); categoryID++) {
+            for (int categoryID = 0; categoryID < building.getCategoryCount(); categoryID++) {
 
                 Log.d("ROI_EXPORT", "adding category");
-                Category category = building.getCategories().get(categoryID);
+                Category category = building.getCategory(categoryID);
                 if (project.getBertsByCategory(buildingID, categoryID).size() != 0){
                     numCategories++;
                     List<String> info = new ArrayList<>();
 
                     info.add(category.getName());
                     info.add(String.valueOf(project.getBertsByCategory(buildingID, categoryID).size()));
-                    info.add(String.valueOf(building.getTimeOccupied().hour24()));
+                    info.add(String.valueOf(building.getTimeOccupied().getHour24()));
                     int load = category.getEstimatedLoad();
                     info.add(load > 0 ? String.valueOf(load) : "Undefined Load");
                     info.add("=365*24*"+ getCell("B") +"*" + getCell("D")+ "/1000");

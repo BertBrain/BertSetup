@@ -1,9 +1,31 @@
 package bert.data.proj;
 
+import android.util.Log;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import bert.data.FileProvider;
 import bert.data.ProjectProvider;
+import bert.data.ProjectSerializer;
 import bert.data.proj.exceptions.DuplicateBuildingInProjectException;
 import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.utility.Cleaner;
@@ -172,11 +194,58 @@ public class Project {
         this.bertList = newBertList;
     }
 
-    public List<Building> getBuildings() {
-        return this.buildings;
+    public Building getBuilding(int buildingID) {
+        return buildings.get(buildingID);
+    }
+
+    public int getBuildingCount() {
+        return buildings.size();
     }
 
     public void setBuildings(List<Building> newBuildings) {
         this.buildings = newBuildings;
+    }
+
+    public String getFileName() {
+        return this.getProjectName() + ".xml";
+    }
+
+    public void save() {
+        Log.d("ProjectSaver", "Saving Project: " + getProjectName() + " to XML file");
+        Document d = ProjectSerializer.exportToXML(this);
+        try {
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            File outputFile = new File(FileProvider.getProjectDirectory(), this.getFileName());
+            Result result = new StreamResult(outputFile);
+            Source source = new DOMSource(d);
+            transformer.transform(source, result);
+        } catch(TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch(TransformerException e) {
+            e.printStackTrace();
+        } catch(IOException e) {
+            e.printStackTrace();//TODO should these be handled better?
+        }
+    }
+
+    public static Project loadProject(File file) {
+        Log.d("ProjectLoader", "Loading document: " + file.getName());
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document d = builder.parse(file);
+            return ProjectSerializer.getProjectFromDocument(d);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (SAXException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

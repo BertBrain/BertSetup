@@ -25,7 +25,7 @@ public class CSVExporter {
             writer.write(',');
             writer.write(b.getLocation());
             writer.write(';');
-            writer.write(project.getBuildings().get(b.getBuildingID()).getName());
+            writer.write(project.getBuilding(b.getBuildingID()).getName());
             writer.write('\n');
             Log.d("CSV EXPORT", "Exported Bert " + b.getName() + " to CSV File");
         }

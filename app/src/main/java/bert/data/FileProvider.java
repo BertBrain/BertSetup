@@ -10,8 +10,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -21,9 +19,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import bert.data.proj.Project;
 
 /**
  * @author afiol-mahon
@@ -32,6 +27,10 @@ public class FileProvider {
     public static final String EXPORT_DIR_NAME = "BertExports";
     public static final String PROJECT_DIR_NAME = "BertProjects";
 
+	/**
+	 * Will print the xml file to the console output. Useful for debugging quickly.
+	 * @param document
+	 */
 	public static void printDocument(Document document) {
 		try {
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -59,50 +58,6 @@ public class FileProvider {
 			return null;
 		}
 	}
-	
-	public static Project loadProject(File file) {
-        log("Loading document: " + file.getName());
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		Document document = null;
-		try {
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			document = builder.parse(file);
-            return ProjectSerializer.getProjectFromDocument(document);
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-            return null;
-		} catch (SAXException e) {
-			e.printStackTrace();
-            return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-            return null;
-		}
-	}
-
-    public static String getProjectFileName (Project p) {
-        return p.getProjectName() + ".xml";
-    }
-
-	public static void saveProject(Project project) {
-		log("Saving Project: " + project.getProjectName() + " to XML file");
-		Document d = ProjectSerializer.exportToXML(project);
-		try {
-			TransformerFactory factory = TransformerFactory.newInstance();
-			Transformer transformer = factory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            File outputFile = new File(getProjectDirectory(), getProjectFileName(project));
-			Result result = new StreamResult(outputFile);
-			Source source = new DOMSource(d);
-			transformer.transform(source, result);
-		} catch(TransformerConfigurationException e) {
-			e.printStackTrace();
-		} catch(TransformerException e) {
-			e.printStackTrace();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
 
 	private static boolean isExternalStorageAvailable() {
 		String state = Environment.getExternalStorageState();
@@ -110,7 +65,7 @@ public class FileProvider {
 		return Environment.MEDIA_MOUNTED.equals(state);
 	}
 
-	protected static File getProjectDirectory() throws IOException {
+	public static File getProjectDirectory() throws IOException {
 		if (isExternalStorageAvailable()) {
 			File docs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
             docs.mkdir();
@@ -128,16 +83,6 @@ public class FileProvider {
 		}
 	}
 
-	public static boolean deleteProjectFile(Project project) {
-        try {
-            File projectFile = new File(getProjectDirectory(), getProjectFileName(project));
-            return projectFile.delete();
-        } catch(IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
 	public static File getExportsDirectory() throws IOException {
 		if (isExternalStorageAvailable()) {
             File docs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
@@ -154,6 +99,7 @@ public class FileProvider {
 			throw new IOException();
 		}
 	}
+
 	private static void log(String output) {
 		Log.d("File_Provider", output);
 	}

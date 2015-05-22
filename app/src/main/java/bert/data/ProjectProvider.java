@@ -54,7 +54,7 @@ public class ProjectProvider {
                 List<File> files = Arrays.asList(projectDir.listFiles());
                 if (files.size() > 0) {
                     for (File f : files) {
-                        Project nextProject = FileProvider.loadProject(f);
+                        Project nextProject = Project.loadProject(f);
                         if (nextProject != null) {
                             log("Loading file <" + f.getName() + "> from project directory");
                             projectList.add(nextProject);
@@ -73,7 +73,7 @@ public class ProjectProvider {
 
     public void addProject(Project project) {
         projectList.add(project);
-        FileProvider.saveProject(project);
+        project.save();
         log("Added project <" + project.getProjectName() + "> to projectList");
     }
 
@@ -85,20 +85,6 @@ public class ProjectProvider {
             }
         }
         return canCreate;
-    }
-
-    public void deleteProject(int projectID) {
-        String name = projectList.get(projectID).getProjectName();
-        if (FileProvider.deleteProjectFile(projectList.get(projectID))) {
-            projectList.remove(projectID);
-
-            List<Project> newList = new ArrayList<>();
-            for (Project p : projectList) {
-                newList.add(p);
-            }
-            projectList = newList;
-        }
-        log("Deleted Project " + name);
     }
 
     private static void log(String output) {

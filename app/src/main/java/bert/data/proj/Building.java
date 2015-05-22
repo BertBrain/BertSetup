@@ -1,6 +1,5 @@
 package bert.data.proj;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +9,8 @@ import java.util.List;
  */
 public class Building {
     private String name;
-    public Time startTime;
-    public Time endTime;
+    private Time startTime;
+    private Time endTime;
     private List<Category> categories;
 
     public Time getStartTime() { return startTime; }
@@ -32,6 +31,14 @@ public class Building {
     }
 
     public List<Category> getCategories() { return  categories; }
+
+    public int getCategoryCount() {
+        return categories.size();
+    }
+
+    public Category getCategory(int categoryID) {
+        return categories.get(categoryID);
+    }
 
     public List<String> getCategoryNames() {
         ArrayList<String> categoryNames = new ArrayList<>();

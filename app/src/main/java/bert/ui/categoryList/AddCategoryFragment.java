@@ -22,27 +22,22 @@ import bert.data.utility.Cleaner;
 import bert.ui.BertAlert;
 import bert.ui.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AddCategoryFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AddCategoryFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddCategoryFragment extends Fragment {
+
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
 
     private int projectID;
     private int buildingID;
+
     private Project project;
     private OnFragmentInteractionListener activity;
+
+    private ArrayAdapter<String> bertTypeSpinnerAdapter;
 
     private EditText categoryNameEditText;
     private EditText estimatedLoadEditText;
     private Spinner bertTypeSpinner;
-    private ArrayAdapter<String> bertTypeSpinnerAdapter;
     private Button finishButton;
     private Button cancelButton;
 
@@ -73,19 +68,28 @@ public class AddCategoryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        categoryNameEditText = (EditText) getView().findViewById(R.id.categoryNameTextField);
+        categoryNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                boolean hasValidName = Cleaner.isValid(categoryNameEditText.getText().toString());
+                finishButton.setEnabled(hasValidName);
+            }
+        });
+
         estimatedLoadEditText = (EditText) getView().findViewById(R.id.standyPowerTextField);
 
         bertTypeSpinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, Category.bertTypes);
         bertTypeSpinner = (Spinner) getView().findViewById(R.id.bertTypeSpinner);
         bertTypeSpinner.setAdapter(bertTypeSpinnerAdapter);
-
-        cancelButton = (Button) getView().findViewById(R.id.cancelAddCategoryButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.categoryCreationCanceled();
-            }
-        });
 
         finishButton = (Button) getView().findViewById(R.id.finshCreateCategoryButton);
         finishButton.setEnabled(false);
@@ -96,20 +100,11 @@ public class AddCategoryFragment extends Fragment {
             }
         });
 
-        categoryNameEditText = (EditText) getView().findViewById(R.id.categoryNameTextField);
-        categoryNameEditText.addTextChangedListener(new TextWatcher() {
+        cancelButton = (Button) getView().findViewById(R.id.cancelAddCategoryButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                boolean hasValidName = Cleaner.isValid(categoryNameEditText.getText().toString());
-                finishButton.setEnabled(hasValidName);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+            public void onClick(View v) {
+                activity.categoryCreationCanceled();
             }
         });
     }
@@ -119,12 +114,11 @@ public class AddCategoryFragment extends Fragment {
         int bertType = bertTypeSpinner.getSelectedItemPosition();
         int estimatedLoad;
         try {
-            if (estimatedLoadEditText.getText().toString().length() != 0){
+            if (estimatedLoadEditText.getText().toString().length() != 0) {
                 estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
             } else {
                 estimatedLoad = Category.UNSET;
             }
-
         } catch (NumberFormatException e) {
             estimatedLoad = Category.UNSET;
             BertAlert.show(getActivity(), "Invalid number entered");
@@ -132,8 +126,8 @@ public class AddCategoryFragment extends Fragment {
             return;
         }
         Category cat = new Category (name, bertType, estimatedLoad);
-        project.getBuildings().get(buildingID).addCategory(cat);
-        FileProvider.saveProject(project);
+        project.getBuilding(buildingID).addCategory(cat);
+        project.save();
         activity.categoryCreationSuccessful();
     }
 
@@ -154,8 +148,7 @@ public class AddCategoryFragment extends Fragment {
         try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -170,5 +163,4 @@ public class AddCategoryFragment extends Fragment {
         public void categoryCreationCanceled();
         public void categoryCreationSuccessful();
     }
-
 }

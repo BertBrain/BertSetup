@@ -1,15 +1,12 @@
 package bert.data.proj;
 
-import org.w3c.dom.Element;
-
-import java.io.Serializable;
-
 import bert.data.utility.Cleaner;
 
 /**
  * @author afiol-mahon
  */
 public class BertUnit {
+
 	private String name;
 	private String location;
 	private String MAC;
@@ -44,13 +41,6 @@ public class BertUnit {
 	public String getLocation() {
 		return location;
 	}
-
-    public void setLocation(String newLocation) {
-        Cleaner.clean(newLocation);
-        if (Cleaner.isValid(newLocation)) {
-            this.location = newLocation;
-        }
-    }
 
 	public int getBuildingID() {
 		return buildingID;

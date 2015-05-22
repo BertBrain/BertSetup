@@ -65,7 +65,7 @@ public class DeviceDetailAddFragment extends Fragment {
             location = getArguments().getString(ARG_LOCATION);
 
             project = ProjectProvider.getInstance().getProject(projectID);
-            building = project.getBuildings().get(buildingID);
+            building = project.getBuilding(buildingID);
         }
     }
 

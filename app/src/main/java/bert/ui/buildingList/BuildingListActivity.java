@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,7 +18,7 @@ import bert.ui.R;
 
 public class BuildingListActivity extends ActionBarActivity {
 
-    public static String ARG_PROJECT_ID = "PROJECT_ID";
+    public static final String ARG_PROJECT_ID = "PROJECT_ID";
 
     private Button addBuildingButton;
     private ArrayAdapter<String> buildingListViewAdapter;
@@ -31,7 +30,6 @@ public class BuildingListActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail);
-
         Bundle extras = getIntent().getExtras();
         projectID = extras.getInt(ARG_PROJECT_ID);
         project = ProjectProvider.getInstance().getProject(projectID);
@@ -45,6 +43,13 @@ public class BuildingListActivity extends ActionBarActivity {
             }
         });
 
+        clearFragmentContainer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         buildingListView = (ListView) findViewById(R.id.item_list_view);
         buildingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -52,18 +57,19 @@ public class BuildingListActivity extends ActionBarActivity {
                 openBuildingDetailView(position);
             }
         });
+
+        setTitle(project.getProjectName() + " Buildings (" + project.getBuildingCount() + ")");
+        loadListView();
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        setTitle(project.getProjectName() + " Buildings (" + project.getBuildings().size() + ")");
-        loadListView();
-        clearFragmentContainer();
+    public void loadListView() {
+        buildingListViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getBuildingNames());
+        buildingListView.setAdapter(buildingListViewAdapter);
+        Log.d("BuildingListActivity", "Loaded: " + project.getBuildingNames().size() + " buildings");
     }
 
     public void clearFragmentContainer() {
-        int numberOfBuildings = project.getBuildings().size();
+        int numberOfBuildings = project.getBuildingCount();
         String message = numberOfBuildings > 0 ? "Select or Create A Building" : "Create a Building";
         loadFragment(NoSelectionFragment.newInstance(message));
     }
@@ -74,12 +80,6 @@ public class BuildingListActivity extends ActionBarActivity {
 
     protected void openBuildingDetailView(int buildingID) {
         loadFragment(BuildingDetailFragment.newInstance(projectID, buildingID));
-    }
-
-    public void loadListView() {
-        buildingListViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getBuildingNames());
-        buildingListView.setAdapter(buildingListViewAdapter);
-        Log.d("BuildingListActivity", "Loaded: " + project.getBuildingNames().size() + " buildings");
     }
 
     private void loadFragment(Fragment frag) {

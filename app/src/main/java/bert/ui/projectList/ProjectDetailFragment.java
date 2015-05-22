@@ -1,8 +1,6 @@
 package bert.ui.projectList;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,7 +29,6 @@ import bert.ui.BertAlert;
 import bert.ui.R;
 
 import bert.ui.buildingList.BuildingListActivity;
-import bert.ui.roomList.RoomListActivity;
 
 public class ProjectDetailFragment extends Fragment {
 
@@ -52,7 +49,6 @@ public class ProjectDetailFragment extends Fragment {
     private Button exportToBertConfigButton;
     private Button exportToROIButton;
     private Button openProjectButton;
-    private Button deleteProjectButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -75,7 +71,7 @@ public class ProjectDetailFragment extends Fragment {
             currentProject = ProjectProvider.getInstance().getProject(projectID);
         }
     }
-    
+
     @Override
     public void onResume() {
         super.onResume();
@@ -87,7 +83,7 @@ public class ProjectDetailFragment extends Fragment {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     try {
                         currentProject.setProjectName(v.getText().toString());
-                        FileProvider.saveProject(currentProject);
+                        currentProject.save();
                     } catch (InvalidProjectNameException e) {
                         BertAlert.show(getActivity(), "Invalid Project Name");
                         v.setText(currentProject.getProjectName());
@@ -107,7 +103,7 @@ public class ProjectDetailFragment extends Fragment {
                     String text = Cleaner.clean(v.getText().toString());
                     currentProject.setContactName(text);
                     v.setText(text);
-                    FileProvider.saveProject(currentProject);
+                    currentProject.save();
                 }
                 return false;
             }
@@ -122,7 +118,7 @@ public class ProjectDetailFragment extends Fragment {
                     String text = Cleaner.clean(v.getText().toString());
                     currentProject.setContactNumber(text);
                     v.setText(text);
-                    FileProvider.saveProject(currentProject);
+                    currentProject.save();
                 }
                 return false;
             }
@@ -170,33 +166,19 @@ public class ProjectDetailFragment extends Fragment {
         });
 
         openProjectButton = (Button) getView().findViewById(R.id.openProjectButton);
-        openProjectButton.setText("View Buildings (" + currentProject.getBuildings().size() + ")");
+        openProjectButton.setText("View Buildings (" + currentProject.getBuildingCount() + ")");
         openProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openBuildingList();
             }
         });
+    }
 
-        deleteProjectButton = (Button) getView().findViewById(R.id.deleteProjectButton);
-        deleteProjectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                alert.setTitle("Delete Project? (Cannot be undone)");
-                alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        ProjectProvider.getInstance().deleteProject(projectID);
-                        activity.onResume();
-                    }
-                });
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialogInterface, int i) {}
-                });
-                alert.create().show();
-            }
-        });
+    public void openBuildingList() {
+        Intent i = new Intent(this.getActivity(), BuildingListActivity.class);
+        i.putExtra(BuildingListActivity.ARG_PROJECT_ID, projectID);
+        startActivity(i);
     }
 
     @Override
@@ -224,12 +206,6 @@ public class ProjectDetailFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    public void openBuildingList() {
-        Intent i = new Intent(this.getActivity(), BuildingListActivity.class);
-        i.putExtra(BuildingListActivity.ARG_PROJECT_ID, projectID);
-        startActivity(i);
     }
 
     public interface OnFragmentInteractionListener {
