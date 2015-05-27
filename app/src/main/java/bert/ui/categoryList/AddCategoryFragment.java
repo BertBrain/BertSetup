@@ -120,10 +120,10 @@ public class AddCategoryFragment extends Fragment {
             if (estimatedLoadEditText.getText().toString().length() != 0) {
                 estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
             } else {
-                estimatedLoad = Category.UNSET;
+                estimatedLoad = Category.UNSET_ESTIMATED_LOAD;
             }
         } catch (NumberFormatException e) {
-            estimatedLoad = Category.UNSET;
+            estimatedLoad = Category.UNSET_ESTIMATED_LOAD;
             BertAlert.show(getActivity(), "Invalid number entered.");
             System.out.println("invalid number passed");
             return;

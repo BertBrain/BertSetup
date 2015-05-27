@@ -14,6 +14,7 @@ import android.widget.ListView;
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
+import bert.ui.NoSelectionFragment;
 import bert.ui.R;
 
 public class CategoryListActivity extends ActionBarActivity implements CategoryDetailFragment.OnFragmentInteractionListener, AddCategoryFragment.OnFragmentInteractionListener {
@@ -72,11 +73,15 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
         this.setTitle(project.getBuilding(buildingID).getCategoryCount() + " Categories");
     }
 
-    private void openCategoryDetailFragment(String categoryID) {
+    public void openCategoryDetailFragment(String categoryID) {
         loadFragment(new CategoryDetailFragment().newInstance(projectID, buildingID, categoryID));
     }
 
-    private void openCategoryAddFragment() {
+    public void openNoSelectionFragment() {
+        loadFragment(NoSelectionFragment.newInstance("Select or Create a Category"));
+    }
+
+    public void openCategoryAddFragment() {
         loadFragment(AddCategoryFragment.newInstance(projectID, buildingID));
     }
 

@@ -28,7 +28,7 @@ public class ROIExporter {
         rows.add(Arrays.asList(""));
 
         List<String> deviceTypeCostCells = new ArrayList<>();
-        for (int i = 0; i<Category.bertTypes.size(); i++){
+        for (int i = 0; i < Category.bertTypes.size(); i++) {
             List<String> bertTypeInfoRow = new ArrayList<>();
 
             bertTypeInfoRow.add("Cost of a " + Category.bertTypes.get(i));

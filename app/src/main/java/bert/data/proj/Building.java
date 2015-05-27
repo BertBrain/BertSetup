@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import bert.data.proj.exceptions.InvalidCategoryNameException;
+import bert.data.proj.exceptions.UnableToDeleteException;
 import bert.data.utility.Cleaner;
 
 /**
@@ -50,6 +51,15 @@ public class Building {
 
     public Category getCategory(String categoryID) {
         return categoryList.get(categoryID);
+    }
+
+    //TODO ensure a building with no categories does not cause problems
+    public void deleteCategory(Project project, String buildingID, String categoryID) throws UnableToDeleteException {
+        if (project.getBertsByCategory(buildingID, categoryID).isEmpty()) {
+            categoryList.remove(categoryID);
+        } else {
+            throw new UnableToDeleteException();
+        }
     }
 
     public List<String> getCategoryNames() {

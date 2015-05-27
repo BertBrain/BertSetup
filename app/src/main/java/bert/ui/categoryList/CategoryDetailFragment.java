@@ -1,6 +1,8 @@
 package bert.ui.categoryList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -20,6 +22,7 @@ import bert.data.proj.Building;
 import bert.data.proj.Category;
 import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidCategoryNameException;
+import bert.data.proj.exceptions.UnableToDeleteException;
 import bert.ui.BertAlert;
 import bert.ui.R;
 
@@ -45,6 +48,7 @@ public class CategoryDetailFragment extends Fragment {
     private Spinner bertTypeSpinner;
     private ArrayAdapter<String> bertTypeSpinnerAdapter;
     private Button saveButton;
+    private Button deleteButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -109,8 +113,7 @@ public class CategoryDetailFragment extends Fragment {
             }
         });
 
-        System.out.println(category.getEstimatedLoad());
-        if (category.getEstimatedLoad() != Category.UNSET) {
+        if (category.getEstimatedLoad() != Category.UNSET_ESTIMATED_LOAD) {
             estimatedLoadEditText.setText(String.valueOf(category.getEstimatedLoad()));
         } else {
             estimatedLoadEditText.setText(UNDEFINED_LOAD_STRING);
@@ -129,7 +132,66 @@ public class CategoryDetailFragment extends Fragment {
                 saveChanges();
             }
         });
+
+        deleteButton = (Button) getView().findViewById(R.id.delete_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Are you sure you want to delete this category?");
+                alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        deleteCategory();
+                    }
+                });
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+                alert.create().show();
+            }
+        });
+
         activity.onResume();
+    }
+
+    private void deleteCategory() {
+        try {
+            building.deleteCategory(project, buildingID, categoryID);
+            project.save();
+            activity.onResume();
+            activity.openNoSelectionFragment();
+        } catch (UnableToDeleteException e) {
+            int bertsRemaining = project.getBertsByCategory(buildingID, categoryID).size();
+            String text = (bertsRemaining == 1) ? " Bert uses this category." : " Berts use this category.";
+            BertAlert.show(getActivity(), "Unable to delete category: " + bertsRemaining + text);
+        }
+    }
+
+    private void saveChanges() {
+        try {
+            String newCategoryID = categoryNameEditText.getText().toString();
+            building.renameCategory(categoryID, newCategoryID);
+            categoryID = newCategoryID;
+            try {
+                int estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
+                category.setEstimatedLoad(estimatedLoad);
+            } catch (NumberFormatException e) {
+                category.setEstimatedLoad(Category.UNSET_ESTIMATED_LOAD);
+                if (!estimatedLoadEditText.hasFocus()) {
+                    estimatedLoadEditText.setText(UNDEFINED_LOAD_STRING);
+                }
+            }
+            category.setBertTypeID(bertTypeSpinner.getSelectedItemPosition());
+            project.save();
+            activity.createCategoryListView();
+        } catch (InvalidCategoryNameException e) {
+            e.printStackTrace();
+            BertAlert.show(getActivity(), "Invalid New Category Name");
+            categoryNameEditText.setText(categoryID);
+        }
     }
 
     @Override
@@ -161,29 +223,5 @@ public class CategoryDetailFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
-    }
-
-    private void saveChanges() {
-        try {
-            String newCategoryID = categoryNameEditText.getText().toString();
-            building.renameCategory(categoryID, newCategoryID);
-            categoryID = newCategoryID;
-            try {
-                int estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
-                category.setEstimatedLoad(estimatedLoad);
-            } catch (NumberFormatException e) {
-                category.setEstimatedLoad(Category.UNSET);
-                if (!estimatedLoadEditText.hasFocus()) {
-                    estimatedLoadEditText.setText(UNDEFINED_LOAD_STRING);
-                }
-            }
-            category.setBertTypeID(bertTypeSpinner.getSelectedItemPosition());
-            project.save();
-            activity.createCategoryListView();
-        } catch (InvalidCategoryNameException e) {
-            e.printStackTrace();
-            BertAlert.show(getActivity(), "Invalid New Category Name");
-            categoryNameEditText.setText(categoryID);
-        }
     }
 }
