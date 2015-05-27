@@ -12,6 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import bert.data.proj.BertUnit;
+import bert.data.proj.Building;
 import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.utility.Cleaner;
 import bert.data.proj.Project;
@@ -20,15 +25,6 @@ import bert.ui.BertAlert;
 import bert.ui.R;
 import bert.ui.buildingList.BuildingListActivity;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AddProjectFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AddProjectFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddProjectFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
@@ -38,11 +34,6 @@ public class AddProjectFragment extends Fragment {
     private TextView contactTextField;
     private TextView contactNumberTextField;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @return A new instance of fragment AddProjectFragment.
-     */
     public static AddProjectFragment newInstance() {
         return new AddProjectFragment();
     }
@@ -52,12 +43,6 @@ public class AddProjectFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_project_add, container, false);
     }
 
     @Override
@@ -89,6 +74,34 @@ public class AddProjectFragment extends Fragment {
         contactNumberTextField = (TextView) getView().findViewById(R.id.contactNumberTextField);
     }
 
+    private void createProjectAndFinish() {
+        String newProjectName = nameTextField.getText().toString();
+
+        try {
+            Project newProject = new Project(newProjectName,
+                    new ArrayList<BertUnit>(),
+                    new HashMap<String, Building>()
+            );
+            newProject.setContactName(contactTextField.getText().toString());
+            newProject.setContactNumber(contactNumberTextField.getText().toString());
+
+            nameTextField.setText("");
+            contactTextField.setText("");
+            contactNumberTextField.setText("");
+
+            ProjectProvider.getInstance().addProject(newProject);
+
+            ProjectListActivity activity = (ProjectListActivity) getActivity();
+            Intent intent = new Intent(activity, BuildingListActivity.class);
+            intent.putExtra(BuildingListActivity.ARG_PROJECT_ID, ProjectProvider.getInstance().getTotalProjects() - 1);
+
+            activity.closeAddProjectView();
+            startActivity(intent);
+        } catch (InvalidProjectNameException e) {
+            BertAlert.show(getActivity(), "Invalid project name");
+        }
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -110,28 +123,9 @@ public class AddProjectFragment extends Fragment {
         public void closeAddProjectView();
     }
 
-    private void createProjectAndFinish() {
-        String newProjectName = nameTextField.getText().toString();
-
-        try {
-            Project newProject = new Project(newProjectName);
-            newProject.setContactName(contactTextField.getText().toString());
-            newProject.setContactNumber(contactNumberTextField.getText().toString());
-
-            nameTextField.setText("");
-            contactTextField.setText("");
-            contactNumberTextField.setText("");
-
-            ProjectProvider.getInstance().addProject(newProject);
-
-            ProjectListActivity activity = (ProjectListActivity) getActivity();
-            Intent intent = new Intent(activity, BuildingListActivity.class);
-            intent.putExtra(BuildingListActivity.ARG_PROJECT_ID, ProjectProvider.getInstance().getTotalProjects() - 1);
-
-            activity.closeAddProjectView();
-            startActivity(intent);
-        } catch (InvalidProjectNameException e) {
-            BertAlert.show(getActivity(), "Invalid project name");
-        }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_project_add, container, false);
     }
+
 }

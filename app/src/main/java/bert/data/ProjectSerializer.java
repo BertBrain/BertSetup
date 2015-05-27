@@ -41,21 +41,12 @@ public class ProjectSerializer {
             NodeList bertNodeList = document.getElementsByTagName(BertUnitSerializer.TAG_BERT);
             NodeList buildingNodeList = document.getElementsByTagName(BuildingSerializer.TAG_BUILDING);
 
-
-            Project newProject = new Project(projectTag.getAttribute(TAG_PROJECT_NAME));
-
-            newProject.setContactName(contactTag.getAttribute(TAG_CONTACT_NAME));
-            newProject.setContactNumber(contactTag.getAttribute(TAG_CONTACT_NUMBER));
-            newProject.setCreationDate(projectTag.getAttribute(TAG_CREATION_DATE));
-            newProject.setModifiedDate(projectTag.getAttribute(TAG_MODIFIED_DATE));
-
             //BERT DESERIALIZATION
             List<BertUnit> bertList = new ArrayList<>();
             for (int i = 0; i < bertNodeList.getLength(); i++) {
                 Element e = (Element) bertNodeList.item(i);
                 bertList.add(BertUnitSerializer.getBertUnitFromElement(e));
             }
-            newProject.setBertList(bertList);
 
             //BUILDING DESERIALIZATION
             HashMap<String, Building> buildingList = new HashMap<>();
@@ -65,7 +56,13 @@ public class ProjectSerializer {
                 Building nextBuilding = BuildingSerializer.getBuildingFromElement(e);
                 buildingList.put(buildingID, nextBuilding);
             }
-            newProject.setBuildings(buildingList);
+
+            Project newProject = new Project(projectTag.getAttribute(TAG_PROJECT_NAME), bertList, buildingList);
+
+            newProject.setContactName(contactTag.getAttribute(TAG_CONTACT_NAME));
+            newProject.setContactNumber(contactTag.getAttribute(TAG_CONTACT_NUMBER));
+            newProject.setCreationDate(projectTag.getAttribute(TAG_CREATION_DATE));
+            newProject.setModifiedDate(projectTag.getAttribute(TAG_MODIFIED_DATE));
 
             return newProject;
         } catch (NullPointerException e) {
@@ -93,8 +90,8 @@ public class ProjectSerializer {
 
         //BERT SERIALIZATION
         Element bertElementList = projectDoc.createElement(TAG_BERTS);
-        for (int i = 0; i < p.getAllBertsAndDeleted().size(); i++) {
-            BertUnit bert = p.getAllBertsAndDeleted().get(i);
+        for (int i = 0; i < p.getBerts().size(); i++) {
+            BertUnit bert = p.getBerts().get(i);
             Element bertElement = BertUnitSerializer.getElementFromBertUnit(bert, projectDoc);
             bertElementList.appendChild(bertElement);
         }

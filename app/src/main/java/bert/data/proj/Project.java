@@ -44,12 +44,12 @@ public class Project {
 	private List<BertUnit> bertList;
     private HashMap<String, Building> buildingList;
 
-	public Project(String name) throws InvalidProjectNameException {
+	public Project(String name, List<BertUnit> bertList, HashMap<String, Building> buildingList) throws InvalidProjectNameException {
 		setProjectName(name);
 	    this.creationDate = DateUtil.getDate();
 	    this.modifiedDate = creationDate;
-        bertList = new ArrayList<>();
-        buildingList = new HashMap<>();
+        this.bertList = bertList;
+        this.buildingList = buildingList;
 	}
 
     public List<String> getLocationNamesInBuilding(String buildingID) {
@@ -112,12 +112,6 @@ public class Project {
 		bertList.add(bert);
 	}
 
-    public void addBerts(List<BertUnit> berts) {
-        for (BertUnit b : berts){
-            addBert(b);
-        }
-    }
-
     public void addBuilding(String buildingID, Building building) throws InvalidBuildingNameException {
         if (!buildingList.containsKey(buildingID) && Cleaner.isValid(buildingID)) {
             buildingList.put(buildingID, building);
@@ -133,7 +127,6 @@ public class Project {
         buildingList.remove(buildingID);
     }
 
-    //Getters and setters
     public String getProjectName() {
         return projectName;
     }
@@ -179,11 +172,6 @@ public class Project {
     public void setModifiedDate(String newModifiedDate) {
         this.modifiedDate = newModifiedDate;
     }
-
-    public List<BertUnit> getAllBertsAndDeleted() {
-        return this.bertList;
-    }
-
     public List<BertUnit> getBerts() {
         List<BertUnit> output = new ArrayList<>();
         for (BertUnit b : bertList) {
@@ -192,10 +180,6 @@ public class Project {
             }
         }
         return output;
-    }
-
-    public void setBertList(List<BertUnit> newBertList) {
-        this.bertList = newBertList;
     }
 
     public Building getBuilding(String buildingID) {
@@ -212,14 +196,6 @@ public class Project {
         return buildingList.size();
     }
 
-    public void setBuildings(HashMap<String, Building> newBuildings) {
-        this.buildingList = newBuildings;
-    }
-
-    public String getFileName() {
-        return this.getProjectName() + ".xml";
-    }
-
     public void save() {
         Log.d("ProjectSaver", "Saving Project: " + getProjectName() + " to XML file");
         Document d = ProjectSerializer.exportToXML(this);
@@ -227,7 +203,7 @@ public class Project {
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            File outputFile = new File(FileProvider.getProjectDirectory(), this.getFileName());
+            File outputFile = new File(FileProvider.getProjectDirectory(), this.getProjectName() + ".xml");
             Result result = new StreamResult(outputFile);
             Source source = new DOMSource(d);
             transformer.transform(source, result);

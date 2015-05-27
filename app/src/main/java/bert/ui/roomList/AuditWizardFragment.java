@@ -166,21 +166,19 @@ public class AuditWizardFragment extends Fragment {
     }
 
     private void finishAuditWizard() {
-        String location = locationEditText.getText().toString();
-        if (Cleaner.isValid(location)) {
+        String roomID = locationEditText.getText().toString();
+        if (Cleaner.isValid(roomID)) {
             HashMap<String, Integer> categoryCounts = tallyGridAdapter.getCounts();
-            List<BertUnit> bertList = new ArrayList<>();
             for (String categoryID : building.getCategoryNames()) {
                 for (int i = 0; i < categoryCounts.get(categoryID); i++) {
                     String countString = (i == 0) ? ("") : (String.valueOf(i + 1));
-                    String name = location + " - " + categoryID + " " + countString;
-                    BertUnit bert = new BertUnit(name, location, "", buildingID, categoryID, false);
-                    bertList.add(bert);
+                    String name = roomID + " - " + categoryID + " " + countString;
+                    BertUnit bert = new BertUnit(name, roomID, "", buildingID, categoryID, false);
+                    project.addBert(bert);
                 }
             }
-            project.addBerts(bertList);
             activity.onResume(); //Refresh view
-            activity.openDeviceListFragment(bertList.get(0).getLocation());
+            activity.openDeviceListFragment(roomID);
             project.save();
         } else {
             openNoRoomNamePopup();

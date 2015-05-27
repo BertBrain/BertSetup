@@ -13,7 +13,7 @@ public class BertUnit {
 	private String categoryID;
 	private String buildingID;
 	private boolean deleted;
-	
+
 	public BertUnit(String name, String location, String MAC, String buildingID, String categoryID, boolean deleted) {
 		this.name = name;
 		this.location = location;
@@ -49,16 +49,16 @@ public class BertUnit {
 	public void setBuildingID(String newBuildingID) {
 		this.buildingID = newBuildingID;
 	}
-	
+
 	public void setMAC(String newMAC) {
 		//TODO implement MAC address formatter in this method
 		this.MAC = newMAC;
 	}
-	
+
 	public String getMAC() {
 		return (MAC != null) ? MAC : "";
 	}
-	
+
 	public String getCategoryID() {
 		return categoryID;
 	}
