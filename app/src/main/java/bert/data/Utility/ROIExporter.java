@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import bert.data.FileProvider;
@@ -65,12 +64,14 @@ public class ROIExporter {
         }
         rows.add(Arrays.asList(""));
 
-        for (int buildingID : project.getOrderedBuildingKeys()) {
+        for (String buildingID : project.getBuildingNames()) {
             Log.d("ROI_EXPORT", "adding building");
 
             Building building = project.getBuilding(buildingID);
             if (building.getCategories().size() != 0){
-                rows.add(Arrays.asList(building.getName()));
+                rows.add(Arrays.asList(buildingID));
+
+
                 rows.add(Arrays.asList("", "Average Electricity Cost ($/kwh): ", "0.1"));
                 rows.add(Arrays.asList("Equipment", "Number Of Devices", "Cost For Berts", "Daily Time On", "Wattage Draw", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "$ Savings/Year", "Payback Time (Years)"));
 

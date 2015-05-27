@@ -23,7 +23,7 @@ public class RoomListActivity extends ActionBarActivity {
     public static final String ARG_BUILDING_ID = "BUILDING_ID";
 
     private int projectID;
-    private int buildingID;
+    private String buildingID;
 
     private Project project;
 
@@ -50,7 +50,7 @@ public class RoomListActivity extends ActionBarActivity {
         if (savedInstanceState == null) {//if restoring, don't replace
             Bundle extras = getIntent().getExtras();
             projectID = extras.getInt(ARG_PROJECT_ID);
-            buildingID = extras.getInt(ARG_BUILDING_ID);
+            buildingID = extras.getString(ARG_BUILDING_ID);
         }
     }
 
@@ -111,7 +111,7 @@ public class RoomListActivity extends ActionBarActivity {
     private void setDefaultTitle() {
         int rooms = project.getLocationNamesInBuilding(buildingID).size();
         String roomName = (rooms == 1) ? " Room)" : " Rooms)";
-        this.setTitle(project.getProjectName() + " " + project.getBuilding(buildingID).getName() + " (" + rooms + roomName);
+        this.setTitle(project.getProjectName() + " " + buildingID + " (" + rooms + roomName);
 
     }
 }

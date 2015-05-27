@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import bert.ui.R;
 import bert.ui.categoryList.AddCategoryFragment;
@@ -16,14 +15,14 @@ public class AddCategoryFrameActivity extends ActionBarActivity implements AddCa
     public static final String ARG_BUILDING_ID = "ARG_BUILDING_ID";
 
     private int projectID;
-    private int buildingID;
+    private String buildingID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empty_frame_layout);
         projectID = getIntent().getExtras().getInt(ARG_PROJECT_ID);
-        buildingID = getIntent().getExtras().getInt(ARG_BUILDING_ID);
+        buildingID = getIntent().getExtras().getString(ARG_BUILDING_ID);
 
         AddCategoryFragment frag = AddCategoryFragment.newInstance(projectID, buildingID);
 

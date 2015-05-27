@@ -30,12 +30,12 @@ public class CSVExporter {
                 writer.write(',');
                 writer.write(b.getLocation());
                 writer.write(';');
-                writer.write(project.getBuilding(b.getBuildingID()).getName());
+                writer.write(b.getBuildingID());
                 writer.write(';');
-                writer.write(project.getBuilding(b.getBuildingID()).getCategories().get(b.getCategoryID()).getName());
+                writer.write(b.getCategoryID());
                 writer.write('\n');
                 Log.d("CSV EXPORT", "Exported Bert " + b.getName() + " to CSV File");
-            } catch (InvalidMACExeption e){
+            } catch (InvalidMACExeption e) {
                 Log.e("CSV_EXPORTER", e.message + " in " + b.getName());
             }
         }

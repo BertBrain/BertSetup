@@ -14,16 +14,16 @@ public class CategoryPresets {
     private static HashMap<String, List<Category>> presets = new HashMap<>();
 
     public static void init(){
-        presets.put("Default", new ArrayList<Category>(Arrays.asList(DEFAULT_CATEGORIES)));
-        presets.put("Office", new ArrayList<Category>(Arrays.asList(OFFICE)));
-        presets.put("School", new ArrayList<Category>(Arrays.asList(SCHOOL)));
+        presets.put("Default", new ArrayList<>(Arrays.asList(DEFAULT_CATEGORIES)));
+        presets.put("Office", new ArrayList<>(Arrays.asList(OFFICE)));
+        presets.put("School", new ArrayList<>(Arrays.asList(SCHOOL)));
         isInit = true;
     }
 
     public static List<String> getNames(){
         if (!isInit) { init(); }
 
-        return new ArrayList<String>(presets.keySet());
+        return new ArrayList<>(presets.keySet());
     }
 
     public static HashMap<String, List<Category>> getPresets(){
@@ -37,11 +37,13 @@ public class CategoryPresets {
             new Category("Large Printer/Copier 110V", 3, 15),
             new Category("Large Printer/Copier 220V", 3, 15)
     };
+
     private static Category[] SCHOOL = {
             new Category("Projector", 3, 5),
             new Category("Smart Board", 3, 7),
             new Category("Printer Monitor Combo", 3, 10),
     };
+
     public static Category[] DEFAULT_CATEGORIES = {
             new Category("Projector", 3, 5),
             new Category("Smart Board", 3, 7),
@@ -52,5 +54,4 @@ public class CategoryPresets {
             new Category("Large Printer/Copier 110V", 3, 15),
             new Category("Large Printer/Copier 220V", 3, 15)
     };
-
 }

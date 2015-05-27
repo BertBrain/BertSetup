@@ -16,14 +16,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Category;
 import bert.data.proj.CategoryPresets;
 import bert.data.proj.Project;
 import bert.data.proj.Time;
-import bert.data.proj.exceptions.DuplicateBuildingInProjectException;
+import bert.data.proj.exceptions.InvalidBuildingNameException;
 import bert.data.utility.Cleaner;
 import bert.ui.BertAlert;
 import bert.ui.R;
@@ -106,17 +105,17 @@ public class AddBuildingFragment extends Fragment {
 
     private void addBuilding() {
         try {
-            String newName = buildingNameTextField.getText().toString();
+            String buildingID = buildingNameTextField.getText().toString();
             Time startTime = timeDisplay.getStartTime();
             Time endTime = timeDisplay.getEndTime();
             List<Category> presetCategories = CategoryPresets.getPresets().get(buildingTypeSpinner.getSelectedItem());
-            Building building = new Building(newName, startTime, endTime, presetCategories);
-            project.addBuilding(building);
+            Building building = new Building(startTime, endTime, presetCategories);
+            project.addBuilding(buildingID, building);
             project.save();
             BuildingListActivity activity = (BuildingListActivity) getActivity();
             activity.loadListView();
-            activity.openBuildingDetailView(project.highestBuildingIndex());
-        } catch(DuplicateBuildingInProjectException e) {
+            activity.openBuildingDetailView(buildingID);
+        } catch(InvalidBuildingNameException e) {
             BertAlert.show(getActivity(), "This Building Already Exists");
         }
     }

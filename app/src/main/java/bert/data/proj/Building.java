@@ -8,7 +8,6 @@ import java.util.List;
  * @author afiol-mahon
  */
 public class Building {
-    private String name;
     private Time startTime;
     private Time endTime;
     private List<Category> categories;
@@ -19,11 +18,10 @@ public class Building {
     public Time getEndTime() { return  endTime; }
     public void setEndTime(Time endTime) { this.endTime = endTime; }
 
-    public Building(String name, Time startTime, Time endTime, List<Category> presetCategories) {
+    public Building(Time startTime, Time endTime, List<Category> presetCategories) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.categories = new ArrayList<>(presetCategories);
-        this.name = name;
     }
 
     public void addCategory(Category category) {
@@ -48,15 +46,7 @@ public class Building {
         return categoryNames;
     }
 
-    public Time getTimeOccupied(){
+    public Time getTimeOccupied() {
         return endTime.subtract(startTime);
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String newName) {
-        this.name = newName;
     }
 }

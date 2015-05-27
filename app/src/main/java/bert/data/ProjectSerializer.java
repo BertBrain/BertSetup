@@ -58,11 +58,12 @@ public class ProjectSerializer {
             newProject.setBertList(bertList);
 
             //BUILDING DESERIALIZATION
-            HashMap<Integer, Building> buildingList = new HashMap<>();
+            HashMap<String, Building> buildingList = new HashMap<>();
             for (int i = 0; i < buildingNodeList.getLength(); i++) {
                 Element e = (Element) buildingNodeList.item(i);
-                int id = Integer.valueOf(e.getAttribute(BuildingSerializer.ATTR_ID));
-                buildingList.put(id, BuildingSerializer.getBuildingFromElement(e));
+                String buildingID = BuildingSerializer.getBuildingNameFromElement(e);
+                Building nextBuilding = BuildingSerializer.getBuildingFromElement(e);
+                buildingList.put(buildingID, nextBuilding);
             }
             newProject.setBuildings(buildingList);
 
@@ -102,10 +103,9 @@ public class ProjectSerializer {
 
         //BUILDING SERIALIZATION
         Element buildingElementList = projectDoc.createElement(TAG_BUILDINGS);
-        List<Integer> keys = p.getOrderedBuildingKeys();
-        for (Integer i : keys) {
-            Building b = p.getBuilding(i);
-            Element buildingElement = BuildingSerializer.getElementFromBuilding(b, projectDoc, i);
+        for (String buildingID : p.getBuildingNames()) {
+            Building building = p.getBuilding(buildingID);
+            Element buildingElement = BuildingSerializer.getElementFromBuilding(buildingID, building, projectDoc);
             buildingElementList.appendChild(buildingElement);
         }
         root.appendChild(buildingElementList);

@@ -8,13 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import bert.data.proj.BertUnit;
 import bert.data.proj.Project;
 import bert.ui.R;
 
@@ -28,17 +23,17 @@ public class DeviceListFragment extends Fragment {
     private RoomListActivity activity;
     private Project project;
     private int projectID;
-    private int buildingID;
+    private String buildingID;
     private String location;
 
     private DeviceDetailListGVA deviceTableAdapter;
     private ListView locationListView;
 
-    public static DeviceListFragment newInstance(int projectID, int buildingID, String location) {
+    public static DeviceListFragment newInstance(int projectID, String buildingID, String location) {
         DeviceListFragment fragment = new DeviceListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT, projectID);
-        args.putInt(ARG_BUILDING, buildingID);
+        args.putString(ARG_BUILDING, buildingID);
         args.putString(ARG_LOCATION, location);
         fragment.setArguments(args);
         return fragment;
@@ -52,7 +47,7 @@ public class DeviceListFragment extends Fragment {
         activity = (RoomListActivity) getActivity();
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT);
-            buildingID = getArguments().getInt(ARG_BUILDING);
+            buildingID = getArguments().getString(ARG_BUILDING);
             location = getArguments().getString(ARG_LOCATION);
         }
     }

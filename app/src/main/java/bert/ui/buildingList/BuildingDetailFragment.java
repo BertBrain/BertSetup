@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
+import bert.data.proj.exceptions.InvalidBuildingNameException;
 import bert.data.utility.Cleaner;
 import bert.ui.NoSelectionFragment;
 import bert.ui.R;
@@ -33,7 +32,7 @@ public class BuildingDetailFragment extends Fragment {
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
 
     private int projectID;
-    private int buildingID;
+    private String buildingID;
     private Project project;
     private Building building;
 
@@ -48,11 +47,11 @@ public class BuildingDetailFragment extends Fragment {
     private TextView endTimeDisplay;
     private TimeRangeDisplay timeDisplay;
 
-    public static BuildingDetailFragment newInstance(int projectID, int buildingID) {
+    public static BuildingDetailFragment newInstance(int projectID, String buildingID) {
         BuildingDetailFragment fragment = new BuildingDetailFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT_ID, projectID);
-        args.putInt(ARG_BUILDING_ID, buildingID);
+        args.putString(ARG_BUILDING_ID, buildingID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,7 +63,7 @@ public class BuildingDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
-            buildingID = getArguments().getInt(ARG_BUILDING_ID);
+            buildingID = getArguments().getString(ARG_BUILDING_ID);
             project = ProjectProvider.getInstance().getProject(projectID);
             building = project.getBuilding(buildingID);
         }
@@ -82,18 +81,18 @@ public class BuildingDetailFragment extends Fragment {
         bertCountTextView.setText(Integer.toString(project.getBertsByBuilding(buildingID).size()));
 
         nameEditText = (EditText) getView().findViewById(R.id.buildingNameEditText);
-        nameEditText.setText(building.getName());
+        nameEditText.setText(buildingID);
         nameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean validName = Cleaner.isValid(nameEditText.getText().toString());
-                boolean nameNotTaken = !project.getBuildingNames().values().contains(nameEditText.getText().toString());
-                if (validName && nameNotTaken) {
-                    building.setName(nameEditText.getText().toString());
+                try {
+                    String newBuildingID = nameEditText.getText().toString();
+                    project.renameBuilding(buildingID, newBuildingID);
+                    buildingID = newBuildingID;
                     project.save();
                     ((BuildingListActivity) getActivity()).loadListView();
-                } else {
-                    nameEditText.setText(building.getName());
+                } catch (InvalidBuildingNameException e) {
+                    nameEditText.setText(buildingID);
                 }
                 InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                 mgr.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -129,6 +128,7 @@ public class BuildingDetailFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         project.deleteBuilding(buildingID);
+                        project.save();
                         ((BuildingListActivity)getActivity()).loadFragment(NoSelectionFragment.newInstance("Select or Create a Building"));
                         ((BuildingListActivity)getActivity()).loadListView();
                     }
