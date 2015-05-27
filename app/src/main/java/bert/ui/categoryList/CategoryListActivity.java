@@ -53,10 +53,11 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
         });
 
         createCategoryListView();
+        openNoSelectionFragment();
     }
 
     public void createCategoryListView() {
-        categoryListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getBuilding(buildingID).getCategoryNames());
+        categoryListViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getBuilding(buildingID).getCategoryNames());
         categoryListView = (ListView) findViewById(R.id.item_list_view);
         categoryListView.setAdapter(categoryListViewAdapter);
         categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -70,6 +71,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     @Override
     public void onResume() {
         super.onResume();
+        createCategoryListView();
         this.setTitle(project.getBuilding(buildingID).getCategoryCount() + " Categories");
     }
 

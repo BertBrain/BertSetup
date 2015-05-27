@@ -101,7 +101,7 @@ public class AuditWizardFragment extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
            @Override
             public void onClick(View view) {
-               activity.openNoSelectionView("Select or Create A Room");
+               activity.openNoSelection();
            }
         });
 

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import bert.data.proj.Project;
+import bert.ui.NoSelectionFragment;
 import bert.ui.R;
 
 public class DeviceListFragment extends Fragment {
@@ -50,6 +51,7 @@ public class DeviceListFragment extends Fragment {
             buildingID = getArguments().getString(ARG_BUILDING);
             location = getArguments().getString(ARG_LOCATION);
         }
+        loadFragment(NoSelectionFragment.newInstance("Select or Create a Bert"));
     }
 
     @Override

@@ -37,12 +37,6 @@ public class RoomListActivity extends ActionBarActivity {
         return project;
     }
 
-    private void clearFragmentContainer() {
-        int numberOfRooms = project.getLocationNamesInBuilding(buildingID).size();
-        String message = numberOfRooms > 0 ? "Select or Create A Room" : "Create a Room";
-        loadFragment(NoSelectionFragment.newInstance(message));
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +46,7 @@ public class RoomListActivity extends ActionBarActivity {
             projectID = extras.getInt(ARG_PROJECT_ID);
             buildingID = extras.getString(ARG_BUILDING_ID);
         }
+        openNoSelection();
     }
 
     @Override
@@ -96,9 +91,8 @@ public class RoomListActivity extends ActionBarActivity {
         setTitle("Room " + locationName + " (" + project.getBertsByLocation(buildingID, locationName).size() + " Berts)");
     }
 
-    public void openNoSelectionView(String message) {
-        loadFragment(NoSelectionFragment.newInstance(message));
-        setDefaultTitle();
+    public void openNoSelection() {
+        loadFragment(NoSelectionFragment.newInstance("Select or Create a Room"));
     }
 
     private void loadFragment(Fragment frag) {

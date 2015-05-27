@@ -21,9 +21,6 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     private ArrayAdapter<String> projectTableAdapter;
 
     @Override
-    public void onFragmentInteraction(android.net.Uri uri) {}
-
-    @Override
     public void openAddProjectView() {
         loadFragment(new AddProjectFragment());
     }
@@ -35,6 +32,10 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
     @Override
     public void closeAddProjectView() {
         loadFragment(new NoSelectionFragment());
+    }
+
+    public void openNoSelectionView() {
+        loadFragment(NoSelectionFragment.newInstance("Select or Create a Project"));
     }
 
     private void loadFragment(Fragment frag) {
@@ -56,6 +57,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
                 openAddProjectView();
             }
         });
+        openNoSelectionView();
     }
 
     @Override
@@ -74,4 +76,7 @@ public class ProjectListActivity extends ActionBarActivity implements AddProject
         int projectListSize = ProjectProvider.getInstance().getTotalProjects();
         this.setTitle((projectListSize == 1) ? ("1 Project") : (projectListSize + " Projects"));
     }
+
+    @Override
+    public void onFragmentInteraction(android.net.Uri uri) {}
 }
