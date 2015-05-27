@@ -20,5 +20,6 @@
     <string name="title_activity_category_editor">Category Editor</string>
     <string name="title_activity_building_list">BuildingListActivity</string>
     <string name="title_activity_category_list">CategoryListActivity</string>
+    <string name="title_activity_launch">LaunchActivity</string>
 
 </resources>

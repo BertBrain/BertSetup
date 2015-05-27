@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +20,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
+import bert.data.proj.exceptions.InvalidMACExeption;
 import bert.ui.R;
 
 public class DeviceDetailEditFragment extends Fragment {
@@ -138,6 +145,43 @@ public class DeviceDetailEditFragment extends Fragment {
                 return false;
             }
         });
+        macAddressTextField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (before !=count){
+                    String MAC = macAddressTextField.getText().toString();
+                    MAC.replace(":", "");
+
+                    List<String> octets = new ArrayList<>();
+                    try {
+                        for (int i = 0; i < MAC.length(); i = i+2){
+                            octets.add(MAC.substring(i, i+1));
+                        }
+                    } catch (StringIndexOutOfBoundsException e){
+                        Log.e("CLEANING MAC ADRESS", MAC);
+                    }
+
+                    String formattedString = "";
+                    for (String octet : octets){
+                        formattedString += octet;
+                        formattedString += ":";
+                    }
+                    Log.d("CLEANING_MAC_ADRSS", formattedString);
+                    macAddressTextField.setText(formattedString);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         deviceNameTextField.setText(bert.getName());
         deviceNameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -160,6 +204,8 @@ public class DeviceDetailEditFragment extends Fragment {
         activity.deviceListFragment.onResume();
         onResume();
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

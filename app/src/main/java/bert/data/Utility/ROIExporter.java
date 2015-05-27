@@ -21,6 +21,30 @@ import bert.data.proj.Project;
 public class ROIExporter {
     public static File generateROI(Project project) throws IOException {
 
+        List<List<String>> rows = getSpreadSheetListForProject(project);
+        String ROIString = "";
+        for (List<String> row : rows){
+            for (String str: row){
+                ROIString += "\"";
+                ROIString += str;
+                ROIString += "\"";
+                ROIString += ",";
+            }
+            ROIString += '\n';
+        }
+        Log.d("ROI String", ROIString);
+
+        File exportROI = new File(FileProvider.getExportsDirectory(), project.getProjectName() + "_ROI.csv");
+        exportROI.setWritable(true);
+        FileWriter writer = new FileWriter(exportROI);
+
+        writer.write(ROIString);
+        writer.close();
+        Log.d("ROI_EXPORT", exportROI.toString());
+        return exportROI;
+    }
+
+    private static List<List<String>> getSpreadSheetListForProject(Project project){
         ArrayList<Integer> totalRows = new ArrayList();
 
         ArrayList<List<String>> rows = new ArrayList<>();
@@ -46,13 +70,11 @@ public class ROIExporter {
 
             Building building = project.getBuilding(buildingID);
             if (building.getCategories().size() != 0){
-                List<String> firstLine = new ArrayList<>();
-                firstLine.add(building.getName());
-                rows.add(firstLine);
-
+                rows.add(Arrays.asList(building.getName()));
                 rows.add(Arrays.asList("", "Average Electricity Cost ($/kwh): ", "0.1"));
                 rows.add(Arrays.asList("Equipment", "Number Of Devices", "Cost For Berts", "Daily Time On", "Wattage Draw", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "$ Savings/Year", "Payback Time (Years)"));
 
+                int startPosition = rows.size()+1;
                 int numCategories = 0;
                 for (int categoryID = 0; categoryID < building.getCategoryCount(); categoryID++) {
 
@@ -65,7 +87,7 @@ public class ROIExporter {
                         int rowID = rows.size()+1; //excel rows start at 1
                         info.add(category.getName());
                         info.add(String.valueOf(project.getBertsByCategory(buildingID, categoryID).size()));
-                        info.add("=" + getCell("B") + "*" + deviceTypeCostCells.get(category.getBertTypeID()));
+                        info.add("=" + "B"+rowID + "*" + deviceTypeCostCells.get(category.getBertTypeID()));
                         info.add(String.valueOf(building.getTimeOccupied().getHour24()));
                         int load = category.getEstimatedLoad();
                         info.add(load > 0 ? String.valueOf(load) : "Undefined Load");
@@ -80,18 +102,20 @@ public class ROIExporter {
                     }
                 }
 
+                int endPosition = rows.size();
+
                 List<String> totals = new ArrayList<>();
                 totals.add("Totals: ");
-                totals.add(sumColumn(numCategories));
-                totals.add(sumColumn(numCategories));
+                totals.add(sumColumn("B", startPosition, endPosition));
+                totals.add(sumColumn("C", startPosition, endPosition));
                 totals.add("");
                 totals.add("");
-                totals.add(sumColumn(numCategories));
-                totals.add(sumColumn(numCategories));
-                totals.add(sumColumn(numCategories));
-                totals.add(sumColumn(numCategories));
-                totals.add(sumColumn(numCategories));
-                totals.add("=" + getCell("C") + "/ " + getCell("J"));
+                totals.add(sumColumn("F", startPosition, endPosition));
+                totals.add(sumColumn("G", startPosition, endPosition));
+                totals.add(sumColumn("H", startPosition, endPosition));
+                totals.add(sumColumn("I", startPosition, endPosition));
+                totals.add(sumColumn("J", startPosition, endPosition));
+                totals.add("=" + "C"+(rows.size()+1) + "/ " + "J"+(rows.size()+1));
                 rows.add(totals);
                 rows.add(Arrays.asList(""));
                 totalRows.add(rows.size() - 1);
@@ -112,45 +136,20 @@ public class ROIExporter {
         projectTotals.add(sumRowsAndColumn(totalRows, "H"));
         projectTotals.add(sumRowsAndColumn(totalRows, "I"));
         projectTotals.add(sumRowsAndColumn(totalRows, "J"));
-        projectTotals.add("=" + getCell("C") + "/ " + getCell("J"));
+        projectTotals.add("=" + "C"+(rows.size()+1) + "/ " + "J"+(rows.size()+1));
 
         rows.add(projectTotals);
-        String ROIString = "";
-        for (List<String> row : rows){
-            for (String str: row){
-                ROIString += "\"";
-                ROIString += str;
-                ROIString += "\"";
-                ROIString += ",";
-            }
-            ROIString += '\n';
-        }
-        Log.d("ROI String", ROIString);
-
-        File exportROI = new File(FileProvider.getExportsDirectory(), project.getProjectName() + "_ROI.csv");
-        exportROI.setWritable(true);
-        FileWriter writer = new FileWriter(exportROI);
-
-
-        writer.write(ROIString);
-        writer.close();
-        Log.d("ROI_EXPORT", exportROI.toString());
-        return exportROI;
+        return rows;
     }
 
-    private static String getCell(String column, int offset){
-        return "INDIRECT(CONCATENATE(\"\"" + column + "\"\",ROW() +" + String.valueOf(offset)+ " ))";
-    }
-
-    private static String getCell(String column){
-        return "INDIRECT(CONCATENATE(\"\"" + column + "\"\",ROW()))";
-    }
-
-    private static String sumColumn(int columnHieght){
-        String equasion = "=SUM(INDIRECT(CONCATENATE(CHAR(COLUMN() + 64), ROW() - 1 - ";
-        equasion += String.valueOf(columnHieght);
-        equasion += ", \"\":\"\", CHAR(COLUMN() + 64), ROW()-1)))";
-
+    private static String sumColumn(String columnNumber, int startPosition, int endPosition){
+        String equasion = "=SUM(";
+        equasion += columnNumber;
+        equasion += String.valueOf(startPosition);
+        equasion += ":";
+        equasion += columnNumber;
+        equasion += String.valueOf(endPosition);
+        equasion += ")";
         return equasion;
     }
 
