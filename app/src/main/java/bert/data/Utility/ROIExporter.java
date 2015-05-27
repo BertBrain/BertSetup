@@ -27,70 +27,91 @@ public class ROIExporter {
         rows.add(Arrays.asList("Bert ROI Sheet For: ", project.getProjectName()));
         rows.add(Arrays.asList(""));
 
-        for (String buildingID : project.getBuildingNames()) {
-            Log.d("ROI_EXPORT", "adding building");
-            Building building = project.getBuilding(buildingID);
-            List<String> firstLine = new ArrayList<>();
-            firstLine.add(buildingID);
-            rows.add(firstLine);
+        List<String> deviceTypeCostCells = new ArrayList<>();
+        for (int i = 0; i<Category.bertTypes.size(); i++){
+            List<String> bertTypeInfoRow = new ArrayList<>();
 
-            rows.add(Arrays.asList("", "Bert Cost ($):", "80", "Average Electricity Cost ($/kwh): ", "0.1"));
-            rows.add(Arrays.asList("Equipment", "Number Of Devices", "Daily Time On", "Wattage Draw", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "$ Savings/Year", "Payback Time (Years)"));
+            bertTypeInfoRow.add("Cost of a " + Category.bertTypes.get(i));
+            bertTypeInfoRow.add(String.valueOf(Category.bertTypeCosts.get(i)));
 
-            int numCategories = 0;
-            for (int categoryID = 0; categoryID < building.getCategoryCount(); categoryID++) {
+            deviceTypeCostCells.add("B" + rows.size());
 
-                Log.d("ROI_EXPORT", "adding category");
-                Category category = building.getCategory(categoryID);
-                if (project.getBertsByCategory(buildingID, categoryID).size() != 0){
-
-                    List<String> info = new ArrayList<>();
-
-                    info.add(category.getName());
-                    info.add(String.valueOf(project.getBertsByCategory(buildingID, categoryID).size()));
-                    info.add(String.valueOf(building.getTimeOccupied().getHour24()));
-                    int load = category.getEstimatedLoad();
-                    info.add(load > 0 ? String.valueOf(load) : "Undefined Load");
-                    info.add("=365*24*"+ getCell("B") +"*" + getCell("D")+ "/1000");
-                    info.add("=365*"+ getCell("C") + "*" + getCell("B") + " * " + getCell("D") + "/1000");
-                    info.add("=" + getCell("E") + "*" + getCell("E", -2 -numCategories));
-                    info.add("=" + getCell("F") + "*" + getCell("E", -2 -numCategories));
-                    info.add("=" + getCell("G") + "-" + getCell("H"));
-                    info.add("=" + getCell("B") + "*" + getCell("C", -numCategories - 2) + "/ " + getCell("I"));
-                    rows.add(info);
-                    numCategories++;
-                }
-            }
-
-            List<String> totals = new ArrayList<>();
-            totals.add("Totals: ");
-            totals.add(sumColumn(numCategories));
-            totals.add("");
-            totals.add("");
-            totals.add(sumColumn(numCategories));
-            totals.add(sumColumn(numCategories));
-            totals.add(sumColumn(numCategories));
-            totals.add(sumColumn(numCategories));
-            totals.add(sumColumn(numCategories));
-            totals.add("=" + getCell("B") + "*" + getCell("C", -numCategories - 2) + "/ " + getCell("I"));
-            rows.add(totals);
-            rows.add(Arrays.asList(""));
-            totalRows.add(rows.size() - 1);
+            rows.add(bertTypeInfoRow);
         }
         rows.add(Arrays.asList(""));
-        rows.add(Arrays.asList("", "Total # Of Devices", "", "", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "$ Savings/Year", "Payback Time (Years)"));
+
+        for (String buildingID : project.getBuildingNames()) {
+            Log.d("ROI_EXPORT", "adding building");
+
+            Building building = project.getBuilding(buildingID);
+            if (building.getCategories().size() != 0){
+                List<String> firstLine = new ArrayList<>();
+                firstLine.add(buildingID);
+                rows.add(firstLine);
+
+                rows.add(Arrays.asList("", "Average Electricity Cost ($/kwh): ", "0.1"));
+                rows.add(Arrays.asList("Equipment", "Number Of Devices", "Cost For Berts", "Daily Time On", "Wattage Draw", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "$ Savings/Year", "Payback Time (Years)"));
+
+                int numCategories = 0;
+                for (int categoryID = 0; categoryID < building.getCategoryCount(); categoryID++) {
+
+                    Log.d("ROI_EXPORT", "adding category");
+                    Category category = building.getCategory(categoryID);
+                    if (project.getBertsByCategory(buildingID, categoryID).size() != 0){
+
+                        List<String> info = new ArrayList<>();
+
+                        int rowID = rows.size()+1; //excel rows start at 1
+                        info.add(category.getName());
+                        info.add(String.valueOf(project.getBertsByCategory(buildingID, categoryID).size()));
+                        info.add("=" + getCell("B") + "*" + deviceTypeCostCells.get(category.getBertTypeID()));
+                        info.add(String.valueOf(building.getTimeOccupied().getHour24()));
+                        int load = category.getEstimatedLoad();
+                        info.add(load > 0 ? String.valueOf(load) : "Undefined Load");
+                        info.add("=365*24*"+ "B"+rowID +"*" + "E"+rowID+ "/1000");
+                        info.add("=365*"+ "D"+rowID + "*" + "B"+rowID + " * " + "E"+rowID + "/1000");
+                        info.add("=" + "F"+rowID + "*" + "C"+ (-2 -numCategories + rowID));
+                        info.add("=" + "G"+rowID + "*" + "C"+ (-2 -numCategories + rowID));
+                        info.add("=" + "H"+rowID + "-" + "I"+rowID);
+                        info.add("=" + "C"+rowID + "/ " + "J"+rowID);
+                        rows.add(info);
+                        numCategories++;
+                    }
+                }
+
+                List<String> totals = new ArrayList<>();
+                totals.add("Totals: ");
+                totals.add(sumColumn(numCategories));
+                totals.add(sumColumn(numCategories));
+                totals.add("");
+                totals.add("");
+                totals.add(sumColumn(numCategories));
+                totals.add(sumColumn(numCategories));
+                totals.add(sumColumn(numCategories));
+                totals.add(sumColumn(numCategories));
+                totals.add(sumColumn(numCategories));
+                totals.add("=" + getCell("C") + "/ " + getCell("J"));
+                rows.add(totals);
+                rows.add(Arrays.asList(""));
+                totalRows.add(rows.size() - 1);
+            }
+
+        }
+        rows.add(Arrays.asList(""));
+        rows.add(Arrays.asList("", "Total # Of Devices", "Total Bert Cost", "", "", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "$ Savings/Year", "Payback Time (Years)"));
 
         List<String> projectTotals = new ArrayList<>();
         projectTotals.add("Project Totals: ");
         projectTotals.add(sumRowsAndColumn(totalRows, "B"));
+        projectTotals.add(sumRowsAndColumn(totalRows, "C"));
         projectTotals.add("");
         projectTotals.add("");
-        projectTotals.add(sumRowsAndColumn(totalRows, "E"));
         projectTotals.add(sumRowsAndColumn(totalRows, "F"));
         projectTotals.add(sumRowsAndColumn(totalRows, "G"));
         projectTotals.add(sumRowsAndColumn(totalRows, "H"));
         projectTotals.add(sumRowsAndColumn(totalRows, "I"));
-        projectTotals.add("=" + getCell("B") + "*" + "C4" + "/ " + getCell("I"));
+        projectTotals.add(sumRowsAndColumn(totalRows, "J"));
+        projectTotals.add("=" + getCell("C") + "/ " + getCell("J"));
 
         rows.add(projectTotals);
         String ROIString = "";

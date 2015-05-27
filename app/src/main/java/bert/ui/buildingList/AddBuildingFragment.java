@@ -34,8 +34,8 @@ public class AddBuildingFragment extends Fragment {
     private int projectID;
     private Project project;
 
-    private Time defaultStartTime = new Time(9, 0);
-    private Time defaultEndTime = new Time(17, 0);
+    private Time defaultStartTime = new Time(8, 0);
+    private Time defaultEndTime = new Time(18, 0);
     private ArrayAdapter<String> buildingTypeArrayAdapter;
 
     private EditText buildingNameTextField;
