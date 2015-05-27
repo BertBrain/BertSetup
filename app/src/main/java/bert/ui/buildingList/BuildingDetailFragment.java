@@ -19,6 +19,7 @@ import android.widget.TextView;
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
+import bert.data.proj.exceptions.InvalidBuildingNameException;
 import bert.data.utility.Cleaner;
 import bert.ui.NoSelectionFragment;
 import bert.ui.R;
@@ -80,18 +81,18 @@ public class BuildingDetailFragment extends Fragment {
         bertCountTextView.setText(Integer.toString(project.getBertsByBuilding(buildingID).size()));
 
         nameEditText = (EditText) getView().findViewById(R.id.buildingNameEditText);
-        nameEditText.setText(building.getName());
+        nameEditText.setText(buildingID);
         nameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean validName = Cleaner.isValid(nameEditText.getText().toString());
-                boolean nameNotTaken = !project.getBuildingNames().contains(nameEditText.getText().toString());
-                if (validName && nameNotTaken) {
-                    building.setName(nameEditText.getText().toString());
+                try {
+                    String newBuildingID = nameEditText.getText().toString();
+                    project.renameBuilding(buildingID, newBuildingID);
+                    buildingID = newBuildingID;
                     project.save();
                     ((BuildingListActivity) getActivity()).loadListView();
-                } else {
-                    nameEditText.setText(building.getName());
+                } catch (InvalidBuildingNameException e) {
+                    nameEditText.setText(buildingID);
                 }
                 InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                 mgr.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);

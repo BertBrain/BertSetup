@@ -31,7 +31,7 @@ public class ROIExporter {
             Log.d("ROI_EXPORT", "adding building");
             Building building = project.getBuilding(buildingID);
             List<String> firstLine = new ArrayList<>();
-            firstLine.add(building.getName());
+            firstLine.add(buildingID);
             rows.add(firstLine);
 
             rows.add(Arrays.asList("", "Bert Cost ($):", "80", "Average Electricity Cost ($/kwh): ", "0.1"));

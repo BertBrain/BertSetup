@@ -27,7 +27,7 @@ import javax.xml.transform.stream.StreamResult;
 import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.ProjectSerializer;
-import bert.data.proj.exceptions.DuplicateBuildingInProjectException;
+import bert.data.proj.exceptions.InvalidBuildingNameException;
 import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.utility.Cleaner;
 import bert.data.utility.DateUtil;
@@ -56,7 +56,7 @@ public class Project {
         List<String> locationNames = new ArrayList<>();
         for (BertUnit b : getBerts()) {
             String nextLocation = b.getLocation();
-            if (!locationNames.contains(nextLocation) && b.getBuildingID() == buildingID) {
+            if (!locationNames.contains(nextLocation) && b.getBuildingID().equals(buildingID)) {
                 locationNames.add(nextLocation);
             }
         }
@@ -118,11 +118,11 @@ public class Project {
         }
     }
 
-    public void addBuilding(Building building) throws DuplicateBuildingInProjectException {
-        if (buildingList.containsKey(building.getName())) {
-            throw new DuplicateBuildingInProjectException();
+    public void addBuilding(String buildingID, Building building) throws InvalidBuildingNameException {
+        if (buildingList.containsKey(buildingID)) {
+            throw new InvalidBuildingNameException();
         } else {
-            buildingList.put(building.getName(), building);
+            buildingList.put(buildingID, building);
         }
     }
 
@@ -200,6 +200,16 @@ public class Project {
 
     public Building getBuilding(String buildingID) {
         return buildingList.get(buildingID);
+    }
+
+    public void renameBuilding(String buildingID, String newBuildingID) throws InvalidBuildingNameException {
+        if (Cleaner.isValid(newBuildingID)) {
+            Building building = buildingList.get(buildingID);
+            buildingList.remove(buildingID);
+            addBuilding(newBuildingID, building);
+        } else {
+            throw new InvalidBuildingNameException();
+        }
     }
 
     public int getBuildingCount() {

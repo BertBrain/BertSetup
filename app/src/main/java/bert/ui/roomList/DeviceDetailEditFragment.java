@@ -124,7 +124,7 @@ public class DeviceDetailEditFragment extends Fragment {
 
         roomTextField.setText(location);
 
-        buildingTextField.setText(building.getName());
+        buildingTextField.setText(buildingID);
 
         macAddressTextField.setText(bert.getMAC());
         if (bert.getMAC().length() == 0){

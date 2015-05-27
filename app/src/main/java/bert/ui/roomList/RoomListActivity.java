@@ -111,7 +111,7 @@ public class RoomListActivity extends ActionBarActivity {
     private void setDefaultTitle() {
         int rooms = project.getLocationNamesInBuilding(buildingID).size();
         String roomName = (rooms == 1) ? " Room)" : " Rooms)";
-        this.setTitle(project.getProjectName() + " " + project.getBuilding(buildingID).getName() + " (" + rooms + roomName);
+        this.setTitle(project.getProjectName() + " " + buildingID + " (" + rooms + roomName);
 
     }
 }

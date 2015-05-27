@@ -18,7 +18,6 @@ public class BuildingSerializer {
     public static final String ATTR_END_TIME = "EndTime";
 
     public static Building getBuildingFromElement(Element e) {
-        String name = e.getAttribute(ATTR_NAME);
         Time startTime;
         try {
             startTime = new Time(Integer.parseInt(e.getAttribute(ATTR_START_TIME)));
@@ -43,12 +42,16 @@ public class BuildingSerializer {
             Category cat = CategorySerializer.getCategoryFromElement(categoryElement);
             categories.add(id, cat);
         }
-        return new Building(name, startTime, endTime, categories);
+        return new Building(startTime, endTime, categories);
     }
 
-    public static Element getElementFromBuilding(Building b, Document d) {
+    public static String getBuildingNameFromElement(Element e) {
+        return e.getAttribute(ATTR_NAME);
+    }
+
+    public static Element getElementFromBuilding(String buildingID, Building b, Document d) {
         Element e = d.createElement(TAG_BUILDING);
-        e.setAttribute(ATTR_NAME, b.getName());
+        e.setAttribute(ATTR_NAME, buildingID);
         e.setAttribute(ATTR_START_TIME, Integer.toString(b.getStartTime().getRaw()));
         e.setAttribute(ATTR_END_TIME, Integer.toString(b.getEndTime().getRaw()));
 
