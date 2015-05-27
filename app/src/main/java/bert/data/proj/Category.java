@@ -5,29 +5,18 @@ import java.util.List;
 
 public class Category {
 
-    public final static int UNSET = -1;
+    public static final int UNSET = -1;
 
-	private String name;
 	private int bertTypeID;
 	private int estimatedLoad;
 	
 	/**
-	 * @param name Name of device
 	 * @param bertTypeID
 	 * @param estimatedLoad in watts
 	 */
-	public Category(String name, int bertTypeID, int estimatedLoad) {
-		this.name = name;
+	public Category(int bertTypeID, int estimatedLoad) {
 		this.bertTypeID = bertTypeID;
 		this.estimatedLoad = estimatedLoad;
-	}
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String newName) {
-		this.name = newName;
 	}
 
 	public int getBertTypeID() {

@@ -149,13 +149,13 @@ public class DeviceDetailEditFragment extends Fragment {
             }
         });
 
-        categorySelector.setSelection(bert.getCategoryID());
+        categorySelector.setSelection(categoryAdapter.getPosition(bert.getCategoryID()));
     }
 
     private void saveChanges() {
         bert.setMAC(macAddressTextField.getText().toString());
         bert.setName(deviceNameTextField.getText().toString());
-        bert.setCategoryID(categorySelector.getSelectedItemPosition());
+        bert.setCategoryID(categoryAdapter.getItem(categorySelector.getSelectedItemPosition()));
         project.save();
         activity.deviceListFragment.onResume();
         onResume();

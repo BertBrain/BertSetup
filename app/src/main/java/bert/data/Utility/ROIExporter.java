@@ -44,7 +44,7 @@ public class ROIExporter {
             Log.d("ROI_EXPORT", "adding building");
 
             Building building = project.getBuilding(buildingID);
-            if (building.getCategories().size() != 0){
+            if (building.getCategoryCount() != 0){
                 List<String> firstLine = new ArrayList<>();
                 firstLine.add(buildingID);
                 rows.add(firstLine);
@@ -53,7 +53,7 @@ public class ROIExporter {
                 rows.add(Arrays.asList("Equipment", "Number Of Devices", "Cost For Berts", "Daily Time On", "Wattage Draw", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "$ Savings/Year", "Payback Time (Years)"));
 
                 int numCategories = 0;
-                for (int categoryID = 0; categoryID < building.getCategoryCount(); categoryID++) {
+                for (String categoryID : building.getCategoryNames()) {
 
                     Log.d("ROI_EXPORT", "adding category");
                     Category category = building.getCategory(categoryID);
@@ -62,7 +62,7 @@ public class ROIExporter {
                         List<String> info = new ArrayList<>();
 
                         int rowID = rows.size()+1; //excel rows start at 1
-                        info.add(category.getName());
+                        info.add(categoryID);
                         info.add(String.valueOf(project.getBertsByCategory(buildingID, categoryID).size()));
                         info.add("=" + getCell("B") + "*" + deviceTypeCostCells.get(category.getBertTypeID()));
                         info.add(String.valueOf(building.getTimeOccupied().getHour24()));

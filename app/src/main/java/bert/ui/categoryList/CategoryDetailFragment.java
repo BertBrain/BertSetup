@@ -8,7 +8,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,10 +15,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import bert.data.FileProvider;
 import bert.data.ProjectProvider;
+import bert.data.proj.Building;
 import bert.data.proj.Category;
 import bert.data.proj.Project;
+import bert.data.proj.exceptions.InvalidCategoryNameException;
+import bert.ui.BertAlert;
 import bert.ui.R;
 
 public class CategoryDetailFragment extends Fragment {
@@ -31,11 +32,12 @@ public class CategoryDetailFragment extends Fragment {
 
     private int projectID;
     private String buildingID;
-    private int categoryID;
+    private String categoryID;
 
     private CategoryListActivity activity;
 
     private Project project;
+    private Building building;
     private Category category;
 
     private EditText categoryNameEditText;
@@ -46,12 +48,12 @@ public class CategoryDetailFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public static CategoryDetailFragment newInstance(int projectID, String buildingID, int categoryID) {
+    public static CategoryDetailFragment newInstance(int projectID, String buildingID, String categoryID) {
         CategoryDetailFragment fragment = new CategoryDetailFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT_ID, projectID);
         args.putString(ARG_BUILDING_ID, buildingID);
-        args.putInt(ARG_CATEGORY_ID, categoryID);
+        args.putString(ARG_CATEGORY_ID, categoryID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,10 +65,12 @@ public class CategoryDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
-            categoryID = getArguments().getInt(ARG_CATEGORY_ID);
+            categoryID = getArguments().getString(ARG_CATEGORY_ID);
             buildingID = getArguments().getString(ARG_BUILDING_ID);
+
             project = ProjectProvider.getInstance().getProject(projectID);
-            category = project.getBuilding(buildingID).getCategory(categoryID);
+            building = project.getBuilding(buildingID);
+            category = building.getCategory(categoryID);
         }
         activity = (CategoryListActivity)getActivity();
     }
@@ -74,8 +78,9 @@ public class CategoryDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         categoryNameEditText = (EditText) getView().findViewById(R.id.category_name_edit_text);
-        categoryNameEditText.setText(category.getName());
+        categoryNameEditText.setText(categoryID);
         categoryNameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -94,14 +99,17 @@ public class CategoryDetailFragment extends Fragment {
                 return false;
             }
         });
+
         estimatedLoadEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus && estimatedLoadEditText.getText().toString().contentEquals(UNDEFINED_LOAD_STRING) ) {
+                if (hasFocus && estimatedLoadEditText.getText().toString().contentEquals(UNDEFINED_LOAD_STRING)) {
                     estimatedLoadEditText.setText("");
                 }
             }
         });
+
+        System.out.println(category.getEstimatedLoad());
         if (category.getEstimatedLoad() != Category.UNSET) {
             estimatedLoadEditText.setText(String.valueOf(category.getEstimatedLoad()));
         } else {
@@ -141,8 +149,7 @@ public class CategoryDetailFragment extends Fragment {
         try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -157,19 +164,26 @@ public class CategoryDetailFragment extends Fragment {
     }
 
     private void saveChanges() {
-        category.setName(categoryNameEditText.getText().toString());
-
         try {
-          category.setEstimatedLoad(Integer.valueOf(estimatedLoadEditText.getText().toString()));
-        } catch (NumberFormatException e) {
-            category.setEstimatedLoad(Category.UNSET);
-            if (!estimatedLoadEditText.hasFocus()){
-                estimatedLoadEditText.setText(UNDEFINED_LOAD_STRING);
+            String newCategoryID = categoryNameEditText.getText().toString();
+            building.renameCategory(categoryID, newCategoryID);
+            categoryID = newCategoryID;
+            try {
+                int estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
+                category.setEstimatedLoad(estimatedLoad);
+            } catch (NumberFormatException e) {
+                category.setEstimatedLoad(Category.UNSET);
+                if (!estimatedLoadEditText.hasFocus()) {
+                    estimatedLoadEditText.setText(UNDEFINED_LOAD_STRING);
+                }
             }
+            category.setBertTypeID(bertTypeSpinner.getSelectedItemPosition());
+            project.save();
+            activity.createCategoryListView();
+        } catch (InvalidCategoryNameException e) {
+            e.printStackTrace();
+            BertAlert.show(getActivity(), "Invalid New Category Name");
+            categoryNameEditText.setText(categoryID);
         }
-
-        category.setBertTypeID(bertTypeSpinner.getSelectedItemPosition());
-        project.save();
-        ((CategoryListActivity) getActivity()).createCategoryListView();
     }
 }

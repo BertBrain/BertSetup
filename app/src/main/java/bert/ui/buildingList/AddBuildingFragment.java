@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.HashMap;
 
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
@@ -108,7 +108,7 @@ public class AddBuildingFragment extends Fragment {
             String buildingID = buildingNameTextField.getText().toString();
             Time startTime = timeDisplay.getStartTime();
             Time endTime = timeDisplay.getEndTime();
-            List<Category> presetCategories = CategoryPresets.getPresets().get(buildingTypeSpinner.getSelectedItem());
+            HashMap<String, Category> presetCategories = CategoryPresets.getPresets().get(buildingTypeSpinner.getSelectedItem());
             Building building = new Building(startTime, endTime, presetCategories);
             project.addBuilding(buildingID, building);
             project.save();

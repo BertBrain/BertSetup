@@ -17,11 +17,10 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 
-import bert.data.proj.Category;
+import bert.data.proj.Building;
 
 import bert.data.proj.Project;
 import bert.data.utility.Cleaner;
@@ -40,6 +39,7 @@ public class AuditWizardFragment extends Fragment {
     private String buildingID;
 
     private Project project;
+    private Building building;
 
     private Button cancelButton;
     private Button finishedButton;
@@ -80,8 +80,9 @@ public class AuditWizardFragment extends Fragment {
     @Override public void onResume() {
         super.onResume();
         project = ProjectProvider.getInstance().getProject(projectID);
+        building = project.getBuilding(buildingID);
 
-        tallyGridAdapter = new AuditTallyBoxGVA(this, activity, android.R.layout.simple_gallery_item, project.getBuilding(buildingID).getCategories(), projectID, buildingID);
+        tallyGridAdapter = new AuditTallyBoxGVA(this, activity, android.R.layout.simple_gallery_item, building.getCategoryNames(), projectID, buildingID);
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(tallyGridAdapter);
 
@@ -167,19 +168,15 @@ public class AuditWizardFragment extends Fragment {
     private void finishAuditWizard() {
         String location = locationEditText.getText().toString();
         if (Cleaner.isValid(location)) {
-            HashMap<Category, Integer> categoryCounts = tallyGridAdapter.getCounts();
+            HashMap<String, Integer> categoryCounts = tallyGridAdapter.getCounts();
             List<BertUnit> bertList = new ArrayList<>();
-            int categoryCount = 0;
-            for (Category category : project.getBuilding(buildingID).getCategories()) {
-                if (categoryCounts.get(category) != null) {
-                    for (int i = 0; i < categoryCounts.get(category); i++) {
-                        String countString = i == 0 ? "" : String.valueOf(i + 1);
-                        String name = location + " - " + category.getName() + " " + countString;
-                        BertUnit bert = new BertUnit(name, location, "", buildingID, categoryCount, false);
-                        bertList.add(bert);
-                    }
+            for (String categoryID : building.getCategoryNames()) {
+                for (int i = 0; i < categoryCounts.get(categoryID); i++) {
+                    String countString = (i == 0) ? ("") : (String.valueOf(i + 1));
+                    String name = location + " - " + categoryID + " " + countString;
+                    BertUnit bert = new BertUnit(name, location, "", buildingID, categoryID, false);
+                    bertList.add(bert);
                 }
-                categoryCount++;
             }
             project.addBerts(bertList);
             activity.onResume(); //Refresh view

@@ -18,7 +18,6 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
 
-import bert.data.FileProvider;
 import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;

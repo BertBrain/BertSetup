@@ -70,7 +70,7 @@ public class Project {
     public List<BertUnit> getBertsByLocation(String buildingID, String location) {
         List<BertUnit> returnList = new ArrayList<>();
         for (BertUnit b : getBerts()) {
-            if (b.getBuildingID() == buildingID && b.getLocation() == location) {
+            if (b.getBuildingID().equals(buildingID) && b.getLocation().equals(location)) {
                 returnList.add(b);
             }
         }
@@ -80,7 +80,7 @@ public class Project {
     public List<BertUnit> getBertsByBuilding(String buildingID) {
         List<BertUnit> returnList = new ArrayList<>();
         for (BertUnit b : getBerts()) {
-            if (b.getBuildingID() == buildingID) {
+            if (b.getBuildingID().equals(buildingID)) {
                 returnList.add(b);
             }
         }
@@ -98,10 +98,10 @@ public class Project {
         return locationNames.size();
     }
 
-    public List<BertUnit> getBertsByCategory(String buildingID, int categoryID) {
+    public List<BertUnit> getBertsByCategory(String buildingID, String categoryID) {
         List<BertUnit> returnList = new ArrayList<>();
         for (BertUnit b : getBerts()) {
-            if (b.getBuildingID() == buildingID && b.getCategoryID() == categoryID) {
+            if (b.getBuildingID().equals(buildingID) && b.getCategoryID().equals(categoryID)) {
                 returnList.add(b);
             }
         }
@@ -119,10 +119,10 @@ public class Project {
     }
 
     public void addBuilding(String buildingID, Building building) throws InvalidBuildingNameException {
-        if (buildingList.containsKey(buildingID)) {
-            throw new InvalidBuildingNameException();
-        } else {
+        if (!buildingList.containsKey(buildingID) && Cleaner.isValid(buildingID)) {
             buildingList.put(buildingID, building);
+        } else {
+            throw new InvalidBuildingNameException();
         }
     }
 
@@ -203,13 +203,9 @@ public class Project {
     }
 
     public void renameBuilding(String buildingID, String newBuildingID) throws InvalidBuildingNameException {
-        if (Cleaner.isValid(newBuildingID)) {
-            Building building = buildingList.get(buildingID);
-            buildingList.remove(buildingID);
-            addBuilding(newBuildingID, building);
-        } else {
-            throw new InvalidBuildingNameException();
-        }
+        Building building = buildingList.get(buildingID);
+        addBuilding(newBuildingID, building);
+        buildingList.remove(buildingID);
     }
 
     public int getBuildingCount() {
