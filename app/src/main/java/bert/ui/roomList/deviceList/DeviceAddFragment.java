@@ -1,4 +1,4 @@
-package bert.ui.roomList;
+package bert.ui.roomList.deviceList;
 
 
 import android.os.Bundle;
@@ -19,8 +19,9 @@ import bert.data.proj.Building;
 import bert.data.proj.Project;
 import bert.data.utility.Cleaner;
 import bert.ui.R;
+import bert.ui.roomList.RoomListActivity;
 
-public class DeviceDetailAddFragment extends Fragment {
+public class DeviceAddFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
     private static final String ARG_LOCATION = "location";
@@ -41,8 +42,8 @@ public class DeviceDetailAddFragment extends Fragment {
     private Spinner categorySpinner;
     private ArrayAdapter<String> categoryAdapter;
 
-    public static DeviceDetailAddFragment newInstance(int projectID, String buildingID, String location) {
-        DeviceDetailAddFragment fragment = new DeviceDetailAddFragment();
+    public static DeviceAddFragment newInstance(int projectID, String buildingID, String location) {
+        DeviceAddFragment fragment = new DeviceAddFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT_ID, projectID);
         args.putString(ARG_BUILDING_ID, buildingID);
@@ -114,7 +115,7 @@ public class DeviceDetailAddFragment extends Fragment {
         activity.deviceListFragment.openNewestDeviceDetailFragment();
     }
 
-    public DeviceDetailAddFragment() {}
+    public DeviceAddFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

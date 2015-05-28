@@ -23,7 +23,7 @@ import bert.data.proj.Category;
 import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidCategoryNameException;
 import bert.data.proj.exceptions.UnableToDeleteException;
-import bert.ui.BertAlert;
+import bert.ui.common.BertAlert;
 import bert.ui.R;
 
 public class CategoryDetailFragment extends Fragment {

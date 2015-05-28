@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import bert.data.ProjectProvider;
-import bert.ui.NoSelectionFragment;
+import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
 
 public class ProjectListActivity extends ActionBarActivity implements AddProjectFragment.OnFragmentInteractionListener, ProjectDetailFragment.OnFragmentInteractionListener {

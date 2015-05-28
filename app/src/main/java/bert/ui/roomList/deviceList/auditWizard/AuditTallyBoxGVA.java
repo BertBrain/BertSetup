@@ -1,4 +1,4 @@
-package bert.ui.roomList;
+package bert.ui.roomList.deviceList.auditWizard;
 
 import android.content.Intent;
 import android.util.Log;
@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import bert.ui.R;
+import bert.ui.roomList.RoomListActivity;
 
 import java.util.HashMap;
 import java.util.List;

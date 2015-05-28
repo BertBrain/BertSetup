@@ -14,8 +14,11 @@ import java.util.List;
 
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
-import bert.ui.NoSelectionFragment;
+import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
+import bert.ui.roomList.deviceList.DeviceListFragment;
+import bert.ui.roomList.deviceList.auditWizard.AuditTallyBoxGVA;
+import bert.ui.roomList.deviceList.auditWizard.AuditWizardFragment;
 
 public class RoomListActivity extends ActionBarActivity {
 

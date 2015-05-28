@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".roomList.AddCategoryFrameActivity"
+            android:name=".roomList.deviceList.auditWizard.AddCategoryFrameActivity"
             android:label="@string/title_activity_add_category" >
         </activity>
         <activity

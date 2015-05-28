@@ -1,4 +1,4 @@
-package bert.ui;
+package bert.ui.common;
 
 import android.app.Activity;
 import android.app.AlertDialog;

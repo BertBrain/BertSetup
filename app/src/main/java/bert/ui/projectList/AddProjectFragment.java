@@ -21,7 +21,7 @@ import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.utility.Cleaner;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
-import bert.ui.BertAlert;
+import bert.ui.common.BertAlert;
 import bert.ui.R;
 import bert.ui.buildingList.BuildingListActivity;
 

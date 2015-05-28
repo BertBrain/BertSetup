@@ -1,4 +1,4 @@
-package bert.ui.roomList;
+package bert.ui.roomList.deviceList.auditWizard;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,10 +25,9 @@ import bert.data.proj.Building;
 import bert.data.proj.Project;
 import bert.data.utility.Cleaner;
 import bert.ui.R;
+import bert.ui.roomList.RoomListActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class AuditWizardFragment extends Fragment {
 

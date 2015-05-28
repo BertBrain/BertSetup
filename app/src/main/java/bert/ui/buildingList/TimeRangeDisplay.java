@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import bert.data.proj.Time;
-import bert.ui.BertAlert;
+import bert.ui.common.BertAlert;
 
 /**
  * Created by liamcook on 5/14/15.

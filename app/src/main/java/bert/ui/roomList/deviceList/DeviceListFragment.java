@@ -1,4 +1,4 @@
-package bert.ui.roomList;
+package bert.ui.roomList.deviceList;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -11,8 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import bert.data.proj.Project;
-import bert.ui.NoSelectionFragment;
+import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
+import bert.ui.roomList.RoomListActivity;
 
 public class DeviceListFragment extends Fragment {
     public static final String ARG_LOCATION = "LOCATION";
@@ -91,13 +92,13 @@ public class DeviceListFragment extends Fragment {
 
     public void loadDeviceAtPosition(int position) {
         System.out.println("editing device");
-        DeviceDetailEditFragment fragment = DeviceDetailEditFragment.newInstance(projectID, buildingID, location, position);
+        DeviceDetailFragment fragment = DeviceDetailFragment.newInstance(projectID, buildingID, location, position);
         loadFragment(fragment);
     }
 
     public void addDevice() {
         System.out.println("adding device");
-        DeviceDetailAddFragment fragment = DeviceDetailAddFragment.newInstance(projectID, buildingID, location);
+        DeviceAddFragment fragment = DeviceAddFragment.newInstance(projectID, buildingID, location);
         loadFragment(fragment);
     }
 

@@ -1,4 +1,4 @@
-package bert.ui.roomList;
+package bert.ui.roomList.deviceList.auditWizard;
 
 import android.app.FragmentTransaction;
 import android.net.Uri;
