@@ -155,26 +155,27 @@ public class DeviceDetailFragment extends Fragment {
 
             private int lastCursorPosition = 0;
             String oldtext = "";
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 Log.d("MACFORMATTER", "on text changed start: " + start + "last start: " + lastCursorPosition + "before: " + before + "count: " + count);
-                if (before != count){
+                if (before != count) {
                     String text = s.toString().replace(":", "");
                     macAddressTextField.setText(text.replaceAll("([0-9A-Fa-f]{2})", "$1:"));
-                    if (macAddressTextField.getText().length() > 17){
+                    if (macAddressTextField.getText().length() > 17) {
                         macAddressTextField.setText(oldtext);
                     }
-                    if (start != 0 || (start == 0 && lastCursorPosition == 0) ){
-                        int cursorPosition = start + (count-before);
-                        if (macAddressTextField.getText().toString().substring(macAddressTextField.getText().length()-1).contains(":")){
-                            if (count > before){
+                    if (start != 0 || (start == 0 && lastCursorPosition == 0)) {
+                        int cursorPosition = start + (count - before);
+                        if (macAddressTextField.getText().toString().substring(macAddressTextField.getText().length() - 1).contains(":")) {
+                            if (count > before) {
                                 cursorPosition++;
                             } else {
                                 cursorPosition--;
                             }
                         }
-                        macAddressTextField.setSelection(cursorPosition,cursorPosition);
+                        macAddressTextField.setSelection(cursorPosition, cursorPosition);
                         lastCursorPosition = cursorPosition;
                     }
 

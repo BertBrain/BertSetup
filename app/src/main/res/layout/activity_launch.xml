@@ -1,20 +1,25 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="bert.ui.launchScreen.LaunchActivity">
-
+    tools:context="bert.ui.launchScreen.LaunchActivity"
+    android:background="@color/LightGreen">
     <ImageButton
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:scaleX="0.75"
+        android:scaleY="0.75"
+        android:background="#FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/startScreenImage"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:src="@drawable/startupimage"
-        android:layout_alignParentEnd="true"
+        android:src="@drawable/startup_splash"
         android:layout_centerInParent="true"
         android:focusable="false" />
 </RelativeLayout>
