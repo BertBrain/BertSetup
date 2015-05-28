@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import bert.data.ProjectProvider;
 import bert.data.proj.Project;
 import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
@@ -22,7 +23,6 @@ public class DeviceListFragment extends Fragment {
 
     public static final String ADD_BUILDING_STRING = "+ Add Bert";
 
-    private RoomListActivity activity;
     private Project project;
     private int projectID;
     private String buildingID;
@@ -46,7 +46,6 @@ public class DeviceListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (RoomListActivity) getActivity();
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT);
             buildingID = getArguments().getString(ARG_BUILDING);
@@ -58,7 +57,8 @@ public class DeviceListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        project = activity.getProject();
+        project = ProjectProvider.getInstance().getProject(projectID);
+
         locationListView = (ListView) getView().findViewById(R.id.bertList);
 
         deviceTableAdapter = new DeviceDetailListGVA(getActivity(), this, project.getBertsByRoom(buildingID, location));

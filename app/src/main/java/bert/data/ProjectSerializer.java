@@ -90,8 +90,7 @@ public class ProjectSerializer {
 
         //BERT SERIALIZATION
         Element bertElementList = projectDoc.createElement(TAG_BERTS);
-        for (int i = 0; i < p.getBerts().size(); i++) {
-            BertUnit bert = p.getBerts().get(i);
+        for (BertUnit bert : p.getBerts()) {
             Element bertElement = BertUnitSerializer.getElementFromBertUnit(bert, projectDoc);
             bertElementList.appendChild(bertElement);
         }

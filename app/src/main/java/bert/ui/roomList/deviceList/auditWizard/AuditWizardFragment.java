@@ -1,7 +1,6 @@
 package bert.ui.roomList.deviceList.auditWizard;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -71,11 +70,6 @@ public class AuditWizardFragment extends Fragment {
         activity = (RoomListActivity) getActivity();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_audit_wizard, container, false);
-    }
-
     @Override public void onResume() {
         super.onResume();
         project = ProjectProvider.getInstance().getProject(projectID);
@@ -92,6 +86,7 @@ public class AuditWizardFragment extends Fragment {
         finishedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                activity.inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 finishAuditWizard();
             }
         });
@@ -107,9 +102,8 @@ public class AuditWizardFragment extends Fragment {
         locationEditText = (EditText) getView().findViewById(R.id.locationNameTextField);
         locationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-                mgr.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+                activity.inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 return false;
             }
         });
@@ -117,16 +111,6 @@ public class AuditWizardFragment extends Fragment {
 
     public void setCanFinish(boolean canFinish) {
         finishedButton.setEnabled(canFinish);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     public void setBertTotalCounter(int count) {
@@ -139,16 +123,14 @@ public class AuditWizardFragment extends Fragment {
         noRoomNameSetAlert.setPositiveButton("Set Room Name", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
-                InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                manager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                activity.inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                 locationEditText.setFocusable(true);
                 locationEditText.requestFocus();
                 locationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            manager.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
+                            activity.inputManager.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
                             finishAuditWizard();
                         }
                         return false;
@@ -182,6 +164,20 @@ public class AuditWizardFragment extends Fragment {
         } else {
             openNoRoomNamePopup();
         }
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_audit_wizard, container, false);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 }

@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,12 +34,9 @@ public class RoomListActivity extends ActionBarActivity {
     public DeviceListFragment deviceListFragment;
 
     private Button startAuditButton;
-    private ArrayAdapter<String> locationListAdapter;
-    private ListView locationListView;
-
-    public Project getProject() {
-        return project;
-    }
+    private ArrayAdapter<String> roomListAdapter;
+    private ListView roomListView;
+    public InputMethodManager inputManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +47,7 @@ public class RoomListActivity extends ActionBarActivity {
             projectID = extras.getInt(ARG_PROJECT_ID);
             buildingID = extras.getString(ARG_BUILDING_ID);
         }
+        inputManager = (InputMethodManager) this.getSystemService(INPUT_METHOD_SERVICE);
         openNoSelection();
     }
 
@@ -68,10 +67,10 @@ public class RoomListActivity extends ActionBarActivity {
         final List<String> roomNames = project.getRoomNamesInBuilding(buildingID);
 
         if (roomNames.size() != 0) {
-            locationListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, roomNames);
-            locationListView = (ListView) findViewById(R.id.item_list_view);
-            locationListView.setAdapter(locationListAdapter);
-            locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            roomListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, roomNames);
+            roomListView = (ListView) findViewById(R.id.item_list_view);
+            roomListView.setAdapter(roomListAdapter);
+            roomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     openDeviceListFragment(roomNames.get(position));
@@ -109,6 +108,5 @@ public class RoomListActivity extends ActionBarActivity {
         int rooms = project.getRoomNamesInBuilding(buildingID).size();
         String roomName = (rooms == 1) ? " Room)" : " Rooms)";
         this.setTitle(project.getProjectName() + " " + buildingID + " (" + rooms + roomName);
-
     }
 }

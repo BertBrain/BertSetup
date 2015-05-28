@@ -67,6 +67,13 @@ public class Project {
         return new ArrayList<>(buildingList.keySet());
     }
 
+    public List<BertUnit> getBerts() {
+        List<BertUnit> output = new ArrayList<>();
+        for (BertUnit b : bertList) {
+            output.add(b);
+        }
+        return output;
+    }
 
     public List<BertUnit> getBertsByRoom(String buildingID, String roomID) {
         List<BertUnit> returnList = new ArrayList<>();
@@ -121,14 +128,9 @@ public class Project {
         bertList.remove(bert);
     }
 
-    public List<BertUnit> getBerts() {
-        List<BertUnit> output = new ArrayList<>();
-        for (BertUnit b : bertList) {
-            output.add(b);
-        }
-        return output;
+    public Building getBuilding(String buildingID) {
+        return buildingList.get(buildingID);
     }
-
     public void addBuilding(String buildingID, Building building) throws InvalidBuildingNameException {
         if (!buildingList.containsKey(buildingID) && Cleaner.isValid(buildingID)) {
             buildingList.put(buildingID, building);
@@ -136,9 +138,14 @@ public class Project {
             throw new InvalidBuildingNameException();
         }
     }
-
+    public void renameBuilding(String buildingID, String newBuildingID) throws InvalidBuildingNameException {
+        Building building = buildingList.get(buildingID);
+        addBuilding(newBuildingID, building);
+        buildingList.remove(buildingID);
+    }
     public void deleteBuilding(String buildingID) {
         for (BertUnit b : getBertsByBuilding(buildingID)) {
+            deleteBert(b);
             deleteBert(b);
         }
         buildingList.remove(buildingID);
@@ -190,15 +197,9 @@ public class Project {
         this.modifiedDate = newModifiedDate;
     }
 
-    public Building getBuilding(String buildingID) {
-        return buildingList.get(buildingID);
-    }
-
-    public void renameBuilding(String buildingID, String newBuildingID) throws InvalidBuildingNameException {
-        Building building = buildingList.get(buildingID);
-        addBuilding(newBuildingID, building);
-        buildingList.remove(buildingID);
-    }
+    /*
+    Loading and Saving
+     */
 
     public void save() {
         Log.d("ProjectSaver", "Saving Project: " + getProjectName() + " to XML file");

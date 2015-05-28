@@ -21,7 +21,7 @@ import java.util.List;
 public class AuditTallyBoxGVA extends ArrayAdapter<String> {
 
     private HashMap<String, View> categoryCells = new HashMap<>();
-    private static HashMap<String, Integer> counts;
+    private static HashMap<String, Integer> categoryCounts;
     private List<String> categoryNames;
     private RoomListActivity activity;
     private AuditWizardFragment parent;
@@ -38,7 +38,7 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
     }
 
     public HashMap<String, Integer> getCounts() {
-        return this.counts;
+        return this.categoryCounts;
     }
 
     @Override
@@ -62,8 +62,8 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
         } else {
             if (!categoryCells.keySet().contains(categoryNames.get(position))) {
                 log("creating grid cell at position for category: " + categoryNames.get(position));
-                if (!counts.keySet().contains(categoryNames.get(position))){
-                    counts.put(categoryNames.get(position), 0);
+                if (!categoryCounts.keySet().contains(categoryNames.get(position))){
+                    categoryCounts.put(categoryNames.get(position), 0);
                 }
 
                 gridCell = inflater.inflate(R.layout.fragment_audit_wizard_category_cell, parent, false);
@@ -75,7 +75,7 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
                 Button decrementButton = (Button) gridCell.findViewById(R.id.decrementButton);
 
                 TextView deviceTypeCounter = (TextView) gridCell.findViewById(R.id.deviceCounterTextField);
-                deviceTypeCounter.setText(counts.get(categoryNames.get(position)).toString());
+                deviceTypeCounter.setText(categoryCounts.get(categoryNames.get(position)).toString());
 
                 log("creating click listeners");
                 incrementButton.setOnClickListener(new buttonListener(categoryNames.get(position), 1, this));
@@ -90,7 +90,7 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
     }
 
     static public void resetCounts(){
-        counts = new HashMap<>();
+        categoryCounts = new HashMap<>();
     }
 
     void createNewCategory() {
@@ -101,7 +101,7 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
     }
 
     void addCategoryName(String categoryName, int numberToAdd) {
-        int oldCount = counts.get(categoryName);
+        int oldCount = categoryCounts.get(categoryName);
         int newCount;
         if (oldCount > 0 || numberToAdd > 0) {
             newCount = oldCount + numberToAdd;
@@ -109,10 +109,10 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
             newCount = oldCount;
         }
 
-        counts.put(categoryName, newCount);
+        categoryCounts.put(categoryName, newCount);
         setCountForCategoryName(categoryName, newCount);
 
-        log("count for: " + categoryName + " is now: " + counts.get(categoryName));
+        log("count for: " + categoryName + " is now: " + categoryCounts.get(categoryName));
     }
 
     void setCountForCategoryName(String categoryName, int count) {
@@ -125,7 +125,7 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
 
     public int updateBertTotal() {
         int totalCount = 0;
-        for (Integer i : counts.values()) {
+        for (Integer i : categoryCounts.values()) {
             totalCount += i;
         }
         parent.setCanFinish(totalCount != 0);
