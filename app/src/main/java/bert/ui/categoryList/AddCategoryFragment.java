@@ -14,10 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import bert.data.FileProvider;
 import bert.data.ProjectProvider;
+import bert.data.proj.Building;
 import bert.data.proj.Category;
 import bert.data.proj.Project;
+import bert.data.proj.exceptions.InvalidCategoryNameException;
 import bert.data.utility.Cleaner;
 import bert.ui.BertAlert;
 import bert.ui.R;
@@ -31,6 +32,7 @@ public class AddCategoryFragment extends Fragment {
     private String buildingID;
 
     private Project project;
+    private Building building;
     private OnFragmentInteractionListener activity;
 
     private ArrayAdapter<String> bertTypeSpinnerAdapter;
@@ -59,8 +61,9 @@ public class AddCategoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
-            project = ProjectProvider.getInstance().getProject(projectID);
             buildingID = getArguments().getString(ARG_BUILDING_ID);
+            project = ProjectProvider.getInstance().getProject(projectID);
+            building = project.getBuilding(buildingID);
             activity = (OnFragmentInteractionListener) getActivity();
         }
     }
@@ -110,7 +113,7 @@ public class AddCategoryFragment extends Fragment {
     }
 
     private void createCategoryAndFinish() {
-        String name = categoryNameEditText.getText().toString();
+        String categoryID = categoryNameEditText.getText().toString();
         int bertType = bertTypeSpinner.getSelectedItemPosition();
         int estimatedLoad;
         try {
@@ -121,14 +124,19 @@ public class AddCategoryFragment extends Fragment {
             }
         } catch (NumberFormatException e) {
             estimatedLoad = Category.UNSET;
-            BertAlert.show(getActivity(), "Invalid number entered");
+            BertAlert.show(getActivity(), "Invalid number entered.");
             System.out.println("invalid number passed");
             return;
         }
-        Category cat = new Category (name, bertType, estimatedLoad);
-        project.getBuilding(buildingID).addCategory(cat);
-        project.save();
-        activity.categoryCreationSuccessful();
+        Category newCategory = new Category (bertType, estimatedLoad);
+        try {
+            building.addCategory(categoryID, newCategory);
+            project.save();
+            activity.categoryCreationSuccessful(categoryID);
+        } catch (InvalidCategoryNameException e) {
+            e.printStackTrace();
+            BertAlert.show(getActivity(), "Invalid Category Name.");
+        }
     }
 
     @Override
@@ -161,6 +169,6 @@ public class AddCategoryFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
         public void categoryCreationCanceled();
-        public void categoryCreationSuccessful();
+        public void categoryCreationSuccessful(String categoryID);
     }
 }

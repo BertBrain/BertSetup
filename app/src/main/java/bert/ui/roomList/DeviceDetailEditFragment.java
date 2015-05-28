@@ -20,14 +20,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DecimalFormat;
+import java.text.MessageFormat;
 
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
-import bert.data.proj.exceptions.InvalidMACExeption;
 import bert.ui.R;
 
 public class DeviceDetailEditFragment extends Fragment {
@@ -149,30 +148,35 @@ public class DeviceDetailEditFragment extends Fragment {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-           }
+            }
 
+            private int lastCursorPosition = 0;
+            String oldtext = "";
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (before !=count){
-                    String MAC = macAddressTextField.getText().toString();
-                    MAC.replace(":", "");
 
-                    List<String> octets = new ArrayList<>();
-                    try {
-                        for (int i = 0; i < MAC.length(); i = i+2){
-                            octets.add(MAC.substring(i, i+1));
+                Log.d("MACFORMATTER", "on text changed start: " + start + "last start: " + lastCursorPosition + "before: " + before + "count: " + count);
+                if (before != count){
+                    String text = s.toString().replace(":", "");
+                    macAddressTextField.setText(text.replaceAll("([0-9A-Fa-f]{2})", "$1:"));
+                    if (macAddressTextField.getText().length() > 17){
+                        macAddressTextField.setText(oldtext);
+                    }
+                    if (start != 0 || (start == 0 && lastCursorPosition == 0) ){
+                        int cursorPosition = start + (count-before);
+                        if (macAddressTextField.getText().toString().substring(macAddressTextField.getText().length()-1).contains(":")){
+                            if (count > before){
+                                cursorPosition++;
+                            } else {
+                                cursorPosition--;
+                            }
                         }
-                    } catch (StringIndexOutOfBoundsException e){
-                        Log.e("CLEANING MAC ADRESS", MAC);
+                        macAddressTextField.setSelection(cursorPosition,cursorPosition);
+                        lastCursorPosition = cursorPosition;
                     }
 
-                    String formattedString = "";
-                    for (String octet : octets){
-                        formattedString += octet;
-                        formattedString += ":";
-                    }
-                    Log.d("CLEANING_MAC_ADRSS", formattedString);
-                    macAddressTextField.setText(formattedString);
+                    Log.d("MACFORMATTER", text.replaceAll("([0-9A-Fa-f]{2})", "$1:"));
+                    oldtext = macAddressTextField.getText().toString();
                 }
 
             }
@@ -182,7 +186,6 @@ public class DeviceDetailEditFragment extends Fragment {
 
             }
         });
-
         deviceNameTextField.setText(bert.getName());
         deviceNameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -193,13 +196,13 @@ public class DeviceDetailEditFragment extends Fragment {
             }
         });
 
-        categorySelector.setSelection(bert.getCategoryID());
+        categorySelector.setSelection(categoryAdapter.getPosition(bert.getCategoryID()));
     }
 
     private void saveChanges() {
         bert.setMAC(macAddressTextField.getText().toString());
         bert.setName(deviceNameTextField.getText().toString());
-        bert.setCategoryID(categorySelector.getSelectedItemPosition());
+        bert.setCategoryID(categoryAdapter.getItem(categorySelector.getSelectedItemPosition()));
         project.save();
         activity.deviceListFragment.onResume();
         onResume();

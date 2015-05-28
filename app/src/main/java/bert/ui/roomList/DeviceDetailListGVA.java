@@ -1,21 +1,15 @@
 package bert.ui.roomList;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.support.annotation.StyleRes;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
 import bert.data.proj.BertUnit;
-import bert.data.proj.Category;
 import bert.ui.R;
 
 /**
@@ -26,7 +20,6 @@ public class DeviceDetailListGVA extends ArrayAdapter<BertUnit> {
     List <BertUnit> berts;
     Activity activity;
     DeviceListFragment owner;
-
     public DeviceDetailListGVA(Activity activity, DeviceListFragment owner, List<BertUnit> berts) {
         super(activity, android.R.layout.simple_list_item_1, berts);
         this.owner = owner;
@@ -41,12 +34,11 @@ public class DeviceDetailListGVA extends ArrayAdapter<BertUnit> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View listCell = activity.getLayoutInflater().inflate(R.layout.fragment_device_list_cell, parent, false);
+        final View listCell = activity.getLayoutInflater().inflate(R.layout.fragment_device_list_cell, parent, false);
         TextView textView = (TextView) listCell.findViewById(R.id.deviceListTextField);
         Button indicator = (Button) listCell.findViewById(R.id.hasMACIndicator);
 
         boolean isAddBertButton = (position == getCount() - 1);
-
         if (isAddBertButton) {
             textView.setText(DeviceListFragment.ADD_BUILDING_STRING);
             textView.setOnClickListener(new View.OnClickListener() {

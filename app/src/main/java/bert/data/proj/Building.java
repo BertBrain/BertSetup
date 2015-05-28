@@ -1,7 +1,11 @@
 package bert.data.proj;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import bert.data.proj.exceptions.InvalidCategoryNameException;
+import bert.data.utility.Cleaner;
 
 /**
  * Created by afiol-mahon on 5/8/15.
@@ -10,7 +14,7 @@ import java.util.List;
 public class Building {
     private Time startTime;
     private Time endTime;
-    private List<Category> categories;
+    private HashMap<String, Category> categoryList;
 
     public Time getStartTime() { return startTime; }
     public void setStartTime(Time startTime){ this.startTime = startTime; }
@@ -18,32 +22,38 @@ public class Building {
     public Time getEndTime() { return  endTime; }
     public void setEndTime(Time endTime) { this.endTime = endTime; }
 
-    public Building(Time startTime, Time endTime, List<Category> presetCategories) {
+    public Building(Time startTime, Time endTime, HashMap<String, Category> presetCategories) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.categories = new ArrayList<>(presetCategories);
+        this.categoryList = new HashMap<>(presetCategories);
     }
 
-    public void addCategory(Category category) {
-        categories.add(category);
+    public void addCategory(String name, Category category) throws InvalidCategoryNameException {
+        if (!categoryList.containsKey(name) && Cleaner.isValid(name)) {
+            categoryList.put(name, category);
+        } else {
+            throw new InvalidCategoryNameException();
+        }
     }
 
-    public List<Category> getCategories() { return  categories; }
+    public void renameCategory(String categoryID, String newCategoryID) throws InvalidCategoryNameException {
+        if (categoryID != newCategoryID) {
+            Category category = categoryList.get(categoryID);
+            addCategory(newCategoryID, category);
+            categoryList.remove(categoryID);
+        }
+    }
 
     public int getCategoryCount() {
-        return categories.size();
+        return categoryList.size();
     }
 
-    public Category getCategory(int categoryID) {
-        return categories.get(categoryID);
+    public Category getCategory(String categoryID) {
+        return categoryList.get(categoryID);
     }
 
     public List<String> getCategoryNames() {
-        ArrayList<String> categoryNames = new ArrayList<>();
-        for (Category category : getCategories()) {
-            categoryNames.add(category.getName());
-        }
-        return categoryNames;
+        return new ArrayList<>(categoryList.keySet());
     }
 
     public Time getTimeOccupied() {

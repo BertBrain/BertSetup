@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:src="@drawable/startupImage"
+        android:src="@drawable/startupimage"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
         android:focusable="false" />

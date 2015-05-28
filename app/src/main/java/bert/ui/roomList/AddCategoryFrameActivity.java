@@ -51,7 +51,7 @@ public class AddCategoryFrameActivity extends ActionBarActivity implements AddCa
     }
 
     @Override
-    public void categoryCreationSuccessful() {
+    public void categoryCreationSuccessful(String buildingID) {
         setResult(RESULT_OK);
         finish();
     }

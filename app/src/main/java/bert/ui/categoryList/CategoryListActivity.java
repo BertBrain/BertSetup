@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import bert.data.ProjectProvider;
+import bert.data.proj.Building;
 import bert.data.proj.Project;
 import bert.ui.R;
 
@@ -22,7 +23,9 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
 
     private int projectID;
     private String buildingID;
+
     private Project project;
+    private Building building;
 
     private Button addCategoryButton;
     private ListView categoryListView;
@@ -34,8 +37,10 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
         setContentView(R.layout.activity_master_detail);
 
         projectID = getIntent().getExtras().getInt(ARG_PROJECT_ID);
-        project = ProjectProvider.getInstance().getProject(projectID);
         buildingID = getIntent().getExtras().getString(ARG_BUILDING_ID);
+
+        project = ProjectProvider.getInstance().getProject(projectID);
+        building = project.getBuilding(buildingID);
 
         addCategoryButton = (Button) findViewById(R.id.create_list_item_button);
         addCategoryButton.setText("Add Category");
@@ -56,7 +61,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
         categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openCategoryDetailFragment(position);
+                openCategoryDetailFragment(categoryListViewAdapter.getItem(position));
             }
         });
     }
@@ -67,8 +72,8 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
         this.setTitle(project.getBuilding(buildingID).getCategoryCount() + " Categories");
     }
 
-    private void openCategoryDetailFragment(int index) {
-        loadFragment(new CategoryDetailFragment().newInstance(projectID, buildingID, index));
+    private void openCategoryDetailFragment(String categoryID) {
+        loadFragment(new CategoryDetailFragment().newInstance(projectID, buildingID, categoryID));
     }
 
     private void openCategoryAddFragment() {
@@ -88,13 +93,13 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     @Override
     public void categoryCreationCanceled() {
         if (project.getBuilding(buildingID).getCategoryCount() > 0) {
-            openCategoryDetailFragment(0);
+            openCategoryDetailFragment(building.getCategoryNames().get(0));
         }
     }
 
     @Override
-    public void categoryCreationSuccessful() {
+    public void categoryCreationSuccessful(String buildingID) {
         createCategoryListView();
-        openCategoryDetailFragment(project.getBuilding(buildingID).getCategoryCount() - 1);
+        openCategoryDetailFragment(buildingID);
     }
 }

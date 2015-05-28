@@ -39,6 +39,7 @@ public class DeviceDetailAddFragment extends Fragment {
     private EditText nameEditText;
     private EditText macAddressEditText;
     private Spinner categorySpinner;
+    private ArrayAdapter<String> categoryAdapter;
 
     public static DeviceDetailAddFragment newInstance(int projectID, String buildingID, String location) {
         DeviceDetailAddFragment fragment = new DeviceDetailAddFragment();
@@ -82,16 +83,22 @@ public class DeviceDetailAddFragment extends Fragment {
         });
 
         nameEditText.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void afterTextChanged(Editable s) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String cleanedString = Cleaner.clean(nameEditText.getText().toString());
                 addDeviceDoneButton.setEnabled(Cleaner.isValid(cleanedString));
             }
         });
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, building.getCategoryNames());
-        categorySpinner.setAdapter(adapter);
+        categoryAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, building.getCategoryNames());
+        categorySpinner.setAdapter(categoryAdapter);
     }
 
     private void finish() {
@@ -100,7 +107,7 @@ public class DeviceDetailAddFragment extends Fragment {
                 location,
                 macAddressEditText.getText().toString(),
                 buildingID,
-                categorySpinner.getSelectedItemPosition(),
+                categoryAdapter.getItem(categorySpinner.getSelectedItemPosition()),
                 false
         );
         project.addBert(bert);

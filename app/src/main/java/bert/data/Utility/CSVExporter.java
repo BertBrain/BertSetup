@@ -38,6 +38,7 @@ public class CSVExporter {
             } catch (InvalidMACExeption e) {
                 Log.e("CSV_EXPORTER", e.message + " in " + b.getName());
             }
+
         }
         writer.close();
         return exportCSV;

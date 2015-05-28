@@ -11,12 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import bert.data.ProjectProvider;
 import bert.data.proj.Project;
 import bert.ui.NoSelectionFragment;
