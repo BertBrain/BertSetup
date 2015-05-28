@@ -1,4 +1,4 @@
-package bert.ui.roomList;
+package bert.ui.roomList.deviceList;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -10,8 +10,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import bert.data.ProjectProvider;
 import bert.data.proj.Project;
+import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
+import bert.ui.roomList.RoomListActivity;
 
 public class DeviceListFragment extends Fragment {
     public static final String ARG_LOCATION = "LOCATION";
@@ -20,7 +23,6 @@ public class DeviceListFragment extends Fragment {
 
     public static final String ADD_BUILDING_STRING = "+ Add Bert";
 
-    private RoomListActivity activity;
     private Project project;
     private int projectID;
     private String buildingID;
@@ -44,27 +46,28 @@ public class DeviceListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (RoomListActivity) getActivity();
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT);
             buildingID = getArguments().getString(ARG_BUILDING);
             location = getArguments().getString(ARG_LOCATION);
         }
+        loadFragment(NoSelectionFragment.newInstance("Select or Create a Bert"));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        project = activity.getProject();
+        project = ProjectProvider.getInstance().getProject(projectID);
+
         locationListView = (ListView) getView().findViewById(R.id.bertList);
 
-        deviceTableAdapter = new DeviceDetailListGVA(getActivity(), this, project.getBertsByLocation(buildingID, location));
+        deviceTableAdapter = new DeviceDetailListGVA(getActivity(), this, project.getBertsByRoom(buildingID, location));
         locationListView = (ListView) getView().findViewById(R.id.bertList);
         locationListView.setAdapter(deviceTableAdapter);
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == project.getBertsByLocation(buildingID, location).size()) {
+                if (position == project.getBertsByRoom(buildingID, location).size()) {
                     addDevice();
                 } else {
                     loadDeviceAtPosition(position);
@@ -89,13 +92,13 @@ public class DeviceListFragment extends Fragment {
 
     public void loadDeviceAtPosition(int position) {
         System.out.println("editing device");
-        DeviceDetailEditFragment fragment = DeviceDetailEditFragment.newInstance(projectID, buildingID, location, position);
+        DeviceDetailFragment fragment = DeviceDetailFragment.newInstance(projectID, buildingID, location, position);
         loadFragment(fragment);
     }
 
     public void addDevice() {
         System.out.println("adding device");
-        DeviceDetailAddFragment fragment = DeviceDetailAddFragment.newInstance(projectID, buildingID, location);
+        DeviceAddFragment fragment = DeviceAddFragment.newInstance(projectID, buildingID, location);
         loadFragment(fragment);
     }
 

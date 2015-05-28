@@ -5,7 +5,9 @@ import java.util.List;
 
 public class Category {
 
-    public static final int UNSET = -1;
+    public static final int UNSET_ESTIMATED_LOAD = -1;
+
+    public static final Category defaultCategory = new Category(0, 0);
 
 	private int bertTypeID;
 	private int estimatedLoad;

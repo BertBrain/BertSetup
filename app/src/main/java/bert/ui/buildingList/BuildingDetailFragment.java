@@ -20,7 +20,7 @@ import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidBuildingNameException;
-import bert.ui.NoSelectionFragment;
+import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
 import bert.ui.categoryList.CategoryListActivity;
 import bert.ui.roomList.RoomListActivity;
@@ -109,7 +109,7 @@ public class BuildingDetailFragment extends Fragment {
         });
 
         buildingButton = (Button) getView().findViewById(R.id.roomListButton);
-        buildingButton.setText("View Rooms (" + project.getLocationNamesInBuilding(buildingID).size() + ")");
+        buildingButton.setText("View Rooms (" + project.getRoomNamesInBuilding(buildingID).size() + ")");
         buildingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

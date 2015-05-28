@@ -24,7 +24,7 @@ import bert.data.ProjectProvider;
 import bert.data.utility.CSVExporter;
 import bert.data.utility.Cleaner;
 import bert.data.utility.ROIExporter;
-import bert.ui.BertAlert;
+import bert.ui.common.BertAlert;
 import bert.ui.R;
 
 import bert.ui.buildingList.BuildingListActivity;
@@ -130,7 +130,7 @@ public class ProjectDetailFragment extends Fragment {
         dateModifiedTextView.setText(currentProject.getModifiedDate());
 
         roomCountTextView = (TextView) getView().findViewById(R.id.roomCountTextView);
-        roomCountTextView.setText(Integer.toString(currentProject.getLocationCount()));
+        roomCountTextView.setText(Integer.toString(currentProject.getRoomCount()));
 
         bertCountTextView = (TextView) getView().findViewById(R.id.bertCountTextView);
         bertCountTextView.setText(Integer.toString(currentProject.getBerts().size()));

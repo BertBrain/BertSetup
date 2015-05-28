@@ -14,6 +14,7 @@ import android.widget.ListView;
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
+import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
 
 public class CategoryListActivity extends ActionBarActivity implements CategoryDetailFragment.OnFragmentInteractionListener, AddCategoryFragment.OnFragmentInteractionListener {
@@ -52,10 +53,11 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
         });
 
         createCategoryListView();
+        openNoSelectionFragment();
     }
 
     public void createCategoryListView() {
-        categoryListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, project.getBuilding(buildingID).getCategoryNames());
+        categoryListViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getBuilding(buildingID).getCategoryNames());
         categoryListView = (ListView) findViewById(R.id.item_list_view);
         categoryListView.setAdapter(categoryListViewAdapter);
         categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -69,14 +71,19 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     @Override
     public void onResume() {
         super.onResume();
+        createCategoryListView();
         this.setTitle(project.getBuilding(buildingID).getCategoryCount() + " Categories");
     }
 
-    private void openCategoryDetailFragment(String categoryID) {
+    public void openCategoryDetailFragment(String categoryID) {
         loadFragment(new CategoryDetailFragment().newInstance(projectID, buildingID, categoryID));
     }
 
-    private void openCategoryAddFragment() {
+    public void openNoSelectionFragment() {
+        loadFragment(NoSelectionFragment.newInstance("Select or Create a Category"));
+    }
+
+    public void openCategoryAddFragment() {
         loadFragment(AddCategoryFragment.newInstance(projectID, buildingID));
     }
 

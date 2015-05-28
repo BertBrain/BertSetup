@@ -19,13 +19,15 @@ public class CategoryPresets {
         isInit = true;
     }
 
-    public static List<String> getNames(){
-        if (!isInit) { init(); }
+    public static List<String> getNames() {
+        if (!isInit) {
+            init();
+        }
 
         return new ArrayList<>(presets.keySet());
     }
 
-    public static HashMap<String, HashMap<String, Category>> getPresets(){
+    public static HashMap<String, HashMap<String, Category>> getPresets() {
         if (!isInit) { init(); }
         return presets;
     }

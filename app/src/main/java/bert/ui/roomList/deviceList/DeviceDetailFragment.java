@@ -1,4 +1,4 @@
-package bert.ui.roomList;
+package bert.ui.roomList.deviceList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,9 +27,12 @@ import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
+import bert.data.proj.exceptions.InvalidBertNameException;
+import bert.ui.common.BertAlert;
 import bert.ui.R;
+import bert.ui.roomList.RoomListActivity;
 
-public class DeviceDetailEditFragment extends Fragment {
+public class DeviceDetailFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
     private static final String ARG_BERT_ID = "BERT_ID";
@@ -55,8 +58,8 @@ public class DeviceDetailEditFragment extends Fragment {
     private Button deleteButton;
     private Button saveButton;
 
-    public static DeviceDetailEditFragment newInstance(int projectID, String buildingID, String location, int bertID) {
-        DeviceDetailEditFragment fragment = new DeviceDetailEditFragment();
+    public static DeviceDetailFragment newInstance(int projectID, String buildingID, String location, int bertID) {
+        DeviceDetailFragment fragment = new DeviceDetailFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT_ID, projectID);
         args.putString(ARG_BUILDING_ID, buildingID);
@@ -77,12 +80,12 @@ public class DeviceDetailEditFragment extends Fragment {
 
             project = ProjectProvider.getInstance().getProject(projectID);
             building = project.getBuilding(buildingID);
-            bert = project.getBertsByLocation(buildingID, location).get(bertID);
+            bert = project.getBertsByRoom(buildingID, location).get(bertID);
             activity = (RoomListActivity)getActivity();
         }
     }
 
-    public DeviceDetailEditFragment() {}
+    public DeviceDetailFragment() {}
 
     @Override
     public void onResume() {
@@ -110,7 +113,7 @@ public class DeviceDetailEditFragment extends Fragment {
                 alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        bert.deleteBert();
+                        project.deleteBert(bert);
                         activity.onResume();
                         activity.openDeviceListFragment(location);
                         project.save();
@@ -200,12 +203,17 @@ public class DeviceDetailEditFragment extends Fragment {
     }
 
     private void saveChanges() {
-        bert.setMAC(macAddressTextField.getText().toString());
-        bert.setName(deviceNameTextField.getText().toString());
-        bert.setCategoryID(categoryAdapter.getItem(categorySelector.getSelectedItemPosition()));
-        project.save();
-        activity.deviceListFragment.onResume();
-        onResume();
+        try {
+            bert.setName(deviceNameTextField.getText().toString());
+            bert.setMAC(macAddressTextField.getText().toString());
+            bert.setCategoryID(categoryAdapter.getItem(categorySelector.getSelectedItemPosition()));
+            project.save();
+            activity.deviceListFragment.onResume();
+            onResume();
+        } catch (InvalidBertNameException e) {
+            BertAlert.show(this.getActivity(), "Invalid Bert Name");
+            deviceNameTextField.setText(bert.getName());
+        }
     }
 
 

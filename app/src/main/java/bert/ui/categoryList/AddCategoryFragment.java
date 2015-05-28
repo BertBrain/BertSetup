@@ -20,7 +20,7 @@ import bert.data.proj.Category;
 import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidCategoryNameException;
 import bert.data.utility.Cleaner;
-import bert.ui.BertAlert;
+import bert.ui.common.BertAlert;
 import bert.ui.R;
 
 public class AddCategoryFragment extends Fragment {
@@ -120,10 +120,10 @@ public class AddCategoryFragment extends Fragment {
             if (estimatedLoadEditText.getText().toString().length() != 0) {
                 estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
             } else {
-                estimatedLoad = Category.UNSET;
+                estimatedLoad = Category.UNSET_ESTIMATED_LOAD;
             }
         } catch (NumberFormatException e) {
-            estimatedLoad = Category.UNSET;
+            estimatedLoad = Category.UNSET_ESTIMATED_LOAD;
             BertAlert.show(getActivity(), "Invalid number entered.");
             System.out.println("invalid number passed");
             return;

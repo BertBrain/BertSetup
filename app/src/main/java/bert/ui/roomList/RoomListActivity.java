@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,8 +15,11 @@ import java.util.List;
 
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
-import bert.ui.NoSelectionFragment;
+import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
+import bert.ui.roomList.deviceList.DeviceListFragment;
+import bert.ui.roomList.deviceList.auditWizard.AuditTallyBoxGVA;
+import bert.ui.roomList.deviceList.auditWizard.AuditWizardFragment;
 
 public class RoomListActivity extends ActionBarActivity {
 
@@ -30,18 +34,9 @@ public class RoomListActivity extends ActionBarActivity {
     public DeviceListFragment deviceListFragment;
 
     private Button startAuditButton;
-    private ArrayAdapter<String> locationListAdapter;
-    private ListView locationListView;
-
-    public Project getProject() {
-        return project;
-    }
-
-    private void clearFragmentContainer() {
-        int numberOfRooms = project.getLocationNamesInBuilding(buildingID).size();
-        String message = numberOfRooms > 0 ? "Select or Create A Room" : "Create a Room";
-        loadFragment(NoSelectionFragment.newInstance(message));
-    }
+    private ArrayAdapter<String> roomListAdapter;
+    private ListView roomListView;
+    public InputMethodManager inputManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +47,8 @@ public class RoomListActivity extends ActionBarActivity {
             projectID = extras.getInt(ARG_PROJECT_ID);
             buildingID = extras.getString(ARG_BUILDING_ID);
         }
+        inputManager = (InputMethodManager) this.getSystemService(INPUT_METHOD_SERVICE);
+        openNoSelection();
     }
 
     @Override
@@ -67,13 +64,13 @@ public class RoomListActivity extends ActionBarActivity {
             }
         });
 
-        final List<String> roomNames = project.getLocationNamesInBuilding(buildingID);
+        final List<String> roomNames = project.getRoomNamesInBuilding(buildingID);
 
         if (roomNames.size() != 0) {
-            locationListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, roomNames);
-            locationListView = (ListView) findViewById(R.id.item_list_view);
-            locationListView.setAdapter(locationListAdapter);
-            locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            roomListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, roomNames);
+            roomListView = (ListView) findViewById(R.id.item_list_view);
+            roomListView.setAdapter(roomListAdapter);
+            roomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     openDeviceListFragment(roomNames.get(position));
@@ -93,12 +90,11 @@ public class RoomListActivity extends ActionBarActivity {
     public void openDeviceListFragment(String locationName) {
         deviceListFragment = DeviceListFragment.newInstance(projectID, buildingID, locationName);
         loadFragment(deviceListFragment);
-        setTitle("Room " + locationName + " (" + project.getBertsByLocation(buildingID, locationName).size() + " Berts)");
+        setTitle("Room " + locationName + " (" + project.getBertsByRoom(buildingID, locationName).size() + " Berts)");
     }
 
-    public void openNoSelectionView(String message) {
-        loadFragment(NoSelectionFragment.newInstance(message));
-        setDefaultTitle();
+    public void openNoSelection() {
+        loadFragment(NoSelectionFragment.newInstance("Select or Create a Room"));
     }
 
     private void loadFragment(Fragment frag) {
@@ -109,9 +105,8 @@ public class RoomListActivity extends ActionBarActivity {
     }
 
     private void setDefaultTitle() {
-        int rooms = project.getLocationNamesInBuilding(buildingID).size();
+        int rooms = project.getRoomNamesInBuilding(buildingID).size();
         String roomName = (rooms == 1) ? " Room)" : " Rooms)";
         this.setTitle(project.getProjectName() + " " + buildingID + " (" + rooms + roomName);
-
     }
 }

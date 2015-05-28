@@ -13,7 +13,7 @@ import android.widget.ListView;
 
 import bert.data.ProjectProvider;
 import bert.data.proj.Project;
-import bert.ui.NoSelectionFragment;
+import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
 
 public class BuildingListActivity extends ActionBarActivity {

@@ -44,33 +44,41 @@ public class Project {
 	private List<BertUnit> bertList;
     private HashMap<String, Building> buildingList;
 
-	public Project(String name) throws InvalidProjectNameException {
+	public Project(String name, List<BertUnit> bertList, HashMap<String, Building> buildingList) throws InvalidProjectNameException {
 		setProjectName(name);
 	    this.creationDate = DateUtil.getDate();
 	    this.modifiedDate = creationDate;
-        bertList = new ArrayList<>();
-        buildingList = new HashMap<>();
+        this.bertList = bertList;
+        this.buildingList = buildingList;
 	}
 
-    public List<String> getLocationNamesInBuilding(String buildingID) {
-        List<String> locationNames = new ArrayList<>();
+    public List<String> getRoomNamesInBuilding(String buildingID) {
+        List<String> roomList = new ArrayList<>();
         for (BertUnit b : getBerts()) {
-            String nextLocation = b.getLocation();
-            if (!locationNames.contains(nextLocation) && b.getBuildingID().equals(buildingID)) {
-                locationNames.add(nextLocation);
+            String nextRoom = b.getRoomID();
+            if (b.getBuildingID().equals(buildingID) && !roomList.contains(nextRoom)) {
+                roomList.add(nextRoom);
             }
         }
-        return locationNames;
+        return roomList;
     }
 
     public List<String> getBuildingNames() {
         return new ArrayList<>(buildingList.keySet());
     }
 
-    public List<BertUnit> getBertsByLocation(String buildingID, String location) {
+    public List<BertUnit> getBerts() {
+        List<BertUnit> output = new ArrayList<>();
+        for (BertUnit b : bertList) {
+            output.add(b);
+        }
+        return output;
+    }
+
+    public List<BertUnit> getBertsByRoom(String buildingID, String roomID) {
         List<BertUnit> returnList = new ArrayList<>();
         for (BertUnit b : getBerts()) {
-            if (b.getBuildingID().equals(buildingID) && b.getLocation().equals(location)) {
+            if (b.getBuildingID().equals(buildingID) && b.getRoomID().equals(roomID)) {
                 returnList.add(b);
             }
         }
@@ -87,17 +95,6 @@ public class Project {
         return returnList;
     }
 
-    public int getLocationCount() {
-        List<String> locationNames = new ArrayList<>();
-        for (BertUnit b : getBerts()) {
-            String nextLocation = b.getLocation();
-            if (!locationNames.contains(nextLocation)) {
-                locationNames.add(nextLocation);
-            }
-        }
-        return locationNames.size();
-    }
-
     public List<BertUnit> getBertsByCategory(String buildingID, String categoryID) {
         List<BertUnit> returnList = new ArrayList<>();
         for (BertUnit b : getBerts()) {
@@ -108,16 +105,32 @@ public class Project {
         return returnList;
     }
 
+    public int getRoomCount() {
+        List<String> roomNames = new ArrayList<>();
+        for (BertUnit b : getBerts()) {
+            String nextRoom = b.getRoomID();
+            if (!roomNames.contains(nextRoom)) {
+                roomNames.add(nextRoom);
+            }
+        }
+        return roomNames.size();
+    }
+
+    public int getBuildingCount() {
+        return buildingList.size();
+    }
+
 	public void addBert(BertUnit bert) {
 		bertList.add(bert);
 	}
 
-    public void addBerts(List<BertUnit> berts) {
-        for (BertUnit b : berts){
-            addBert(b);
-        }
+    public void deleteBert(BertUnit bert) {
+        bertList.remove(bert);
     }
 
+    public Building getBuilding(String buildingID) {
+        return buildingList.get(buildingID);
+    }
     public void addBuilding(String buildingID, Building building) throws InvalidBuildingNameException {
         if (!buildingList.containsKey(buildingID) && Cleaner.isValid(buildingID)) {
             buildingList.put(buildingID, building);
@@ -125,15 +138,19 @@ public class Project {
             throw new InvalidBuildingNameException();
         }
     }
-
+    public void renameBuilding(String buildingID, String newBuildingID) throws InvalidBuildingNameException {
+        Building building = buildingList.get(buildingID);
+        addBuilding(newBuildingID, building);
+        buildingList.remove(buildingID);
+    }
     public void deleteBuilding(String buildingID) {
         for (BertUnit b : getBertsByBuilding(buildingID)) {
-            b.deleteBert();
+            deleteBert(b);
+            deleteBert(b);
         }
         buildingList.remove(buildingID);
     }
 
-    //Getters and setters
     public String getProjectName() {
         return projectName;
     }
@@ -180,45 +197,9 @@ public class Project {
         this.modifiedDate = newModifiedDate;
     }
 
-    public List<BertUnit> getAllBertsAndDeleted() {
-        return this.bertList;
-    }
-
-    public List<BertUnit> getBerts() {
-        List<BertUnit> output = new ArrayList<>();
-        for (BertUnit b : bertList) {
-            if (b.isDeleted() == false) {
-                output.add(b);
-            }
-        }
-        return output;
-    }
-
-    public void setBertList(List<BertUnit> newBertList) {
-        this.bertList = newBertList;
-    }
-
-    public Building getBuilding(String buildingID) {
-        return buildingList.get(buildingID);
-    }
-
-    public void renameBuilding(String buildingID, String newBuildingID) throws InvalidBuildingNameException {
-        Building building = buildingList.get(buildingID);
-        addBuilding(newBuildingID, building);
-        buildingList.remove(buildingID);
-    }
-
-    public int getBuildingCount() {
-        return buildingList.size();
-    }
-
-    public void setBuildings(HashMap<String, Building> newBuildings) {
-        this.buildingList = newBuildings;
-    }
-
-    public String getFileName() {
-        return this.getProjectName() + ".xml";
-    }
+    /*
+    Loading and Saving
+     */
 
     public void save() {
         Log.d("ProjectSaver", "Saving Project: " + getProjectName() + " to XML file");
@@ -227,7 +208,7 @@ public class Project {
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            File outputFile = new File(FileProvider.getProjectDirectory(), this.getFileName());
+            File outputFile = new File(FileProvider.getProjectDirectory(), this.getProjectName() + ".xml");
             Result result = new StreamResult(outputFile);
             Source source = new DOMSource(d);
             transformer.transform(source, result);
