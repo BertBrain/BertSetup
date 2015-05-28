@@ -23,7 +23,7 @@ public class CSVExporter {
             writer.write(',');
             writer.write(b.getCSVName());
             writer.write(',');
-            writer.write(b.getLocation());
+            writer.write(b.getRoomID());
             writer.write(';');
             writer.write(b.getBuildingID());
             writer.write(';');

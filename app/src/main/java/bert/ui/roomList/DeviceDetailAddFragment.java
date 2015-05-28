@@ -107,8 +107,7 @@ public class DeviceDetailAddFragment extends Fragment {
                 location,
                 macAddressEditText.getText().toString(),
                 buildingID,
-                categoryAdapter.getItem(categorySpinner.getSelectedItemPosition()),
-                false
+                categoryAdapter.getItem(categorySpinner.getSelectedItemPosition())
         );
         project.addBert(bert);
         activity.deviceListFragment.onResume();

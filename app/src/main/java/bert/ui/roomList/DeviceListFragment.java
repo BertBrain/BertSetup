@@ -60,13 +60,13 @@ public class DeviceListFragment extends Fragment {
         project = activity.getProject();
         locationListView = (ListView) getView().findViewById(R.id.bertList);
 
-        deviceTableAdapter = new DeviceDetailListGVA(getActivity(), this, project.getBertsByLocation(buildingID, location));
+        deviceTableAdapter = new DeviceDetailListGVA(getActivity(), this, project.getBertsByRoom(buildingID, location));
         locationListView = (ListView) getView().findViewById(R.id.bertList);
         locationListView.setAdapter(deviceTableAdapter);
         locationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == project.getBertsByLocation(buildingID, location).size()) {
+                if (position == project.getBertsByRoom(buildingID, location).size()) {
                     addDevice();
                 } else {
                     loadDeviceAtPosition(position);

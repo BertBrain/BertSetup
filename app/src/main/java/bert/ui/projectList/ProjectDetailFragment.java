@@ -130,7 +130,7 @@ public class ProjectDetailFragment extends Fragment {
         dateModifiedTextView.setText(currentProject.getModifiedDate());
 
         roomCountTextView = (TextView) getView().findViewById(R.id.roomCountTextView);
-        roomCountTextView.setText(Integer.toString(currentProject.getLocationCount()));
+        roomCountTextView.setText(Integer.toString(currentProject.getRoomCount()));
 
         bertCountTextView = (TextView) getView().findViewById(R.id.bertCountTextView);
         bertCountTextView.setText(Integer.toString(currentProject.getBerts().size()));

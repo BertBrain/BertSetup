@@ -62,7 +62,7 @@ public class RoomListActivity extends ActionBarActivity {
             }
         });
 
-        final List<String> roomNames = project.getLocationNamesInBuilding(buildingID);
+        final List<String> roomNames = project.getRoomNamesInBuilding(buildingID);
 
         if (roomNames.size() != 0) {
             locationListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, roomNames);
@@ -88,7 +88,7 @@ public class RoomListActivity extends ActionBarActivity {
     public void openDeviceListFragment(String locationName) {
         deviceListFragment = DeviceListFragment.newInstance(projectID, buildingID, locationName);
         loadFragment(deviceListFragment);
-        setTitle("Room " + locationName + " (" + project.getBertsByLocation(buildingID, locationName).size() + " Berts)");
+        setTitle("Room " + locationName + " (" + project.getBertsByRoom(buildingID, locationName).size() + " Berts)");
     }
 
     public void openNoSelection() {
@@ -103,7 +103,7 @@ public class RoomListActivity extends ActionBarActivity {
     }
 
     private void setDefaultTitle() {
-        int rooms = project.getLocationNamesInBuilding(buildingID).size();
+        int rooms = project.getRoomNamesInBuilding(buildingID).size();
         String roomName = (rooms == 1) ? " Room)" : " Rooms)";
         this.setTitle(project.getProjectName() + " " + buildingID + " (" + rooms + roomName);
 

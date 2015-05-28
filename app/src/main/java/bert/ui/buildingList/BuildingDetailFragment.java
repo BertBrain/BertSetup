@@ -109,7 +109,7 @@ public class BuildingDetailFragment extends Fragment {
         });
 
         buildingButton = (Button) getView().findViewById(R.id.roomListButton);
-        buildingButton.setText("View Rooms (" + project.getLocationNamesInBuilding(buildingID).size() + ")");
+        buildingButton.setText("View Rooms (" + project.getRoomNamesInBuilding(buildingID).size() + ")");
         buildingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,5 +1,6 @@
 package bert.data.proj;
 
+import bert.data.proj.exceptions.InvalidBertNameException;
 import bert.data.utility.Cleaner;
 
 /**
@@ -8,38 +9,37 @@ import bert.data.utility.Cleaner;
 public class BertUnit {
 
 	private String name;
-	private String location;
+	private String roomID;
 	private String MAC;
 	private String categoryID;
 	private String buildingID;
-	private boolean deleted;
 
-	public BertUnit(String name, String location, String MAC, String buildingID, String categoryID, boolean deleted) {
+	public BertUnit(String name, String roomID, String MAC, String buildingID, String categoryID) {
 		this.name = name;
-		this.location = location;
+		this.roomID = roomID;
 		this.MAC = MAC;
 		this.buildingID = buildingID;
 		this.categoryID = categoryID;
-        this.deleted = deleted;
 	}
 	
 	public String getName() {
 		return name;
 	}
 
-    public void setName(String newName) {
-        Cleaner.clean(newName);
+    public void setName(String newName) throws InvalidBertNameException {
         if (Cleaner.isValid(newName)) {
             this.name = newName;
-        }
+        } else {
+			throw new InvalidBertNameException();
+		}
     }
 
 	public String getCSVName() {
 		return getName(); //TODO make this limit to 20 char and format
 	}
 
-	public String getLocation() {
-		return location;
+	public String getRoomID() {
+		return roomID;
 	}
 
 	public String getBuildingID() {
@@ -65,13 +65,5 @@ public class BertUnit {
 
     public void setCategoryID(String newCategoryID) {
         this.categoryID = newCategoryID;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void deleteBert() {
-        deleted = true;
     }
 }

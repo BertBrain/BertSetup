@@ -21,6 +21,8 @@ import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
+import bert.data.proj.exceptions.InvalidBertNameException;
+import bert.ui.BertAlert;
 import bert.ui.R;
 
 public class DeviceDetailEditFragment extends Fragment {
@@ -71,7 +73,7 @@ public class DeviceDetailEditFragment extends Fragment {
 
             project = ProjectProvider.getInstance().getProject(projectID);
             building = project.getBuilding(buildingID);
-            bert = project.getBertsByLocation(buildingID, location).get(bertID);
+            bert = project.getBertsByRoom(buildingID, location).get(bertID);
             activity = (RoomListActivity)getActivity();
         }
     }
@@ -104,7 +106,7 @@ public class DeviceDetailEditFragment extends Fragment {
                 alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        bert.deleteBert();
+                        project.deleteBert(bert);
                         activity.onResume();
                         activity.openDeviceListFragment(location);
                         project.save();
@@ -153,12 +155,17 @@ public class DeviceDetailEditFragment extends Fragment {
     }
 
     private void saveChanges() {
-        bert.setMAC(macAddressTextField.getText().toString());
-        bert.setName(deviceNameTextField.getText().toString());
-        bert.setCategoryID(categoryAdapter.getItem(categorySelector.getSelectedItemPosition()));
-        project.save();
-        activity.deviceListFragment.onResume();
-        onResume();
+        try {
+            bert.setName(deviceNameTextField.getText().toString());
+            bert.setMAC(macAddressTextField.getText().toString());
+            bert.setCategoryID(categoryAdapter.getItem(categorySelector.getSelectedItemPosition()));
+            project.save();
+            activity.deviceListFragment.onResume();
+            onResume();
+        } catch (InvalidBertNameException e) {
+            BertAlert.show(this.getActivity(), "Invalid Bert Name");
+            deviceNameTextField.setText(bert.getName());
+        }
     }
 
     @Override

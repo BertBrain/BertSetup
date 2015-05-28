@@ -173,7 +173,7 @@ public class AuditWizardFragment extends Fragment {
                 for (int i = 0; i < categoryCounts.get(categoryID); i++) {
                     String countString = (i == 0) ? ("") : (String.valueOf(i + 1));
                     String name = roomID + " - " + categoryID + " " + countString;
-                    BertUnit bert = new BertUnit(name, roomID, "", buildingID, categoryID, false);
+                    BertUnit bert = new BertUnit(name, roomID, "", buildingID, categoryID);
                     project.addBert(bert);
                 }
             }
