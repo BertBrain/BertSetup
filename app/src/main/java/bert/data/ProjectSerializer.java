@@ -14,6 +14,8 @@ import bert.data.proj.BertUnit;
 import bert.data.proj.BertUnitSerializer;
 import bert.data.proj.Building;
 import bert.data.proj.BuildingSerializer;
+import bert.data.proj.RoomAudit;
+import bert.data.proj.RoomAuditSerializer;
 import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.proj.Project;
 
@@ -31,6 +33,7 @@ public class ProjectSerializer {
     public static final String TAG_CONTACT_NUMBER = "ContactNumber";
     public static final String TAG_BERTS = "Berts";
     public static final String TAG_BUILDINGS = "Buildings";
+    public static final String TAG_AUDITS = "Audits";
 
 
     public static Project getProjectFromDocument(Document document) {
@@ -40,6 +43,7 @@ public class ProjectSerializer {
 
             NodeList bertNodeList = document.getElementsByTagName(BertUnitSerializer.TAG_BERT);
             NodeList buildingNodeList = document.getElementsByTagName(BuildingSerializer.TAG_BUILDING);
+            NodeList roomAuditNodeList = document.getElementsByTagName(RoomAuditSerializer.TAG_ROOM_AUDIT);
 
             //BERT DESERIALIZATION
             List<BertUnit> bertList = new ArrayList<>();
@@ -57,7 +61,19 @@ public class ProjectSerializer {
                 buildingList.put(buildingID, nextBuilding);
             }
 
-            Project newProject = new Project(projectTag.getAttribute(TAG_PROJECT_NAME), bertList, buildingList);
+            //AUDIT DESERIALIZATION
+            List<RoomAudit> roomAuditList = new ArrayList<>();
+            for (int i = 0; i < roomAuditNodeList.getLength(); i++) {
+                Element e = (Element) roomAuditNodeList.item(i);
+                RoomAudit r = RoomAuditSerializer.getRoomAuditFromElement(e);
+                roomAuditList.add(r);
+            }
+
+            Project newProject = new Project(projectTag.getAttribute(TAG_PROJECT_NAME),
+                    bertList,
+                    buildingList,
+                    roomAuditList
+            );
 
             newProject.setContactName(contactTag.getAttribute(TAG_CONTACT_NAME));
             newProject.setContactNumber(contactTag.getAttribute(TAG_CONTACT_NUMBER));
@@ -106,6 +122,15 @@ public class ProjectSerializer {
         }
         root.appendChild(buildingElementList);
         log("Saved " + buildingElementList.getElementsByTagName("Building").getLength() + " Buildings");
+
+        //AUDIT SERIALIZATION
+        Element auditElementList = projectDoc.createElement(TAG_AUDITS);
+        for (RoomAudit r : p.getAuditList()) {
+            Element auditElement = RoomAuditSerializer.getElementFromRoomAudit(r, projectDoc);
+            auditElementList.appendChild(auditElement);
+        }
+        root.appendChild(auditElementList);
+        log("Saved " + auditElementList.getElementsByTagName(RoomAuditSerializer.TAG_ROOM_AUDIT).getLength() + " Audits");
 
         projectDoc.appendChild(root);
         return projectDoc;
