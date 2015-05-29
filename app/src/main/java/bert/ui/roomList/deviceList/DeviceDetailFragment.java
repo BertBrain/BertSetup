@@ -147,7 +147,7 @@ public class DeviceDetailFragment extends Fragment {
                 return false;
             }
         });
-        
+
         deviceNameTextField.setText(bert.getName());
         deviceNameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

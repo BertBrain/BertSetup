@@ -34,10 +34,6 @@
             android:label="@string/title_activity_category_editor" >
         </activity>
         <activity
-            android:name=".buildingList.BuildingListActivity"
-            android:label="@string/title_activity_building_list" >
-        </activity>
-        <activity
             android:name=".categoryList.CategoryListActivity"
             android:label="@string/title_activity_category_list" >
         </activity>
@@ -51,16 +47,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".projectList.AuditProjectList"
-            android:label="@string/title_activity_audit_project_list" >
-        </activity>
-        <activity
             android:name=".projectList.activity.AuditProjectListActivity"
             android:label="@string/title_activity_audit_project_list" >
         </activity>
         <activity
             android:name=".projectList.activity.InstallProjectListActivity"
             android:label="@string/title_activity_install_project_list" >
+        </activity>
+        <activity
+            android:name=".buildingList.activity.AuditBuildingListActivty"
+            android:label="Auditing Building List" >
+        </activity>
+        <activity
+            android:name=".buildingList.activity.InstallBuildingListActivity"
+            android:label="Install Building List" >
+        </activity>
+        <activity
+            android:name=".buildingList.activity.GeneralBuildingListActivity"
+            android:label="Error: abstract class" >
         </activity>
     </application>
 

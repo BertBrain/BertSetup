@@ -25,7 +25,8 @@ import bert.data.utility.CSVExporter;
 import bert.data.utility.Cleaner;
 import bert.data.utility.ROIExporter;
 import bert.ui.R;
-import bert.ui.buildingList.BuildingListActivity;
+import bert.ui.buildingList.activity.AuditBuildingListActivty;
+import bert.ui.buildingList.activity.GeneralBuildingListActivity;
 import bert.ui.common.BertAlert;
 import bert.ui.projectList.ExportChooser;
 import bert.ui.projectList.activity.GeneralProjectListActivity;
@@ -78,8 +79,8 @@ public class AuditDetailFragment extends GeneralProjectDetailFragment {
     @Override
     public void openBuildingList() {
         //TODO: make different for audit vs install
-        Intent i = new Intent(this.getActivity(), BuildingListActivity.class);
-        i.putExtra(BuildingListActivity.ARG_PROJECT_ID, projectID);
+        Intent i = new Intent(this.getActivity(), AuditBuildingListActivty.class);
+        i.putExtra(GeneralBuildingListActivity.ARG_PROJECT_ID, projectID);
         startActivity(i);
     }
 

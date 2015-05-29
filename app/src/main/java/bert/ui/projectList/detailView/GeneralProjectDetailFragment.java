@@ -25,7 +25,6 @@ import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.utility.Cleaner;
 import bert.data.utility.ROIExporter;
 import bert.ui.R;
-import bert.ui.buildingList.BuildingListActivity;
 import bert.ui.common.BertAlert;
 import bert.ui.projectList.ExportChooser;
 import bert.ui.projectList.activity.GeneralProjectListActivity;

@@ -1,9 +1,9 @@
-package bert.ui.buildingList;
+package bert.ui.buildingList.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,20 +14,26 @@ import android.widget.ListView;
 
 import bert.data.ProjectProvider;
 import bert.data.proj.Project;
-import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
+import bert.ui.buildingList.AddBuildingFragment;
+import bert.ui.buildingList.BuildingDetailFragment;
+import bert.ui.common.NoSelectionFragment;
 
-public class BuildingListActivity extends ActionBarActivity {
+/**
+ * Created by liamcook on 5/29/15.
+ */
+abstract public class GeneralBuildingListActivity extends ActionBarActivity {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
 
     private Button addBuildingButton;
     private ArrayAdapter<String> buildingListViewAdapter;
     private ListView buildingListView;
-    private int projectID;
-    private Project project;
+    protected int projectID;
+    protected Project project;
     public InputMethodManager inputManager;
 
+    abstract public void openBuildingDetailView(String buildingID);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +74,6 @@ public class BuildingListActivity extends ActionBarActivity {
         loadListView();
     }
 
-
-
     public void clearFragmentContainer() {
         int numberOfBuildings = project.getBuildingCount();
         String message = numberOfBuildings > 0 ? "Select or Create A Building" : "Create a Building";
@@ -78,10 +82,6 @@ public class BuildingListActivity extends ActionBarActivity {
 
     private void openAddBuildingView() {
         loadFragment(AddBuildingFragment.newInstance(projectID));
-    }
-
-    protected void openBuildingDetailView(String buildingID) {
-        loadFragment(BuildingDetailFragment.newInstance(projectID, buildingID));
     }
 
     public void loadListView() {

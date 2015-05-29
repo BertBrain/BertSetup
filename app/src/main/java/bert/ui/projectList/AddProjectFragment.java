@@ -17,13 +17,15 @@ import java.util.HashMap;
 
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
+import bert.data.proj.RoomAudit;
 import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.utility.Cleaner;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
+import bert.ui.buildingList.activity.GeneralBuildingListActivity;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
-import bert.ui.buildingList.BuildingListActivity;
+import bert.ui.projectList.activity.AuditProjectListActivity;
 import bert.ui.projectList.activity.GeneralProjectListActivity;
 import bert.ui.projectList.detailView.GeneralProjectDetailFragment;
 
@@ -80,7 +82,8 @@ public class AddProjectFragment extends Fragment {
         try {
             Project newProject = new Project(newProjectName,
                     new ArrayList<BertUnit>(),
-                    new HashMap<String, Building>()
+                    new HashMap<String, Building>(),
+                    new ArrayList<RoomAudit>()
             );
             newProject.setContactName(contactTextField.getText().toString());
             newProject.setContactNumber(contactNumberTextField.getText().toString());
@@ -91,9 +94,9 @@ public class AddProjectFragment extends Fragment {
 
             ProjectProvider.getInstance().addProject(newProject);
 
-            GeneralProjectListActivity activity = (GeneralProjectListActivity) getActivity();
-            Intent intent = new Intent(activity, BuildingListActivity.class);
-            intent.putExtra(BuildingListActivity.ARG_PROJECT_ID, ProjectProvider.getInstance().getTotalProjects() - 1);
+            AuditProjectListActivity activity = (AuditProjectListActivity) getActivity();
+            Intent intent = new Intent(activity, AuditProjectListActivity.class);
+            intent.putExtra(GeneralBuildingListActivity.ARG_PROJECT_ID, ProjectProvider.getInstance().getTotalProjects() - 1);
 
             activity.closeAddProjectView();
             startActivity(intent);
