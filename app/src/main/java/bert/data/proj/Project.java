@@ -27,6 +27,7 @@ import javax.xml.transform.stream.StreamResult;
 import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.ProjectSerializer;
+import bert.data.proj.exceptions.DuplicateAuditException;
 import bert.data.proj.exceptions.InvalidBuildingNameException;
 import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.utility.Cleaner;
@@ -53,6 +54,15 @@ public class Project {
         this.buildingList = buildingList;
         this.auditList = auditList;
 	}
+
+    public void addAudit(RoomAudit newAudit) throws DuplicateAuditException {
+        for (RoomAudit r : auditList) {
+            if (r.getRoomID().equals(newAudit.getRoomID()) && r.getBuildingID().equals(newAudit.getBuildingID())) {
+                throw new DuplicateAuditException();
+            }
+        }
+        auditList.add(newAudit);
+    }
 
     public List<RoomAudit> getAuditList() {
         return auditList;

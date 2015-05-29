@@ -52,6 +52,7 @@
             android:layout_gravity="center_horizontal|bottom">
 
             <Button
+                style="@style/DeleteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cancel"
@@ -59,6 +60,7 @@
                 android:textAlignment="center" />
 
             <Button
+                style="@style/SaveButton"
                 android:textAlignment="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

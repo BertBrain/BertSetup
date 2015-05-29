@@ -21,14 +21,14 @@ import java.util.HashMap;
  * @author afiolmahon
  */
 public class AuditTallyBoxGVA extends ArrayAdapter<String> {
-
+//FIXME audit tally box GVA creates 5 views of position 0 for some reason, related to first item increment not updating consistently?
     private HashMap<String, View> categoryCells = new HashMap<>();
     private RoomListActivity activity;
     private int projectID;
     private RoomAudit roomAudit;
 
-    public AuditTallyBoxGVA(RoomListActivity activity, int recourseId, RoomAudit roomAudit, int projectID) {
-        super(activity, recourseId, roomAudit.getCategoryNames());
+    public AuditTallyBoxGVA(RoomListActivity activity, RoomAudit roomAudit, int projectID) {
+        super(activity, android.R.layout.simple_gallery_item, roomAudit.getCategoryNames());
         this.activity = activity;
         this.projectID = projectID;
         this.roomAudit = roomAudit;
@@ -43,21 +43,8 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View gridCell;
         LayoutInflater inflater = activity.getLayoutInflater();
-        boolean isAddCategoryCell = (position == getCount());
-        log(Integer.toString(position));
-        if (isAddCategoryCell) {
-            gridCell = inflater.inflate(R.layout.fragment_audit_wizard_add_category_cell, parent, false);
-            gridCell.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    log("creating new category");
-                    Intent intent = new Intent(activity, AddCategoryFrameActivity.class);
-                    intent.putExtra(AddCategoryFrameActivity.ARG_PROJECT_ID, projectID);
-                    intent.putExtra(AddCategoryFrameActivity.ARG_BUILDING_ID, roomAudit.getBuildingID());
-                    activity.startActivityForResult(intent, 1);
-                }
-            });
-        } else {
+        log("getting view of position: " + Integer.toString(position));
+        try {
             String categoryName = roomAudit.getCategoryNames().get(position);
             if (categoryCells.containsKey(categoryName)) {
                 gridCell = categoryCells.get(categoryName);
@@ -78,6 +65,18 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
 
                 categoryCells.put(categoryName, gridCell);
             }
+        } catch (IndexOutOfBoundsException e) {
+            gridCell = inflater.inflate(R.layout.fragment_audit_wizard_add_category_cell, parent, false);
+            gridCell.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    log("creating new category");
+                    Intent intent = new Intent(activity, AddCategoryFrameActivity.class);
+                    intent.putExtra(AddCategoryFrameActivity.ARG_PROJECT_ID, projectID);
+                    intent.putExtra(AddCategoryFrameActivity.ARG_BUILDING_ID, roomAudit.getBuildingID());
+                    activity.startActivityForResult(intent, 1);
+                }
+            });
         }
         return gridCell;
     }

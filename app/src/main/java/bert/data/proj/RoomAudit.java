@@ -60,7 +60,7 @@ public class RoomAudit {
         return roomID;
     }
 
-    public void setRoomID(String newRoomID) {
+    public void setRoomID(String newRoomID) {//TODO prevent setting identical room names in the same building
         this.roomID = newRoomID;
     }
 }

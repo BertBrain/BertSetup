@@ -19,11 +19,11 @@ import android.widget.TextView;
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 
-import bert.data.proj.Building;
-
 import bert.data.proj.Project;
 import bert.data.proj.RoomAudit;
+import bert.data.proj.exceptions.DuplicateAuditException;
 import bert.ui.R;
+import bert.ui.common.BertAlert;
 import bert.ui.roomList.RoomListActivity;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class AuditWizardFragment extends Fragment {
     private RoomListActivity activity;
     private Project project;
 
-    private AuditTallyBoxGVA tallyGridAdapter;
+    private AuditTallyBoxGVA categoryGridAdapter;
     private RoomAudit roomAudit;
 
     private GridView gridView;
@@ -72,7 +72,7 @@ public class AuditWizardFragment extends Fragment {
         activity = (RoomListActivity) getActivity();
         project = ProjectProvider.getInstance().getProject(projectID);
 
-        //TODO name needs to be updated cant set it here
+        //TODO name needs to be updated shouldn't set it here
         HashMap<String, Integer> catCount = new HashMap<>();
         for (String s : project.getBuilding(buildingID).getCategoryNames()) {
             catCount.put(s, 0);
@@ -84,31 +84,21 @@ public class AuditWizardFragment extends Fragment {
     @Override public void onResume() {
         super.onResume();
 
-        tallyGridAdapter = new AuditTallyBoxGVA(activity, android.R.layout.simple_gallery_item, roomAudit, projectID);
+        categoryGridAdapter = new AuditTallyBoxGVA(activity, roomAudit, projectID);
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
-        gridView.setAdapter(tallyGridAdapter);
+        gridView.setAdapter(categoryGridAdapter);
 
         totalBertsTextView = (TextView) getView().findViewById(R.id.totalCounterTextField);
 
         finishedButton = (Button) getView().findViewById(R.id.finishAuditWizardButton);
-        finishedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activity.inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                finishAuditWizard();
-            }
-        });
+        finishedButton.setOnClickListener(new FinishButtonListener());
 
         cancelButton = (Button) getView().findViewById(R.id.canelAuditButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-           @Override
-            public void onClick(View view) {
-               activity.openNoSelection();
-           }
-        });
+        cancelButton.setOnClickListener(new CancelButtonListener());
 
         roomEditText = (EditText) getView().findViewById(R.id.locationNameTextField);
         roomEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            //TODO make this interface a class in activity and use it throughout for hiding keyboard
             @Override
             public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
                 activity.inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -150,9 +140,15 @@ public class AuditWizardFragment extends Fragment {
         noRoomNameSetAlert.create().show();
     }
 
-    //FIXME THIS IS COMPLETELY DIFFERENT NOW UPDATE ASAP
     private void finishAuditWizard() {
-        //TODO save, reload view, go to new appropriate view
+        roomAudit.setRoomID(roomEditText.getText().toString());
+        try {
+            project.addAudit(roomAudit);
+            project.save();
+            //TODO need to close and reload view
+        } catch (DuplicateAuditException e) {
+            BertAlert.show(activity, "Cant Create Duplicate Audit");
+        }
     }
 
     //TODO MOVE THIS TO A NEW CLASS
@@ -184,5 +180,20 @@ public class AuditWizardFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    class FinishButtonListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            activity.inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            finishAuditWizard();
+        }
+    }
+
+    class CancelButtonListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            activity.openNoSelection();
+        }
     }
 }
