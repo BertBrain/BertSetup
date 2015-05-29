@@ -21,5 +21,7 @@
     <string name="title_activity_building_list">BuildingListActivity</string>
     <string name="title_activity_category_list">CategoryListActivity</string>
     <string name="title_activity_launch">LaunchActivity</string>
+    <string name="title_activity_audit_project_list">AuditProjectList</string>
+    <string name="title_activity_install_project_list">InstallProjectListActivity</string>
 
 </resources>

@@ -153,33 +153,28 @@ public class DeviceDetailFragment extends Fragment {
 
             }
 
-            private int lastCursorPosition = 0;
             String oldtext = "";
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                Log.d("MACFORMATTER", "on text changed start: " + start + "last start: " + lastCursorPosition + "before: " + before + "count: " + count);
+                Log.d("MACFORMATTER", "on text changed start: " + start + " cursor position start: " + macAddressTextField.getSelectionStart() + " before: " + before + "count: " + count);
                 if (before != count){
                     String text = s.toString().replace(":", "");
-                    macAddressTextField.setText(text.replaceAll("([0-9A-Fa-f]{2})", "$1:"));
-                    if (macAddressTextField.getText().length() > 17){
+                    if (macAddressTextField.getText().length() >= 18){
+                        Log.d("MACFORMATTER", "MAC length limit hit");
                         macAddressTextField.setText(oldtext);
-                    }
-                    if (start != 0 || (start == 0 && lastCursorPosition == 0) ){
-                        int cursorPosition = start + (count-before);
-                        if (macAddressTextField.getText().toString().substring(macAddressTextField.getText().length()-1).contains(":")){
-                            if (count > before){
-                                cursorPosition++;
-                            } else {
-                                cursorPosition--;
-                            }
+                    } else {
+                        int oldCursorPosition = macAddressTextField.getSelectionStart();
+                        macAddressTextField.setText(text.replaceAll("([0-9A-Fa-f]{2})", "$1:"));
+                        if (start != 0 || (start == 0 && oldCursorPosition == 0) ){
+                            int cursorPosition = oldCursorPosition + (macAddressTextField.getText().length()-oldtext.length());
+                            Log.d("MACFORMTTER", "new cursor position: " + cursorPosition);
+                            macAddressTextField.setSelection(cursorPosition,cursorPosition);
                         }
-                        macAddressTextField.setSelection(cursorPosition,cursorPosition);
-                        lastCursorPosition = cursorPosition;
-                    }
 
-                    Log.d("MACFORMATTER", text.replaceAll("([0-9A-Fa-f]{2})", "$1:"));
-                    oldtext = macAddressTextField.getText().toString();
+                        Log.d("MACFORMATTER", text.replaceAll("([0-9A-Fa-f]{2})", "$1:"));
+                        oldtext = macAddressTextField.getText().toString();
+                    }
                 }
 
             }

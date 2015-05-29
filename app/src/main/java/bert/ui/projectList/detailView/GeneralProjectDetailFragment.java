@@ -1,4 +1,5 @@
-package bert.ui.projectList;
+package bert.ui.projectList.detailView;
+
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,58 +19,61 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
 
-import bert.data.proj.exceptions.InvalidProjectNameException;
-import bert.data.proj.Project;
 import bert.data.ProjectProvider;
-import bert.data.utility.CSVExporter;
+import bert.data.proj.Project;
+import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.utility.Cleaner;
 import bert.data.utility.ROIExporter;
-import bert.ui.common.BertAlert;
 import bert.ui.R;
-
 import bert.ui.buildingList.BuildingListActivity;
+import bert.ui.common.BertAlert;
+import bert.ui.projectList.ExportChooser;
+import bert.ui.projectList.activity.GeneralProjectListActivity;
 
-public class ProjectDetailFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+abstract public class GeneralProjectDetailFragment extends Fragment {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
 
-    private ProjectListActivity activity;
+    private GeneralProjectListActivity activity;
 
-    private int projectID;
-    private Project currentProject;
+    protected int projectID;
+    protected Project currentProject;
 
     private EditText projectNameEditText;
     private EditText contactNameEditText;
     private EditText contactNumberEditText;
     private TextView dateCreatedTextView;
     private TextView dateModifiedTextView;
-    private TextView roomCountTextView;
-    private TextView bertCountTextView;
-    private Button exportToBertConfigButton;
-    private Button exportToROIButton;
+
     private Button openProjectButton;
 
-    private OnFragmentInteractionListener mListener;
-
-    public static ProjectDetailFragment newInstance(int projectIndex) {
-        ProjectDetailFragment fragment = new ProjectDetailFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT_ID, projectIndex);
-        fragment.setArguments(args);
-        return fragment;
+    public GeneralProjectDetailFragment() {
+        // Required empty public constructor
     }
 
-    public ProjectDetailFragment() {}
+    public GeneralProjectDetailFragment newInstance(int projectIndex) {
+        Bundle args = new Bundle();
+        args.putInt(ARG_PROJECT_ID, projectIndex);
+        this.setArguments(args);
+        return this;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (ProjectListActivity)this.getActivity();
+        activity = (GeneralProjectListActivity)this.getActivity();
         if (getArguments() != null) {
             this.projectID = getArguments().getInt(ARG_PROJECT_ID);
-            currentProject = ProjectProvider.getInstance().getProject(projectID);
+            currentProject = getProjectForID(projectID);
         }
     }
+
+    abstract public Project getProjectForID(int projectID);
+
+    abstract public void openBuildingList();
 
     @Override
     public void onResume() {
@@ -129,43 +133,8 @@ public class ProjectDetailFragment extends Fragment {
         dateModifiedTextView = (TextView) getView().findViewById(R.id.dateAccessedTextView);
         dateModifiedTextView.setText(currentProject.getModifiedDate());
 
-        roomCountTextView = (TextView) getView().findViewById(R.id.roomCountTextView);
-        roomCountTextView.setText(Integer.toString(currentProject.getRoomCount()));
-
-        bertCountTextView = (TextView) getView().findViewById(R.id.bertCountTextView);
-        bertCountTextView.setText(Integer.toString(currentProject.getBerts().size()));
-
-        exportToBertConfigButton = (Button) getView().findViewById(R.id.exportToBertConfiguratorButton);
-        exportToBertConfigButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                File fileToShare;
-                try {
-                    fileToShare = CSVExporter.generateCSV(currentProject);
-                    new ExportChooser(activity).exportFile("CSV for bert configurator", fileToShare);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Log.d("Project Detail Fragment", "Unable to generate Configurator CSV File");
-                    fileToShare = new File("test file");
-                }
-            }
-        });
-
-        exportToROIButton = (Button) getView().findViewById(R.id.exportToROIButton);
-        exportToROIButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    File fileToShare = ROIExporter.generateROI(currentProject);
-                    new ExportChooser(activity).exportFile("ROI spreadsheet", fileToShare);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
         openProjectButton = (Button) getView().findViewById(R.id.openProjectButton);
-        openProjectButton.setText("View Buildings (" + currentProject.getBuildingCount() + ")");
+        //openProjectButton.setText("View Buildings (" + currentProject.getBuildingCount() + ")");
         openProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,40 +143,17 @@ public class ProjectDetailFragment extends Fragment {
         });
     }
 
-    public void openBuildingList() {
-        Intent i = new Intent(this.getActivity(), BuildingListActivity.class);
-        i.putExtra(BuildingListActivity.ARG_PROJECT_ID, projectID);
-        startActivity(i);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_project_detail, container, false);
-    }
-
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
-    }
 }

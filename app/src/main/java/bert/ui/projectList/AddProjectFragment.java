@@ -24,10 +24,10 @@ import bert.data.ProjectProvider;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
 import bert.ui.buildingList.BuildingListActivity;
+import bert.ui.projectList.activity.GeneralProjectListActivity;
+import bert.ui.projectList.detailView.GeneralProjectDetailFragment;
 
 public class AddProjectFragment extends Fragment {
-
-    private OnFragmentInteractionListener mListener;
 
     private Button createButton;
     private TextView nameTextField;
@@ -91,7 +91,7 @@ public class AddProjectFragment extends Fragment {
 
             ProjectProvider.getInstance().addProject(newProject);
 
-            ProjectListActivity activity = (ProjectListActivity) getActivity();
+            GeneralProjectListActivity activity = (GeneralProjectListActivity) getActivity();
             Intent intent = new Intent(activity, BuildingListActivity.class);
             intent.putExtra(BuildingListActivity.ARG_PROJECT_ID, ProjectProvider.getInstance().getTotalProjects() - 1);
 
@@ -105,22 +105,11 @@ public class AddProjectFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        public void openAddProjectView();
-        public void closeAddProjectView();
     }
 
     @Override

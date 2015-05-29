@@ -10,28 +10,46 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import bert.ui.R;
-import bert.ui.buildingList.BuildingListActivity;
-import bert.ui.projectList.ProjectListActivity;
+import bert.ui.projectList.activity.AuditProjectListActivity;
+import bert.ui.projectList.activity.InstallProjectListActivity;
 
 public class LaunchActivity extends ActionBarActivity {
 
     ImageButton startImage;
+
+    Button auditButton;
+    Button installButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
         startImage = (ImageButton) findViewById(R.id.startScreenImage);
-        startImage.setOnClickListener(new View.OnClickListener() {
+        auditButton = (Button) findViewById(R.id.startAuditButton);
+        installButton = (Button) findViewById(R.id.startInstallButton);
+
+        auditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchProjectListActivity();
+                launchAuditActivity();
+            }
+        });
+
+        installButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchInstallActivity();
             }
         });
     }
 
-    private void launchProjectListActivity(){
-        Intent intent = new Intent(this, ProjectListActivity.class);
+    private void launchInstallActivity(){
+        Intent intent = new Intent(this, InstallProjectListActivity.class);
+        startActivity(intent);
+    }
+
+    private void launchAuditActivity(){
+        Intent intent = new Intent(this, AuditProjectListActivity.class);
         startActivity(intent);
     }
 

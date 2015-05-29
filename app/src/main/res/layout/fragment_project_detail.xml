@@ -143,20 +143,11 @@
 
         </GridLayout>
 
-        <Button
-            style="@style/OpenButton"
-            android:text="View Buildings"
-            android:id="@+id/openProjectButton" />
 
-        <Button
-            style="@style/ActionButton"
-            android:text="Export an ROI Sheet"
-            android:id="@+id/exportToROIButton" />
 
-        <Button
-            style="@style/ActionButton"
-            android:text="Export a Configurator CSV"
-            android:id="@+id/exportToBertConfiguratorButton" />
+
+
+
 
     </LinearLayout>
 

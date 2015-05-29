@@ -23,8 +23,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEND" />
-
-
             </intent-filter>
         </activity>
         <activity
@@ -51,6 +49,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".projectList.AuditProjectList"
+            android:label="@string/title_activity_audit_project_list" >
+        </activity>
+        <activity
+            android:name=".projectList.activity.AuditProjectListActivity"
+            android:label="@string/title_activity_audit_project_list" >
+        </activity>
+        <activity
+            android:name=".projectList.activity.InstallProjectListActivity"
+            android:label="@string/title_activity_install_project_list" >
         </activity>
     </application>
 

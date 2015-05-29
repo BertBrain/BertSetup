@@ -1,0 +1,98 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="bert.ui.projectList.ProjectMetadataFragment">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:rowCount="7"
+        android:id="@+id/detailGridLayout"
+        android:columnCount="2"
+        android:orientation="vertical">
+
+    <TextView
+        style="@style/DefaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Project Name:"
+        android:id="@+id/nameLabel"
+        android:layout_row="0"
+        android:layout_column="0" />
+
+    <EditText
+        style="@style/EditText"
+        android:id="@+id/nameEditText"
+        android:layout_row="0"
+        android:layout_column="1" />
+
+    <TextView
+        style="@style/DefaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact Name:"
+        android:id="@+id/contactLabel"
+        android:layout_row="1"
+        android:layout_column="0" />
+
+    <EditText
+        style="@style/EditText"
+        android:id="@+id/contactEditText"
+        android:layout_row="1"
+        android:layout_column="1" />
+
+    <TextView
+        style="@style/DefaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact Number:"
+        android:id="@+id/contactNumberLabel"
+        android:layout_row="2"
+        android:layout_column="0" />
+
+    <EditText
+        style="@style/EditText"
+        android:id="@+id/contactNumberEditText"
+        android:inputType="phone"
+        android:layout_row="2"
+        android:layout_column="1" />
+
+    <TextView
+        style="@style/DefaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date Created:"
+        android:id="@+id/dateCreatedLabel"
+        android:layout_row="3"
+        android:layout_column="0" />
+
+    <TextView
+        style="@style/DefaultText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="date"
+        android:id="@+id/dateCreatedTextView"
+        android:layout_row="3"
+        android:layout_column="1" />
+
+    <TextView
+        style="@style/DefaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date Acessed:"
+        android:id="@+id/dateAccessedLabel"
+        android:layout_row="4"
+        android:layout_column="0" />
+
+    <TextView
+        style="@style/DefaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="date"
+        android:id="@+id/dateAccessedTextView"
+        android:layout_row="4"
+        android:layout_column="1" />
+    </GridLayout>
+
+</FrameLayout>

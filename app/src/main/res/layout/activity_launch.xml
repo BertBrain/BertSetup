@@ -17,4 +17,23 @@
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
         android:focusable="false" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Audit"
+        android:id="@+id/startAuditButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="113dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Install"
+        android:id="@+id/startInstallButton"
+        android:layout_alignTop="@+id/button"
+        android:layout_toRightOf="@+id/button"
+        android:layout_toEndOf="@+id/button" />
 </RelativeLayout>

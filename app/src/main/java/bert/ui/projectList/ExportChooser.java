@@ -1,5 +1,6 @@
 package bert.ui.projectList;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,10 +15,9 @@ public class ExportChooser {
 
     String[] exportOptions = {"Wireless", "Save to SD"};
 
+    private Activity activity;
 
-    private ProjectListActivity activity;
-
-    public ExportChooser(ProjectListActivity activity){
+    public ExportChooser(Activity activity){
         this.activity = activity;
     }
 
