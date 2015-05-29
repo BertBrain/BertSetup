@@ -27,6 +27,7 @@ import javax.xml.transform.stream.StreamResult;
 import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.ProjectSerializer;
+import bert.data.proj.exceptions.AuditExistsException;
 import bert.data.proj.exceptions.InvalidBuildingNameException;
 import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.utility.Cleaner;
@@ -43,14 +44,20 @@ public class Project {
 	private String modifiedDate;
 	private List<BertUnit> bertList;
     private HashMap<String, Building> buildingList;
+    private List<RoomAudit> auditList;
 
-	public Project(String name, List<BertUnit> bertList, HashMap<String, Building> buildingList) throws InvalidProjectNameException {
+	public Project(String name, List<BertUnit> bertList, HashMap<String, Building> buildingList, List<RoomAudit> auditList) throws InvalidProjectNameException {
 		setProjectName(name);
 	    this.creationDate = DateUtil.getDate();
 	    this.modifiedDate = creationDate;
         this.bertList = bertList;
         this.buildingList = buildingList;
+        this.auditList = auditList;
 	}
+
+    public List<RoomAudit> getAuditList() {
+        return auditList;
+    }
 
     public List<String> getRoomNamesInBuilding(String buildingID) {
         List<String> roomList = new ArrayList<>();

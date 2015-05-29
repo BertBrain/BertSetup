@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,15 +26,18 @@ public class BuildingListActivity extends ActionBarActivity {
     private ListView buildingListView;
     private int projectID;
     private Project project;
+    public InputMethodManager inputManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail);
-        Bundle extras = getIntent().getExtras();
-        projectID = extras.getInt(ARG_PROJECT_ID);
-        project = ProjectProvider.getInstance().getProject(projectID);
-
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            projectID = extras.getInt(ARG_PROJECT_ID);
+            project = ProjectProvider.getInstance().getProject(projectID);
+        }
         addBuildingButton = (Button) findViewById(R.id.create_list_item_button);
         addBuildingButton.setText("Add Building");
         addBuildingButton.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +46,8 @@ public class BuildingListActivity extends ActionBarActivity {
                 openAddBuildingView();
             }
         });
+
+        inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         clearFragmentContainer();
     }

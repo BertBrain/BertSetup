@@ -147,43 +147,7 @@ public class DeviceDetailFragment extends Fragment {
                 return false;
             }
         });
-        macAddressTextField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            String oldtext = "";
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                Log.d("MACFORMATTER", "on text changed start: " + start + " cursor position start: " + macAddressTextField.getSelectionStart() + " before: " + before + "count: " + count);
-                if (before != count){
-                    String text = s.toString().replace(":", "");
-                    if (macAddressTextField.getText().length() >= 18){
-                        Log.d("MACFORMATTER", "MAC length limit hit");
-                        macAddressTextField.setText(oldtext);
-                    } else {
-                        int oldCursorPosition = macAddressTextField.getSelectionStart();
-                        macAddressTextField.setText(text.replaceAll("([0-9A-Fa-f]{2})", "$1:"));
-                        if (start != 0 || (start == 0 && oldCursorPosition == 0) ){
-                            int cursorPosition = oldCursorPosition + (macAddressTextField.getText().length()-oldtext.length());
-                            Log.d("MACFORMTTER", "new cursor position: " + cursorPosition);
-                            macAddressTextField.setSelection(cursorPosition,cursorPosition);
-                        }
-
-                        Log.d("MACFORMATTER", text.replaceAll("([0-9A-Fa-f]{2})", "$1:"));
-                        oldtext = macAddressTextField.getText().toString();
-                    }
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+        
         deviceNameTextField.setText(bert.getName());
         deviceNameTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

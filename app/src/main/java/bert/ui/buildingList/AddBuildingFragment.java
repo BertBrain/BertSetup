@@ -1,13 +1,14 @@
 package bert.ui.buildingList;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ public class AddBuildingFragment extends Fragment {
 
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
 
+    private BuildingListActivity activity;
     private int projectID;
     private Project project;
 
@@ -38,12 +40,13 @@ public class AddBuildingFragment extends Fragment {
     private Time defaultEndTime = new Time(18, 0);
     private ArrayAdapter<String> buildingTypeArrayAdapter;
 
-    private EditText buildingNameTextField;
-    private Button addBuildingButton;
-    private Spinner buildingTypeSpinner;
+
     private TextView startTimeDisplay;
     private TextView endTimeDisplay;
+    private EditText buildingNameEditText;
+    private Spinner buildingTypeSpinner;
     private TimeRangeDisplay timeDisplay;
+    private Button addBuildingButton;
 
     public static AddBuildingFragment newInstance(int projectID) {
         AddBuildingFragment fragment = new AddBuildingFragment();
@@ -62,6 +65,7 @@ public class AddBuildingFragment extends Fragment {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
             project = ProjectProvider.getInstance().getProject(projectID);
         }
+        activity = (BuildingListActivity) getActivity();
     }
 
     @Override
@@ -81,16 +85,22 @@ public class AddBuildingFragment extends Fragment {
         buildingTypeArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, CategoryPresets.getNames());
         buildingTypeSpinner.setAdapter(buildingTypeArrayAdapter);
 
-        buildingNameTextField = (EditText) getView().findViewById(R.id.add_building_name_textfield);
-        buildingNameTextField.addTextChangedListener(new TextWatcher() {
+        buildingNameEditText = (EditText) getView().findViewById(R.id.add_building_name_textfield);
+        buildingNameEditText.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                addBuildingButton.setEnabled(Cleaner.isValid(buildingNameTextField.getText().toString()));
+                addBuildingButton.setEnabled(Cleaner.isValid(buildingNameEditText.getText().toString()));
             }
-
-            @Override public void afterTextChanged(Editable s) {}
+        });
+        buildingNameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView view, int i, KeyEvent keyEvent) {
+                activity.inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                return false;
+            }
         });
 
         addBuildingButton = (Button) getView().findViewById(R.id.add_building_button);
@@ -105,12 +115,11 @@ public class AddBuildingFragment extends Fragment {
 
     private void addBuilding() {
         try {
-            String buildingID = buildingNameTextField.getText().toString();
+            String buildingID = buildingNameEditText.getText().toString();
             Time startTime = timeDisplay.getStartTime();
             Time endTime = timeDisplay.getEndTime();
             HashMap<String, Category> presetCategories = CategoryPresets.getPresets().get(buildingTypeSpinner.getSelectedItem());
-            Building building = new Building(startTime, endTime, presetCategories);
-            project.addBuilding(buildingID, building);
+            project.addBuilding(buildingID, new Building(startTime, endTime, presetCategories));
             project.save();
             BuildingListActivity activity = (BuildingListActivity) getActivity();
             activity.loadListView();
@@ -124,15 +133,4 @@ public class AddBuildingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_building_add, container, false);
     }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
 }

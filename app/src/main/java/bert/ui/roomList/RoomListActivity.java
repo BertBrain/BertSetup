@@ -47,7 +47,7 @@ public class RoomListActivity extends ActionBarActivity {
             projectID = extras.getInt(ARG_PROJECT_ID);
             buildingID = extras.getString(ARG_BUILDING_ID);
         }
-        inputManager = (InputMethodManager) this.getSystemService(INPUT_METHOD_SERVICE);
+        inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         openNoSelection();
     }
 
