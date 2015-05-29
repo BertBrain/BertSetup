@@ -1,4 +1,4 @@
-package bert.data.utility;
+package bert.utility;
 
 import java.text.SimpleDateFormat;
 

@@ -22,11 +22,13 @@ import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
 
 import bert.data.proj.Project;
-import bert.data.utility.Cleaner;
+import bert.data.proj.RoomAudit;
 import bert.ui.R;
 import bert.ui.roomList.RoomListActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class AuditWizardFragment extends Fragment {
 
@@ -36,18 +38,18 @@ public class AuditWizardFragment extends Fragment {
     private int projectID;
     private String buildingID;
 
+    private RoomListActivity activity;
     private Project project;
-    private Building building;
-
-    private Button cancelButton;
-    private Button finishedButton;
-    private GridView gridView;
-    private TextView totalBertsCounter;
 
     private AuditTallyBoxGVA tallyGridAdapter;
-    private EditText locationEditText;
+    private RoomAudit roomAudit;
 
-    private RoomListActivity activity;
+    private GridView gridView;
+    private TextView totalBertsTextView;
+    private EditText roomEditText;
+    private Button cancelButton;
+    private Button finishedButton;
+
 
     public static AuditWizardFragment newInstance(int projectID, String buildingID) {
         AuditWizardFragment fragment = new AuditWizardFragment();
@@ -68,21 +70,27 @@ public class AuditWizardFragment extends Fragment {
             buildingID = getArguments().getString(ARG_BUILDING_ID);
         }
         activity = (RoomListActivity) getActivity();
+        project = ProjectProvider.getInstance().getProject(projectID);
+
+        //TODO name needs to be updated cant set it here
+        HashMap<String, Integer> catCount = new HashMap<>();
+        for (String s : project.getBuilding(buildingID).getCategoryNames()) {
+            catCount.put(s, 0);
+        }
+        roomAudit = new RoomAudit(buildingID, "AUDIT", catCount);
+
     }
 
     @Override public void onResume() {
         super.onResume();
-        project = ProjectProvider.getInstance().getProject(projectID);
-        building = project.getBuilding(buildingID);
 
-        tallyGridAdapter = new AuditTallyBoxGVA(this, activity, android.R.layout.simple_gallery_item, building.getCategoryNames(), projectID, buildingID);
+        tallyGridAdapter = new AuditTallyBoxGVA(activity, android.R.layout.simple_gallery_item, roomAudit, projectID);
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(tallyGridAdapter);
 
-        totalBertsCounter = (TextView) getView().findViewById(R.id.totalCounterTextField);
+        totalBertsTextView = (TextView) getView().findViewById(R.id.totalCounterTextField);
 
         finishedButton = (Button) getView().findViewById(R.id.finishAuditWizardButton);
-        finishedButton.setEnabled(tallyGridAdapter.updateBertTotal() != 0);
         finishedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,8 +107,8 @@ public class AuditWizardFragment extends Fragment {
            }
         });
 
-        locationEditText = (EditText) getView().findViewById(R.id.locationNameTextField);
-        locationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        roomEditText = (EditText) getView().findViewById(R.id.locationNameTextField);
+        roomEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
                 activity.inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -109,12 +117,8 @@ public class AuditWizardFragment extends Fragment {
         });
     }
 
-    public void setCanFinish(boolean canFinish) {
-        finishedButton.setEnabled(canFinish);
-    }
-
     public void setBertTotalCounter(int count) {
-        totalBertsCounter.setText("Total: " + count);
+        totalBertsTextView.setText("Total: " + count);
     }
 
     private void openNoRoomNamePopup() {
@@ -124,9 +128,9 @@ public class AuditWizardFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 activity.inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                locationEditText.setFocusable(true);
-                locationEditText.requestFocus();
-                locationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                roomEditText.setFocusable(true);
+                roomEditText.requestFocus();
+                roomEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -146,24 +150,25 @@ public class AuditWizardFragment extends Fragment {
         noRoomNameSetAlert.create().show();
     }
 
+    //FIXME THIS IS COMPLETELY DIFFERENT NOW UPDATE ASAP
     private void finishAuditWizard() {
-        String roomID = locationEditText.getText().toString();
-        if (Cleaner.isValid(roomID)) {
-            HashMap<String, Integer> categoryCounts = tallyGridAdapter.getCounts();
-            for (String categoryID : building.getCategoryNames()) {
-                for (int i = 0; i < categoryCounts.get(categoryID); i++) {
-                    String countString = (i == 0) ? ("") : (String.valueOf(i + 1));
-                    String name = roomID + " - " + categoryID + " " + countString;
-                    BertUnit bert = new BertUnit(name, roomID, "", buildingID, categoryID);
-                    project.addBert(bert);
-                }
+        //TODO save, reload view, go to new appropriate view
+    }
+
+    //TODO MOVE THIS TO A NEW CLASS
+    //TODO MAKE SURE LOCATION NAME IS SAFE
+    //TODO make sure it saves
+    private static List<BertUnit> convertAuditToBert(RoomAudit audit) {
+        List<BertUnit> bertList = new ArrayList<>();
+        for (String categoryID : audit.getCategoryNames()) {
+            for (int i = 0; i < audit.getCategoryCount(categoryID); i++) {
+                String countString = (i == 0) ? ("") : (String.valueOf(i + 1));
+                String name = audit.getRoomID() + " - " + categoryID + " " + countString;
+                BertUnit bert = new BertUnit(name, audit.getRoomID(), "", audit.getBuildingID(), categoryID);
+                bertList.add(bert);
             }
-            activity.onResume(); //Refresh view
-            activity.openDeviceListFragment(roomID);
-            project.save();
-        } else {
-            openNoRoomNamePopup();
         }
+        return bertList;
     }
 
     @Override

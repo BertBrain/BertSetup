@@ -19,7 +19,7 @@ import bert.data.proj.Building;
 import bert.data.proj.Category;
 import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidCategoryNameException;
-import bert.data.utility.Cleaner;
+import bert.utility.Cleaner;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
 

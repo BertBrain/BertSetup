@@ -17,7 +17,7 @@ import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
-import bert.data.utility.Cleaner;
+import bert.utility.Cleaner;
 import bert.ui.R;
 import bert.ui.roomList.RoomListActivity;
 

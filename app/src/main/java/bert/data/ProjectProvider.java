@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import bert.data.proj.Project;
-import bert.data.utility.Cleaner;
+import bert.utility.Cleaner;
 
 /**
  * Created by afiol-mahon on 5/5/15.

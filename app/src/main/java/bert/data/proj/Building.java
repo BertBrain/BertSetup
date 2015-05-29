@@ -6,7 +6,7 @@ import java.util.List;
 
 import bert.data.proj.exceptions.InvalidCategoryNameException;
 import bert.data.proj.exceptions.UnableToDeleteException;
-import bert.data.utility.Cleaner;
+import bert.utility.Cleaner;
 
 /**
  * Created by afiol-mahon on 5/8/15.

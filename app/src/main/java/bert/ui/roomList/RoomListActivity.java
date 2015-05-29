@@ -82,7 +82,6 @@ public class RoomListActivity extends ActionBarActivity {
 
     public void openAuditWizardFragment() {
         AuditWizardFragment fragment = AuditWizardFragment.newInstance(projectID, buildingID);
-        AuditTallyBoxGVA.resetCounts();
         loadFragment(fragment);
         setTitle("Audit a new Room");
     }

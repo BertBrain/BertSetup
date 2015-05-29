@@ -1,4 +1,4 @@
-package bert.data.utility;
+package bert.utility;
 
 import android.util.Log;
 

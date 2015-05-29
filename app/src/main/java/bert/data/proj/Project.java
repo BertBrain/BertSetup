@@ -27,11 +27,10 @@ import javax.xml.transform.stream.StreamResult;
 import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.ProjectSerializer;
-import bert.data.proj.exceptions.AuditExistsException;
 import bert.data.proj.exceptions.InvalidBuildingNameException;
 import bert.data.proj.exceptions.InvalidProjectNameException;
-import bert.data.utility.Cleaner;
-import bert.data.utility.DateUtil;
+import bert.utility.Cleaner;
+import bert.utility.DateUtil;
 
 /**
  * @author afiol-mahon

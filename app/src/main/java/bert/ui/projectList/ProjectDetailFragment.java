@@ -21,9 +21,9 @@ import java.io.IOException;
 import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
-import bert.data.utility.CSVExporter;
-import bert.data.utility.Cleaner;
-import bert.data.utility.ROIExporter;
+import bert.utility.CSVExporter;
+import bert.utility.Cleaner;
+import bert.utility.ROIExporter;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
 
