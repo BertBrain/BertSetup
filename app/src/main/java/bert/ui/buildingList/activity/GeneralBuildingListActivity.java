@@ -16,7 +16,6 @@ import bert.data.ProjectProvider;
 import bert.data.proj.Project;
 import bert.ui.R;
 import bert.ui.buildingList.AddBuildingFragment;
-import bert.ui.buildingList.BuildingDetailFragment;
 import bert.ui.common.NoSelectionFragment;
 
 /**
@@ -29,7 +28,7 @@ abstract public class GeneralBuildingListActivity extends ActionBarActivity {
     private Button addBuildingButton;
     private ArrayAdapter<String> buildingListViewAdapter;
     private ListView buildingListView;
-    protected int projectID;
+    protected String projectID;
     protected Project project;
     public InputMethodManager inputManager;
 
@@ -41,7 +40,7 @@ abstract public class GeneralBuildingListActivity extends ActionBarActivity {
         setContentView(R.layout.activity_master_detail);
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            projectID = extras.getInt(ARG_PROJECT_ID);
+            projectID = extras.getString(ARG_PROJECT_ID);
         }
         project = ProjectProvider.getInstance().getProject(projectID);
         addBuildingButton = (Button) findViewById(R.id.create_list_item_button);

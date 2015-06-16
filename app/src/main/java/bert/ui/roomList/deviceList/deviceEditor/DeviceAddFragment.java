@@ -26,7 +26,7 @@ public class DeviceAddFragment extends Fragment {
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
     private static final String ARG_LOCATION = "location";
 
-    private int projectID;
+    private String projectID;
     private String buildingID;
 
     private InstallRoomListActivity activity;
@@ -42,10 +42,10 @@ public class DeviceAddFragment extends Fragment {
     private Spinner categorySpinner;
     private ArrayAdapter<String> categoryAdapter;
 
-    public static DeviceAddFragment newInstance(int projectID, String buildingID, String location) {
+    public static DeviceAddFragment newInstance(String projectID, String buildingID, String location) {
         DeviceAddFragment fragment = new DeviceAddFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT_ID, projectID);
+        args.putString(ARG_PROJECT_ID, projectID);
         args.putString(ARG_BUILDING_ID, buildingID);
         args.putString(ARG_LOCATION, location);
         fragment.setArguments(args);
@@ -57,7 +57,7 @@ public class DeviceAddFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = (InstallRoomListActivity)getActivity();
         if (getArguments() != null) {
-            projectID = getArguments().getInt(ARG_PROJECT_ID);
+            projectID = getArguments().getString(ARG_PROJECT_ID);
             buildingID = getArguments().getString(ARG_BUILDING_ID);
             location = getArguments().getString(ARG_LOCATION);
 

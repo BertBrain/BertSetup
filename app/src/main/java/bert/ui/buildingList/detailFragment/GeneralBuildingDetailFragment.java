@@ -32,7 +32,7 @@ abstract public class GeneralBuildingDetailFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
 
-    protected int projectID;
+    protected String projectID;
     protected String buildingID;
     protected Project project;
     protected Building building;
@@ -49,9 +49,9 @@ abstract public class GeneralBuildingDetailFragment extends Fragment {
     abstract public void openRoomListActivity();
 
 
-    public GeneralBuildingDetailFragment newInstance(int projectID, String buildingID) {
+    public GeneralBuildingDetailFragment newInstance(String projectID, String buildingID) {
         Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT_ID, projectID);
+        args.putString(ARG_PROJECT_ID, projectID);
         args.putString(ARG_BUILDING_ID, buildingID);
         this.setArguments(args);
         return this;
@@ -63,7 +63,7 @@ abstract public class GeneralBuildingDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            projectID = getArguments().getInt(ARG_PROJECT_ID);
+            projectID = getArguments().getString(ARG_PROJECT_ID);
             buildingID = getArguments().getString(ARG_BUILDING_ID);
             project = ProjectProvider.getInstance().getProject(projectID);
             building = project.getBuilding(buildingID);

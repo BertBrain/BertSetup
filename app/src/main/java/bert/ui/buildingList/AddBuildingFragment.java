@@ -34,7 +34,7 @@ public class AddBuildingFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
 
     private GeneralBuildingListActivity activity;
-    private int projectID;
+    private String projectID;
     private Project project;
 
     private Time defaultStartTime = new Time(8, 0);
@@ -49,10 +49,10 @@ public class AddBuildingFragment extends Fragment {
     private TimeRangeDisplay timeDisplay;
     private Button addBuildingButton;
 
-    public static AddBuildingFragment newInstance(int projectID) {
+    public static AddBuildingFragment newInstance(String projectID) {
         AddBuildingFragment fragment = new AddBuildingFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT_ID, projectID);
+        args.putString(ARG_PROJECT_ID, projectID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,7 +63,7 @@ public class AddBuildingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            projectID = getArguments().getInt(ARG_PROJECT_ID);
+            projectID = getArguments().getString(ARG_PROJECT_ID);
             project = ProjectProvider.getInstance().getProject(projectID);
         }
         activity = (GeneralBuildingListActivity) getActivity();

@@ -40,7 +40,7 @@ abstract public class GeneralProjectDetailFragment extends Fragment {
 
     private GeneralProjectListActivity activity;
 
-    protected int projectID;
+    protected String projectID;
     protected Project currentProject;
 
     private EditText projectNameEditText;
@@ -55,9 +55,9 @@ abstract public class GeneralProjectDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public GeneralProjectDetailFragment newInstance(int projectIndex) {
+    public GeneralProjectDetailFragment newInstance(String projectIndex) {
         Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT_ID, projectIndex);
+        args.putString(ARG_PROJECT_ID, projectIndex);
         this.setArguments(args);
         return this;
     }
@@ -65,14 +65,12 @@ abstract public class GeneralProjectDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (GeneralProjectListActivity)this.getActivity();
+        activity = (GeneralProjectListActivity) this.getActivity();
         if (getArguments() != null) {
-            this.projectID = getArguments().getInt(ARG_PROJECT_ID);
-            currentProject = getProjectForID(projectID);
+            this.projectID = getArguments().getString(ARG_PROJECT_ID);
+            currentProject = ProjectProvider.getInstance().getProject(projectID);
         }
     }
-
-    abstract public Project getProjectForID(int projectID);
 
     abstract public void openBuildingList();
 

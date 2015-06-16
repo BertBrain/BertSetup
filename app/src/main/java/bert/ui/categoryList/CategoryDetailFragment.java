@@ -33,7 +33,7 @@ public class CategoryDetailFragment extends Fragment {
 
     private static final String UNDEFINED_LOAD_STRING = "Undefined";
 
-    private int projectID;
+    private String projectID;
     private String buildingID;
     private String categoryID;
 
@@ -52,10 +52,10 @@ public class CategoryDetailFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public static CategoryDetailFragment newInstance(int projectID, String buildingID, String categoryID) {
+    public static CategoryDetailFragment newInstance(String projectID, String buildingID, String categoryID) {
         CategoryDetailFragment fragment = new CategoryDetailFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT_ID, projectID);
+        args.putString(ARG_PROJECT_ID, projectID);
         args.putString(ARG_BUILDING_ID, buildingID);
         args.putString(ARG_CATEGORY_ID, categoryID);
         fragment.setArguments(args);
@@ -68,7 +68,7 @@ public class CategoryDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            projectID = getArguments().getInt(ARG_PROJECT_ID);
+            projectID = getArguments().getString(ARG_PROJECT_ID);
             categoryID = getArguments().getString(ARG_CATEGORY_ID);
             buildingID = getArguments().getString(ARG_BUILDING_ID);
 

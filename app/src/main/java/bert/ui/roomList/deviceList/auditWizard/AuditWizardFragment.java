@@ -37,7 +37,7 @@ public class AuditWizardFragment extends Fragment {
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
     public static final String ARG_ROOM_ID = "ROOM_ID";
 
-    private int projectID;
+    private String projectID;
     private String buildingID;
     private String roomID;
 
@@ -54,19 +54,19 @@ public class AuditWizardFragment extends Fragment {
     private Button finishedButton;
 
 
-    public static AuditWizardFragment newInstance(int projectID, String buildingID) {
+    public static AuditWizardFragment newInstance(String projectID, String buildingID) {
         AuditWizardFragment fragment = new AuditWizardFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT_ID, projectID);
+        args.putString(ARG_PROJECT_ID, projectID);
         args.putString(ARG_BUILDING_ID, buildingID);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static AuditWizardFragment newInstance(int projectID, String buildingID, String roomID) {
+    public static AuditWizardFragment newInstance(String projectID, String buildingID, String roomID) {
         AuditWizardFragment fragment = new AuditWizardFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT_ID, projectID);
+        args.putString(ARG_PROJECT_ID, projectID);
         args.putString(ARG_BUILDING_ID, buildingID);
         args.putString(ARG_ROOM_ID, roomID);
 
@@ -80,7 +80,7 @@ public class AuditWizardFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            projectID = getArguments().getInt(ARG_PROJECT_ID);
+            projectID = getArguments().getString(ARG_PROJECT_ID);
             buildingID = getArguments().getString(ARG_BUILDING_ID);
             roomID = getArguments().getString(ARG_ROOM_ID);
         }

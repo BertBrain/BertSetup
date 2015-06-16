@@ -55,6 +55,10 @@ public class Project {
         this.auditList = auditList;
 	}
 
+    public boolean isAudit(){
+        return bertList.size() == 0;
+    }
+
     public void addAudit(RoomAudit newAudit) throws DuplicateAuditException {
         for (RoomAudit r : auditList) {
             if (r.getRoomID().equals(newAudit.getRoomID()) && r.getBuildingID().equals(newAudit.getBuildingID())) {

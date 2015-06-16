@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import bert.data.proj.Project;
@@ -17,8 +18,11 @@ import bert.utility.Cleaner;
  */
 public class ProjectProvider {
 
+    static final public boolean AUDIT = true;
+    static final public boolean INSTALL = false;
+
     private static ProjectProvider instance;
-    private List<Project> projectList;
+    private HashMap<String, Project> projectMap;
     private ProjectProvider() {}
 
     public static ProjectProvider getInstance() {
@@ -30,24 +34,46 @@ public class ProjectProvider {
         return instance;
     }
 
-    public Project getProject(int projectID) {
-        return projectList.get(projectID);
+    public Project getProject(String projectID) {
+        return projectMap.get(projectID);
     }
+
+
+    public Project getProject(boolean isRequestForAudit, int projectID) {
+        return getProjects(isRequestForAudit).get(projectID);
+    }
+
+    //TODO: find more descriptive and clear name
+    public List<Project> getProjects(boolean isRequestForAudit) {
+        List<Project> auditProjects = new ArrayList<>();
+        for (Project project : projectMap.values()) {
+            if (project.isAudit() == isRequestForAudit) {
+                auditProjects.add(project);
+            }
+        }
+        return  auditProjects;
+    }
+
+    public HashMap<String, Project> getProjects() {
+        return projectMap;
+    }
+
 
     public int getTotalProjects() {
-        return projectList.size();
+        return projectMap.size();
     }
 
-    public List<String> getProjectNameList() {
+    //TODO: find more descriptive and clear name
+    public List<String> getProjectNameList(boolean isRequestForAudit) {
         List<String> nameList = new ArrayList<>();
-        for (Project p : projectList) {
+        for (Project p : getProjects(isRequestForAudit)) {
             nameList.add(p.getProjectName());
         }
         return nameList;
     }
 
     private void loadProjectListFromFile() {
-        projectList = new ArrayList<>();
+        projectMap = new HashMap<>();
         try {
             File projectDir = FileProvider.getProjectDirectory();
             if (projectDir != null && projectDir.listFiles() != null) {
@@ -57,14 +83,14 @@ public class ProjectProvider {
                         Project nextProject = Project.loadProject(f);
                         if (nextProject != null) {
                             log("Loading file <" + f.getName() + "> from project directory");
-                            projectList.add(nextProject);
+                            projectMap.put(nextProject.getProjectName(), nextProject);
                         } else {
                             log("File <" + f.getName() + "> is not a valid project... Skipping");
                         }
                     }
                 }
             }
-            log("Loaded " + projectList.size() + " projects from storage");
+            log("Loaded " + projectMap.size() + " projects from storage");
         } catch (IOException e) {
             e.printStackTrace();
             log("Unable to complete loadProjectListFromFile()");
@@ -72,14 +98,16 @@ public class ProjectProvider {
     }
 
     public void addProject(Project project) {
-        projectList.add(project);
+        projectMap.put(project.getProjectName(), project);
         project.save();
-        log("Added project <" + project.getProjectName() + "> to projectList");
+        log("Added project <" + project.getProjectName() + "> to projectMap");
     }
 
     public boolean projectNameCheck(String name) {
         boolean canCreate = Cleaner.isValid(name);
-        for (String s : getProjectNameList()) {
+        List<String> allProjectNames =  getProjectNameList(AUDIT);
+        getProjectNameList(AUDIT).addAll(getProjectNameList(INSTALL));
+        for (String s : allProjectNames) {
             if (s.equals(name)) {
                 canCreate = false;
             }

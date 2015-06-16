@@ -24,7 +24,7 @@ public abstract class GeneralRoomListActivity extends ActionBarActivity {
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
     public static final String ARG_BUILDING_ID = "BUILDING_ID";
 
-    protected int projectID;
+    protected String projectID;
     protected String buildingID;
 
     protected Project project;
@@ -46,7 +46,7 @@ public abstract class GeneralRoomListActivity extends ActionBarActivity {
         setContentView(R.layout.activity_master_detail);
         if (savedInstanceState == null) {//if restoring, don't replace
             Bundle extras = getIntent().getExtras();
-            projectID = extras.getInt(ARG_PROJECT_ID);
+            projectID = extras.getString(ARG_PROJECT_ID);
             buildingID = extras.getString(ARG_BUILDING_ID);
         }
         inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);

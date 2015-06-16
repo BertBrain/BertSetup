@@ -14,14 +14,14 @@ public class AddCategoryFrameActivity extends ActionBarActivity implements AddCa
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
     public static final String ARG_BUILDING_ID = "ARG_BUILDING_ID";
 
-    private int projectID;
+    private String projectID;
     private String buildingID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empty_frame_layout);
-        projectID = getIntent().getExtras().getInt(ARG_PROJECT_ID);
+        projectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
         buildingID = getIntent().getExtras().getString(ARG_BUILDING_ID);
 
         AddCategoryFragment frag = AddCategoryFragment.newInstance(projectID, buildingID);

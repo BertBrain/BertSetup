@@ -24,10 +24,10 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
 //FIXME audit tally box GVA creates 5 views of position 0 for some reason, related to first item increment not updating consistently?
     private HashMap<String, View> categoryCells = new HashMap<>();
     private AuditRoomListActivity activity;
-    private int projectID;
+    private String projectID;
     private RoomAudit roomAudit;
 
-    public AuditTallyBoxGVA(AuditRoomListActivity activity, RoomAudit roomAudit, int projectID) {
+    public AuditTallyBoxGVA(AuditRoomListActivity activity, RoomAudit roomAudit, String projectID) {
         super(activity, android.R.layout.simple_gallery_item, roomAudit.getCategoryNames());
         this.activity = activity;
         this.projectID = projectID;

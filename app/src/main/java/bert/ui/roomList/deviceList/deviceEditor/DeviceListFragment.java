@@ -23,17 +23,17 @@ public class DeviceListFragment extends Fragment {
     public static final String ADD_BUILDING_STRING = "+ Add Bert";
 
     private Project project;
-    private int projectID;
+    private String projectID;
     private String buildingID;
     private String location;
 
     private DeviceDetailListGVA deviceTableAdapter;
     private ListView locationListView;
 
-    public static DeviceListFragment newInstance(int projectID, String buildingID, String location) {
+    public static DeviceListFragment newInstance(String projectID, String buildingID, String location) {
         DeviceListFragment fragment = new DeviceListFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT, projectID);
+        args.putString(ARG_PROJECT, projectID);
         args.putString(ARG_BUILDING, buildingID);
         args.putString(ARG_LOCATION, location);
         fragment.setArguments(args);
@@ -46,7 +46,7 @@ public class DeviceListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            projectID = getArguments().getInt(ARG_PROJECT);
+            projectID = getArguments().getString(ARG_PROJECT);
             buildingID = getArguments().getString(ARG_BUILDING);
             location = getArguments().getString(ARG_LOCATION);
         }

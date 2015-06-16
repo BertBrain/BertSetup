@@ -36,12 +36,6 @@ import bert.ui.projectList.activity.GeneralProjectListActivity;
  */
 public class AuditDetailFragment extends GeneralProjectDetailFragment {
 
-    @Override
-    public Project getProjectForID(int projectID) {
-        //TODO: make different for audit vs install
-        return ProjectProvider.getInstance().getProject(projectID);
-    }
-
     private TextView roomCountTextView;
     private TextView bertCountTextView;
 

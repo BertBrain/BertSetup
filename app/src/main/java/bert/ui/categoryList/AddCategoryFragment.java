@@ -28,7 +28,7 @@ public class AddCategoryFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
 
-    private int projectID;
+    private String projectID;
     private String buildingID;
 
     private Project project;
@@ -45,10 +45,10 @@ public class AddCategoryFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public static AddCategoryFragment newInstance(int projectID, String buildingID) {
+    public static AddCategoryFragment newInstance(String projectID, String buildingID) {
         AddCategoryFragment fragment = new AddCategoryFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PROJECT_ID, projectID);
+        args.putString(ARG_PROJECT_ID, projectID);
         args.putString(ARG_BUILDING_ID, buildingID);
         fragment.setArguments(args);
         return fragment;
@@ -60,7 +60,7 @@ public class AddCategoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            projectID = getArguments().getInt(ARG_PROJECT_ID);
+            projectID = getArguments().getString(ARG_PROJECT_ID);
             buildingID = getArguments().getString(ARG_BUILDING_ID);
             project = ProjectProvider.getInstance().getProject(projectID);
             building = project.getBuilding(buildingID);

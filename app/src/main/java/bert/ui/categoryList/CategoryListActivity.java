@@ -22,7 +22,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
     public static final String ARG_BUILDING_ID = "Building_ID";
 
-    private int projectID;
+    private String projectID;
     private String buildingID;
 
     private Project project;
@@ -37,7 +37,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail);
 
-        projectID = getIntent().getExtras().getInt(ARG_PROJECT_ID);
+        projectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
         buildingID = getIntent().getExtras().getString(ARG_BUILDING_ID);
 
         project = ProjectProvider.getInstance().getProject(projectID);

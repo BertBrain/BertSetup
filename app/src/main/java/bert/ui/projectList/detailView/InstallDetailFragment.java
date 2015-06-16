@@ -85,10 +85,4 @@ public class InstallDetailFragment extends GeneralProjectDetailFragment {
         return inflater.inflate(R.layout.fragment_install_detail, container, false);
     }
 
-    @Override
-    public Project getProjectForID(int projectID){
-        //TODO: make different for audit vs install
-        return ProjectProvider.getInstance().getProject(projectID);
-
-    }
 }
