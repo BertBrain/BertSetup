@@ -1,4 +1,4 @@
-package bert.ui.roomList.deviceList;
+package bert.ui.roomList.deviceList.deviceEditor;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,9 +6,6 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +17,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
-import java.text.MessageFormat;
-
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
@@ -30,7 +24,7 @@ import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidBertNameException;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
-import bert.ui.roomList.RoomListActivity;
+import bert.ui.roomList.roomListActivity.InstallRoomListActivity;
 
 public class DeviceDetailFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
@@ -43,7 +37,7 @@ public class DeviceDetailFragment extends Fragment {
     private int bertID;
     private String location;
 
-    private RoomListActivity activity;
+    private InstallRoomListActivity activity;
     private Project project;
     private Building building;
     private BertUnit bert;
@@ -81,7 +75,7 @@ public class DeviceDetailFragment extends Fragment {
             project = ProjectProvider.getInstance().getProject(projectID);
             building = project.getBuilding(buildingID);
             bert = project.getBertsByRoom(buildingID, location).get(bertID);
-            activity = (RoomListActivity)getActivity();
+            activity = (InstallRoomListActivity)getActivity();
         }
     }
 
@@ -115,7 +109,7 @@ public class DeviceDetailFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         project.deleteBert(bert);
                         activity.onResume();
-                        activity.openDeviceListFragment(location);
+                        activity.loadRoom(location);
                         project.save();
                     }
                 });

@@ -1,4 +1,4 @@
-package bert.ui.roomList.deviceList;
+package bert.ui.roomList.deviceList.deviceEditor;
 
 import android.app.Activity;
 import android.view.View;

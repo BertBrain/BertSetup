@@ -1,4 +1,4 @@
-package bert.ui.roomList.deviceList;
+package bert.ui.roomList.deviceList.deviceEditor;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -14,7 +14,6 @@ import bert.data.ProjectProvider;
 import bert.data.proj.Project;
 import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
-import bert.ui.roomList.RoomListActivity;
 
 public class DeviceListFragment extends Fragment {
     public static final String ARG_LOCATION = "LOCATION";

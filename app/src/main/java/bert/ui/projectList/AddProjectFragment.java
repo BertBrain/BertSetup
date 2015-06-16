@@ -19,7 +19,7 @@ import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
 import bert.data.proj.RoomAudit;
 import bert.data.proj.exceptions.InvalidProjectNameException;
-import bert.data.utility.Cleaner;
+import bert.utility.Cleaner;
 import bert.data.proj.Project;
 import bert.data.ProjectProvider;
 import bert.ui.buildingList.activity.GeneralBuildingListActivity;

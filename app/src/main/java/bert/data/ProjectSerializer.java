@@ -96,7 +96,7 @@ public class ProjectSerializer {
         //Project
         root.setAttribute(TAG_PROJECT_NAME, p.getProjectName());
         root.setAttribute(TAG_CREATION_DATE, p.getCreationDate());
-        root.setAttribute(TAG_MODIFIED_DATE, bert.data.utility.DateUtil.getDate());
+        root.setAttribute(TAG_MODIFIED_DATE, bert.utility.DateUtil.getDate());
 
         //Client
         Element client = projectDoc.createElement(TAG_CONTACT);

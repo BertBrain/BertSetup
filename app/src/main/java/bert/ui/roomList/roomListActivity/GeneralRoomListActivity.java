@@ -1,4 +1,4 @@
-package bert.ui.roomList;
+package bert.ui.roomList.roomListActivity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -17,26 +17,28 @@ import bert.data.proj.Project;
 import bert.data.ProjectProvider;
 import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
-import bert.ui.roomList.deviceList.DeviceListFragment;
-import bert.ui.roomList.deviceList.auditWizard.AuditTallyBoxGVA;
-import bert.ui.roomList.deviceList.auditWizard.AuditWizardFragment;
+import bert.ui.roomList.deviceList.deviceEditor.DeviceListFragment;
 
-public class RoomListActivity extends ActionBarActivity {
+public abstract class GeneralRoomListActivity extends ActionBarActivity {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
     public static final String ARG_BUILDING_ID = "BUILDING_ID";
 
-    private int projectID;
-    private String buildingID;
+    protected int projectID;
+    protected String buildingID;
 
-    private Project project;
+    protected Project project;
 
     public DeviceListFragment deviceListFragment;
 
-    private Button startAuditButton;
+    private Button newRoomButton;
     private ArrayAdapter<String> roomListAdapter;
     private ListView roomListView;
     public InputMethodManager inputManager;
+
+    abstract public void loadRoom(String roomID);
+    abstract public void addRoom();
+    abstract public void setDefaultTitle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +57,21 @@ public class RoomListActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
         project = ProjectProvider.getInstance().getProject(projectID);
-        startAuditButton = (Button) findViewById(R.id.create_list_item_button);
-        startAuditButton.setText("Audit Wizard");
-        startAuditButton.setOnClickListener(new View.OnClickListener() {
+        newRoomButton = (Button) findViewById(R.id.create_list_item_button);
+        newRoomButton.setText("New Room");
+        newRoomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAuditWizardFragment();
+                addRoom();
             }
         });
 
+        loadListView();
+
+        setDefaultTitle();
+    }
+
+    public void loadListView() {
         final List<String> roomNames = project.getRoomNamesInBuilding(buildingID);
 
         if (roomNames.size() != 0) {
@@ -73,40 +81,20 @@ public class RoomListActivity extends ActionBarActivity {
             roomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    openDeviceListFragment(roomNames.get(position));
+                    loadRoom(roomNames.get(position));
                 }
             });
         }
-        setDefaultTitle();
-    }
-
-    public void openAuditWizardFragment() {
-        AuditWizardFragment fragment = AuditWizardFragment.newInstance(projectID, buildingID);
-        AuditTallyBoxGVA.resetCounts();
-        loadFragment(fragment);
-        setTitle("Audit a new Room");
-    }
-
-    public void openDeviceListFragment(String locationName) {
-        deviceListFragment = DeviceListFragment.newInstance(projectID, buildingID, locationName);
-        loadFragment(deviceListFragment);
-        setTitle("Room " + locationName + " (" + project.getBertsByRoom(buildingID, locationName).size() + " Berts)");
     }
 
     public void openNoSelection() {
         loadFragment(NoSelectionFragment.newInstance("Select or Create a Room"));
     }
 
-    private void loadFragment(Fragment frag) {
+    protected void loadFragment(Fragment frag) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame_layout, frag);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-    }
-
-    private void setDefaultTitle() {
-        int rooms = project.getRoomNamesInBuilding(buildingID).size();
-        String roomName = (rooms == 1) ? " Room)" : " Rooms)";
-        this.setTitle(project.getProjectName() + " " + buildingID + " (" + rooms + roomName);
     }
 }

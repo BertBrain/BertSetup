@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".roomList.RoomListActivity"
+            android:name=".roomList.roomListActivity.RoomListActivity"
             android:label="@string/title_RoomListActivity" >
         </activity>
         <activity
@@ -65,6 +65,14 @@
         <activity
             android:name=".buildingList.activity.GeneralBuildingListActivity"
             android:label="Error: abstract class" >
+        </activity>
+        <activity
+            android:name=".roomList.roomListActivity.AuditRoomListActivity"
+            android:label="Audit Room List" >
+        </activity>
+        <activity
+            android:name=".roomList.roomListActivity.InstallRoomListActivity"
+            android:label="Install Room List" >
         </activity>
     </application>
 

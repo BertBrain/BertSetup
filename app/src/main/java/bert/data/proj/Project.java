@@ -27,11 +27,11 @@ import javax.xml.transform.stream.StreamResult;
 import bert.data.FileProvider;
 import bert.data.ProjectProvider;
 import bert.data.ProjectSerializer;
-import bert.data.proj.exceptions.AuditExistsException;
+import bert.data.proj.exceptions.DuplicateAuditException;
 import bert.data.proj.exceptions.InvalidBuildingNameException;
 import bert.data.proj.exceptions.InvalidProjectNameException;
-import bert.data.utility.Cleaner;
-import bert.data.utility.DateUtil;
+import bert.utility.Cleaner;
+import bert.utility.DateUtil;
 
 /**
  * @author afiol-mahon
@@ -55,8 +55,27 @@ public class Project {
         this.auditList = auditList;
 	}
 
+    public void addAudit(RoomAudit newAudit) throws DuplicateAuditException {
+        for (RoomAudit r : auditList) {
+            if (r.getRoomID().equals(newAudit.getRoomID()) && r.getBuildingID().equals(newAudit.getBuildingID())) {
+               //FIXME: duplicate exeption always throwns
+               // throw new DuplicateAuditException();
+            }
+        }
+        auditList.add(newAudit);
+    }
+
     public List<RoomAudit> getAuditList() {
         return auditList;
+    }
+
+    public RoomAudit getAuditForRoomAndBuilding(String roomID, String buildingID) {
+        for (RoomAudit audit : getAuditList()) {
+            if (audit.getBuildingID().equals(buildingID) &&  audit.getRoomID().equals(roomID)) {
+                return audit;
+            }
+        }
+        return null;
     }
 
     public List<String> getRoomNamesInBuilding(String buildingID) {
@@ -65,6 +84,12 @@ public class Project {
             String nextRoom = b.getRoomID();
             if (b.getBuildingID().equals(buildingID) && !roomList.contains(nextRoom)) {
                 roomList.add(nextRoom);
+            }
+        }
+        for (RoomAudit audit : getAuditList()) {
+            String auditID = audit.getRoomID();
+            if (audit.getBuildingID().equals(buildingID) && !roomList.contains(auditID)) {
+                roomList.add(auditID);
             }
         }
         return roomList;

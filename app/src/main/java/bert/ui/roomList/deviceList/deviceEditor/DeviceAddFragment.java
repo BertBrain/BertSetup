@@ -1,4 +1,4 @@
-package bert.ui.roomList.deviceList;
+package bert.ui.roomList.deviceList.deviceEditor;
 
 
 import android.os.Bundle;
@@ -17,9 +17,9 @@ import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
-import bert.data.utility.Cleaner;
+import bert.utility.Cleaner;
 import bert.ui.R;
-import bert.ui.roomList.RoomListActivity;
+import bert.ui.roomList.roomListActivity.InstallRoomListActivity;
 
 public class DeviceAddFragment extends Fragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
@@ -29,7 +29,7 @@ public class DeviceAddFragment extends Fragment {
     private int projectID;
     private String buildingID;
 
-    private RoomListActivity activity;
+    private InstallRoomListActivity activity;
     private Project project;
     private Building building;
     private String location;
@@ -55,7 +55,7 @@ public class DeviceAddFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (RoomListActivity)getActivity();
+        activity = (InstallRoomListActivity)getActivity();
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
             buildingID = getArguments().getString(ARG_BUILDING_ID);

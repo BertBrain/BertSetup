@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import bert.ui.R;
-import bert.ui.roomList.RoomListActivity;
+import bert.ui.roomList.roomListActivity.AuditRoomListActivity;
 
 /**
  * Created by liamcook on 5/29/15.
@@ -41,9 +41,9 @@ public class AuditBuildingDetailFragment extends GeneralBuildingDetailFragment{
     @Override
     public void openRoomListActivity() {
 
-        Intent intent = new Intent(getActivity(), RoomListActivity.class);
-        intent.putExtra(RoomListActivity.ARG_PROJECT_ID, projectID);
-        intent.putExtra(RoomListActivity.ARG_BUILDING_ID, buildingID);
+        Intent intent = new Intent(getActivity(), AuditRoomListActivity.class);
+        intent.putExtra(AuditRoomListActivity.ARG_PROJECT_ID, projectID);
+        intent.putExtra(AuditRoomListActivity.ARG_BUILDING_ID, buildingID);
         getActivity().startActivity(intent);
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by afiolmahon on 5/29/15.
+ * @author afiolmahon
  */
 public class RoomAudit {
     private String buildingID;
@@ -15,7 +16,20 @@ public class RoomAudit {
     public RoomAudit(String buildingID, String roomID, HashMap<String, Integer> categoryCount) {
         this.buildingID = buildingID;
         this.roomID = roomID;
+        this.categoryCount = new HashMap<>();
         this.categoryCount = categoryCount;
+    }
+
+    public int getNumberOfCategories() {
+        return categoryCount.size();
+    }
+
+    public int totalBerts() {
+        int total = 0;
+        for (int i : categoryCount.values()) {
+            total += i;
+        }
+        return total;
     }
 
     public List<String> getCategoryNames() {
@@ -46,7 +60,7 @@ public class RoomAudit {
         return roomID;
     }
 
-    public void setRoomID(String newRoomID) {
+    public void setRoomID(String newRoomID) {//TODO prevent setting identical room names in the same building
         this.roomID = newRoomID;
     }
 }

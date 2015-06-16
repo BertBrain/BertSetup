@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,41 +20,56 @@ import android.widget.TextView;
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 
-import bert.data.proj.Building;
-
 import bert.data.proj.Project;
-import bert.data.utility.Cleaner;
+import bert.data.proj.RoomAudit;
+import bert.data.proj.exceptions.DuplicateAuditException;
 import bert.ui.R;
-import bert.ui.roomList.RoomListActivity;
+import bert.ui.common.BertAlert;
+import bert.ui.roomList.roomListActivity.AuditRoomListActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class AuditWizardFragment extends Fragment {
 
     public static final String ARG_BUILDING_ID = "BUILDING_ID";
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
+    public static final String ARG_ROOM_ID = "ROOM_ID";
 
     private int projectID;
     private String buildingID;
+    private String roomID;
 
+    private AuditRoomListActivity activity;
     private Project project;
-    private Building building;
 
+    private AuditTallyBoxGVA categoryGridAdapter;
+    private RoomAudit roomAudit;
+
+    private GridView gridView;
+    private TextView totalBertsTextView;
+    private EditText roomEditText;
     private Button cancelButton;
     private Button finishedButton;
-    private GridView gridView;
-    private TextView totalBertsCounter;
 
-    private AuditTallyBoxGVA tallyGridAdapter;
-    private EditText locationEditText;
-
-    private RoomListActivity activity;
 
     public static AuditWizardFragment newInstance(int projectID, String buildingID) {
         AuditWizardFragment fragment = new AuditWizardFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PROJECT_ID, projectID);
         args.putString(ARG_BUILDING_ID, buildingID);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static AuditWizardFragment newInstance(int projectID, String buildingID, String roomID) {
+        AuditWizardFragment fragment = new AuditWizardFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_PROJECT_ID, projectID);
+        args.putString(ARG_BUILDING_ID, buildingID);
+        args.putString(ARG_ROOM_ID, roomID);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,41 +82,54 @@ public class AuditWizardFragment extends Fragment {
         if (getArguments() != null) {
             projectID = getArguments().getInt(ARG_PROJECT_ID);
             buildingID = getArguments().getString(ARG_BUILDING_ID);
+            roomID = getArguments().getString(ARG_ROOM_ID);
         }
-        activity = (RoomListActivity) getActivity();
+
+        activity = (AuditRoomListActivity) getActivity();
+        project = ProjectProvider.getInstance().getProject(projectID);
+
+        if (roomID != null) {
+            roomAudit = project.getAuditForRoomAndBuilding(roomID, buildingID);
+        } else {
+            roomID = "";
+            Log.d("AUDIT", "about to try creating cat");
+            HashMap<String, Integer> catCount = new HashMap<>();
+            Log.d("AUDIT", "project ID:" + projectID);
+            Log.d("AUDIT", project == null ? "project null" : "project good");
+
+            for (String s : project.getBuilding(buildingID).getCategoryNames()) {
+                catCount.put(s, 0);
+            }
+            roomAudit = new RoomAudit(buildingID, "AUDIT", catCount);
+            try {
+                project.addAudit(roomAudit);
+            } catch (DuplicateAuditException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //TODO name needs to be updated shouldn't set it here
     }
 
     @Override public void onResume() {
         super.onResume();
-        project = ProjectProvider.getInstance().getProject(projectID);
-        building = project.getBuilding(buildingID);
 
-        tallyGridAdapter = new AuditTallyBoxGVA(this, activity, android.R.layout.simple_gallery_item, building.getCategoryNames(), projectID, buildingID);
+        categoryGridAdapter = new AuditTallyBoxGVA(activity, roomAudit, projectID);
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
-        gridView.setAdapter(tallyGridAdapter);
+        gridView.setAdapter(categoryGridAdapter);
 
-        totalBertsCounter = (TextView) getView().findViewById(R.id.totalCounterTextField);
+        totalBertsTextView = (TextView) getView().findViewById(R.id.totalCounterTextField);
 
         finishedButton = (Button) getView().findViewById(R.id.finishAuditWizardButton);
-        finishedButton.setEnabled(tallyGridAdapter.updateBertTotal() != 0);
-        finishedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activity.inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                finishAuditWizard();
-            }
-        });
+        finishedButton.setOnClickListener(new FinishButtonListener());
 
         cancelButton = (Button) getView().findViewById(R.id.canelAuditButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-           @Override
-            public void onClick(View view) {
-               activity.openNoSelection();
-           }
-        });
+        cancelButton.setOnClickListener(new CancelButtonListener());
 
-        locationEditText = (EditText) getView().findViewById(R.id.locationNameTextField);
-        locationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        roomEditText = (EditText) getView().findViewById(R.id.locationNameTextField);
+        roomEditText.setText(roomID);
+        roomEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            //TODO make this interface a class in activity and use it throughout for hiding keyboard
             @Override
             public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
                 activity.inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -109,12 +138,8 @@ public class AuditWizardFragment extends Fragment {
         });
     }
 
-    public void setCanFinish(boolean canFinish) {
-        finishedButton.setEnabled(canFinish);
-    }
-
     public void setBertTotalCounter(int count) {
-        totalBertsCounter.setText("Total: " + count);
+        totalBertsTextView.setText("Total: " + count);
     }
 
     private void openNoRoomNamePopup() {
@@ -124,9 +149,9 @@ public class AuditWizardFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 activity.inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                locationEditText.setFocusable(true);
-                locationEditText.requestFocus();
-                locationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                roomEditText.setFocusable(true);
+                roomEditText.requestFocus();
+                roomEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -147,23 +172,32 @@ public class AuditWizardFragment extends Fragment {
     }
 
     private void finishAuditWizard() {
-        String roomID = locationEditText.getText().toString();
-        if (Cleaner.isValid(roomID)) {
-            HashMap<String, Integer> categoryCounts = tallyGridAdapter.getCounts();
-            for (String categoryID : building.getCategoryNames()) {
-                for (int i = 0; i < categoryCounts.get(categoryID); i++) {
-                    String countString = (i == 0) ? ("") : (String.valueOf(i + 1));
-                    String name = roomID + " - " + categoryID + " " + countString;
-                    BertUnit bert = new BertUnit(name, roomID, "", buildingID, categoryID);
-                    project.addBert(bert);
-                }
-            }
-            activity.onResume(); //Refresh view
-            activity.openDeviceListFragment(roomID);
+        roomAudit.setRoomID(roomEditText.getText().toString());
+        try {
+            project.addAudit(roomAudit);
             project.save();
-        } else {
-            openNoRoomNamePopup();
+            activity.openNoSelection();
+            activity.loadListView();
+            //TODO need to close and reload view
+        } catch (DuplicateAuditException e) {
+            BertAlert.show(activity, "Cant Create Duplicate Audit");
         }
+    }
+
+    //TODO MOVE THIS TO A NEW CLASS
+    //TODO MAKE SURE LOCATION NAME IS SAFE
+    //TODO make sure it saves
+    private static List<BertUnit> convertAuditToBert(RoomAudit audit) {
+        List<BertUnit> bertList = new ArrayList<>();
+        for (String categoryID : audit.getCategoryNames()) {
+            for (int i = 0; i < audit.getCategoryCount(categoryID); i++) {
+                String countString = (i == 0) ? ("") : (String.valueOf(i + 1));
+                String name = audit.getRoomID() + " - " + categoryID + " " + countString;
+                BertUnit bert = new BertUnit(name, audit.getRoomID(), "", audit.getBuildingID(), categoryID);
+                bertList.add(bert);
+            }
+        }
+        return bertList;
     }
 
     @Override
@@ -179,5 +213,20 @@ public class AuditWizardFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    class FinishButtonListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            activity.inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            finishAuditWizard();
+        }
+    }
+
+    class CancelButtonListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            activity.openNoSelection();
+        }
     }
 }

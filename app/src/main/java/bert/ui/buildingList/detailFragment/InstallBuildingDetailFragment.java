@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import bert.ui.R;
-import bert.ui.roomList.RoomListActivity;
+import bert.ui.roomList.roomListActivity.InstallRoomListActivity;
 
 /**
  * Created by liamcook on 5/29/15.
@@ -33,9 +32,9 @@ public class InstallBuildingDetailFragment extends GeneralBuildingDetailFragment
     @Override
     public void openRoomListActivity(){
 
-        Intent intent = new Intent(getActivity(), RoomListActivity.class);
-        intent.putExtra(RoomListActivity.ARG_PROJECT_ID, projectID);
-        intent.putExtra(RoomListActivity.ARG_BUILDING_ID, buildingID);
+        Intent intent = new Intent(getActivity(), InstallRoomListActivity.class);
+        intent.putExtra(InstallRoomListActivity.ARG_PROJECT_ID, projectID);
+        intent.putExtra(InstallRoomListActivity.ARG_BUILDING_ID, buildingID);
         getActivity().startActivity(intent);
 
     }

@@ -1,7 +1,7 @@
 package bert.data.proj;
 
 import bert.data.proj.exceptions.InvalidBertNameException;
-import bert.data.utility.Cleaner;
+import bert.utility.Cleaner;
 
 /**
  * @author afiol-mahon

@@ -24,8 +24,8 @@ import bert.data.proj.CategoryPresets;
 import bert.data.proj.Project;
 import bert.data.proj.Time;
 import bert.data.proj.exceptions.InvalidBuildingNameException;
-import bert.data.utility.Cleaner;
 import bert.ui.buildingList.activity.GeneralBuildingListActivity;
+import bert.utility.Cleaner;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
 

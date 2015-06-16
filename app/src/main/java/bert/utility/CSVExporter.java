@@ -1,13 +1,10 @@
-package bert.data.utility;
+package bert.utility;
 
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import bert.data.FileProvider;
 import bert.data.proj.BertUnit;
