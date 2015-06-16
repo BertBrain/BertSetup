@@ -14,9 +14,8 @@ public class BertEditTextAlert {
         AlertDialog.Builder alert = new AlertDialog.Builder(activity);
 
         alert.setTitle(title);
-        alert.setMessage("Message");
+        alert.setMessage(message);
 
-        // Set an EditText view to get user input
         final EditText input = new EditText(activity);
         alert.setView(input);
 
