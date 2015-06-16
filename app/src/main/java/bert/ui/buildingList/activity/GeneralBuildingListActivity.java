@@ -42,8 +42,8 @@ abstract public class GeneralBuildingListActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             projectID = extras.getInt(ARG_PROJECT_ID);
-            project = ProjectProvider.getInstance().getProject(projectID);
         }
+        project = ProjectProvider.getInstance().getProject(projectID);
         addBuildingButton = (Button) findViewById(R.id.create_list_item_button);
         addBuildingButton.setText("Add Building");
         addBuildingButton.setOnClickListener(new View.OnClickListener() {
