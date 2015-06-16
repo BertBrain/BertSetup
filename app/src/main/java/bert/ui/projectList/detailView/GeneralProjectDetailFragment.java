@@ -133,7 +133,7 @@ abstract public class GeneralProjectDetailFragment extends Fragment {
         dateModifiedTextView.setText(currentProject.getModifiedDate());
 
         openProjectButton = (Button) getView().findViewById(R.id.openProjectButton);
-        //openProjectButton.setText("View Buildings (" + currentProject.getBuildingCount() + ")");
+        openProjectButton.setText("View Buildings (" + currentProject.getBuildingCount() + ")");
         openProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

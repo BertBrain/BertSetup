@@ -24,4 +24,8 @@ public class AuditProjectListActivity extends GeneralProjectListActivity {
         loadFragment(AddProjectFragment.newInstance());
      }
 
+     public String getTitlePrefix() {
+         return "In Audit Mode";
+     }
+
 }

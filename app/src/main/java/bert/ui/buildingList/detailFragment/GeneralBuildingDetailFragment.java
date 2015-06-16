@@ -48,7 +48,6 @@ abstract public class GeneralBuildingDetailFragment extends Fragment {
 
     abstract public void openRoomListActivity();
 
-
     public GeneralBuildingDetailFragment newInstance(String projectID, String buildingID) {
         Bundle args = new Bundle();
         args.putString(ARG_PROJECT_ID, projectID);

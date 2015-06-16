@@ -59,12 +59,13 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
         });
 
         int projectListSize = ProjectProvider.getInstance().getTotalProjects();
-        this.setTitle((projectListSize == 1) ? ("1 Project") : (projectListSize + " Projects"));
+        this.setTitle(getTitlePrefix() + ", " + ((projectListSize == 1) ? ("1 Project") : (projectListSize + " Projects")));
     }
 
     abstract public List<String> getProjects();
 
     abstract public void openProjectDetailView(int projectIndex);
+    abstract public String getTitlePrefix();
 
     public void closeAddProjectView() {
         openNoSelectionView();

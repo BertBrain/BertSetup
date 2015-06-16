@@ -11,4 +11,7 @@ public class InstallBuildingListActivity extends GeneralBuildingListActivity {
         loadFragment((new InstallBuildingDetailFragment()).newInstance(projectID, buildingID));
     }
 
+    public String getTitlePrefix() {
+        return "In Install Mode";
+    }
 }

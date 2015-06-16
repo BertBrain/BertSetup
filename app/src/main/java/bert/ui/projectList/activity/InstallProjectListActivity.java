@@ -25,6 +25,10 @@ public class InstallProjectListActivity extends GeneralProjectListActivity {
     }
 
     public void openAddProjectView(){
+        //TODO: create fragment that displays list of audits to turn to installs
+    }
 
+    public String getTitlePrefix() {
+        return "In Install Mode";
     }
 }

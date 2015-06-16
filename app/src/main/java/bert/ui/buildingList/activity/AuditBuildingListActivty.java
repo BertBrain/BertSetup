@@ -12,4 +12,9 @@ public class AuditBuildingListActivty extends GeneralBuildingListActivity {
         loadFragment((new AuditBuildingDetailFragment()).newInstance(projectID, buildingID));
     }
 
+    public String getTitlePrefix() {
+        return "In Audit Mode";
+    }
+
 }
+

@@ -28,11 +28,12 @@ abstract public class GeneralBuildingListActivity extends ActionBarActivity {
     private Button addBuildingButton;
     private ArrayAdapter<String> buildingListViewAdapter;
     private ListView buildingListView;
-    protected String projectID;
-    protected Project project;
+    static protected String projectID;
+    static protected Project project;
     public InputMethodManager inputManager;
 
     abstract public void openBuildingDetailView(String buildingID);
+    abstract public String getTitlePrefix();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ abstract public class GeneralBuildingListActivity extends ActionBarActivity {
             }
         });
 
-        setTitle(project.getProjectName() + " Buildings (" + project.getBuildingCount() + ")");
+        setTitle(getTitlePrefix() + " " + project.getProjectName() + " Buildings (" + project.getBuildingCount() + ")");
         loadListView();
     }
 

@@ -30,7 +30,7 @@ public class InstallBuildingDetailFragment extends GeneralBuildingDetailFragment
     }
 
     @Override
-    public void openRoomListActivity(){
+    public void openRoomListActivity() {
 
         Intent intent = new Intent(getActivity(), InstallRoomListActivity.class);
         intent.putExtra(InstallRoomListActivity.ARG_PROJECT_ID, projectID);
