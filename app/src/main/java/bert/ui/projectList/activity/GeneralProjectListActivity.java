@@ -47,7 +47,7 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         projectTableAdapter = new SelectableListGVA(this, getProjects());
 
@@ -84,11 +84,13 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
 
     public void loadProject(String projectID){
         int position = projectTableAdapter.titles.indexOf(projectID);
-        openProjectDetailView(position);
-        projectTableAdapter.selectView(position);
+        if (position > -1){
+            openProjectDetailView(position);
+            projectTableAdapter.selectView(position);
+        }
     }
 
-    protected void openNoSelectionView() {
+    public void openNoSelectionView() {
         loadFragment(NoSelectionFragment.newInstance("Select or Create a Project"));
     }
 

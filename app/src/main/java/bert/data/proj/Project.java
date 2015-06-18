@@ -317,6 +317,10 @@ public class Project {
     Loading and Saving
      */
 
+    public File getProjectFile() throws IOException{
+        return new File(FileProvider.getProjectDirectory(), this.getProjectName() + ".xml");
+    }
+
     public void save() {
         Log.d("ProjectSaver", "Saving Project: " + getProjectName() + " to XML file");
         Document d = ProjectSerializer.exportToXML(this);
@@ -324,7 +328,7 @@ public class Project {
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            File outputFile = new File(FileProvider.getProjectDirectory(), this.getProjectName() + ".xml");
+            File outputFile = getProjectFile();
             Result result = new StreamResult(outputFile);
             Source source = new DOMSource(d);
             transformer.transform(source, result);

@@ -97,6 +97,19 @@ public class ProjectProvider {
         }
     }
 
+    public void deleteProject(String projectID){
+        Project project = projectMap.get(projectID);
+        try {
+            File projectFile = project.getProjectFile();
+            Log.d("DELTING", "path: " + projectFile.getAbsolutePath());
+            File deleteFile = new File(projectFile.getAbsolutePath().replace(" ", "%20"));
+            deleteFile.delete();
+            projectMap.remove(projectID);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
     public void addProject(Project project) {
         projectMap.put(project.getProjectName(), project);
         project.save();

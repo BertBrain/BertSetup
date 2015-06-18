@@ -2,6 +2,7 @@ package bert.ui.projectList.detailView;
 
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ abstract public class GeneralProjectDetailFragment extends Fragment {
     private TextView dateModifiedTextView;
 
     private Button openProjectButton;
+    private Button deleteButton;
 
     public GeneralProjectDetailFragment() {
         // Required empty public constructor
@@ -138,6 +140,21 @@ abstract public class GeneralProjectDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openBuildingList();
+            }
+        });
+
+        deleteButton = (Button) getView().findViewById(R.id.deleteProjectButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BertAlert.show(getActivity(), "Warning: This cannot be undone", "Delete anyway", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ProjectProvider.getInstance().deleteProject(projectID);
+                        activity.onResume();
+                        activity.openNoSelectionView();
+                    }
+                }, "Cancel", null);
             }
         });
     }

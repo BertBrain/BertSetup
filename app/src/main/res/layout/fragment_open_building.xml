@@ -6,4 +6,9 @@
         style="@style/OpenButton"
         android:text="View Buildings"
         android:id="@+id/openProjectButton" />
+
+    <Button
+        style="@style/DeleteButton"
+        android:text="Delete Project"
+        android:id="@+id/deleteProjectButton" />
 </LinearLayout>
