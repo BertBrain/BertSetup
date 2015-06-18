@@ -2,6 +2,7 @@ package bert.ui.projectList.detailView;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ import java.io.IOException;
 import bert.data.ProjectProvider;
 import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidProjectNameException;
+import bert.ui.common.BertEditTextAlert;
+import bert.ui.projectList.activity.InstallProjectListActivity;
 import bert.utility.CSVExporter;
 import bert.utility.Cleaner;
 import bert.utility.ROIExporter;
@@ -40,20 +43,21 @@ public class AuditDetailFragment extends GeneralProjectDetailFragment {
     private TextView bertCountTextView;
 
     private Button exportToROIButton;
+    private Button beginInstallButton;
 
     @Override
     public void onResume() {
         super.onResume();
         Log.d("AUDIT_FRAGMENT", "starting on resume");
 
-        //TODO: make different for audit vs install
-        //roomCountTextView = (TextView) getView().findViewById(R.id.roomCountTextView);
-        //roomCountTextView.setText("audit");
-        //roomCountTextView.setText(Integer.toString(currentProject.getRoomCount()));
 
-        //TODO: make different for audit vs install
-        //bertCountTextView = (TextView) getView().findViewById(R.id.bertCountTextView);
-        //bertCountTextView.setText(Integer.toString(currentProject.getBerts().size()));
+        roomCountTextView = (TextView) getView().findViewById(R.id.roomCounterLabel);
+        roomCountTextView.setText(String.valueOf(currentProject.getRoomCount()));
+        roomCountTextView.setText(Integer.toString(currentProject.getRoomCount()));
+
+        bertCountTextView = (TextView) getView().findViewById(R.id.bertCounterLabel);
+        bertCountTextView.setText(String.valueOf(currentProject.getBuildingCount()));
+        bertCountTextView.setText(Integer.toString(currentProject.getBertCount()));
 
         exportToROIButton = (Button) getView().findViewById(R.id.exportToROIButton);
         exportToROIButton.setOnClickListener(new View.OnClickListener() {
@@ -68,11 +72,27 @@ public class AuditDetailFragment extends GeneralProjectDetailFragment {
             }
         });
 
+        beginInstallButton = (Button) getView().findViewById(R.id.begin_install_button);
+        beginInstallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BertAlert.show(getActivity(), "This cannot be undone. Are you Sure?",
+                        "Turn to Install",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                currentProject.convertToInstall();
+                                currentProject.save();
+                                Intent intent = new Intent(getActivity(), InstallProjectListActivity.class);
+                                startActivity(intent);
+                            }
+                        }, "Cancel", null);
+            }
+        });
     }
 
     @Override
     public void openBuildingList() {
-        //TODO: make different for audit vs install
         Intent i = new Intent(this.getActivity(), AuditBuildingListActivty.class);
         i.putExtra(GeneralBuildingListActivity.ARG_PROJECT_ID, projectID);
         startActivity(i);

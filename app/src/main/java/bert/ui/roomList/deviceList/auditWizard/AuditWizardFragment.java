@@ -184,22 +184,6 @@ public class AuditWizardFragment extends Fragment {
         }
     }
 
-    //TODO MOVE THIS TO A NEW CLASS
-    //TODO MAKE SURE LOCATION NAME IS SAFE
-    //TODO make sure it saves
-    private static List<BertUnit> convertAuditToBert(RoomAudit audit) {
-        List<BertUnit> bertList = new ArrayList<>();
-        for (String categoryID : audit.getCategoryNames()) {
-            for (int i = 0; i < audit.getCategoryCount(categoryID); i++) {
-                String countString = (i == 0) ? ("") : (String.valueOf(i + 1));
-                String name = audit.getRoomID() + " - " + categoryID + " " + countString;
-                BertUnit bert = new BertUnit(name, audit.getRoomID(), "", audit.getBuildingID(), categoryID);
-                bertList.add(bert);
-            }
-        }
-        return bertList;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_audit_wizard, container, false);

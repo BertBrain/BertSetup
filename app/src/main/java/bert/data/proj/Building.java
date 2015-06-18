@@ -55,11 +55,8 @@ public class Building {
 
     //TODO ensure a building with no categories does not cause problems
     public void deleteCategory(Project project, String buildingID, String categoryID) throws UnableToDeleteException {
-        if (project.getBertsByCategory(buildingID, categoryID).isEmpty()) {
-            categoryList.remove(categoryID);
-        } else {
-            throw new UnableToDeleteException();
-        }
+        categoryList.remove(categoryID);
+        project.removeCategoryInBuilding(buildingID, categoryID);
     }
 
     public List<String> getCategoryNames() {

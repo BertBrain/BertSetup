@@ -62,16 +62,15 @@
             android:name=".buildingList.activity.InstallBuildingListActivity"
             android:label="Install Building List" >
         </activity>
-        <activity
-            android:name=".buildingList.activity.GeneralBuildingListActivity"
-            android:label="Error: abstract class" >
-        </activity>
+
         <activity
             android:name=".roomList.roomListActivity.AuditRoomListActivity"
+            android:parentActivityName=".launchScreen.LaunchActivity"
             android:label="Audit Room List" >
         </activity>
         <activity
             android:name=".roomList.roomListActivity.InstallRoomListActivity"
+            android:parentActivityName=".launchScreen.LaunchActivity"
             android:label="Install Room List" >
         </activity>
     </application>

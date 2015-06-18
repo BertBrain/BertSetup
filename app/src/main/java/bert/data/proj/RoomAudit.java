@@ -20,6 +20,21 @@ public class RoomAudit {
         this.categoryCount = categoryCount;
     }
 
+    //TODO MAKE SURE LOCATION NAME IS SAFE
+    //TODO make sure it saves
+    public List<BertUnit> createBerts() {
+        List<BertUnit> bertList = new ArrayList<>();
+        for (String categoryID : getCategoryNames()) {
+            for (int i = 0; i < getCategoryCount(categoryID); i++) {
+                String countString = (i == 0) ? ("") : (String.valueOf(i + 1));
+                String name = getRoomID() + " - " + categoryID + " " + countString;
+                BertUnit bert = new BertUnit(name, getRoomID(), "", getBuildingID(), categoryID);
+                bertList.add(bert);
+            }
+        }
+        return bertList;
+    }
+
     public int getNumberOfCategories() {
         return categoryCount.size();
     }
@@ -46,6 +61,10 @@ public class RoomAudit {
 
     public void setCategoryCount(String categoryID, int count) {
         categoryCount.put(categoryID, count);
+    }
+
+    public void removeCategory(String categoryID) {
+        categoryCount.remove(categoryID);
     }
 
     public String getBuildingID() {

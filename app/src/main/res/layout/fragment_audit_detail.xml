@@ -5,10 +5,61 @@
 
     <include layout="@layout/fragment_project_metadata"/>
 
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bertCountGrid">
+
+        <TextView
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Total Berts:"
+            android:id="@+id/textView18"
+            android:layout_row="0"
+            android:layout_column="0" />
+
+        <TextView
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0"
+            android:id="@+id/bertCounterLabel"
+            android:layout_row="0"
+            android:layout_column="1" />
+
+        <TextView
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Total Rooms: "
+            android:id="@+id/textView20"
+            android:layout_row="1"
+            android:layout_column="0" />
+
+        <TextView
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0"
+            android:id="@+id/roomCounterLabel"
+            android:layout_row="1"
+            android:layout_column="1" />
+    </GridLayout>
+
     <Button
         style="@style/ActionButton"
         android:text="Export an ROI Sheet"
         android:id="@+id/exportToROIButton" />
+
+    <Button
+        style="@style/ActionButton"
+        android:text="Begin Install"
+        android:id="@+id/begin_install_button" />
 
     <include layout="@layout/fragment_open_building"/>
 

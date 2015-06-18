@@ -6,6 +6,8 @@
     <color name="LightRed">#FFAB9E</color>
     <color name="DarkRed">#772417</color>
 
+    <color name="ListSelection">#999999</color>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar" />
 
     <style name="Fragment" parent="AppTheme" />

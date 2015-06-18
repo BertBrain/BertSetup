@@ -17,15 +17,18 @@ import java.util.List;
 import bert.data.ProjectProvider;
 import bert.ui.R;
 import bert.ui.common.NoSelectionFragment;
+import bert.ui.common.SelectableListGVA;
 
 /**
  * Created by liamcook on 5/29/15.
  */
 abstract public class GeneralProjectListActivity extends ActionBarActivity {
 
+    public static final String ARG_PROJECT_ID = "Project ID";
+
     private ListView projectListView;
     private Button addProjectButton;
-    private ArrayAdapter<String> projectTableAdapter;
+    private SelectableListGVA projectTableAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,8 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
         addProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddProjectView(); //is abstract
+                openAddProjectView();
+                projectTableAdapter.clear();
             }
         });
         openNoSelectionView();
@@ -45,21 +49,26 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        projectTableAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getProjects()); //abstract
+        projectTableAdapter = new SelectableListGVA(this, getProjects());
 
         projectListView = (ListView) findViewById(R.id.item_list_view);
         projectListView.setAdapter(projectTableAdapter);
-
-
-        projectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        projectTableAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 openProjectDetailView(position);
             }
         });
 
         int projectListSize = ProjectProvider.getInstance().getTotalProjects();
         this.setTitle(getTitlePrefix() + ", " + ((projectListSize == 1) ? ("1 Project") : (projectListSize + " Projects")));
+        try {
+            String selectedProjectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
+            loadProject(selectedProjectID);
+        } catch (NullPointerException e){
+
+        }
     }
 
     abstract public List<String> getProjects();
@@ -72,6 +81,12 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
     }
 
     abstract public void openAddProjectView();
+
+    public void loadProject(String projectID){
+        int position = projectTableAdapter.titles.indexOf(projectID);
+        openProjectDetailView(position);
+        projectTableAdapter.selectView(position);
+    }
 
     protected void openNoSelectionView() {
         loadFragment(NoSelectionFragment.newInstance("Select or Create a Project"));

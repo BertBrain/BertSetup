@@ -66,4 +66,9 @@ public class BertUnit {
     public void setCategoryID(String newCategoryID) {
         this.categoryID = newCategoryID;
     }
+
+	public boolean isInstalled() {
+		return MAC.length() != 0;
+	}
+
 }

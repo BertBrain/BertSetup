@@ -47,6 +47,7 @@ public class CategoryDetailFragment extends Fragment {
     private EditText estimatedLoadEditText;
     private Spinner bertTypeSpinner;
     private ArrayAdapter<String> bertTypeSpinnerAdapter;
+    private TextView bertCountDisplay;
     private Button saveButton;
     private Button deleteButton;
 
@@ -125,6 +126,9 @@ public class CategoryDetailFragment extends Fragment {
         bertTypeSpinner.setAdapter(bertTypeSpinnerAdapter);
         bertTypeSpinner.setSelection(category.getBertTypeID());
 
+        bertCountDisplay = (TextView) getView().findViewById(R.id.bert_count_label);
+        bertCountDisplay.setText(String.valueOf(project.getBertCountForCategory(buildingID, categoryID)));
+
         saveButton = (Button) getView().findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,12 +143,15 @@ public class CategoryDetailFragment extends Fragment {
             public void onClick(View view) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                 alert.setTitle("Are you sure you want to delete this category?");
+                if (project.getBertCountForCategory(buildingID, categoryID) > 0) {
+                    alert.setMessage("All " + String.valueOf(String.valueOf(project.getBertCountForCategory(buildingID, categoryID)) + " berts in this category will be deleted as well."));
+                }
                 alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         deleteCategory();
                     }
-                });
+                        });
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

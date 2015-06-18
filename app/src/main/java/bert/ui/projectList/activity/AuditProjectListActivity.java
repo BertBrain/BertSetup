@@ -10,9 +10,7 @@ import bert.ui.projectList.detailView.AuditDetailFragment;
 public class AuditProjectListActivity extends GeneralProjectListActivity {
 
      public List<String> getProjects() {
-         //TODO: make this seperate for install vs audit
          return ProjectProvider.getInstance().getProjectNameList(ProjectProvider.AUDIT);
-         //return Arrays.asList("audit 1", "audit 2");
      }
 
      public void openProjectDetailView(int projectIndex) {

@@ -96,7 +96,7 @@ public class AddProjectFragment extends Fragment {
 
             AuditProjectListActivity activity = (AuditProjectListActivity) getActivity();
             Intent intent = new Intent(activity, AuditProjectListActivity.class);
-            intent.putExtra(GeneralBuildingListActivity.ARG_PROJECT_ID, ProjectProvider.getInstance().getTotalProjects() - 1);
+            intent.putExtra(GeneralProjectListActivity.ARG_PROJECT_ID, newProjectName);
 
             activity.closeAddProjectView();
             startActivity(intent);

@@ -46,14 +46,18 @@ public class InstallDetailFragment extends GeneralProjectDetailFragment {
         super.onResume();
         Log.d("INSTALL_FRAGMENT", "starting on resume");
 
-        //TODO: make different for audit vs install
-        //roomCountTextView = (TextView) getView().findViewById(R.id.roomCountTextView);
-        //roomCountTextView.setText("install");
-        //roomCountTextView.setText(Integer.toString(currentProject.getRoomCount()));
 
-        //TODO: make different for audit vs install
-        //bertCountTextView = (TextView) getView().findViewById(R.id.bertCountTextView);
-        //bertCountTextView.setText(Integer.toString(currentProject.getBerts().size()));
+        roomCountTextView = (TextView) getView().findViewById(R.id.total_rooms_label);
+        roomCountTextView.setText(String.valueOf(currentProject.getRoomCount()));
+
+        bertCountTextView = (TextView) getView().findViewById(R.id.total_berts_label);
+        bertCountTextView.setText(String.valueOf(currentProject.getBertCount()));
+
+        roomCountDoneTextView = (TextView) getView().findViewById(R.id.rooms_completed_label);
+        roomCountDoneTextView.setText(String.valueOf(currentProject.getRoomCompletedCount()));
+
+        bertCountDoneTextView = (TextView) getView().findViewById(R.id.berts_installed_label);
+        bertCountDoneTextView.setText(String.valueOf(currentProject.getBertCompletedCount()));
 
         exportToBertConfigButton = (Button) getView().findViewById(R.id.exportToBertConfiguratorButton);
         exportToBertConfigButton.setOnClickListener(new View.OnClickListener() {

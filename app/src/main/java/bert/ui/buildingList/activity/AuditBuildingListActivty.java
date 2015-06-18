@@ -8,7 +8,7 @@ import bert.ui.buildingList.detailFragment.InstallBuildingDetailFragment;
  */
 public class AuditBuildingListActivty extends GeneralBuildingListActivity {
 
-    public void openBuildingDetailView(String buildingID){
+    protected void openBuildingDetailView(String buildingID){
         loadFragment((new AuditBuildingDetailFragment()).newInstance(projectID, buildingID));
     }
 

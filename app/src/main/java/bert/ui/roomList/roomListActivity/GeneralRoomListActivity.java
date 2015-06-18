@@ -17,6 +17,7 @@ import bert.data.proj.Project;
 import bert.data.ProjectProvider;
 import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
+import bert.ui.common.SelectableListGVA;
 import bert.ui.roomList.deviceList.deviceEditor.DeviceListFragment;
 
 public abstract class GeneralRoomListActivity extends ActionBarActivity {
@@ -32,7 +33,7 @@ public abstract class GeneralRoomListActivity extends ActionBarActivity {
     public DeviceListFragment deviceListFragment;
 
     private Button newRoomButton;
-    private ArrayAdapter<String> roomListAdapter;
+    private SelectableListGVA roomListAdapter;
     private ListView roomListView;
     public InputMethodManager inputManager;
 
@@ -63,6 +64,9 @@ public abstract class GeneralRoomListActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 addRoom();
+                if (roomListAdapter != null){
+                    roomListAdapter.clear();
+                }
             }
         });
 
@@ -75,10 +79,10 @@ public abstract class GeneralRoomListActivity extends ActionBarActivity {
         final List<String> roomNames = project.getRoomNamesInBuilding(buildingID);
 
         if (roomNames.size() != 0) {
-            roomListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, roomNames);
+            roomListAdapter = new SelectableListGVA(this, roomNames);
             roomListView = (ListView) findViewById(R.id.item_list_view);
             roomListView.setAdapter(roomListAdapter);
-            roomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            roomListAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     loadRoom(roomNames.get(position));

@@ -59,14 +59,27 @@ public class Project {
         return bertList.size() == 0;
     }
 
+    public void convertToInstall() {
+       for (RoomAudit roomAudit : auditList) {
+           bertList.addAll(roomAudit.createBerts());
+       }
+        auditList = new ArrayList<>();
+        save();
+    }
+
     public void addAudit(RoomAudit newAudit) throws DuplicateAuditException {
+        boolean doesExist = false;
         for (RoomAudit r : auditList) {
             if (r.getRoomID().equals(newAudit.getRoomID()) && r.getBuildingID().equals(newAudit.getBuildingID())) {
-               //FIXME: duplicate exeption always throwns
-               // throw new DuplicateAuditException();
+                //FIXME: duplicate exeption always throwns
+                // throw new DuplicateAuditException();
+                doesExist = true;
             }
         }
-        auditList.add(newAudit);
+        if (!doesExist) {
+            auditList.add(newAudit);
+        }
+
     }
 
     public List<RoomAudit> getAuditList() {
@@ -111,6 +124,16 @@ public class Project {
         return output;
     }
 
+    public int getBertCount() {
+        int bertCount = 0;
+        for (RoomAudit audit : auditList){
+            bertCount += audit.totalBerts();
+        }
+        bertCount += bertList.size();
+        return bertCount;
+    }
+
+
     public List<BertUnit> getBertsByRoom(String buildingID, String roomID) {
         List<BertUnit> returnList = new ArrayList<>();
         for (BertUnit b : getBerts()) {
@@ -141,6 +164,37 @@ public class Project {
         return returnList;
     }
 
+    public int getBertCountForCategory(String buildingID, String categoryID) {
+        int bertCount = 0;
+        for (RoomAudit roomAudit : auditList) {
+            Log.d("CATEGORY BERT COUNTER", "building ID: " + buildingID);
+
+            if (roomAudit.getBuildingID().equals(buildingID)){
+                Log.d("CATEGORY BERT COUNTER", "bertCount addition: " + roomAudit.getCategoryCount(categoryID));
+                bertCount += roomAudit.getCategoryCount(categoryID);
+            }
+        }
+        for (BertUnit b : bertList) {
+            if (b.getBuildingID().equals(buildingID) && b.getCategoryID().equals(categoryID)) {
+                bertCount++;
+            }
+        }
+        return bertCount;
+    }
+
+    public void removeCategoryInBuilding(String buildingID, String categoryID){
+        for (RoomAudit roomAudit : auditList) {
+            if (roomAudit.getBuildingID().equals(buildingID)){
+                roomAudit.removeCategory(categoryID);
+            }
+        }
+        for (BertUnit b : bertList) {
+            if (b.getBuildingID().equals(buildingID) && b.getCategoryID().equals(categoryID)){
+                deleteBert(b);
+            }
+        }
+    }
+
     public int getRoomCount() {
         List<String> roomNames = new ArrayList<>();
         for (BertUnit b : getBerts()) {
@@ -149,7 +203,33 @@ public class Project {
                 roomNames.add(nextRoom);
             }
         }
-        return roomNames.size();
+        return roomNames.size() + auditList.size();
+    }
+
+    public int getRoomCompletedCount() {
+        int roomsCompleted = 0;
+        for (String buildingID : getBuildingNames()) {
+            for (String roomID : getRoomNamesInBuilding(buildingID)) {
+                boolean isAllInstalledSoFar = true;
+                for (BertUnit b : getBertsByRoom(buildingID, roomID)){
+                    if (!b.isInstalled()) {
+                        isAllInstalledSoFar = false;
+                    }
+                }
+                if (isAllInstalledSoFar) {
+                    roomsCompleted++;
+                }
+            }
+        }
+        return roomsCompleted;
+    }
+
+    public int getBertCompletedCount(){
+        int bertsCompletedCount = 0;
+        for (BertUnit b : getBerts()) {
+            bertsCompletedCount += (b.isInstalled() ? 1 : 0);
+        }
+        return bertsCompletedCount;
     }
 
     public int getBuildingCount() {

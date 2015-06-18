@@ -17,6 +17,7 @@ import bert.data.proj.Project;
 import bert.ui.R;
 import bert.ui.buildingList.AddBuildingFragment;
 import bert.ui.common.NoSelectionFragment;
+import bert.ui.common.SelectableListGVA;
 
 /**
  * Created by liamcook on 5/29/15.
@@ -26,13 +27,13 @@ abstract public class GeneralBuildingListActivity extends ActionBarActivity {
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
 
     private Button addBuildingButton;
-    private ArrayAdapter<String> buildingListViewAdapter;
+    private SelectableListGVA buildingListViewAdapter;
     private ListView buildingListView;
     static protected String projectID;
     static protected Project project;
     public InputMethodManager inputManager;
 
-    abstract public void openBuildingDetailView(String buildingID);
+    abstract protected void openBuildingDetailView(String buildingID);
     abstract public String getTitlePrefix();
 
     @Override
@@ -62,14 +63,6 @@ abstract public class GeneralBuildingListActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
 
-        buildingListView = (ListView) findViewById(R.id.item_list_view);
-        buildingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openBuildingDetailView(buildingListViewAdapter.getItem(position));
-            }
-        });
-
         setTitle(getTitlePrefix() + " " + project.getProjectName() + " Buildings (" + project.getBuildingCount() + ")");
         loadListView();
     }
@@ -81,13 +74,30 @@ abstract public class GeneralBuildingListActivity extends ActionBarActivity {
     }
 
     private void openAddBuildingView() {
+        buildingListViewAdapter.clear();
         loadFragment(AddBuildingFragment.newInstance(projectID));
     }
 
     public void loadListView() {
-        buildingListViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getBuildingNames());
+        buildingListViewAdapter = new SelectableListGVA(this, project.getBuildingNames());
+
+        buildingListView = (ListView) findViewById(R.id.item_list_view);
         buildingListView.setAdapter(buildingListViewAdapter);
+        buildingListViewAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                generalOpenBuildingDetailView(buildingListViewAdapter.getItem(position));
+            }
+        });
+
         Log.d("BuildingListActivity", "Loaded: " + project.getBuildingNames().size() + " buildings");
+    }
+
+    public void generalOpenBuildingDetailView(String buildingID){
+        int position = buildingListViewAdapter.titles.indexOf(buildingID);
+        buildingListViewAdapter.selectView(position);
+        openBuildingDetailView(buildingID);
     }
 
     public void loadFragment(Fragment frag) {
