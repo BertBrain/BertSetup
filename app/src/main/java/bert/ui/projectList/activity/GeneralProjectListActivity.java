@@ -51,8 +51,19 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
 
             try {
                 Project newProject = Project.loadProject(recievedFile);
-                ProjectProvider.getInstance().addProject(newProject);
-                Log.d("RECIEVING", "project: " + newProject.getProjectName());
+                if (newProject != null) {
+                    ProjectProvider.getInstance().addProject(newProject);
+                } else {
+                    BertAlert.show(this, "There was an error importing the project");
+                }
+
+
+                //create, import modify
+                //add/edit/view buildings
+                //create new audit
+                //send install sheets
+                //tally berts by M, V, and C
+
             } catch (InvalidProjectNameException e) {
                 BertAlert.show(this, "This project already exists so it could not be imported.");
             }

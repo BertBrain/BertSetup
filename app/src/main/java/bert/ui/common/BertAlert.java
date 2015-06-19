@@ -27,8 +27,13 @@ public class BertAlert {
     }
 
     public static void show(Activity activity, String title, String button1, DialogInterface.OnClickListener listener1, String button2, DialogInterface.OnClickListener listener2){
+        show(activity, title, "", button1, listener1, button2, listener2);
+    }
+
+    public static void show(Activity activity, String title, String message, String button1, DialogInterface.OnClickListener listener1, String button2, DialogInterface.OnClickListener listener2){
         AlertDialog.Builder alert = new AlertDialog.Builder(activity);
         alert.setTitle(title);
+        alert.setMessage(message);
         alert.setPositiveButton(button1, listener1);
         alert.setNegativeButton(button2, listener2);
         alert.create().show();

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.preference.DialogPreference;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -141,32 +142,79 @@ public class CategoryDetailFragment extends Fragment {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                alert.setTitle("Are you sure you want to delete this category?");
-                if (project.getBertCountForCategory(buildingID, categoryID) > 0) {
-                    alert.setMessage("All " + String.valueOf(String.valueOf(project.getBertCountForCategory(buildingID, categoryID)) + " berts in this category will be deleted as well."));
-                }
-                alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        deleteCategory();
-                    }
-                        });
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                });
-                alert.create().show();
+                askToDeleteCategory();
             }
         });
 
         activity.onResume();
     }
 
-    private void deleteCategory() {
+    private void askToDeleteCategory (){
+        int numberOfBuildingsWithCategory = 0;
+        for (String buildingID : project.getBuildingNames()) {
+            if (project.getBuilding(buildingID).getCategory(categoryID) != null) {
+                numberOfBuildingsWithCategory++;
+            }
+        }
+        if (numberOfBuildingsWithCategory > 1){
+            BertAlert.show(getActivity(),
+                    "Delete In All Buildings?",
+                    "There are " + (numberOfBuildingsWithCategory - 1) + " other buildings that have this category. Delete in all buildings?",
+                    "No, only delete in " + buildingID, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            askToDeleteCategoriesInAllBuildinds(false);
+                        }
+                    }, "Yes, delete in all buildings", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            askToDeleteCategoriesInAllBuildinds(true);
+                        }
+                    });
+        }
+    }
+
+
+
+    private void askToDeleteCategoriesInAllBuildinds(final boolean deleteInAllBuildings) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setTitle("Are you sure you want to delete this category?");
+        if (project.getBertCountForCategory(buildingID, categoryID) > 0) {
+            int totalBertsInCategory;
+            if (deleteInAllBuildings) {
+                totalBertsInCategory = 0;
+                for (String buildingID : project.getBuildingNames()){
+                    totalBertsInCategory += project.getBertCountForCategory(buildingID, categoryID);
+                }
+            } else {
+                totalBertsInCategory = project.getBertCountForCategory(buildingID, categoryID);
+            }
+            alert.setMessage("All " + String.valueOf(String.valueOf(totalBertsInCategory) + " berts in this category will be deleted as well."));
+        }
+        alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deleteCategoryInAllBuildings(deleteInAllBuildings);
+            }
+        });
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        alert.create().show();
+    }
+
+    private void deleteCategoryInAllBuildings(boolean inAllBuildings) {
         try {
-            building.deleteCategory(project, buildingID, categoryID);
+            if (inAllBuildings) {
+                for (String buildingID : project.getBuildingNames()) {
+                    project.getBuilding(buildingID).deleteCategory(project, buildingID, categoryID);
+                }
+            } else {
+                building.deleteCategory(project, buildingID, categoryID);
+            }
+
             project.save();
             activity.onResume();
             activity.openNoSelectionFragment();
@@ -176,7 +224,6 @@ public class CategoryDetailFragment extends Fragment {
             BertAlert.show(getActivity(), "Unable to delete category: " + bertsRemaining + text);
         }
     }
-
     private void saveChanges() {
         try {
             String newCategoryID = categoryNameEditText.getText().toString();
