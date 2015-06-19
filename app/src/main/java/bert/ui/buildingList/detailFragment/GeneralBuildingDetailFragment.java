@@ -117,7 +117,7 @@ abstract public class GeneralBuildingDetailFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         project.deleteBuilding(buildingID);
                         project.save();
-                        ((GeneralBuildingListActivity)getActivity()).loadFragment(NoSelectionFragment.newInstance("Select or Create a Building"));
+                        ((GeneralBuildingListActivity)getActivity()).loadFragment(NoSelectionFragment.newInstance("Create a building or select a builing from the list of buildings on the left"));
                         ((GeneralBuildingListActivity)getActivity()).loadListView();
                     }
                 });

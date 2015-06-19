@@ -92,7 +92,7 @@ public abstract class GeneralRoomListActivity extends ActionBarActivity {
     }
 
     public void openNoSelection() {
-        loadFragment(NoSelectionFragment.newInstance("Select or Create a Room"));
+        loadFragment(NoSelectionFragment.newInstance("Create a room or select a room from the list of rooms on the left"));
     }
 
     protected void loadFragment(Fragment frag) {

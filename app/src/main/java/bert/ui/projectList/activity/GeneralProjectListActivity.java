@@ -116,7 +116,7 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
     }
 
     public void openNoSelectionView() {
-        loadFragment(NoSelectionFragment.newInstance("Select or Create a Project"));
+        loadFragment(NoSelectionFragment.newInstance("Create a project or select a project from the list of projects on the left"));
     }
 
     protected void loadFragment(Fragment frag) {

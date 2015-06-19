@@ -2,6 +2,7 @@ package bert.ui.buildingList.detailFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,16 +36,15 @@ public class AuditBuildingDetailFragment extends GeneralBuildingDetailFragment{
         });
 
         roomCountTextView = (TextView) getView().findViewById(R.id.roomCounterLabel);
-        roomCountTextView.setText(Integer.toString(project.getRoomCountForBuilding(buildingID)));
+        roomCountTextView.setText(String.valueOf(project.getRoomCountForBuilding(buildingID)));
 
         bertCountTextView = (TextView) getView().findViewById(R.id.bertCounterLabel);
-        bertCountTextView.setText(Integer.toString(project.getBertCountForBuilding(buildingID)));
-
+        bertCountTextView.setText(String.valueOf(project.getBertCountForBuilding(buildingID)));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_building_detail, container, false);
+        return inflater.inflate(R.layout.fragment_building_audit_detail, container, false);
     }
 
     @Override
