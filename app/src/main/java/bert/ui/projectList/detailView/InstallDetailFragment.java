@@ -1,33 +1,22 @@
 package bert.ui.projectList.detailView;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
 
-import bert.data.ProjectProvider;
-import bert.data.proj.Project;
-import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.utility.CSVExporter;
-import bert.utility.Cleaner;
-import bert.utility.ROIExporter;
 import bert.ui.R;
 import bert.ui.buildingList.activity.GeneralBuildingListActivity;
 import bert.ui.buildingList.activity.InstallBuildingListActivity;
-import bert.ui.common.BertAlert;
 import bert.ui.projectList.ExportChooser;
-import bert.ui.projectList.activity.GeneralProjectListActivity;
 
 /**
  * Created by liamcook on 5/29/15.
@@ -66,7 +55,7 @@ public class InstallDetailFragment extends GeneralProjectDetailFragment {
                 File fileToShare;
                 try {
                     fileToShare = CSVExporter.generateCSV(currentProject);
-                    new ExportChooser(getActivity()).exportFile("CSV for bert configurator", fileToShare);
+                    ExportChooser.exportFile(getActivity(), "CSV for bert configurtor", fileToShare);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.d("Project Detail Fragment", "Unable to generate Configurator CSV File");
@@ -86,7 +75,7 @@ public class InstallDetailFragment extends GeneralProjectDetailFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_install_detail, container, false);
+        return inflater.inflate(R.layout.fragment_project_install_detail, container, false);
     }
 
 }

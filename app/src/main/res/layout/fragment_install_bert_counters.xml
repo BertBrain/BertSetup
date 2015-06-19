@@ -1,0 +1,97 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.example.liamcook.test.fragment_install_bert_counters"
+    android:id="@+id/fragment_install_bert_counters">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bertsInstalledCounter"
+        android:rowCount="2"
+        android:columnCount="4"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Berts Installed: "
+            android:id="@+id/textView19"
+            android:layout_row="0"
+            android:layout_column="0" />
+
+        <TextView
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0"
+            android:id="@+id/berts_installed_label"
+            android:layout_row="0"
+            android:layout_column="1" />
+
+        <TextView
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="  Total Berts: "
+            android:id="@+id/textView22"
+            android:layout_row="0"
+            android:layout_column="2" />
+
+        <TextView
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0"
+            android:id="@+id/total_berts_label"
+            android:layout_row="0"
+            android:layout_column="3" />
+
+        <TextView
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Rooms Completed: "
+            android:id="@+id/textView21"
+            android:layout_row="1"
+            android:layout_column="0" />
+
+        <TextView
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0"
+            android:id="@+id/rooms_completed_label"
+            android:layout_row="1"
+            android:layout_column="1" />
+
+        <TextView
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="  Total Rooms: "
+            android:id="@+id/textView23"
+            android:layout_row="1"
+            android:layout_column="2" />
+
+        <TextView
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0"
+            android:id="@+id/total_rooms_label"
+            android:layout_row="1"
+            android:layout_column="3" />
+
+    </GridLayout>
+
+</FrameLayout>

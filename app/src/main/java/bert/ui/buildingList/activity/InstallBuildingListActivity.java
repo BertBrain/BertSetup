@@ -1,5 +1,7 @@
 package bert.ui.buildingList.activity;
 
+import android.widget.TextView;
+
 import bert.ui.buildingList.detailFragment.InstallBuildingDetailFragment;
 
 /**

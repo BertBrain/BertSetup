@@ -16,7 +16,9 @@ import bert.ui.roomList.roomListActivity.AuditRoomListActivity;
  */
 public class AuditBuildingDetailFragment extends GeneralBuildingDetailFragment{
 
+    private TextView roomCountTextView;
     private TextView bertCountTextView;
+
     private Button openRoomListButton;
 
     @Override
@@ -31,6 +33,13 @@ public class AuditBuildingDetailFragment extends GeneralBuildingDetailFragment{
                 openRoomListActivity();
             }
         });
+
+        roomCountTextView = (TextView) getView().findViewById(R.id.roomCounterLabel);
+        roomCountTextView.setText(Integer.toString(project.getRoomCountForBuilding(buildingID)));
+
+        bertCountTextView = (TextView) getView().findViewById(R.id.bertCounterLabel);
+        bertCountTextView.setText(Integer.toString(project.getBertCountForBuilding(buildingID)));
+
     }
 
     @Override

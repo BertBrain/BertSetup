@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import bert.data.proj.Project;
+import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.utility.Cleaner;
 
 /**
@@ -80,12 +81,16 @@ public class ProjectProvider {
                 List<File> files = Arrays.asList(projectDir.listFiles());
                 if (files.size() > 0) {
                     for (File f : files) {
-                        Project nextProject = Project.loadProject(f);
-                        if (nextProject != null) {
-                            log("Loading file <" + f.getName() + "> from project directory");
-                            projectMap.put(nextProject.getProjectName(), nextProject);
-                        } else {
-                            log("File <" + f.getName() + "> is not a valid project... Skipping");
+                        try {
+                            Project nextProject = Project.loadProject(f);
+                            if (nextProject != null) {
+                                log("Loading file <" + f.getName() + "> from project directory");
+                                projectMap.put(nextProject.getProjectName(), nextProject);
+                            } else {
+                                log("File <" + f.getName() + "> is not a valid project... Skipping");
+                            }
+                        } catch (InvalidProjectNameException e) {
+                            //data has been corrupted, project name checked before save
                         }
                     }
                 }

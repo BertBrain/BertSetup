@@ -2,8 +2,11 @@ package bert.ui.projectList.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,10 +15,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.io.File;
 import java.util.List;
 
 import bert.data.ProjectProvider;
+import bert.data.proj.Project;
+import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.ui.R;
+import bert.ui.common.BertAlert;
 import bert.ui.common.NoSelectionFragment;
 import bert.ui.common.SelectableListGVA;
 
@@ -33,6 +40,24 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getIntent().getType() != null && getIntent().getType().equals("text/xml")) {
+            Log.d("RECIEVING", "recieved XML");
+            Uri uri = getIntent().getData();
+            File recievedFile = new File(uri.getPath());
+            Log.d("RECIEVING", "text: " + uri.toString());
+            Log.d("RECIEVING", "file: " + recievedFile.toString());
+
+
+            try {
+                Project newProject = Project.loadProject(recievedFile);
+                ProjectProvider.getInstance().addProject(newProject);
+                Log.d("RECIEVING", "project: " + newProject.getProjectName());
+            } catch (InvalidProjectNameException e) {
+                BertAlert.show(this, "This project already exists so it could not be imported.");
+            }
+        }
+
         setContentView(R.layout.activity_master_detail);
         addProjectButton = (Button) findViewById(R.id.create_list_item_button);
         addProjectButton.setText("Add Project");

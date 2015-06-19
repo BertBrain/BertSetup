@@ -14,24 +14,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".roomList.roomListActivity.RoomListActivity"
-            android:label="@string/title_RoomListActivity" >
-        </activity>
-        <activity
-            android:name=".projectList.ProjectListActivity"
-            android:label="@string/title_ProjectListActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.SEND" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".roomList.deviceList.auditWizard.AddCategoryFrameActivity"
             android:label="@string/title_activity_add_category" >
-        </activity>
-        <activity
-            android:name=".categoryList.CategoryDetailFragment"
-            android:label="@string/title_activity_category_editor" >
         </activity>
         <activity
             android:name=".categoryList.CategoryListActivity"
@@ -49,6 +33,16 @@
         <activity
             android:name=".projectList.activity.AuditProjectListActivity"
             android:label="@string/title_activity_audit_project_list" >
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/xml" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/xml" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".projectList.activity.InstallProjectListActivity"

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/fragment_project_metadata"/>
+
+            <include layout="@layout/fragment_audit_bert_counters" />
+
+            <Button
+                style="@style/ActionButton"
+                android:text="Send To Bert"
+                android:id="@+id/send_to_bert_button" />
+
+            <Button
+                style="@style/ActionButton"
+                android:text="Export an ROI Sheet"
+                android:id="@+id/exportToROIButton" />
+
+            <Button
+                style="@style/ActionButton"
+                android:text="Begin Install"
+                android:id="@+id/begin_install_button" />
+
+            <include layout="@layout/fragment_open_building"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

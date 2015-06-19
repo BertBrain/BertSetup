@@ -126,10 +126,24 @@ public class Project {
 
     public int getBertCount() {
         int bertCount = 0;
-        for (RoomAudit audit : auditList){
-            bertCount += audit.totalBerts();
+        for (String buildingID : buildingList.keySet()) {
+            bertCount += getBertCountForBuilding(buildingID);
         }
-        bertCount += bertList.size();
+        return bertCount;
+    }
+
+    public int getBertCountForBuilding(String buildingID) {
+        int bertCount = 0;
+        for (RoomAudit audit : auditList){
+            if (audit.getBuildingID().equals(buildingID)){
+                bertCount += audit.totalBerts();
+            }
+        }
+        for (BertUnit b : bertList) {
+            if (b.getBuildingID().equals(buildingID)){
+                bertCount ++;
+            }
+        }
         return bertCount;
     }
 
@@ -196,32 +210,61 @@ public class Project {
     }
 
     public int getRoomCount() {
-        List<String> roomNames = new ArrayList<>();
+        int roomCount = 0;
+        for (String buildingID : buildingList.keySet()) {
+            roomCount += getRoomCountForBuilding(buildingID);
+        }
+        return roomCount;
+    }
+
+    public int getRoomCountForBuilding(String buildingID) {
+        int roomCount = 0;
+        List<String> roomList = new ArrayList<>();
         for (BertUnit b : getBerts()) {
-            String nextRoom = b.getRoomID();
-            if (!roomNames.contains(nextRoom)) {
-                roomNames.add(nextRoom);
+            if (buildingID.equals(b.getBuildingID()) && !roomList.contains(b.getRoomID())) {
+                roomList.add(b.getRoomID());
             }
         }
-        return roomNames.size() + auditList.size();
+        for (RoomAudit roomAudit : auditList) {
+            if (roomAudit.getBuildingID().equals(buildingID)) {
+                roomCount++;
+            }
+        }
+        return roomCount + roomList.size();
+    }
+
+    public int getRoomCompletedCountForBuilding(String buildingID) {
+        int roomsCompleted = 0;
+        for (String roomID : getRoomNamesInBuilding(buildingID)) {
+            boolean isAllInstalledSoFar = true;
+            for (BertUnit b : getBertsByRoom(buildingID, roomID)){
+                if (!b.isInstalled()) {
+                    isAllInstalledSoFar = false;
+                }
+            }
+            if (isAllInstalledSoFar) {
+                roomsCompleted++;
+            }
+        }
+        return roomsCompleted;
     }
 
     public int getRoomCompletedCount() {
         int roomsCompleted = 0;
         for (String buildingID : getBuildingNames()) {
-            for (String roomID : getRoomNamesInBuilding(buildingID)) {
-                boolean isAllInstalledSoFar = true;
-                for (BertUnit b : getBertsByRoom(buildingID, roomID)){
-                    if (!b.isInstalled()) {
-                        isAllInstalledSoFar = false;
-                    }
-                }
-                if (isAllInstalledSoFar) {
-                    roomsCompleted++;
-                }
-            }
+            roomsCompleted += getRoomCompletedCountForBuilding(buildingID);
         }
         return roomsCompleted;
+    }
+
+    public int getBertCompletedCountForBuilding(String buildingID) {
+        int bertsCompletedCount = 0;
+        for (BertUnit b : getBerts()) {
+            if (b.getBuildingID().equals(buildingID)) {
+                bertsCompletedCount += (b.isInstalled() ? 1 : 0);
+            }
+        }
+        return bertsCompletedCount;
     }
 
     public int getBertCompletedCount(){
@@ -341,7 +384,7 @@ public class Project {
         }
     }
 
-    public static Project loadProject(File file) {
+    public static Project loadProject(File file) throws InvalidProjectNameException {
         Log.d("ProjectLoader", "Loading document: " + file.getName());
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {

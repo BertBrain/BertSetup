@@ -36,7 +36,7 @@ public class ProjectSerializer {
     public static final String TAG_AUDITS = "Audits";
 
 
-    public static Project getProjectFromDocument(Document document) {
+    public static Project getProjectFromDocument(Document document) throws InvalidProjectNameException{
         try {
             Element projectTag = (Element) document.getElementsByTagName(TAG_PROJECT).item(0);
             Element contactTag = (Element) document.getElementsByTagName(TAG_CONTACT).item(0);
@@ -82,9 +82,6 @@ public class ProjectSerializer {
 
             return newProject;
         } catch (NullPointerException e) {
-            return null;
-        } catch (InvalidProjectNameException e) {
-            e.printStackTrace();
             return null;
         }
     }

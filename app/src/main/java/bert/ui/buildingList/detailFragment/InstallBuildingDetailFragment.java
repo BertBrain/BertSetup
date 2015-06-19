@@ -15,12 +15,27 @@ import bert.ui.roomList.roomListActivity.InstallRoomListActivity;
  */
 public class InstallBuildingDetailFragment extends GeneralBuildingDetailFragment{
 
+    private TextView roomCountTextView;
     private TextView bertCountTextView;
+    private TextView roomCountDoneTextView;
+    private TextView bertCountDoneTextView;
 
 
     @Override
     public void onResume() {
         super.onResume();
+
+        roomCountTextView = (TextView) getView().findViewById(R.id.total_rooms_label);
+        roomCountTextView.setText(String.valueOf(project.getRoomCountForBuilding(buildingID)));
+
+        bertCountTextView = (TextView) getView().findViewById(R.id.total_berts_label);
+        bertCountTextView.setText(String.valueOf(project.getBertCountForBuilding(buildingID)));
+
+        roomCountDoneTextView = (TextView) getView().findViewById(R.id.rooms_completed_label);
+        roomCountDoneTextView.setText(String.valueOf(project.getRoomCompletedCountForBuilding(buildingID)));
+
+        bertCountDoneTextView = (TextView) getView().findViewById(R.id.berts_installed_label);
+        bertCountDoneTextView.setText(String.valueOf(project.getBertCompletedCountForBuilding(buildingID)));
 
     }
 
