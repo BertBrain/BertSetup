@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import bert.data.ProjectProvider;
 import bert.data.proj.Project;
+import bert.ui.common.BertAlert;
 import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
 import bert.ui.common.ProjectChildEditorFragment;
@@ -111,5 +112,13 @@ public class DeviceListFragment extends ProjectChildEditorFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (deviceTableAdapter.berts.size() == 0) {
+            BertAlert.show(getActivity(), "This room has no berts, it will be automatically deleted");
+        }
     }
 }

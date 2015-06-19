@@ -30,4 +30,8 @@ public class AuditProjectListActivity extends GeneralProjectListActivity {
          return "In Audit Mode";
      }
 
+    public String getNewProjectButtonName() {
+        return "CREATE NEW AUDIT";
+    }
+
 }

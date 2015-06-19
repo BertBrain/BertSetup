@@ -3,6 +3,7 @@ package bert.ui.roomList.deviceList.deviceEditor;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -11,11 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
@@ -25,6 +30,8 @@ import bert.data.proj.exceptions.InvalidBertNameException;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
 import bert.ui.common.ProjectChildEditorFragment;
+import bert.ui.roomList.deviceList.auditWizard.AddCategoryFrameActivity;
+import bert.ui.roomList.roomListActivity.AuditRoomListActivity;
 import bert.ui.roomList.roomListActivity.InstallRoomListActivity;
 
 public class DeviceDetailFragment extends ProjectChildEditorFragment {
@@ -122,8 +129,27 @@ public class DeviceDetailFragment extends ProjectChildEditorFragment {
             }
         });
 
-        categoryAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, building.getCategoryNames());
+        List<String> categoryAdapterItems = new ArrayList<>(building.getCategoryNames());
+        final String newCateoryLabel = "+ New Category";
+        categoryAdapterItems.add(newCateoryLabel);
+        categoryAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, categoryAdapterItems);
         categorySelector.setAdapter(categoryAdapter);
+        categorySelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (categoryAdapter.getItem(i).equals(newCateoryLabel)) {
+                    Intent intent = new Intent(getActivity(), AddCategoryFrameActivity.class);
+                    intent.putExtra(AddCategoryFrameActivity.ARG_BUILDING_ID, buildingID);
+                    intent.putExtra(AddCategoryFrameActivity.ARG_PROJECT_ID, projectID);
+                    activity.startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         roomTextField.setText(location);
 

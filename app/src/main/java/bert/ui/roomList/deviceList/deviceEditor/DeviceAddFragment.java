@@ -111,6 +111,7 @@ public class DeviceAddFragment extends ProjectChildEditorFragment {
                 categoryAdapter.getItem(categorySpinner.getSelectedItemPosition())
         );
         project.addBert(bert);
+        activity.loadListView();
         activity.deviceListFragment.onResume();
         activity.deviceListFragment.openNewestDeviceDetailFragment();
     }

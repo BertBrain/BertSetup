@@ -37,6 +37,13 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
     private Button addProjectButton;
     private SelectableListGVA projectTableAdapter;
 
+    abstract public List<String> getProjects();
+
+    abstract public void openProjectDetailView(int projectIndex);
+    abstract public String getTitlePrefix();
+
+    abstract public String getNewProjectButtonName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +71,7 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_master_detail);
         addProjectButton = (Button) findViewById(R.id.create_list_item_button);
-        addProjectButton.setText("Add Project");
+        addProjectButton.setText(getNewProjectButtonName());
         addProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,10 +107,6 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
         }
     }
 
-    abstract public List<String> getProjects();
-
-    abstract public void openProjectDetailView(int projectIndex);
-    abstract public String getTitlePrefix();
 
     public void closeAddProjectView() {
         openNoSelectionView();

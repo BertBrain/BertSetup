@@ -25,8 +25,8 @@ public abstract class GeneralRoomListActivity extends ActionBarActivity {
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
     public static final String ARG_BUILDING_ID = "BUILDING_ID";
 
-    protected String projectID;
-    protected String buildingID;
+    static protected String projectID;
+    static protected String buildingID;
 
     protected Project project;
 
