@@ -14,15 +14,15 @@ import bert.data.ProjectProvider;
 import bert.data.proj.Project;
 import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
+import bert.ui.common.ProjectChildEditorFragment;
 
-public class DeviceListFragment extends Fragment {
+public class DeviceListFragment extends ProjectChildEditorFragment {
     public static final String ARG_LOCATION = "LOCATION";
     public static final String ARG_BUILDING = "BUILDING_ID";
     public static final String ARG_PROJECT = "PROJECT_ID";
 
     public static final String ADD_BUILDING_STRING = "+ Add Bert";
 
-    private Project project;
     private String projectID;
     private String buildingID;
     private String location;

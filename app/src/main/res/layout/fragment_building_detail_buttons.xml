@@ -12,7 +12,7 @@
 
         <Button
             style="@style/NormalButton"
-            android:text="View Rooms"
+            android:text="Buildings Button Tilte Not Set!"
             android:id="@+id/roomListButton" />
 
         <Button

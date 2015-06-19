@@ -25,13 +25,14 @@ import bert.data.proj.RoomAudit;
 import bert.data.proj.exceptions.DuplicateAuditException;
 import bert.ui.R;
 import bert.ui.common.BertAlert;
+import bert.ui.common.ProjectChildEditorFragment;
 import bert.ui.roomList.roomListActivity.AuditRoomListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AuditWizardFragment extends Fragment {
+public class AuditWizardFragment extends ProjectChildEditorFragment {
 
     public static final String ARG_BUILDING_ID = "BUILDING_ID";
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
@@ -42,7 +43,6 @@ public class AuditWizardFragment extends Fragment {
     private String roomID;
 
     private AuditRoomListActivity activity;
-    private Project project;
 
     private AuditTallyBoxGVA categoryGridAdapter;
     private RoomAudit roomAudit;

@@ -17,11 +17,12 @@ import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
 import bert.data.proj.Project;
+import bert.ui.common.ProjectChildEditorFragment;
 import bert.utility.Cleaner;
 import bert.ui.R;
 import bert.ui.roomList.roomListActivity.InstallRoomListActivity;
 
-public class DeviceAddFragment extends Fragment {
+public class DeviceAddFragment extends ProjectChildEditorFragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
     private static final String ARG_LOCATION = "location";
@@ -30,7 +31,6 @@ public class DeviceAddFragment extends Fragment {
     private String buildingID;
 
     private InstallRoomListActivity activity;
-    private Project project;
     private Building building;
     private String location;
 

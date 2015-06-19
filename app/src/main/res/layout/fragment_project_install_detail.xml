@@ -10,14 +10,16 @@
 
         <include layout="@layout/fragment_project_metadata"/>
 
-        <include layout="@layout/fragment_install_bert_counters"></include>
+        <include layout="@layout/fragment_bert_counters_install"></include>
+
+        <include layout="@layout/fragment_project_open_button" />
 
         <Button
             style="@style/ActionButton"
             android:text="Export a Configurator CSV"
             android:id="@+id/exportToBertConfiguratorButton" />
 
-        <include layout="@layout/fragment_open_building"/>
+        <include layout="@layout/fragment_project_delete_button" />
 
     </LinearLayout>
 

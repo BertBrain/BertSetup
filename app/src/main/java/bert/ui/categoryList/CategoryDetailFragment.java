@@ -26,8 +26,9 @@ import bert.data.proj.exceptions.InvalidCategoryNameException;
 import bert.data.proj.exceptions.UnableToDeleteException;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
+import bert.ui.common.ProjectChildEditorFragment;
 
-public class CategoryDetailFragment extends Fragment {
+public class CategoryDetailFragment extends ProjectChildEditorFragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
     private static final String ARG_CATEGORY_ID = "CATEGORY_ID";
@@ -40,7 +41,6 @@ public class CategoryDetailFragment extends Fragment {
 
     private CategoryListActivity activity;
 
-    private Project project;
     private Building building;
     private Category category;
 

@@ -5,7 +5,7 @@
 
     <include layout="@layout/fragment_building_detail_metadate" />
 
-    <include layout="@layout/fragment_audit_bert_counters" />
+    <include layout="@layout/fragment_bert_counters_audit" />
 
     <include layout="@layout/fragment_building_detail_buttons" />
 

@@ -14,7 +14,9 @@
 
             <include layout="@layout/fragment_project_metadata"/>
 
-            <include layout="@layout/fragment_audit_bert_counters" />
+            <include layout="@layout/fragment_bert_counters_audit" />
+
+            <include layout="@layout/fragment_project_open_button"/>
 
             <Button
                 style="@style/ActionButton"
@@ -31,7 +33,9 @@
                 android:text="Begin Install"
                 android:id="@+id/begin_install_button" />
 
-            <include layout="@layout/fragment_open_building"/>
+
+
+            <include layout="@layout/fragment_project_delete_button" />
         </LinearLayout>
 
     </ScrollView>

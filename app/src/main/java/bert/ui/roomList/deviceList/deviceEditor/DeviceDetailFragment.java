@@ -24,9 +24,10 @@ import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidBertNameException;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
+import bert.ui.common.ProjectChildEditorFragment;
 import bert.ui.roomList.roomListActivity.InstallRoomListActivity;
 
-public class DeviceDetailFragment extends Fragment {
+public class DeviceDetailFragment extends ProjectChildEditorFragment {
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
     private static final String ARG_BERT_ID = "BERT_ID";
@@ -38,7 +39,6 @@ public class DeviceDetailFragment extends Fragment {
     private String location;
 
     private InstallRoomListActivity activity;
-    private Project project;
     private Building building;
     private BertUnit bert;
 

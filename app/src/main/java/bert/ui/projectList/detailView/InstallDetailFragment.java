@@ -37,16 +37,16 @@ public class InstallDetailFragment extends GeneralProjectDetailFragment {
 
 
         roomCountTextView = (TextView) getView().findViewById(R.id.total_rooms_label);
-        roomCountTextView.setText(String.valueOf(currentProject.getRoomCount()));
+        roomCountTextView.setText(String.valueOf(project.getRoomCount()));
 
         bertCountTextView = (TextView) getView().findViewById(R.id.total_berts_label);
-        bertCountTextView.setText(String.valueOf(currentProject.getBertCount()));
+        bertCountTextView.setText(String.valueOf(project.getBertCount()));
 
         roomCountDoneTextView = (TextView) getView().findViewById(R.id.rooms_completed_label);
-        roomCountDoneTextView.setText(String.valueOf(currentProject.getRoomCompletedCount()));
+        roomCountDoneTextView.setText(String.valueOf(project.getRoomCompletedCount()));
 
         bertCountDoneTextView = (TextView) getView().findViewById(R.id.berts_installed_label);
-        bertCountDoneTextView.setText(String.valueOf(currentProject.getBertCompletedCount()));
+        bertCountDoneTextView.setText(String.valueOf(project.getBertCompletedCount()));
 
         exportToBertConfigButton = (Button) getView().findViewById(R.id.exportToBertConfiguratorButton);
         exportToBertConfigButton.setOnClickListener(new View.OnClickListener() {
@@ -54,7 +54,7 @@ public class InstallDetailFragment extends GeneralProjectDetailFragment {
             public void onClick(View v) {
                 File fileToShare;
                 try {
-                    fileToShare = CSVExporter.generateCSV(currentProject);
+                    fileToShare = CSVExporter.generateCSV(project);
                     ExportChooser.exportFile(getActivity(), "CSV for bert configurtor", fileToShare);
                 } catch (IOException e) {
                     e.printStackTrace();

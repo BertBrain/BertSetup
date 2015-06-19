@@ -41,17 +41,17 @@ public class AuditDetailFragment extends GeneralProjectDetailFragment {
 
 
         roomCountTextView = (TextView) getView().findViewById(R.id.roomCounterLabel);
-        roomCountTextView.setText(Integer.toString(currentProject.getRoomCount()));
+        roomCountTextView.setText(Integer.toString(project.getRoomCount()));
 
         bertCountTextView = (TextView) getView().findViewById(R.id.bertCounterLabel);
-        bertCountTextView.setText(Integer.toString(currentProject.getBertCount()));
+        bertCountTextView.setText(Integer.toString(project.getBertCount()));
 
         exportToROIButton = (Button) getView().findViewById(R.id.exportToROIButton);
         exportToROIButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    File fileToShare = ROIExporter.generateROI(currentProject);
+                    File fileToShare = ROIExporter.generateROI(project);
                     ExportChooser.exportFile(getActivity(), "ROI spreadsheet", fileToShare);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -68,8 +68,8 @@ public class AuditDetailFragment extends GeneralProjectDetailFragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                currentProject.convertToInstall();
-                                currentProject.save();
+                                project.convertToInstall();
+                                project.save();
                                 Intent intent = new Intent(getActivity(), InstallProjectListActivity.class);
                                 startActivity(intent);
                             }
@@ -82,7 +82,7 @@ public class AuditDetailFragment extends GeneralProjectDetailFragment {
             @Override
             public void onClick(View view) {
                 try {
-                    ExportChooser.exportFile(getActivity(), "bert@bertbrain.com", projectID, currentProject.getProjectFile());
+                    ExportChooser.exportFile(getActivity(), "bert@bertbrain.com", projectID, project.getProjectFile());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

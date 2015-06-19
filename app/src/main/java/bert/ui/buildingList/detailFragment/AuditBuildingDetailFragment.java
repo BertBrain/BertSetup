@@ -20,20 +20,9 @@ public class AuditBuildingDetailFragment extends GeneralBuildingDetailFragment{
     private TextView roomCountTextView;
     private TextView bertCountTextView;
 
-    private Button openRoomListButton;
-
     @Override
     public void onResume() {
         super.onResume();
-
-        openRoomListButton = (Button) getView().findViewById(R.id.roomListButton);
-        openRoomListButton.setText("View Rooms (" + project.getRoomNamesInBuilding(buildingID).size() + ")");
-        openRoomListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openRoomListActivity();
-            }
-        });
 
         roomCountTextView = (TextView) getView().findViewById(R.id.roomCounterLabel);
         roomCountTextView.setText(String.valueOf(project.getRoomCountForBuilding(buildingID)));

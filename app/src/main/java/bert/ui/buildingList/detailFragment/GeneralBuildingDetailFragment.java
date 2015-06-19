@@ -2,7 +2,6 @@ package bert.ui.buildingList.detailFragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,19 +21,19 @@ import bert.ui.R;
 import bert.ui.buildingList.TimeRangeDisplay;
 import bert.ui.buildingList.activity.GeneralBuildingListActivity;
 import bert.ui.categoryList.CategoryListActivity;
+import bert.ui.common.ProjectChildEditorFragment;
 import bert.ui.common.NoSelectionFragment;
 
 /**
  * Created by liamcook on 5/29/15.
  */
-abstract public class GeneralBuildingDetailFragment extends Fragment {
+abstract public class GeneralBuildingDetailFragment extends ProjectChildEditorFragment {
 
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
 
     protected String projectID;
     protected String buildingID;
-    protected Project project;
     protected Building building;
 
     private EditText nameEditText;
@@ -98,7 +97,7 @@ abstract public class GeneralBuildingDetailFragment extends Fragment {
         });
 
         categoryButton = (Button) getView().findViewById(R.id.categoryListButton);
-        categoryButton.setText("View Categories (" + project.getBuilding(buildingID).getCategoryCount() + ")");
+        categoryButton.setText("Add/Edit/View Categories (" + project.getBuilding(buildingID).getCategoryCount() + ")");
         categoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +129,7 @@ abstract public class GeneralBuildingDetailFragment extends Fragment {
             }
         });
         openRoomListButton = (Button) getView().findViewById(R.id.roomListButton);
-        openRoomListButton.setText("View Rooms (" + project.getRoomNamesInBuilding(buildingID).size() + ")");
+        openRoomListButton.setText("Add/Edit/View Rooms (" + project.getRoomNamesInBuilding(buildingID).size() + ")");
         openRoomListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,8 +137,6 @@ abstract public class GeneralBuildingDetailFragment extends Fragment {
             }
         });
     }
-
-
 
     private void openCategoryListActivity() {
         Intent i = new Intent(this.getActivity(), CategoryListActivity.class);

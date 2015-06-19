@@ -57,13 +57,6 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
                     BertAlert.show(this, "There was an error importing the project");
                 }
 
-
-                //create, import modify
-                //add/edit/view buildings
-                //create new audit
-                //send install sheets
-                //tally berts by M, V, and C
-
             } catch (InvalidProjectNameException e) {
                 BertAlert.show(this, "This project already exists so it could not be imported.");
             }

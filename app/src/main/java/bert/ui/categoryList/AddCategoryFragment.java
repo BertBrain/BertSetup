@@ -19,11 +19,12 @@ import bert.data.proj.Building;
 import bert.data.proj.Category;
 import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidCategoryNameException;
+import bert.ui.common.ProjectChildEditorFragment;
 import bert.utility.Cleaner;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
 
-public class AddCategoryFragment extends Fragment {
+public class AddCategoryFragment extends ProjectChildEditorFragment {
 
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
@@ -31,7 +32,6 @@ public class AddCategoryFragment extends Fragment {
     private String projectID;
     private String buildingID;
 
-    private Project project;
     private Building building;
     private OnFragmentInteractionListener activity;
 

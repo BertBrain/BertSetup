@@ -25,17 +25,17 @@ import bert.data.proj.Project;
 import bert.data.proj.Time;
 import bert.data.proj.exceptions.InvalidBuildingNameException;
 import bert.ui.buildingList.activity.GeneralBuildingListActivity;
+import bert.ui.common.ProjectChildEditorFragment;
 import bert.utility.Cleaner;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
 
-public class AddBuildingFragment extends Fragment {
+public class AddBuildingFragment extends ProjectChildEditorFragment {
 
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
 
     private GeneralBuildingListActivity activity;
     private String projectID;
-    private Project project;
 
     private Time defaultStartTime = new Time(8, 0);
     private Time defaultEndTime = new Time(18, 0);
