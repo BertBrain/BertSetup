@@ -62,7 +62,7 @@ abstract public class GeneralBuildingListActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
 
-        setTitle(getTitlePrefix() + " " + project.getProjectName() + " Buildings (" + project.getBuildingCount() + ")");
+        setTitle(getTitlePrefix() + ": " + project.getProjectName() + " Buildings (" + project.getBuildingCount() + ")");
         loadListView();
     }
 

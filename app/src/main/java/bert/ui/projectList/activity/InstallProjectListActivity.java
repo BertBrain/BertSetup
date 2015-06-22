@@ -21,7 +21,7 @@ public class InstallProjectListActivity extends GeneralProjectListActivity {
     }
 
     public String getTitlePrefix() {
-        return "In Install Mode";
+        return "Install Mode";
     }
 
     public String getNewProjectButtonName() {

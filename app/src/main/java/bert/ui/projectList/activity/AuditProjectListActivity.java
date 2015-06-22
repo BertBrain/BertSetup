@@ -22,7 +22,7 @@ public class AuditProjectListActivity extends GeneralProjectListActivity {
      }
 
      public String getTitlePrefix() {
-         return "In Audit Mode";
+         return "Audit Mode";
      }
 
     public String getNewProjectButtonName() {

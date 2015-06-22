@@ -12,7 +12,7 @@ public class AuditBuildingListActivty extends GeneralBuildingListActivity {
     }
 
     public String getTitlePrefix() {
-        return "In Audit Mode";
+        return "Audit Mode";
     }
 
 }

@@ -46,6 +46,8 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
     private Spinner bertTypeSpinner;
     private ArrayAdapter<String> bertTypeSpinnerAdapter;
     private TextView bertCountDisplay;
+    
+    private TextView multipleDevicesIndicator;
     private Button saveButton;
     private Button deleteButton;
 
@@ -118,11 +120,13 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
             estimatedLoadEditText.setText(UNDEFINED_LOAD_STRING);
         }
 
-
         bertTypeSpinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, Category.bertTypes);
         bertTypeSpinner = (Spinner) getView().findViewById(R.id.bert_type_spinner);
         bertTypeSpinner.setAdapter(bertTypeSpinnerAdapter);
         bertTypeSpinner.setSelection(category.getBertTypeID());
+
+        multipleDevicesIndicator = (TextView) getView().findViewById(R.id.multiple_device_text_view);
+        multipleDevicesIndicator.setText(String.valueOf(category.doesRequireExtensionCord()));
 
         bertCountDisplay = (TextView) getView().findViewById(R.id.bert_count_label);
         bertCountDisplay.setText(String.valueOf(project.getBertCountForCategory(buildingID, categoryID)));
@@ -146,7 +150,7 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
         activity.onResume();
     }
 
-    private void askToDeleteCategory (){
+    private void askToDeleteCategory () {
         int numberOfBuildingsWithCategory = 0;
         for (String buildingID : project.getBuildingNames()) {
             if (project.getBuilding(buildingID).getCategory(categoryID) != null) {

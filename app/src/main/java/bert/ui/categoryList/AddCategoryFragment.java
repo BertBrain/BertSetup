@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -40,6 +41,7 @@ public class AddCategoryFragment extends ProjectChildEditorFragment {
     private Spinner bertTypeSpinner;
     private Button finishButton;
     private Button cancelButton;
+    private CheckBox requiresExtensionCordCheckBox;
 
     private OnFragmentInteractionListener mListener;
 
@@ -90,6 +92,8 @@ public class AddCategoryFragment extends ProjectChildEditorFragment {
         bertTypeSpinner = (Spinner) getView().findViewById(R.id.bertTypeSpinner);
         bertTypeSpinner.setAdapter(bertTypeSpinnerAdapter);
 
+        requiresExtensionCordCheckBox = (CheckBox) getView().findViewById(R.id.extensionCordCheckBox);
+
         finishButton = (Button) getView().findViewById(R.id.finshCreateCategoryButton);
         finishButton.setEnabled(false);
         finishButton.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +128,9 @@ public class AddCategoryFragment extends ProjectChildEditorFragment {
             System.out.println("invalid number passed");
             return;
         }
-        Category newCategory = new Category (bertType, estimatedLoad);
+
+        Category newCategory = new Category(bertType, estimatedLoad, requiresExtensionCordCheckBox.isChecked());
+
         try {
             building.addCategory(categoryID, newCategory);
             project.save();

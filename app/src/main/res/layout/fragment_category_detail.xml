@@ -71,18 +71,32 @@
 
             <TextView
                 style="@style/DefaultText"
+                android:text="Multiple Devices:"
+                android:layout_row="3"
+                android:layout_column="0" />
+
+            <TextView
+                style="@style/DefaultText"
+                android:id="@+id/multiple_device_text_view"
+                android:text="Unset"
+                android:layout_row="3"
+                android:layout_column="1" />
+
+            <TextView
+                style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Bert Count:"
-                android:layout_row="3"
+                android:layout_row="4"
                 android:layout_column="0" />
+
             <TextView
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:id="@+id/bert_count_label"
-                android:layout_row="3"
+                android:layout_row="4"
                 android:layout_column="1" />
 
         </GridLayout>

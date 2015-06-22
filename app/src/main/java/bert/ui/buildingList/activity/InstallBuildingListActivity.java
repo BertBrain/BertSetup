@@ -12,6 +12,6 @@ public class InstallBuildingListActivity extends GeneralBuildingListActivity {
     }
 
     public String getTitlePrefix() {
-        return "In Install Mode";
+        return "Install Mode";
     }
 }
