@@ -7,7 +7,6 @@ import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +55,7 @@ public class Project {
         this.auditList = auditList;
 	}
 
-    public boolean isAudit(){
+    public boolean isAudit() {
         return bertList.size() == 0;
     }
 
@@ -268,7 +267,7 @@ public class Project {
         return bertsCompletedCount;
     }
 
-    public int getBertCompletedCount(){
+    public int getBertCompletedCount() {
         int bertsCompletedCount = 0;
         for (BertUnit b : getBerts()) {
             bertsCompletedCount += (b.isInstalled() ? 1 : 0);

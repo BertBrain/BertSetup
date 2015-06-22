@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import bert.data.ProjectProvider;
-import bert.data.proj.Project;
 import bert.ui.common.BertAlert;
 import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;

@@ -22,17 +22,17 @@ public class ProjectProvider {
     static final public boolean AUDIT = true;
     static final public boolean INSTALL = false;
 
-    private static ProjectProvider instance;
+    private static ProjectProvider INSTANCE;
     private HashMap<String, Project> projectMap;
     private ProjectProvider() {}
 
     public static ProjectProvider getInstance() {
-        if (instance == null) {
+        if (INSTANCE == null) {
             log("Creating instance...");
-            instance = new ProjectProvider();
-            instance.loadProjectListFromFile();
+            INSTANCE = new ProjectProvider();
+            INSTANCE.loadProjectListFromFile();
         }
-        return instance;
+        return INSTANCE;
     }
 
     public Project getProject(String projectID) {
@@ -102,7 +102,7 @@ public class ProjectProvider {
         }
     }
 
-    public void deleteProject(String projectID){
+    public void deleteProject(String projectID) {
         Project project = projectMap.get(projectID);
         try {
             File projectFile = project.getProjectFile();

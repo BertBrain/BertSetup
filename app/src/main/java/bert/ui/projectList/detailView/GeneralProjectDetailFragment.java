@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import bert.data.ProjectProvider;
-import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.ui.common.ProjectChildEditorFragment;
 import bert.utility.Cleaner;

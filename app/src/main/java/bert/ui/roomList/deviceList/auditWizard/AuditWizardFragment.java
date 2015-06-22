@@ -3,7 +3,6 @@ package bert.ui.roomList.deviceList.auditWizard;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -18,9 +17,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import bert.data.ProjectProvider;
-import bert.data.proj.BertUnit;
 
-import bert.data.proj.Project;
 import bert.data.proj.RoomAudit;
 import bert.data.proj.exceptions.DuplicateAuditException;
 import bert.ui.R;
@@ -28,9 +25,7 @@ import bert.ui.common.BertAlert;
 import bert.ui.common.ProjectChildEditorFragment;
 import bert.ui.roomList.roomListActivity.AuditRoomListActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class AuditWizardFragment extends ProjectChildEditorFragment {
 

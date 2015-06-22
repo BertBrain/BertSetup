@@ -1,7 +1,6 @@
 package bert.ui.buildingList;
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -21,7 +20,6 @@ import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Category;
 import bert.data.proj.CategoryPresets;
-import bert.data.proj.Project;
 import bert.data.proj.Time;
 import bert.data.proj.exceptions.InvalidBuildingNameException;
 import bert.ui.buildingList.activity.GeneralBuildingListActivity;

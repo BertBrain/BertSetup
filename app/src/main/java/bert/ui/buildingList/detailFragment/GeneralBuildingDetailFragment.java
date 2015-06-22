@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
-import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidBuildingNameException;
 import bert.ui.R;
 import bert.ui.buildingList.TimeRangeDisplay;

@@ -2,7 +2,6 @@ package bert.ui.projectList.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -11,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -63,7 +61,6 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
                 } else {
                     BertAlert.show(this, "There was an error importing the project");
                 }
-
             } catch (InvalidProjectNameException e) {
                 BertAlert.show(this, "This project already exists so it could not be imported.");
             }

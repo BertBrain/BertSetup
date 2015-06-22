@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.preference.DialogPreference;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +19,6 @@ import android.widget.TextView;
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Category;
-import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidCategoryNameException;
 import bert.data.proj.exceptions.UnableToDeleteException;
 import bert.ui.common.BertAlert;
@@ -156,7 +153,7 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
                 numberOfBuildingsWithCategory++;
             }
         }
-        if (numberOfBuildingsWithCategory > 1){
+        if (numberOfBuildingsWithCategory > 1) {
             BertAlert.show(getActivity(),
                     "Delete In All Buildings?",
                     "There are " + (numberOfBuildingsWithCategory - 1) + " other buildings that have this category. Delete in all buildings?",

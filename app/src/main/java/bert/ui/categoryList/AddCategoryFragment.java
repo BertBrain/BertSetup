@@ -3,7 +3,6 @@ package bert.ui.categoryList;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.widget.Spinner;
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Category;
-import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidCategoryNameException;
 import bert.ui.common.ProjectChildEditorFragment;
 import bert.utility.Cleaner;
@@ -74,12 +72,10 @@ public class AddCategoryFragment extends ProjectChildEditorFragment {
         categoryNameEditText = (EditText) getView().findViewById(R.id.categoryNameTextField);
         categoryNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void afterTextChanged(Editable s) {
-            }
+            public void afterTextChanged(Editable s) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {

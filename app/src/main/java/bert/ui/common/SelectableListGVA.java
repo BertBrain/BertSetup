@@ -1,15 +1,12 @@
 package bert.ui.common;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +48,9 @@ public class SelectableListGVA extends ArrayAdapter<String> {
 
     }
 
-    public void setOnClickListener(){}
+    public void setOnClickListener() {}
 
-    public void setOnClickListener(  AdapterView.OnItemClickListener listener){
+    public void setOnClickListener(  AdapterView.OnItemClickListener listener) {
         this.listener = listener;
     }
 
