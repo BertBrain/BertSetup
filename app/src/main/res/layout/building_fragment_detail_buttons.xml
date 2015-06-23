@@ -11,12 +11,12 @@
         android:id="@+id/mainLayout">
 
         <Button
-            style="@style/NormalButton"
+            style="@style/OpenButton"
             android:text="Buildings Button Tilte Not Set!"
             android:id="@+id/roomListButton" />
 
         <Button
-            style="@style/NormalButton"
+            style="@style/OpenButton"
             android:text="Edit Categories"
             android:id="@+id/categoryListButton" />
 

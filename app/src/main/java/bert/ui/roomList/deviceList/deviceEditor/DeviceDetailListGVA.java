@@ -34,7 +34,7 @@ public class DeviceDetailListGVA extends ArrayAdapter<BertUnit> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final View listCell = activity.getLayoutInflater().inflate(R.layout.fragment_device_list_cell, parent, false);
+        final View listCell = activity.getLayoutInflater().inflate(R.layout.device_list_component_cell, parent, false);
         TextView textView = (TextView) listCell.findViewById(R.id.deviceListTextField);
         Button indicator = (Button) listCell.findViewById(R.id.hasMACIndicator);
 

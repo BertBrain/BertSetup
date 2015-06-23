@@ -38,7 +38,7 @@ abstract public class BuildingListActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_master_detail);
+        setContentView(R.layout.common_activity_master_detail);
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             projectID = extras.getString(ARG_PROJECT_ID);

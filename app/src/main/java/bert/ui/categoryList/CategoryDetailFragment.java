@@ -251,7 +251,7 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_category_detail, container, false);
+        return inflater.inflate(R.layout.category_detail_fragment, container, false);
     }
 
     public void onButtonPressed(Uri uri) {

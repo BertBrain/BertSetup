@@ -143,7 +143,7 @@ public class AddCategoryFragment extends ProjectChildEditorFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_category_add, container, false);
+        return inflater.inflate(R.layout.category_add_fragment, container, false);
     }
 
     public void onButtonPressed(Uri uri) {

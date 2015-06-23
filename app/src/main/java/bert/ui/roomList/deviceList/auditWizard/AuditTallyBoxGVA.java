@@ -49,7 +49,7 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
             if (categoryCells.containsKey(categoryName)) {
                 gridCell = categoryCells.get(categoryName);
             } else {
-                gridCell = inflater.inflate(R.layout.fragment_audit_wizard_category_cell, parent, false);
+                gridCell = inflater.inflate(R.layout.audit_wizard_fragment_component_cell_category, parent, false);
 
                 TextView categoryNameTextView = (TextView) gridCell.findViewById(R.id.deviceTypeTextField);
                 categoryNameTextView.setText(categoryName);
@@ -66,7 +66,7 @@ public class AuditTallyBoxGVA extends ArrayAdapter<String> {
                 categoryCells.put(categoryName, gridCell);
             }
         } catch (IndexOutOfBoundsException e) {
-            gridCell = inflater.inflate(R.layout.fragment_audit_wizard_add_category_cell, parent, false);
+            gridCell = inflater.inflate(R.layout.audit_wizard_fragment_component_cell_add_category, parent, false);
             gridCell.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

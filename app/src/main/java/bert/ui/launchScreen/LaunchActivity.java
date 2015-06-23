@@ -21,7 +21,7 @@ public class LaunchActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launch);
+        setContentView(R.layout.launch_activity);
 
         startImage = (ImageButton) findViewById(R.id.startScreenImage);
         auditButton = (Button) findViewById(R.id.startAuditButton);

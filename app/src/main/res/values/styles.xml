@@ -6,7 +6,13 @@
     <color name="LightRed">#FFAB9E</color>
     <color name="DarkRed">#772417</color>
 
-    <color name="ListSelection">#999999</color>
+    <color name="LightOrange">#fff5d226</color>
+    <color name="DarkOrange">#ffb06e25</color>
+
+    <color name="LightBlue">#ff83e0f5</color>
+    <color name="DarkBlue">#ff1869f2</color>
+
+    <color name="ListSelection">#ffb8f561</color>
 
     <color name="SplashScreen_Background">#FFFFFF</color>
 
@@ -38,9 +44,17 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="OpenButton" parent="NormalButton" />
+    <style name="OpenButton" parent="SaveButton" />
 
-    <style name="ActionButton" parent="NormalButton" />
+    <style name="ActionButton" parent="NormalButton">
+        <item name="android:textColor">@color/DarkBlue</item>
+        <item name="android:background">@color/LightBlue</item>
+    </style>
+
+    <style name="ConvertButton" parent="NormalButton">
+        <item name="android:textColor">@color/DarkOrange</item>
+        <item name="android:background">@color/LightOrange</item>
+    </style>
 
     <style name="SaveButton" parent="NormalButton">
         <item name="android:textColor">@color/DarkGreen</item>

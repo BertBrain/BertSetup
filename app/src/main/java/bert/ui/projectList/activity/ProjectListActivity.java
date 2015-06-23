@@ -76,7 +76,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
             openNoSelectionView();
         }
 
-        setContentView(R.layout.activity_master_detail);
+        setContentView(R.layout.common_activity_master_detail);
         addProjectButton = (Button) findViewById(R.id.create_list_item_button);
         addProjectButton.setText(getNewProjectButtonName());
         addProjectButton.setOnClickListener(new View.OnClickListener() {

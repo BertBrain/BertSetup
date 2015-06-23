@@ -35,7 +35,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_master_detail);
+        setContentView(R.layout.common_activity_master_detail);
 
         projectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
         buildingID = getIntent().getExtras().getString(ARG_BUILDING_ID);

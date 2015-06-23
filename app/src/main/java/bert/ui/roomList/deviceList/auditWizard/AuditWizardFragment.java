@@ -181,7 +181,7 @@ public class AuditWizardFragment extends ProjectChildEditorFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_audit_wizard, container, false);
+        return inflater.inflate(R.layout.audit_wizard_fragment, container, false);
     }
 
     @Override

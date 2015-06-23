@@ -20,7 +20,7 @@ public class AddCategoryFrameActivity extends ActionBarActivity implements AddCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_empty_frame_layout);
+        setContentView(R.layout.common_activity_empty_frame_layout);
         projectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
         buildingID = getIntent().getExtras().getString(ARG_BUILDING_ID);
 

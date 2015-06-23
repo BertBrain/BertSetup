@@ -12,11 +12,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/fragment_project_metadata"/>
+            <include layout="@layout/project_detail_component_info_pane"/>
 
-            <include layout="@layout/fragment_bert_counters_audit" />
+            <include layout="@layout/component_audit_bert_counters" />
 
-            <include layout="@layout/fragment_project_open_button"/>
+            <include layout="@layout/project_detail_component_open_button"/>
 
             <Button
                 style="@style/ActionButton"
@@ -29,13 +29,11 @@
                 android:id="@+id/exportToROIButton" />
 
             <Button
-                style="@style/ActionButton"
+                style="@style/ConvertButton"
                 android:text="Begin Install"
                 android:id="@+id/begin_install_button" />
 
-
-
-            <include layout="@layout/fragment_project_delete_button" />
+            <include layout="@layout/project_detail_component_delete_button" />
         </LinearLayout>
 
     </ScrollView>

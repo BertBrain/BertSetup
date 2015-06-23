@@ -9,6 +9,6 @@
 
     <include layout="@layout/fragment_bert_counters_install" />
 
-    <include layout="@layout/fragment_building_detail_buttons" />
+    <include layout="@layout/building_fragment_detail_buttons" />
 
 </LinearLayout>

@@ -8,18 +8,18 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <include layout="@layout/fragment_project_metadata"/>
+        <include layout="@layout/project_detail_component)info"/>
 
         <include layout="@layout/fragment_bert_counters_install"></include>
 
-        <include layout="@layout/fragment_project_open_button" />
+        <include layout="@layout/project_detail_component_open_button" />
 
         <Button
             style="@style/ActionButton"
             android:text="Export a Configurator CSV"
             android:id="@+id/exportToBertConfiguratorButton" />
 
-        <include layout="@layout/fragment_project_delete_button" />
+        <include layout="@layout/project_detail_component_delete_button" />
 
     </LinearLayout>
 

@@ -97,13 +97,13 @@
         </GridLayout>
 
         <Button
-            style="@style/NormalButton"
-            android:text="View Rooms"
+            style="@style/OpenButton"
+            android:text="Add/Edit/View Rooms"
             android:id="@+id/roomListButton" />
 
         <Button
-            style="@style/NormalButton"
-            android:text="Edit Categories"
+            style="@style/OpenButton"
+            android:text="Add/Edit/View/Categories"
             android:id="@+id/categoryListButton" />
 
         <Button

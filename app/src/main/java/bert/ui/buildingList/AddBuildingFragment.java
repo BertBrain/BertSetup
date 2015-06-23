@@ -130,6 +130,6 @@ public class AddBuildingFragment extends ProjectChildEditorFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_building_add, container, false);
+        return inflater.inflate(R.layout.building_add_fragment, container, false);
     }
 }
