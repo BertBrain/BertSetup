@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
 
+import bert.ui.projectList.activity.GeneralProjectListActivity;
 import bert.ui.projectList.activity.InstallProjectListActivity;
 import bert.utility.ROIExporter;
 import bert.ui.R;
@@ -64,13 +65,14 @@ public class AuditDetailFragment extends GeneralProjectDetailFragment {
             @Override
             public void onClick(View view) {
                 BertAlert.show(getActivity(), "This cannot be undone. Are you Sure?",
-                        "Turn to Install",
+                        "Convert Audit to Install",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 project.convertToInstall();
                                 project.save();
                                 Intent intent = new Intent(getActivity(), InstallProjectListActivity.class);
+                                intent.putExtra(GeneralProjectListActivity.ARG_PROJECT_ID, projectID);
                                 startActivity(intent);
                             }
                         }, "Cancel", null);

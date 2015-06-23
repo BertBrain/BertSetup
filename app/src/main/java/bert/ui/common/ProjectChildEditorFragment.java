@@ -3,7 +3,6 @@ package bert.ui.common;
 import android.app.Fragment;
 import android.util.Log;
 
-import bert.data.ProjectProvider;
 import bert.data.proj.Project;
 
 /**
@@ -20,6 +19,5 @@ public class ProjectChildEditorFragment extends Fragment {
         } else{
             Log.d("ProjectSaver", "no project to save");
         }
-
     }
 }

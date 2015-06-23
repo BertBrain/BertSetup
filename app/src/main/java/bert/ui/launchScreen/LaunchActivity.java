@@ -2,10 +2,7 @@ package bert.ui.launchScreen;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -16,15 +13,16 @@ import bert.ui.projectList.activity.InstallProjectListActivity;
 
 public class LaunchActivity extends Activity {
 
-    ImageButton startImage;
+    private ImageButton startImage;
 
-    Button auditButton;
-    Button installButton;
+    private Button auditButton;
+    private Button installButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
+
         startImage = (ImageButton) findViewById(R.id.startScreenImage);
         auditButton = (Button) findViewById(R.id.startAuditButton);
         installButton = (Button) findViewById(R.id.startInstallButton);
@@ -44,12 +42,12 @@ public class LaunchActivity extends Activity {
         });
     }
 
-    private void launchInstallActivity(){
+    private void launchInstallActivity() {
         Intent intent = new Intent(this, InstallProjectListActivity.class);
         startActivity(intent);
     }
 
-    private void launchAuditActivity(){
+    private void launchAuditActivity() {
         Intent intent = new Intent(this, AuditProjectListActivity.class);
         startActivity(intent);
     }

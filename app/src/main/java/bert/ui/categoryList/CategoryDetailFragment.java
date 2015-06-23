@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.preference.DialogPreference;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +19,6 @@ import android.widget.TextView;
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Category;
-import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidCategoryNameException;
 import bert.data.proj.exceptions.UnableToDeleteException;
 import bert.ui.common.BertAlert;
@@ -49,6 +46,8 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
     private Spinner bertTypeSpinner;
     private ArrayAdapter<String> bertTypeSpinnerAdapter;
     private TextView bertCountDisplay;
+
+    private TextView multipleDevicesIndicator;
     private Button saveButton;
     private Button deleteButton;
 
@@ -78,7 +77,7 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
             building = project.getBuilding(buildingID);
             category = building.getCategory(categoryID);
         }
-        activity = (CategoryListActivity)getActivity();
+        activity = (CategoryListActivity) getActivity();
     }
 
     @Override
@@ -121,11 +120,13 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
             estimatedLoadEditText.setText(UNDEFINED_LOAD_STRING);
         }
 
-
         bertTypeSpinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, Category.bertTypes);
         bertTypeSpinner = (Spinner) getView().findViewById(R.id.bert_type_spinner);
         bertTypeSpinner.setAdapter(bertTypeSpinnerAdapter);
         bertTypeSpinner.setSelection(category.getBertTypeID());
+
+        multipleDevicesIndicator = (TextView) getView().findViewById(R.id.multiple_device_text_view);
+        multipleDevicesIndicator.setText(String.valueOf(category.doesRequireExtensionCord()));
 
         bertCountDisplay = (TextView) getView().findViewById(R.id.bert_count_label);
         bertCountDisplay.setText(String.valueOf(project.getBertCountForCategory(buildingID, categoryID)));
@@ -149,14 +150,14 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
         activity.onResume();
     }
 
-    private void askToDeleteCategory (){
+    private void askToDeleteCategory () {
         int numberOfBuildingsWithCategory = 0;
         for (String buildingID : project.getBuildingNames()) {
             if (project.getBuilding(buildingID).getCategory(categoryID) != null) {
                 numberOfBuildingsWithCategory++;
             }
         }
-        if (numberOfBuildingsWithCategory > 1){
+        if (numberOfBuildingsWithCategory > 1) {
             BertAlert.show(getActivity(),
                     "Delete In All Buildings?",
                     "There are " + (numberOfBuildingsWithCategory - 1) + " other buildings that have this category. Delete in all buildings?",

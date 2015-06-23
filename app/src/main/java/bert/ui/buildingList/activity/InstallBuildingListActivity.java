@@ -1,7 +1,5 @@
 package bert.ui.buildingList.activity;
 
-import android.widget.TextView;
-
 import bert.ui.buildingList.detailFragment.InstallBuildingDetailFragment;
 
 /**
@@ -14,6 +12,6 @@ public class InstallBuildingListActivity extends GeneralBuildingListActivity {
     }
 
     public String getTitlePrefix() {
-        return "In Install Mode";
+        return "Install Mode";
     }
 }

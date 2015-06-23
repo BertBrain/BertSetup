@@ -1,10 +1,5 @@
 package bert.ui.roomList.roomListActivity;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-
-import java.util.List;
-
 import bert.ui.common.BertEditTextAlert;
 import bert.ui.roomList.deviceList.deviceEditor.DeviceListFragment;
 

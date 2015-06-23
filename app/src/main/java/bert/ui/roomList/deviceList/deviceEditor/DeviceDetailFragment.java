@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +24,11 @@ import java.util.List;
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
-import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidBertNameException;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
 import bert.ui.common.ProjectChildEditorFragment;
 import bert.ui.roomList.deviceList.auditWizard.AddCategoryFrameActivity;
-import bert.ui.roomList.roomListActivity.AuditRoomListActivity;
 import bert.ui.roomList.roomListActivity.InstallRoomListActivity;
 
 public class DeviceDetailFragment extends ProjectChildEditorFragment {

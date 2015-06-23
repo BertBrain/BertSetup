@@ -1,10 +1,5 @@
 package bert.ui.projectList.activity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-
-import java.util.Arrays;
 import java.util.List;
 
 import bert.data.ProjectProvider;
@@ -22,12 +17,12 @@ public class AuditProjectListActivity extends GeneralProjectListActivity {
         loadFragment((new AuditDetailFragment()).newInstance(projectID));
      }
 
-     public void openAddProjectView(){
+     public void openAddProjectView() {
         loadFragment(AddProjectFragment.newInstance());
      }
 
      public String getTitlePrefix() {
-         return "In Audit Mode";
+         return "Audit Mode";
      }
 
     public String getNewProjectButtonName() {

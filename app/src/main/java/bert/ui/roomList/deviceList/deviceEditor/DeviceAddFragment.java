@@ -2,7 +2,6 @@ package bert.ui.roomList.deviceList.deviceEditor;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.widget.Spinner;
 import bert.data.ProjectProvider;
 import bert.data.proj.BertUnit;
 import bert.data.proj.Building;
-import bert.data.proj.Project;
 import bert.ui.common.ProjectChildEditorFragment;
 import bert.utility.Cleaner;
 import bert.ui.R;

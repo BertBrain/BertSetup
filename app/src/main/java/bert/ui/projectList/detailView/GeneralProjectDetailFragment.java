@@ -1,6 +1,5 @@
 package bert.ui.projectList.detailView;
 
-
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -14,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import bert.data.ProjectProvider;
-import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.ui.common.ProjectChildEditorFragment;
 import bert.utility.Cleaner;
@@ -42,9 +40,7 @@ abstract public class GeneralProjectDetailFragment extends ProjectChildEditorFra
     private Button openProjectButton;
     private Button deleteButton;
 
-    public GeneralProjectDetailFragment() {
-        // Required empty public constructor
-    }
+    public GeneralProjectDetailFragment() {}
 
     public GeneralProjectDetailFragment newInstance(String projectIndex) {
         Bundle args = new Bundle();

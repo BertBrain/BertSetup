@@ -7,7 +7,6 @@ import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,16 +55,15 @@ public class Project {
         this.auditList = auditList;
 	}
 
-    public boolean isAudit(){
+    public boolean isAudit() {
         return bertList.size() == 0;
     }
 
     public void convertToInstall() {
-       for (RoomAudit roomAudit : auditList) {
-           bertList.addAll(roomAudit.createBerts());
-       }
-        auditList = new ArrayList<>();
-        save();
+        for (RoomAudit roomAudit : auditList) {
+            bertList.addAll(roomAudit.createBerts());
+            auditList.remove(roomAudit);
+        }
     }
 
     public void addAudit(RoomAudit newAudit) throws DuplicateAuditException {
@@ -267,7 +265,7 @@ public class Project {
         return bertsCompletedCount;
     }
 
-    public int getBertCompletedCount(){
+    public int getBertCompletedCount() {
         int bertsCompletedCount = 0;
         for (BertUnit b : getBerts()) {
             bertsCompletedCount += (b.isInstalled() ? 1 : 0);
@@ -360,7 +358,7 @@ public class Project {
     Loading and Saving
      */
 
-    public File getProjectFile() throws IOException{
+    public File getProjectFile() throws IOException {
         return new File(FileProvider.getProjectDirectory(), this.getProjectName() + ".xml");
     }
 

@@ -8,6 +8,10 @@
 
     <color name="ListSelection">#999999</color>
 
+    <color name="SplashScreen_Background">#FFFFFF</color>
+
+    <color name="SplashScreen_Button">#8AC45E</color>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar" />
 
     <style name="Fragment" parent="AppTheme" />

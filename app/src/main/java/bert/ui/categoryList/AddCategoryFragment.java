@@ -3,7 +3,6 @@ package bert.ui.categoryList;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -11,13 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import bert.data.ProjectProvider;
 import bert.data.proj.Building;
 import bert.data.proj.Category;
-import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidCategoryNameException;
 import bert.ui.common.ProjectChildEditorFragment;
 import bert.utility.Cleaner;
@@ -42,6 +41,7 @@ public class AddCategoryFragment extends ProjectChildEditorFragment {
     private Spinner bertTypeSpinner;
     private Button finishButton;
     private Button cancelButton;
+    private CheckBox requiresExtensionCordCheckBox;
 
     private OnFragmentInteractionListener mListener;
 
@@ -74,12 +74,10 @@ public class AddCategoryFragment extends ProjectChildEditorFragment {
         categoryNameEditText = (EditText) getView().findViewById(R.id.categoryNameTextField);
         categoryNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void afterTextChanged(Editable s) {
-            }
+            public void afterTextChanged(Editable s) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -93,6 +91,8 @@ public class AddCategoryFragment extends ProjectChildEditorFragment {
         bertTypeSpinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, Category.bertTypes);
         bertTypeSpinner = (Spinner) getView().findViewById(R.id.bertTypeSpinner);
         bertTypeSpinner.setAdapter(bertTypeSpinnerAdapter);
+
+        requiresExtensionCordCheckBox = (CheckBox) getView().findViewById(R.id.extensionCordCheckBox);
 
         finishButton = (Button) getView().findViewById(R.id.finshCreateCategoryButton);
         finishButton.setEnabled(false);
@@ -128,7 +128,9 @@ public class AddCategoryFragment extends ProjectChildEditorFragment {
             System.out.println("invalid number passed");
             return;
         }
-        Category newCategory = new Category (bertType, estimatedLoad);
+
+        Category newCategory = new Category(bertType, estimatedLoad, requiresExtensionCordCheckBox.isChecked());
+
         try {
             building.addCategory(categoryID, newCategory);
             project.save();

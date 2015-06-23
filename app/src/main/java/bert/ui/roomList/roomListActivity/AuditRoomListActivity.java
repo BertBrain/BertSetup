@@ -1,8 +1,5 @@
 package bert.ui.roomList.roomListActivity;
 
-import java.util.List;
-
-import bert.data.proj.Project;
 import bert.ui.roomList.deviceList.auditWizard.AuditWizardFragment;
 
 /**

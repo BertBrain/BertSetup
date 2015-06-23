@@ -2,16 +2,12 @@ package bert.ui.projectList.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -55,7 +51,6 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
             Log.d("RECIEVING", "text: " + uri.toString());
             Log.d("RECIEVING", "file: " + recievedFile.toString());
 
-
             try {
                 Project newProject = Project.loadProject(recievedFile);
                 if (newProject != null) {
@@ -63,7 +58,6 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
                 } else {
                     BertAlert.show(this, "There was an error importing the project");
                 }
-
             } catch (InvalidProjectNameException e) {
                 BertAlert.show(this, "This project already exists so it could not be imported.");
             }
@@ -92,21 +86,22 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
         projectTableAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 openProjectDetailView(position);
             }
         });
 
         int projectListSize = ProjectProvider.getInstance().getTotalProjects();
-        this.setTitle(getTitlePrefix() + ", " + ((projectListSize == 1) ? ("1 Project") : (projectListSize + " Projects")));
+        this.setTitle(getTitlePrefix() + ": " + ((projectListSize == 1) ? ("1 Project") : (projectListSize + " Projects")));
+
+        //TODO fix
         try {
             String selectedProjectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
             loadProject(selectedProjectID);
-        } catch (NullPointerException e){
-
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            Log.e("ProjectListActivity", "Unable to loadSelected project");
         }
     }
-
 
     public void closeAddProjectView() {
         openNoSelectionView();
@@ -114,9 +109,9 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
 
     abstract public void openAddProjectView();
 
-    public void loadProject(String projectID){
+    public void loadProject(String projectID) {
         int position = projectTableAdapter.titles.indexOf(projectID);
-        if (position > -1){
+        if (position > -1) {
             openProjectDetailView(position);
             projectTableAdapter.selectView(position);
         }
@@ -131,27 +126,5 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
         t.replace(R.id.fragment_frame_layout, frag);
         t.addToBackStack(null);
         t.commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_audit_project_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
