@@ -2,8 +2,19 @@ package bert.utility;
 
 import android.util.Log;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
+import java.awt.font.*;
+
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,133 +29,288 @@ import bert.data.proj.Project;
  * Created by liamcook on 5/19/15.
  */
 public class ROIExporter {
+
+    static final short buildingOutsideBorder = CellStyle.BORDER_THICK;
+    static final short buildingDividerBorder = CellStyle.BORDER_MEDIUM;
+    static final short buildingInnerBorder = CellStyle.BORDER_THIN;
+
+    static final short projectTitleColor = IndexedColors.GREEN.getIndex();
+    static final short buildingTitleColor = IndexedColors.BRIGHT_GREEN.getIndex();
+    static final short categoryRowColor = IndexedColors.LIGHT_GREEN.getIndex();
+    static final short leftBuildingHeaderColor = IndexedColors.SEA_GREEN.getIndex();
+    static final short leftBuildingTotalColor = IndexedColors.SEA_GREEN.getIndex();
+
+    static final int categoryIDColumn = 0;
+    static final int numberOfDevicesColumn = 1;
+    static final int costForBertsColumn = 2;
+    static final int dailyTimeOnColumn = 3;
+    static final int wattageDrawColumn = 4;
+    static final int kWhWithoutBertCoumn = 5;
+    static final int kWhWithBertColumn = 6;
+    static final int costPerYearWithBertColumn = 7;
+    static final int costPerYearWithoutBertColumn = 8;
+    static final int savingsPerYearCoumn = 9;
+    static final int payBackTimeColumn = 10;
+
+    static Sheet sheet;
+
     public static File generateROI(Project project) throws IOException {
 
-        List<List<String>> rows = getSpreadSheetListForProject(project);
-        String ROIString = "";
-        for (List<String> row : rows){
-            for (String str: row){
-                ROIString += "\"";
-                ROIString += str;
-                ROIString += "\"";
-                ROIString += ",";
-            }
-            ROIString += '\n';
-        }
-        Log.d("ROI String", ROIString);
-
-        File exportROI = new File(FileProvider.getExportsDirectory(), project.getProjectName() + "_ROI.csv");
+        File exportROI = new File(FileProvider.getExportsDirectory(), project.getProjectName() + "_ROI.xls");
         exportROI.setWritable(true);
-        FileWriter writer = new FileWriter(exportROI);
 
-        writer.write(ROIString);
-        writer.close();
-        Log.d("ROI_EXPORT", exportROI.toString());
-        return exportROI;
-    }
+        Workbook workbook = new HSSFWorkbook();
+        sheet = workbook.createSheet("Bert ROI Sheet");
+        //sheet.setColumnWidth(index, width);
+        sheet.setDisplayGridlines(false);
 
-    private static List<List<String>> getSpreadSheetListForProject(Project project){
-        ArrayList<Integer> totalRows = new ArrayList();
+        Font projectTitleFont = workbook.createFont();
+        projectTitleFont.setFontName("Arial");
+        projectTitleFont.setBold(true);
+        projectTitleFont.setFontHeightInPoints((short) 14);
 
-        ArrayList<List<String>> rows = new ArrayList<>();
+        Font buildingHeaderFont  = workbook.createFont();
+        buildingHeaderFont.setFontName("Arial");
+        buildingHeaderFont.setBold(true);
+        buildingHeaderFont.setFontHeightInPoints((short) 10);
 
-        rows.add(Arrays.asList("Bert ROI Sheet For: ", project.getProjectName()));
-        rows.add(Arrays.asList(""));
+        Font buildingTitleFont  = workbook.createFont();
+        buildingHeaderFont.setFontName("Arial");
+        buildingHeaderFont.setBold(true);
+        buildingHeaderFont.setFontHeightInPoints((short) 12);
 
-        List<String> deviceTypeCostCells = new ArrayList<>();
+        CellStyle buildingColumnHeaderStyleLeft = workbook.createCellStyle();
+        buildingColumnHeaderStyleLeft.setBorderRight(buildingDividerBorder);
+        buildingColumnHeaderStyleLeft.setBorderBottom(buildingDividerBorder);
+        buildingColumnHeaderStyleLeft.setBorderLeft(buildingOutsideBorder);
+        buildingColumnHeaderStyleLeft.setBorderTop(buildingOutsideBorder);
+        buildingColumnHeaderStyleLeft.setFont(buildingHeaderFont);
+        buildingColumnHeaderStyleLeft.setFillForegroundColor(leftBuildingHeaderColor);
+        buildingColumnHeaderStyleLeft.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+        CellStyle buildingColumnHeaderStyle = workbook.createCellStyle();
+        buildingColumnHeaderStyle.setBorderRight(buildingInnerBorder);
+        buildingColumnHeaderStyle.setBorderBottom(buildingDividerBorder);
+        buildingColumnHeaderStyle.setBorderLeft(buildingInnerBorder);
+        buildingColumnHeaderStyle.setBorderTop(buildingOutsideBorder);
+        buildingColumnHeaderStyle.setFont(buildingHeaderFont);
+
+        CellStyle buildingColumnHeaderStyleRight = workbook.createCellStyle();
+        buildingColumnHeaderStyleRight.setBorderRight(buildingOutsideBorder);
+        buildingColumnHeaderStyleRight.setBorderBottom(buildingDividerBorder);
+        buildingColumnHeaderStyleRight.setBorderLeft(buildingInnerBorder);
+        buildingColumnHeaderStyleRight.setBorderTop(buildingOutsideBorder);
+        buildingColumnHeaderStyleRight.setFont(buildingHeaderFont);
+
+        CellStyle categoryInfoStyleLeft = workbook.createCellStyle();
+        categoryInfoStyleLeft.setBorderRight(buildingDividerBorder);
+        categoryInfoStyleLeft.setBorderBottom(buildingInnerBorder);
+        categoryInfoStyleLeft.setBorderLeft(buildingOutsideBorder);
+        categoryInfoStyleLeft.setBorderTop(buildingInnerBorder);
+        categoryInfoStyleLeft.setFillForegroundColor(categoryRowColor);
+        categoryInfoStyleLeft.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+        CellStyle categoryInfoStyle = workbook.createCellStyle();
+        categoryInfoStyle.setBorderRight(buildingInnerBorder);
+        categoryInfoStyle.setBorderBottom(buildingInnerBorder);
+        categoryInfoStyle.setBorderLeft(buildingInnerBorder);
+        categoryInfoStyle.setBorderTop(buildingInnerBorder);
+        categoryInfoStyle.setFillBackgroundColor(IndexedColors.YELLOW.getIndex());
+        categoryInfoStyle.setFillForegroundColor(categoryRowColor);
+        categoryInfoStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+        CellStyle categoryInfoStyleRight = workbook.createCellStyle();
+        categoryInfoStyleRight.setBorderRight(buildingOutsideBorder);
+        categoryInfoStyleRight.setBorderBottom(buildingInnerBorder);
+        categoryInfoStyleRight.setBorderLeft(buildingInnerBorder);
+        categoryInfoStyleRight.setBorderTop(buildingInnerBorder);
+        categoryInfoStyleRight.setFillForegroundColor(categoryRowColor);
+        categoryInfoStyleRight.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+        CellStyle buildingTotalStyleLeft = workbook.createCellStyle();
+        buildingTotalStyleLeft.setBorderRight(buildingDividerBorder);
+        buildingTotalStyleLeft.setBorderBottom(buildingOutsideBorder);
+        buildingTotalStyleLeft.setBorderLeft(buildingOutsideBorder);
+        buildingTotalStyleLeft.setBorderTop(buildingDividerBorder);
+        buildingTotalStyleLeft.setFillForegroundColor(leftBuildingTotalColor);
+        buildingTotalStyleLeft.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+        CellStyle buildingTotalStyle = workbook.createCellStyle();
+        buildingTotalStyle.setBorderRight(buildingInnerBorder);
+        buildingTotalStyle.setBorderBottom(buildingOutsideBorder);
+        buildingTotalStyle.setBorderLeft(buildingInnerBorder);
+        buildingTotalStyle.setBorderTop(buildingDividerBorder);
+
+        CellStyle buildingTotalStyleRight = workbook.createCellStyle();
+        buildingTotalStyleRight.setBorderRight(buildingOutsideBorder);
+        buildingTotalStyleRight.setBorderBottom(buildingOutsideBorder);
+        buildingTotalStyleRight.setBorderLeft(buildingInnerBorder);
+        buildingTotalStyleRight.setBorderTop(buildingDividerBorder);
+
+        CellStyle buildingTitleStyle = workbook.createCellStyle();
+        buildingTitleStyle.setFont(buildingTitleFont);
+        buildingTitleStyle.setFillForegroundColor(buildingTitleColor);
+        buildingTitleStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+        CellStyle projectTitleStyle = workbook.createCellStyle();
+        projectTitleStyle.setFillForegroundColor(projectTitleColor);
+        projectTitleStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        projectTitleStyle.setFont(projectTitleFont);
+
+        Row titleRow = sheet.createRow(0);
+        titleRow.setHeight((short) 620);
+        titleRow.createCell(0).setCellValue("Bert ROI Audit For: ");
+        titleRow.getCell(0).setCellStyle(projectTitleStyle);
+        titleRow.createCell(1).setCellValue(project.getProjectName());
+        titleRow.getCell(1).setCellStyle(projectTitleStyle);
+
+
+        sheet.createRow(1);
+
+        //create bert device type cost enetering units
         for (int i = 0; i < Category.bertTypes.size(); i++) {
-            List<String> bertTypeInfoRow = new ArrayList<>();
+            Row row = sheet.createRow(i+2);
 
-            bertTypeInfoRow.add("Cost of a " + Category.bertTypes.get(i));
-            bertTypeInfoRow.add(String.valueOf(Category.bertTypeCosts.get(i)));
+            Log.d("ROI", "row: " + row);
 
-            deviceTypeCostCells.add("B" + rows.size());
+            row.createCell(0).setCellValue("Cost of a " + Category.bertTypes.get(i));
+            row.createCell(1).setCellValue(String.valueOf(Category.bertTypeCosts.get(i)));
 
-            rows.add(bertTypeInfoRow);
         }
-        rows.add(Arrays.asList(""));
+        addRowToSheet(sheet); //blank row
+
+        List<Integer> buildingTotalRows = new ArrayList<>();
 
         for (String buildingID : project.getBuildingNames()) {
-            Log.d("ROI_EXPORT", "adding building");
-
             Building building = project.getBuilding(buildingID);
-            if (building.getCategoryCount() != 0){
-                rows.add(Arrays.asList(buildingID));
+            if (building.getCategoryNames().size() != 0 && project.getBertCountForBuilding(buildingID) != 0) {
 
-                rows.add(Arrays.asList("", "Average Electricity Cost ($/kwh): ", "0.1"));
-                rows.add(Arrays.asList("Equipment", "Number Of Devices", "Cost For Berts", "Daily Time On", "Wattage Draw", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "$ Savings/Year", "Payback Time (Years)"));
+                //Building Header -------
+                Row buildingNameRow = addRowToSheet(sheet);
+                buildingNameRow.createCell(0).setCellValue(buildingID);
+                buildingNameRow.getCell(0).setCellStyle(buildingTitleStyle);
 
-                int startPosition = rows.size()+1;
-                int numCategories = 0;
+                Row electricityCostRow = addRowToSheet(sheet);
+                electricityCostRow.createCell(1).setCellValue("Average Electricity Cost ($/kwh): ");
+                electricityCostRow.createCell(2).setCellValue("0.1");
+                String electrictiyCostCell = "C" + (sheet.getLastRowNum()+1);
+
+                Row buidlingsTitlesRow = addRowToSheet(sheet);
+                buidlingsTitlesRow.createCell(categoryIDColumn).setCellValue("Category");
+                buidlingsTitlesRow.createCell(numberOfDevicesColumn).setCellValue("Number Of Devices");
+                buidlingsTitlesRow.createCell(costForBertsColumn).setCellValue("Cost For Berts");
+                buidlingsTitlesRow.createCell(dailyTimeOnColumn).setCellValue("Daily Time On");
+                buidlingsTitlesRow.createCell(wattageDrawColumn).setCellValue("Wattage Draw \n While Off");
+                buidlingsTitlesRow.createCell(kWhWithoutBertCoumn).setCellValue("Yearly kWh \n w/Out Bert");
+                buidlingsTitlesRow.createCell(kWhWithBertColumn).setCellValue("Yearly kWh \n with Bert");
+                buidlingsTitlesRow.createCell(costPerYearWithoutBertColumn).setCellValue("Yearly Cost \n w/Out Bert ($)");
+                buidlingsTitlesRow.createCell(costPerYearWithBertColumn).setCellValue("Yearly Cost\n  With Bert ($)");
+                buidlingsTitlesRow.createCell(savingsPerYearCoumn).setCellValue("Savings Per Year ($)");
+                buidlingsTitlesRow.createCell(payBackTimeColumn).setCellValue("Payback Time (Years)");
+
+                for (Cell cell : buidlingsTitlesRow){
+                    cell.setCellStyle(buildingColumnHeaderStyle);
+                }
+                buidlingsTitlesRow.getCell(categoryIDColumn).setCellStyle( buildingColumnHeaderStyleLeft);
+                buidlingsTitlesRow.getCell(payBackTimeColumn).setCellStyle(buildingColumnHeaderStyleRight);
+
+                int firstCategoryRowIndex = sheet.getLastRowNum()+2;
+
                 for (String categoryID : building.getCategoryNames()) {
-
-                    Log.d("ROI_EXPORT", "adding category");
                     Category category = building.getCategory(categoryID);
-                    if (project.getBertsByCategory(buildingID, categoryID).size() != 0){
 
-                        List<String> info = new ArrayList<>();
+                    if (project.getBertCountForCategory(buildingID, categoryID) != 0) {
 
-                        int rowID = rows.size()+1; //excel rows start at 1
-                        info.add(categoryID);
-                        info.add(String.valueOf(project.getBertsByCategory(buildingID, categoryID).size()));
-                        info.add("=" + "B"+rowID + "*" + deviceTypeCostCells.get(category.getBertTypeID()));
-                        info.add(String.valueOf(building.getTimeOccupied().getHour24()));
-                        int load = category.getEstimatedLoad();
-                        info.add(load > 0 ? String.valueOf(load) : "Undefined Load");
-                        info.add("=365*24*"+ "B"+rowID +"*" + "E"+rowID+ "/1000");
-                        info.add("=365*"+ "D"+rowID + "*" + "B"+rowID + " * " + "E"+rowID + "/1000");
-                        info.add("=" + "F"+rowID + "*" + "C"+ (-2 -numCategories + rowID));
-                        info.add("=" + "G"+rowID + "*" + "C"+ (-2 -numCategories + rowID));
-                        info.add("=" + "H"+rowID + "-" + "I"+rowID);
-                        info.add("=" + "C"+rowID + "/ " + "J"+rowID);
-                        rows.add(info);
-                        numCategories++;
+                        //Category Rows
+                        Row categoryRow = addRowToSheet(sheet);
+                        //categoryRow.setRowStyle(categoryInfoStyle);
+                        categoryRow.createCell(categoryIDColumn).setCellValue(categoryID);
+                        categoryRow.createCell(numberOfDevicesColumn).setCellValue(project.getBertCountForCategory(buildingID, categoryID));
+                        categoryRow.createCell(costForBertsColumn).setCellFormula(cellNameInRow(numberOfDevicesColumn) + "*" + cellName(1, (1 + category.getBertTypeID())));
+                        categoryRow.createCell(dailyTimeOnColumn).setCellValue(building.getTimeOccupied().getHour24());
+                        categoryRow.createCell(wattageDrawColumn).setCellValue(category.getEstimatedLoad());
+                        categoryRow.createCell(kWhWithoutBertCoumn).setCellFormula("(1/1000) *365 * 24 *" + cellNameInRow(numberOfDevicesColumn) + "*" + cellNameInRow(wattageDrawColumn));
+                        categoryRow.createCell(kWhWithBertColumn).setCellFormula("(1/1000) *365 * " + cellNameInRow(dailyTimeOnColumn) + "*" + cellNameInRow(numberOfDevicesColumn) + "*" + cellNameInRow(wattageDrawColumn));
+                        categoryRow.createCell(costPerYearWithoutBertColumn).setCellFormula(cellNameInRow(kWhWithoutBertCoumn) + "*" + electrictiyCostCell);
+                        categoryRow.createCell(costPerYearWithBertColumn).setCellFormula(cellNameInRow(kWhWithBertColumn) + "*" + electrictiyCostCell);
+                        categoryRow.createCell(savingsPerYearCoumn).setCellFormula(cellNameInRow(costPerYearWithoutBertColumn) + "-" + cellNameInRow(costPerYearWithBertColumn));
+                        categoryRow.createCell(payBackTimeColumn).setCellFormula(cellNameInRow(costForBertsColumn) + "/" + cellNameInRow(savingsPerYearCoumn));
+
+                        for (Cell cell : categoryRow){
+                            cell.setCellStyle(categoryInfoStyle);
+                        }
+                        categoryRow.getCell(categoryIDColumn).setCellStyle(categoryInfoStyleLeft);
+                        categoryRow.getCell(payBackTimeColumn).setCellStyle(categoryInfoStyleRight);
                     }
                 }
 
-                int endPosition = rows.size();
+                //Building Totals
+                Log.d("ROI", "startPosition main: " + firstCategoryRowIndex);
+                int lastCategoryRowIndex = sheet.getLastRowNum()+1;
+                Row buildingTotalRow = addRowToSheet(sheet);
+                //buildingTotalRow.setRowStyle(buildingTotalStyle);
+                buildingTotalRow.createCell(categoryIDColumn).setCellValue("Totals:");
 
-                List<String> totals = new ArrayList<>();
-                totals.add("Totals: ");
-                totals.add(sumColumn("B", startPosition, endPosition));
-                totals.add(sumColumn("C", startPosition, endPosition));
-                totals.add("");
-                totals.add("");
-                totals.add(sumColumn("F", startPosition, endPosition));
-                totals.add(sumColumn("G", startPosition, endPosition));
-                totals.add(sumColumn("H", startPosition, endPosition));
-                totals.add(sumColumn("I", startPosition, endPosition));
-                totals.add(sumColumn("J", startPosition, endPosition));
-                totals.add("=" + "C"+(rows.size()+1) + "/ " + "J"+(rows.size()+1));
-                rows.add(totals);
-                rows.add(Arrays.asList(""));
-                totalRows.add(rows.size() - 1);
+                List<Integer> columnsToSum = Arrays.asList(numberOfDevicesColumn, costForBertsColumn, kWhWithoutBertCoumn, kWhWithBertColumn, costPerYearWithBertColumn, costPerYearWithoutBertColumn, savingsPerYearCoumn);
+                for (Integer i : columnsToSum) {
+                    buildingTotalRow.createCell(i).setCellFormula(sumRowRangeInColum(columnNameForIndex(i), firstCategoryRowIndex, lastCategoryRowIndex));
+                }
+                buildingTotalRow.createCell(dailyTimeOnColumn).setCellValue("");
+                buildingTotalRow.createCell(wattageDrawColumn).setCellValue(""); // makes these cell exist so thier style can be set
+                buildingTotalRow.createCell(payBackTimeColumn).setCellFormula(cellNameInRow(costForBertsColumn) + "/" + cellNameInRow(savingsPerYearCoumn));
+                for (Cell cell : buildingTotalRow) {
+                    cell.setCellStyle(buildingTotalStyle);
+                }
+                buildingTotalRow.getCell(categoryIDColumn).setCellStyle(buildingTotalStyleLeft);
+                buildingTotalRow.getCell(payBackTimeColumn).setCellStyle(buildingTotalStyleRight);
+                buildingTotalRows.add(sheet.getLastRowNum()+1);
+                addRowToSheet(sheet);
             }
-
         }
-        rows.add(Arrays.asList(""));
-        rows.add(Arrays.asList("", "Total # Of Devices", "Total Bert Cost", "", "", "Yearly kWh w/Out Bert", "Yearly kWh With Bert", "Cost/Year Without Bert", "Cost/Year With Bert", "$ Savings/Year", "Payback Time (Years)"));
 
-        List<String> projectTotals = new ArrayList<>();
-        projectTotals.add("Project Totals: ");
-        projectTotals.add(sumRowsAndColumn(totalRows, "B"));
-        projectTotals.add(sumRowsAndColumn(totalRows, "C"));
-        projectTotals.add("");
-        projectTotals.add("");
-        projectTotals.add(sumRowsAndColumn(totalRows, "F"));
-        projectTotals.add(sumRowsAndColumn(totalRows, "G"));
-        projectTotals.add(sumRowsAndColumn(totalRows, "H"));
-        projectTotals.add(sumRowsAndColumn(totalRows, "I"));
-        projectTotals.add(sumRowsAndColumn(totalRows, "J"));
-        projectTotals.add("=" + "C"+(rows.size()+1) + "/ " + "J"+(rows.size()+1));
+        //sheet.autoSizeColumn(0);
+        sheet.setColumnWidth(0, 6000);
+        sheet.setColumnWidth(1, 6500);
+        sheet.setColumnWidth(costForBertsColumn, 3000);
 
-        rows.add(projectTotals);
-        return rows;
+        sheet.setColumnWidth(savingsPerYearCoumn, 4250);
+        sheet.setColumnWidth(payBackTimeColumn, 4250);
+
+        FileOutputStream fileOut = new FileOutputStream(exportROI);
+        workbook.write(fileOut);
+        fileOut.close();
+        return exportROI;
     }
 
-    private static String sumColumn(String columnNumber, int startPosition, int endPosition){
-        String equasion = "=SUM(";
+    static private String columnNameForIndex(int i) {
+        List<String> columnNames = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N");
+        String columnName;
+        try {
+            columnName = columnNames.get(i);
+        } catch (IndexOutOfBoundsException e) {
+            columnName = "Column ID out of bounds! (Column ID was : " + i + ")";
+        }
+        return columnName;
+    }
+
+    static private String cellNameInRow(int cell){
+        return cellName(cell, sheet.getLastRowNum()+1);
+    }
+
+    static private String cellName(int column, int row){
+        String columnName = columnNameForIndex(column);
+        columnName += String.valueOf(row);
+        return columnName;
+    }
+
+    static private Row addRowToSheet(Sheet sheet) {
+        return sheet.createRow(sheet.getLastRowNum() + 1);
+    }
+
+    private static String sumRowRangeInColum(String columnNumber, int startPosition, int endPosition){
+        String equasion = "SUM(";
         equasion += columnNumber;
+        Log.d("ROI", "startPosition: " + startPosition);
         equasion += String.valueOf(startPosition);
         equasion += ":";
         equasion += columnNumber;
@@ -153,7 +319,7 @@ public class ROIExporter {
         return equasion;
     }
 
-    private static String sumRowsAndColumn(List<Integer> rows, String column){
+    private static String sumRowsInColumn(List<Integer> rows, String column){
         String totalBerts = "=SUM(";
         for (Integer i : rows) {
             totalBerts += column;
