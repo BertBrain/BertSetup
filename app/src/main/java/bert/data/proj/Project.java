@@ -60,11 +60,10 @@ public class Project {
     }
 
     public void convertToInstall() {
-       for (RoomAudit roomAudit : auditList) {
-           bertList.addAll(roomAudit.createBerts());
-       }
-        auditList = new ArrayList<>();
-        save();
+        for (RoomAudit roomAudit : auditList) {
+            bertList.addAll(roomAudit.createBerts());
+            auditList.remove(roomAudit);
+        }
     }
 
     public void addAudit(RoomAudit newAudit) throws DuplicateAuditException {
@@ -360,7 +359,7 @@ public class Project {
     Loading and Saving
      */
 
-    public File getProjectFile() throws IOException{
+    public File getProjectFile() throws IOException {
         return new File(FileProvider.getProjectDirectory(), this.getProjectName() + ".xml");
     }
 

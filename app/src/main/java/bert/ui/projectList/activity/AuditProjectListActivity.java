@@ -17,7 +17,7 @@ public class AuditProjectListActivity extends GeneralProjectListActivity {
         loadFragment((new AuditDetailFragment()).newInstance(projectID));
      }
 
-     public void openAddProjectView(){
+     public void openAddProjectView() {
         loadFragment(AddProjectFragment.newInstance());
      }
 

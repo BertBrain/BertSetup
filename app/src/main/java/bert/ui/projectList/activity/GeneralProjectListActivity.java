@@ -92,11 +92,14 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
 
         int projectListSize = ProjectProvider.getInstance().getTotalProjects();
         this.setTitle(getTitlePrefix() + ": " + ((projectListSize == 1) ? ("1 Project") : (projectListSize + " Projects")));
+
+        //TODO fix
         try {
             String selectedProjectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
             loadProject(selectedProjectID);
         } catch (NullPointerException e) {
-
+            e.printStackTrace();
+            Log.e("ProjectListActivity", "Unable to loadSelected project");
         }
     }
 

@@ -46,7 +46,7 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
     private Spinner bertTypeSpinner;
     private ArrayAdapter<String> bertTypeSpinnerAdapter;
     private TextView bertCountDisplay;
-    
+
     private TextView multipleDevicesIndicator;
     private Button saveButton;
     private Button deleteButton;
@@ -77,7 +77,7 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
             building = project.getBuilding(buildingID);
             category = building.getCategory(categoryID);
         }
-        activity = (CategoryListActivity)getActivity();
+        activity = (CategoryListActivity) getActivity();
     }
 
     @Override
