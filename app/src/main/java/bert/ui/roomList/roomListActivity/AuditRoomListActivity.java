@@ -5,7 +5,7 @@ import bert.ui.roomList.deviceList.auditWizard.AuditWizardFragment;
 /**
  * Created by liamcook on 6/16/15.
  */
-public class AuditRoomListActivity  extends GeneralRoomListActivity{
+public class AuditRoomListActivity  extends RoomListActivity {
 
     public void loadRoom(String roomID) {
         //TODO: add load method to audit wizard fragment

@@ -21,7 +21,7 @@ import bert.ui.common.SelectableListGVA;
 /**
  * Created by liamcook on 5/29/15.
  */
-abstract public class GeneralBuildingListActivity extends ActionBarActivity {
+abstract public class BuildingListActivity extends ActionBarActivity {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
 

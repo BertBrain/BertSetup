@@ -18,7 +18,7 @@ import bert.ui.R;
  */
 public class SelectableListGVA extends ArrayAdapter<String> {
 
-    private int positionToSelect = -1;
+    private int selectedPosition = -1;
 
     public List<String> titles;
     Activity activity;
@@ -35,7 +35,7 @@ public class SelectableListGVA extends ArrayAdapter<String> {
     }
 
     public void selectView(int position) {
-        if (listCells.size() != 0){
+        if (listCells.size() != 0) {
             View selectedView = listCells.get(position);
             if (lastSelectionView != null) {
                 lastSelectionView.setBackgroundColor(activity.getResources().getColor(R.color.LightGreen));
@@ -43,9 +43,8 @@ public class SelectableListGVA extends ArrayAdapter<String> {
             selectedView.setBackgroundColor(activity.getResources().getColor(R.color.ListSelection));
             lastSelectionView = selectedView;
         } else {
-            positionToSelect = position;
+            selectedPosition = position;
         }
-
     }
 
     public void setOnClickListener() {}
@@ -59,7 +58,7 @@ public class SelectableListGVA extends ArrayAdapter<String> {
         Log.d("SELECTABLE_LIST_GVA", "getting view at position: " + position);
 
         final View listCell = activity.getLayoutInflater().inflate(android.R.layout.simple_list_item_1, parent, false);
-        if (position == positionToSelect) {
+        if (position == selectedPosition) {
             lastSelectionView = listCell;
             listCell.setBackgroundColor(activity.getResources().getColor(R.color.ListSelection));
         }

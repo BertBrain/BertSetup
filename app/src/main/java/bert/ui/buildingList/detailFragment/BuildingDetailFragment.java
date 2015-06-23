@@ -18,7 +18,7 @@ import bert.data.proj.Building;
 import bert.data.proj.exceptions.InvalidBuildingNameException;
 import bert.ui.R;
 import bert.ui.buildingList.TimeRangeDisplay;
-import bert.ui.buildingList.activity.GeneralBuildingListActivity;
+import bert.ui.buildingList.activity.BuildingListActivity;
 import bert.ui.categoryList.CategoryListActivity;
 import bert.ui.common.ProjectChildEditorFragment;
 import bert.ui.common.NoSelectionFragment;
@@ -26,7 +26,7 @@ import bert.ui.common.NoSelectionFragment;
 /**
  * Created by liamcook on 5/29/15.
  */
-abstract public class GeneralBuildingDetailFragment extends ProjectChildEditorFragment {
+abstract public class BuildingDetailFragment extends ProjectChildEditorFragment {
 
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
     private static final String ARG_BUILDING_ID = "BUILDING_ID";
@@ -46,7 +46,7 @@ abstract public class GeneralBuildingDetailFragment extends ProjectChildEditorFr
 
     abstract public void openRoomListActivity();
 
-    public GeneralBuildingDetailFragment newInstance(String projectID, String buildingID) {
+    public BuildingDetailFragment newInstance(String projectID, String buildingID) {
         Bundle args = new Bundle();
         args.putString(ARG_PROJECT_ID, projectID);
         args.putString(ARG_BUILDING_ID, buildingID);
@@ -54,7 +54,7 @@ abstract public class GeneralBuildingDetailFragment extends ProjectChildEditorFr
         return this;
     }
 
-    public GeneralBuildingDetailFragment() {}
+    public BuildingDetailFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ abstract public class GeneralBuildingDetailFragment extends ProjectChildEditorFr
                     project.renameBuilding(buildingID, newBuildingID);
                     buildingID = newBuildingID;
                     project.save();
-                    ((GeneralBuildingListActivity) getActivity()).loadListView();
+                    ((BuildingListActivity) getActivity()).loadListView();
                 } catch (InvalidBuildingNameException e) {
                     nameEditText.setText(buildingID);
                 }
@@ -115,8 +115,8 @@ abstract public class GeneralBuildingDetailFragment extends ProjectChildEditorFr
                     public void onClick(DialogInterface dialogInterface, int i) {
                         project.deleteBuilding(buildingID);
                         project.save();
-                        ((GeneralBuildingListActivity)getActivity()).loadFragment(NoSelectionFragment.newInstance("Create a building or select a builing from the list of buildings on the left"));
-                        ((GeneralBuildingListActivity)getActivity()).loadListView();
+                        ((BuildingListActivity)getActivity()).loadFragment(NoSelectionFragment.newInstance("Create a building or select a builing from the list of buildings on the left"));
+                        ((BuildingListActivity)getActivity()).loadListView();
                     }
                 });
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -18,16 +18,16 @@ import bert.ui.common.ProjectChildEditorFragment;
 import bert.utility.Cleaner;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
-import bert.ui.projectList.activity.GeneralProjectListActivity;
+import bert.ui.projectList.activity.ProjectListActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-abstract public class GeneralProjectDetailFragment extends ProjectChildEditorFragment {
+abstract public class ProjectDetailFragment extends ProjectChildEditorFragment {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
 
-    private GeneralProjectListActivity activity;
+    private ProjectListActivity activity;
 
     protected String projectID;
 
@@ -40,11 +40,11 @@ abstract public class GeneralProjectDetailFragment extends ProjectChildEditorFra
     private Button openProjectButton;
     private Button deleteButton;
 
-    public GeneralProjectDetailFragment() {}
+    public ProjectDetailFragment() {}
 
-    public GeneralProjectDetailFragment newInstance(String projectIndex) {
+    public ProjectDetailFragment newInstance(String projectID) {
         Bundle args = new Bundle();
-        args.putString(ARG_PROJECT_ID, projectIndex);
+        args.putString(ARG_PROJECT_ID, projectID);
         this.setArguments(args);
         return this;
     }
@@ -52,7 +52,7 @@ abstract public class GeneralProjectDetailFragment extends ProjectChildEditorFra
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (GeneralProjectListActivity) this.getActivity();
+        activity = (ProjectListActivity) this.getActivity();
         if (getArguments() != null) {
             this.projectID = getArguments().getString(ARG_PROJECT_ID);
             project = ProjectProvider.getInstance().getProject(projectID);

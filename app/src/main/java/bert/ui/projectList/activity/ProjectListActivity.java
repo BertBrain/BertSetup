@@ -24,10 +24,12 @@ import bert.ui.common.SelectableListGVA;
 
 /**
  * Created by liamcook on 5/29/15.
+ * @author lcook
+ * @author afiolmahon
  */
-abstract public class GeneralProjectListActivity extends ActionBarActivity {
+abstract public class ProjectListActivity extends ActionBarActivity {
 
-    public static final String ARG_PROJECT_ID = "Project ID";
+    public static final String ARG_PROJECT_ID = "Project ID"; //Used to open the activity into a project detail view if desired
 
     private ListView projectListView;
     private Button addProjectButton;
@@ -35,7 +37,8 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
 
     abstract public List<String> getProjects();
 
-    abstract public void openProjectDetailView(int projectIndex);
+    abstract public void openProjectDetailView(String projectID);
+
     abstract public String getTitlePrefix();
 
     abstract public String getNewProjectButtonName();
@@ -59,8 +62,18 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
                     BertAlert.show(this, "There was an error importing the project");
                 }
             } catch (InvalidProjectNameException e) {
-                BertAlert.show(this, "This project already exists so it could not be imported.");
+                BertAlert.show(this, "The project name is invalid or is a duplicate so it cannot be imported.");
             }
+        }
+
+        //TODO verify
+        if (getIntent().hasExtra(ARG_PROJECT_ID)) {
+            String projectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
+            Log.d("ProjectListActivity", "ProjectID (" + projectID + ") in intent, loading project detail view.");
+            loadProject(projectID);
+        } else {
+            Log.d("ProjectListActivity", "No projectID passed in intent, loading no selection view");
+            openNoSelectionView();
         }
 
         setContentView(R.layout.activity_master_detail);
@@ -73,7 +86,6 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
                 projectTableAdapter.clear();
             }
         });
-        openNoSelectionView();
     }
 
     @Override
@@ -86,33 +98,20 @@ abstract public class GeneralProjectListActivity extends ActionBarActivity {
         projectTableAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openProjectDetailView(position);
+                openProjectDetailView(projectTableAdapter.getItem(position));
             }
         });
 
-        int projectListSize = ProjectProvider.getInstance().getTotalProjects();
-        this.setTitle(getTitlePrefix() + ": " + ((projectListSize == 1) ? ("1 Project") : (projectListSize + " Projects")));
-
-        //TODO fix
-        try {
-            String selectedProjectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
-            loadProject(selectedProjectID);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            Log.e("ProjectListActivity", "Unable to loadSelected project");
-        }
-    }
-
-    public void closeAddProjectView() {
-        openNoSelectionView();
+        this.setTitle(getTitlePrefix() + ": " + ((getProjects().size() == 1) ? ("1 Project") : (getProjects().size() + " Projects")));
     }
 
     abstract public void openAddProjectView();
 
+    //FIXME this is the problem
     public void loadProject(String projectID) {
-        int position = projectTableAdapter.titles.indexOf(projectID);
-        if (position > -1) {
-            openProjectDetailView(position);
+        if (projectTableAdapter.titles.contains(projectID)) {
+            int position = projectTableAdapter.titles.indexOf(projectID);
+            openProjectDetailView(projectTableAdapter.getItem(position));
             projectTableAdapter.selectView(position);
         }
     }

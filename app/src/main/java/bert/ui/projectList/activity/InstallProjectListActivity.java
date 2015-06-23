@@ -5,26 +5,26 @@ import java.util.List;
 import bert.data.ProjectProvider;
 import bert.ui.projectList.detailView.InstallDetailFragment;
 
-public class InstallProjectListActivity extends GeneralProjectListActivity {
+public class InstallProjectListActivity extends ProjectListActivity {
 
+    @Override
     public List<String> getProjects() {
-        return ProjectProvider.getInstance().getProjectNameList(ProjectProvider.INSTALL);
+        return ProjectProvider.getInstance().getInstallProjectNameList();
     }
 
-    public void openProjectDetailView(int projectIndex) {
-        String projectID = ProjectProvider.getInstance().getProject(ProjectProvider.INSTALL, projectIndex).getProjectName();
+    @Override
+    public void openProjectDetailView(String projectID) {
         loadFragment((new InstallDetailFragment()).newInstance(projectID));
     }
 
+    @Override
     public void openAddProjectView() {
         //TODO: create fragment that displays list of audits to turn to installs
     }
 
-    public String getTitlePrefix() {
-        return "Install Mode";
-    }
+    @Override
+    public String getTitlePrefix() { return "Install Mode"; }
 
-    public String getNewProjectButtonName() {
-        return "CREATE NEW INSTALL";
-    }
+    @Override
+    public String getNewProjectButtonName() { return "CREATE NEW INSTALL"; }
 }

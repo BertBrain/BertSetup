@@ -25,7 +25,7 @@ import bert.data.ProjectProvider;
 import bert.ui.common.BertAlert;
 import bert.ui.R;
 import bert.ui.projectList.activity.AuditProjectListActivity;
-import bert.ui.projectList.activity.GeneralProjectListActivity;
+import bert.ui.projectList.activity.ProjectListActivity;
 
 public class AddProjectFragment extends Fragment {
 
@@ -94,9 +94,9 @@ public class AddProjectFragment extends Fragment {
 
             AuditProjectListActivity activity = (AuditProjectListActivity) getActivity();
             Intent intent = new Intent(activity, AuditProjectListActivity.class);
-            intent.putExtra(GeneralProjectListActivity.ARG_PROJECT_ID, newProjectName);
+            intent.putExtra(ProjectListActivity.ARG_PROJECT_ID, newProjectName);
 
-            activity.closeAddProjectView();
+            activity.openNoSelectionView();
             startActivity(intent);
         } catch (InvalidProjectNameException e) {
             BertAlert.show(getActivity(), "Invalid project name");

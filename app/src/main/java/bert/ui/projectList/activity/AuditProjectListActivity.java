@@ -6,27 +6,27 @@ import bert.data.ProjectProvider;
 import bert.ui.projectList.AddProjectFragment;
 import bert.ui.projectList.detailView.AuditDetailFragment;
 
-public class AuditProjectListActivity extends GeneralProjectListActivity {
+public class AuditProjectListActivity extends ProjectListActivity {
 
-     public List<String> getProjects() {
-         return ProjectProvider.getInstance().getProjectNameList(ProjectProvider.AUDIT);
-     }
-
-     public void openProjectDetailView(int projectIndex) {
-         String projectID = ProjectProvider.getInstance().getProject(ProjectProvider.AUDIT, projectIndex).getProjectName();
-        loadFragment((new AuditDetailFragment()).newInstance(projectID));
-     }
-
-     public void openAddProjectView() {
-        loadFragment(AddProjectFragment.newInstance());
-     }
-
-     public String getTitlePrefix() {
-         return "Audit Mode";
-     }
-
-    public String getNewProjectButtonName() {
-        return "CREATE NEW AUDIT";
+    @Override
+    public List<String> getProjects() {
+        return ProjectProvider.getInstance().getAuditProjectNameList();
     }
+
+    @Override
+    public void openProjectDetailView(String projectID) {
+        loadFragment((new AuditDetailFragment()).newInstance(projectID));
+    }
+
+    @Override
+    public void openAddProjectView() {
+        loadFragment(AddProjectFragment.newInstance());
+    }
+
+    @Override
+    public String getTitlePrefix() { return "Audit Mode"; }
+
+    @Override
+    public String getNewProjectButtonName() { return "CREATE NEW AUDIT"; }
 
 }

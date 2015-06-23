@@ -13,7 +13,7 @@ import bert.ui.roomList.roomListActivity.AuditRoomListActivity;
 /**
  * Created by liamcook on 5/29/15.
  */
-public class AuditBuildingDetailFragment extends GeneralBuildingDetailFragment{
+public class AuditBuildingDetailFragment extends BuildingDetailFragment {
 
     private TextView roomCountTextView;
     private TextView bertCountTextView;

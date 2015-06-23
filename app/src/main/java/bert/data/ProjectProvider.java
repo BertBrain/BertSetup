@@ -19,16 +19,13 @@ import bert.utility.Cleaner;
  */
 public class ProjectProvider {
 
-    static final public boolean AUDIT = true;
-    static final public boolean INSTALL = false;
-
     private static ProjectProvider INSTANCE;
     private HashMap<String, Project> projectMap;
     private ProjectProvider() {}
 
     public static ProjectProvider getInstance() {
         if (INSTANCE == null) {
-            log("Creating instance...");
+            log("Initializing...");
             INSTANCE = new ProjectProvider();
             INSTANCE.loadProjectListFromFile();
         }
@@ -39,36 +36,50 @@ public class ProjectProvider {
         return projectMap.get(projectID);
     }
 
-
-    public Project getProject(boolean isRequestForAudit, int projectID) {
-        return getProjects(isRequestForAudit).get(projectID);
-    }
-
-    //TODO: find more descriptive and clear name
-    public List<Project> getProjects(boolean isRequestForAudit) {
+    public List<Project> getAuditProjects() {
         List<Project> auditProjects = new ArrayList<>();
         for (Project project : projectMap.values()) {
-            if (project.isAudit() == isRequestForAudit) {
+            if (project.isAudit() == true) {
                 auditProjects.add(project);
             }
         }
-        return  auditProjects;
+        return auditProjects;
     }
 
-    public HashMap<String, Project> getProjects() {
-        return projectMap;
+    public List<Project> getInstallProjects() {
+        List<Project> installProjects = new ArrayList<>();
+        for (Project project : projectMap.values()) {
+            if (project.isAudit() == false) {
+                installProjects.add(project);
+            }
+        }
+        return installProjects;
     }
 
-
-    public int getTotalProjects() {
+    public int getProjectCount() {
         return projectMap.size();
     }
 
-    //TODO: find more descriptive and clear name
-    public List<String> getProjectNameList(boolean isRequestForAudit) {
+    public List<String> getProjectNameList() {
         List<String> nameList = new ArrayList<>();
-        for (Project p : getProjects(isRequestForAudit)) {
-            nameList.add(p.getProjectName());
+        for (Project project : projectMap.values()) {
+            nameList.add(project.getProjectName());
+        }
+        return nameList;
+    }
+
+    public List<String> getAuditProjectNameList() {
+        List<String> nameList = new ArrayList<>();
+        for (Project project : getAuditProjects()) {
+            nameList.add(project.getProjectName());
+        }
+        return nameList;
+    }
+
+    public List<String> getInstallProjectNameList() {
+        List<String> nameList = new ArrayList<>();
+        for (Project project : getInstallProjects()) {
+            nameList.add(project.getProjectName());
         }
         return nameList;
     }
@@ -106,7 +117,7 @@ public class ProjectProvider {
         Project project = projectMap.get(projectID);
         try {
             File projectFile = project.getProjectFile();
-            Log.d("DELTING", "path: " + projectFile.getAbsolutePath());
+            Log.d("DELETING", "path: " + projectFile.getAbsolutePath());
             File deleteFile = new File(projectFile.getAbsolutePath().replace(" ", "%20"));
             deleteFile.delete();
             projectMap.remove(projectID);
@@ -123,9 +134,7 @@ public class ProjectProvider {
 
     public boolean projectNameCheck(String name) {
         boolean canCreate = Cleaner.isValid(name);
-        List<String> allProjectNames =  getProjectNameList(AUDIT);
-        getProjectNameList(AUDIT).addAll(getProjectNameList(INSTALL));
-        for (String s : allProjectNames) {
+        for (String s : getProjectNameList()) {
             if (s.equals(name)) {
                 canCreate = false;
             }

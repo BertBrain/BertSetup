@@ -22,7 +22,7 @@ import bert.data.proj.Category;
 import bert.data.proj.CategoryPresets;
 import bert.data.proj.Time;
 import bert.data.proj.exceptions.InvalidBuildingNameException;
-import bert.ui.buildingList.activity.GeneralBuildingListActivity;
+import bert.ui.buildingList.activity.BuildingListActivity;
 import bert.ui.common.ProjectChildEditorFragment;
 import bert.utility.Cleaner;
 import bert.ui.common.BertAlert;
@@ -32,7 +32,7 @@ public class AddBuildingFragment extends ProjectChildEditorFragment {
 
     private static final String ARG_PROJECT_ID = "PROJECT_ID";
 
-    private GeneralBuildingListActivity activity;
+    private BuildingListActivity activity;
     private String projectID;
 
     private Time defaultStartTime = new Time(8, 0);
@@ -64,7 +64,7 @@ public class AddBuildingFragment extends ProjectChildEditorFragment {
             projectID = getArguments().getString(ARG_PROJECT_ID);
             project = ProjectProvider.getInstance().getProject(projectID);
         }
-        activity = (GeneralBuildingListActivity) getActivity();
+        activity = (BuildingListActivity) getActivity();
     }
 
     @Override
@@ -120,7 +120,7 @@ public class AddBuildingFragment extends ProjectChildEditorFragment {
             HashMap<String, Category> presetCategories = CategoryPresets.getPresets().get(buildingTypeSpinner.getSelectedItem());
             project.addBuilding(buildingID, new Building(startTime, endTime, presetCategories));
             project.save();
-            GeneralBuildingListActivity activity = (GeneralBuildingListActivity) getActivity();
+            BuildingListActivity activity = (BuildingListActivity) getActivity();
             activity.loadListView();
             activity.generalOpenBuildingDetailView(buildingID);
         } catch(InvalidBuildingNameException e) {

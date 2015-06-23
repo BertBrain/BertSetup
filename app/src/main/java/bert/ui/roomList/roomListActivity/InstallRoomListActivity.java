@@ -6,7 +6,7 @@ import bert.ui.roomList.deviceList.deviceEditor.DeviceListFragment;
 /**
  * Created by liamcook on 6/16/15.
  */
-public class InstallRoomListActivity extends GeneralRoomListActivity implements BertEditTextAlert.AlertResponder {
+public class InstallRoomListActivity extends RoomListActivity implements BertEditTextAlert.AlertResponder {
 
     public void loadRoom(String roomID) {
         deviceListFragment = DeviceListFragment.newInstance(projectID, buildingID, roomID);

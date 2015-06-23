@@ -13,19 +13,18 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
 
-import bert.ui.projectList.activity.GeneralProjectListActivity;
 import bert.ui.projectList.activity.InstallProjectListActivity;
 import bert.utility.ROIExporter;
 import bert.ui.R;
 import bert.ui.buildingList.activity.AuditBuildingListActivty;
-import bert.ui.buildingList.activity.GeneralBuildingListActivity;
+import bert.ui.buildingList.activity.BuildingListActivity;
 import bert.ui.common.BertAlert;
 import bert.ui.projectList.ExportChooser;
 
 /**
  * Created by liamcook on 5/29/15.
  */
-public class AuditDetailFragment extends GeneralProjectDetailFragment {
+public class AuditDetailFragment extends ProjectDetailFragment {
 
     private TextView roomCountTextView;
     private TextView bertCountTextView;
@@ -39,7 +38,6 @@ public class AuditDetailFragment extends GeneralProjectDetailFragment {
     public void onResume() {
         super.onResume();
         Log.d("AUDIT_FRAGMENT", "starting on resume");
-
 
         roomCountTextView = (TextView) getView().findViewById(R.id.roomCounterLabel);
         roomCountTextView.setText(Integer.toString(project.getRoomCount()));
@@ -72,12 +70,16 @@ public class AuditDetailFragment extends GeneralProjectDetailFragment {
                                 project.convertToInstall();
                                 project.save();
                                 Intent intent = new Intent(getActivity(), InstallProjectListActivity.class);
-                                intent.putExtra(GeneralProjectListActivity.ARG_PROJECT_ID, projectID);
+                                intent.putExtra(ARG_PROJECT_ID, projectID);
                                 startActivity(intent);
                             }
-                        }, "Cancel", null);
+                        },
+                        "Cancel",
+                        null
+                );
             }
         });
+        beginInstallButton.setEnabled(project.getBertCount() > 0);
 
         sendToBertButton = (Button) getView().findViewById(R.id.send_to_bert_button);
         sendToBertButton.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +98,7 @@ public class AuditDetailFragment extends GeneralProjectDetailFragment {
     @Override
     public void openBuildingList() {
         Intent i = new Intent(this.getActivity(), AuditBuildingListActivty.class);
-        i.putExtra(GeneralBuildingListActivity.ARG_PROJECT_ID, projectID);
+        i.putExtra(BuildingListActivity.ARG_PROJECT_ID, projectID);
         startActivity(i);
     }
 

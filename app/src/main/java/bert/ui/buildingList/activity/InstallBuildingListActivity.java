@@ -5,13 +5,13 @@ import bert.ui.buildingList.detailFragment.InstallBuildingDetailFragment;
 /**
  * Created by liamcook on 5/29/15.
  */
-public class InstallBuildingListActivity extends GeneralBuildingListActivity {
+public class InstallBuildingListActivity extends BuildingListActivity {
 
+    @Override
     protected void openBuildingDetailView(String buildingID){
         loadFragment((new InstallBuildingDetailFragment()).newInstance(projectID, buildingID));
     }
 
-    public String getTitlePrefix() {
-        return "Install Mode";
-    }
+    @Override
+    public String getTitlePrefix() { return "Install Mode"; }
 }

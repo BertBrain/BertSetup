@@ -19,7 +19,7 @@ import bert.ui.R;
 import bert.ui.common.SelectableListGVA;
 import bert.ui.roomList.deviceList.deviceEditor.DeviceListFragment;
 
-public abstract class GeneralRoomListActivity extends ActionBarActivity {
+public abstract class RoomListActivity extends ActionBarActivity {
 
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
     public static final String ARG_BUILDING_ID = "BUILDING_ID";

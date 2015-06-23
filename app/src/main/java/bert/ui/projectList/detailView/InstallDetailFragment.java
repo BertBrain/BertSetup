@@ -14,14 +14,14 @@ import java.io.IOException;
 
 import bert.utility.CSVExporter;
 import bert.ui.R;
-import bert.ui.buildingList.activity.GeneralBuildingListActivity;
+import bert.ui.buildingList.activity.BuildingListActivity;
 import bert.ui.buildingList.activity.InstallBuildingListActivity;
 import bert.ui.projectList.ExportChooser;
 
 /**
  * Created by liamcook on 5/29/15.
  */
-public class InstallDetailFragment extends GeneralProjectDetailFragment {
+public class InstallDetailFragment extends ProjectDetailFragment {
 
     private TextView roomCountTextView;
     private TextView bertCountTextView;
@@ -69,7 +69,7 @@ public class InstallDetailFragment extends GeneralProjectDetailFragment {
     public void openBuildingList() {
         //TODO: make different for audit vs install
         Intent i = new Intent(this.getActivity(), InstallBuildingListActivity.class);
-        i.putExtra(GeneralBuildingListActivity.ARG_PROJECT_ID, projectID);
+        i.putExtra(BuildingListActivity.ARG_PROJECT_ID, projectID);
         startActivity(i);
     }
 
