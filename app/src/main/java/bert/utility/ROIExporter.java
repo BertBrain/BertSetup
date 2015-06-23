@@ -5,6 +5,7 @@ import android.util.Log;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -60,6 +61,8 @@ public class ROIExporter {
         exportROI.setWritable(true);
 
         Workbook workbook = new HSSFWorkbook();
+        DataFormat format = workbook.createDataFormat();
+
         sheet = workbook.createSheet("Bert ROI Sheet");
         //sheet.setColumnWidth(index, width);
         sheet.setDisplayGridlines(false);
@@ -75,9 +78,9 @@ public class ROIExporter {
         buildingHeaderFont.setFontHeightInPoints((short) 10);
 
         Font buildingTitleFont  = workbook.createFont();
-        buildingHeaderFont.setFontName("Arial");
-        buildingHeaderFont.setBold(true);
-        buildingHeaderFont.setFontHeightInPoints((short) 12);
+        buildingTitleFont.setFontName("Arial");
+        buildingTitleFont.setBold(true);
+        buildingTitleFont.setFontHeightInPoints((short) 12);
 
         CellStyle buildingColumnHeaderStyleLeft = workbook.createCellStyle();
         buildingColumnHeaderStyleLeft.setBorderRight(buildingDividerBorder);
@@ -118,6 +121,7 @@ public class ROIExporter {
         categoryInfoStyle.setFillBackgroundColor(IndexedColors.YELLOW.getIndex());
         categoryInfoStyle.setFillForegroundColor(categoryRowColor);
         categoryInfoStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        categoryInfoStyle.setDataFormat(format.getFormat("0.#"));
 
         CellStyle categoryInfoStyleRight = workbook.createCellStyle();
         categoryInfoStyleRight.setBorderRight(buildingOutsideBorder);
@@ -126,6 +130,7 @@ public class ROIExporter {
         categoryInfoStyleRight.setBorderTop(buildingInnerBorder);
         categoryInfoStyleRight.setFillForegroundColor(categoryRowColor);
         categoryInfoStyleRight.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        categoryInfoStyle.setDataFormat(format.getFormat("0.#"));
 
         CellStyle buildingTotalStyleLeft = workbook.createCellStyle();
         buildingTotalStyleLeft.setBorderRight(buildingDividerBorder);
@@ -268,6 +273,45 @@ public class ROIExporter {
             }
         }
 
+        addRowToSheet(sheet);
+
+        Row projectTotalHeadersRow = addRowToSheet(sheet);
+        projectTotalHeadersRow.createCell(0).setCellValue("");
+        projectTotalHeadersRow.createCell(numberOfDevicesColumn).setCellValue("Number Of Devices");
+        projectTotalHeadersRow.createCell(costForBertsColumn).setCellValue("Cost of Berts");
+        projectTotalHeadersRow.createCell(dailyTimeOnColumn).setCellValue("");
+        projectTotalHeadersRow.createCell(wattageDrawColumn).setCellValue("");
+        projectTotalHeadersRow.createCell(kWhWithoutBertCoumn).setCellValue("Yearly kWh \n w/Out Bert");
+        projectTotalHeadersRow.createCell(kWhWithBertColumn).setCellValue("Yearly kWh \n with Bert");
+        projectTotalHeadersRow.createCell(costPerYearWithoutBertColumn).setCellValue("Yearly Cost \n w/Out Bert ($)");
+        projectTotalHeadersRow.createCell(costPerYearWithBertColumn).setCellValue("Yearly Cost \n with Bert");
+        projectTotalHeadersRow.createCell(savingsPerYearCoumn).setCellValue("Savings Per Year ($)");
+        projectTotalHeadersRow.createCell(payBackTimeColumn).setCellValue("Payback Time (Years)");
+        for (Cell cell : projectTotalHeadersRow) {
+            cell.setCellStyle(buildingColumnHeaderStyle);
+        }
+        projectTotalHeadersRow.getCell(0).setCellStyle(buildingColumnHeaderStyleLeft);
+        projectTotalHeadersRow.getCell(payBackTimeColumn).setCellStyle(buildingColumnHeaderStyleRight);
+
+        Row projectTotalsRow = addRowToSheet(sheet);
+        projectTotalsRow.createCell(0).setCellValue("Project Totals:");
+        projectTotalsRow.createCell(numberOfDevicesColumn).setCellFormula(sumRowsInColumn(buildingTotalRows, columnNameForIndex(numberOfDevicesColumn)));
+        projectTotalsRow.createCell(costForBertsColumn).setCellFormula(sumRowsInColumn(buildingTotalRows, columnNameForIndex(costForBertsColumn)));
+        projectTotalsRow.createCell(dailyTimeOnColumn).setCellValue("");
+        projectTotalsRow.createCell(wattageDrawColumn).setCellValue("");
+        projectTotalsRow.createCell(kWhWithoutBertCoumn).setCellFormula(sumRowsInColumn(buildingTotalRows, columnNameForIndex(kWhWithoutBertCoumn)));
+        projectTotalsRow.createCell(kWhWithBertColumn).setCellFormula(sumRowsInColumn(buildingTotalRows, columnNameForIndex(kWhWithBertColumn)));
+        projectTotalsRow.createCell(costPerYearWithoutBertColumn).setCellFormula(sumRowsInColumn(buildingTotalRows, columnNameForIndex(costPerYearWithoutBertColumn)));
+        projectTotalsRow.createCell(costPerYearWithBertColumn).setCellFormula(sumRowsInColumn(buildingTotalRows, columnNameForIndex(costPerYearWithBertColumn)));
+        projectTotalsRow.createCell(savingsPerYearCoumn).setCellFormula(sumRowsInColumn(buildingTotalRows, columnNameForIndex(savingsPerYearCoumn)));
+        projectTotalsRow.createCell(payBackTimeColumn).setCellFormula(cellNameInRow(costForBertsColumn) + "/" + cellNameInRow(savingsPerYearCoumn));
+        for (Cell cell : projectTotalsRow) {
+            cell.setCellStyle(buildingTotalStyle);
+        }
+        projectTotalsRow.getCell(0).setCellStyle(buildingTotalStyleLeft);
+        projectTotalsRow.getCell(payBackTimeColumn).setCellStyle(buildingTotalStyleRight);
+
+
         //sheet.autoSizeColumn(0);
         sheet.setColumnWidth(0, 6000);
         sheet.setColumnWidth(1, 6500);
@@ -320,7 +364,7 @@ public class ROIExporter {
     }
 
     private static String sumRowsInColumn(List<Integer> rows, String column){
-        String totalBerts = "=SUM(";
+        String totalBerts = "SUM(";
         for (Integer i : rows) {
             totalBerts += column;
             totalBerts += i;
