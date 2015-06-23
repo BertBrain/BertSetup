@@ -22,4 +22,10 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.1.1'
+    compile files('src/main/java/apache/poi-3.12/poi-3.12-20150511.jar')
+    compile files('src/main/java/apache/poi-3.12/poi-ooxml-3.12-20150511.jar')
+    compile files('src/main/java/apache/poi-3.12/poi-ooxml-schemas-3.12-20150511.jar')
+    compile files('src/main/java/apache/poi-3.12/poi-scratchpad-3.12-20150511.jar')
+    compile files('src/main/java/apache/poi-3.12/poi-excelant-3.12-20150511.jar')
+    compile files('src/main/java/apache/poi-3.12/poi-examples-3.12-20150511.jar')
 }

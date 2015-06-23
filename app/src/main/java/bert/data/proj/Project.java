@@ -146,7 +146,6 @@ public class Project {
         return bertCount;
     }
 
-
     public List<BertUnit> getBertsByRoom(String buildingID, String roomID) {
         List<BertUnit> returnList = new ArrayList<>();
         for (BertUnit b : getBerts()) {
