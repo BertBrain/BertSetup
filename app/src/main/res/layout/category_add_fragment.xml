@@ -1,104 +1,103 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="bert.ui.categoryList.AddCategoryFragment">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
 
         <GridLayout
-            android:paddingRight="@dimen/right_margin"
+            android:id="@+id/createCategoryGridView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:rowCount="4"
+            android:layout_alignParentTop="true"
             android:columnCount="2"
             android:orientation="vertical"
-            android:id="@+id/createCategoryGridView">
+            android:paddingRight="@dimen/right_margin"
+            android:rowCount="4">
 
             <TextView
-                style="@style/DefaultText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Category Name: "
                 android:id="@+id/textView12"
-                android:layout_row="0"
-                android:layout_column="0" />
-
-            <EditText
-                style="@style/EditText"
-                android:id="@+id/categoryNameTextField"
-                android:layout_row="0"
-                android:layout_column="1" />
-
-            <TextView
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Standby Power Draw (W) :"
-                android:id="@+id/textView13"
-                android:layout_row="1"
                 android:layout_column="0"
-                android:numeric="integer" />
+                android:layout_row="0"
+                android:text="Category Name: " />
 
             <EditText
+                android:id="@+id/categoryNameTextField"
                 style="@style/EditText"
-                android:inputType="phone"
-                android:id="@+id/standyPowerTextField"
-                android:layout_row="1"
                 android:layout_column="1"
-                android:numeric="integer" />
+                android:layout_row="0" />
 
             <TextView
+                android:id="@+id/textView13"
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bert Type:"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:numeric="integer"
+                android:text="Standby Power Draw (W) :" />
+
+            <EditText
+                android:id="@+id/standyPowerTextField"
+                style="@style/EditText"
+                android:layout_column="1"
+                android:layout_row="1"
+                android:inputType="phone"
+                android:numeric="integer" />
+
+            <TextView
                 android:id="@+id/textView14"
+                style="@style/DefaultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
                 android:layout_row="2"
-                android:layout_column="0" />
+                android:text="Bert Type:" />
 
             <Spinner
+                android:id="@+id/bertTypeSpinner"
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/bertTypeSpinner"
-                android:layout_row="2"
                 android:layout_column="1"
+                android:layout_row="2"
                 android:spinnerMode="dropdown" />
 
             <TextView
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Requires Extension Cord:"
+                android:layout_column="0"
                 android:layout_row="3"
-                android:layout_column="0" />
+                android:text="Requires Extension Cord:" />
 
             <CheckBox
+                android:id="@+id/extensionCordCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/extensionCordCheckBox"
-                android:layout_row="3"
-                android:layout_column="1" />
+                android:layout_column="1"
+                android:layout_row="3" />
 
         </GridLayout>
 
         <Button
+            android:id="@+id/finshCreateCategoryButton"
             style="@style/SaveButton"
-            android:text="Create Category"
-            android:id="@+id/finshCreateCategoryButton" />
+            android:text="Create Category" />
 
         <Button
+            android:id="@+id/cancelAddCategoryButton"
             style="@style/DeleteButton"
-            android:text="Discard"
-            android:id="@+id/cancelAddCategoryButton" />
+            android:text="Discard" />
 
     </LinearLayout>
 

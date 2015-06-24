@@ -31,7 +31,7 @@ public class AuditBuildingDetailFragment extends BuildingDetailFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.building_detail_audit_fragment, container, false);
+        return inflater.inflate(R.layout.building_detail_fragment_audit, container, false);
     }
 
     @Override

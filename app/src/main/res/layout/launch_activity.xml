@@ -1,55 +1,56 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/SplashScreen_Background"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="bert.ui.launchScreen.LaunchActivity"
-    android:background="@color/SplashScreen_Background">
+    tools:context="bert.ui.launchScreen.LaunchActivity">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <ImageButton
-            android:scaleX=".75"
-            android:scaleY=".75"
-            android:background="@color/SplashScreen_Background"
+            android:id="@+id/startScreenImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/startScreenImage"
-            android:src="@drawable/startup_splash"
-            android:focusable="false"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal|top" />
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal|top"
+            android:background="@color/SplashScreen_Background"
+            android:focusable="false"
+            android:scaleX=".75"
+            android:scaleY=".75"
+            android:src="@drawable/startup_splash" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <Button
-                android:layout_height="60dp"
-                android:text="Audit Project"
                 android:id="@+id/startAuditButton"
                 android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/SplashScreen_Button"
-                android:layout_marginRight="10dp" />
+                android:text="Audit Project" />
 
             <Button
-                android:layout_height="60dp"
-                android:text="Install / Manage Project"
                 android:id="@+id/startInstallButton"
                 android:layout_width="300dp"
-                android:background="@color/SplashScreen_Button" />
+                android:layout_height="60dp"
+                android:background="@color/SplashScreen_Button"
+                android:text="Install / Manage Project" />
+
         </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

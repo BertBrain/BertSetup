@@ -37,23 +37,23 @@ import bert.utility.DateUtil;
  * @author afiol-mahon
  */
 public class Project {
-	private String projectName;
-	private String contactName;
-	private String contactNumber;
-	private String creationDate;
-	private String modifiedDate;
-	private List<BertUnit> bertList;
+    private String projectName;
+    private String contactName;
+    private String contactNumber;
+    private String creationDate;
+    private String modifiedDate;
+    private List<BertUnit> bertList;
     private HashMap<String, Building> buildingList;
     private List<RoomAudit> auditList;
 
-	public Project(String name, List<BertUnit> bertList, HashMap<String, Building> buildingList, List<RoomAudit> auditList) throws InvalidProjectNameException {
-		setProjectName(name);
-	    this.creationDate = DateUtil.getDate();
-	    this.modifiedDate = creationDate;
+    public Project(String name, List<BertUnit> bertList, HashMap<String, Building> buildingList, List<RoomAudit> auditList) throws InvalidProjectNameException {
+        setProjectName(name);
+        this.creationDate = DateUtil.getDate();
+        this.modifiedDate = creationDate;
         this.bertList = bertList;
         this.buildingList = buildingList;
         this.auditList = auditList;
-	}
+    }
 
     public boolean isAudit() {
         return bertList.size() == 0;
@@ -78,7 +78,6 @@ public class Project {
         if (!doesExist) {
             auditList.add(newAudit);
         }
-
     }
 
     public List<RoomAudit> getAuditList() {
@@ -87,7 +86,7 @@ public class Project {
 
     public RoomAudit getAuditForRoomAndBuilding(String roomID, String buildingID) {
         for (RoomAudit audit : getAuditList()) {
-            if (audit.getBuildingID().equals(buildingID) &&  audit.getRoomID().equals(roomID)) {
+            if (audit.getBuildingID().equals(buildingID) && audit.getRoomID().equals(roomID)) {
                 return audit;
             }
         }
@@ -133,14 +132,14 @@ public class Project {
 
     public int getBertCountForBuilding(String buildingID) {
         int bertCount = 0;
-        for (RoomAudit audit : auditList){
-            if (audit.getBuildingID().equals(buildingID)){
+        for (RoomAudit audit : auditList) {
+            if (audit.getBuildingID().equals(buildingID)) {
                 bertCount += audit.totalBerts();
             }
         }
         for (BertUnit b : bertList) {
-            if (b.getBuildingID().equals(buildingID)){
-                bertCount ++;
+            if (b.getBuildingID().equals(buildingID)) {
+                bertCount++;
             }
         }
         return bertCount;
@@ -181,7 +180,7 @@ public class Project {
         for (RoomAudit roomAudit : auditList) {
             Log.d("CATEGORY BERT COUNTER", "building ID: " + buildingID);
 
-            if (roomAudit.getBuildingID().equals(buildingID)){
+            if (roomAudit.getBuildingID().equals(buildingID)) {
                 Log.d("CATEGORY BERT COUNTER", "bertCount addition: " + roomAudit.getCategoryCount(categoryID));
                 bertCount += roomAudit.getCategoryCount(categoryID);
             }
@@ -194,14 +193,14 @@ public class Project {
         return bertCount;
     }
 
-    public void removeCategoryInBuilding(String buildingID, String categoryID){
+    public void removeCategoryInBuilding(String buildingID, String categoryID) {
         for (RoomAudit roomAudit : auditList) {
-            if (roomAudit.getBuildingID().equals(buildingID)){
+            if (roomAudit.getBuildingID().equals(buildingID)) {
                 roomAudit.removeCategory(categoryID);
             }
         }
         for (BertUnit b : bertList) {
-            if (b.getBuildingID().equals(buildingID) && b.getCategoryID().equals(categoryID)){
+            if (b.getBuildingID().equals(buildingID) && b.getCategoryID().equals(categoryID)) {
                 deleteBert(b);
             }
         }
@@ -235,7 +234,7 @@ public class Project {
         int roomsCompleted = 0;
         for (String roomID : getRoomNamesInBuilding(buildingID)) {
             boolean isAllInstalledSoFar = true;
-            for (BertUnit b : getBertsByRoom(buildingID, roomID)){
+            for (BertUnit b : getBertsByRoom(buildingID, roomID)) {
                 if (!b.isInstalled()) {
                     isAllInstalledSoFar = false;
                 }
@@ -277,9 +276,9 @@ public class Project {
         return buildingList.size();
     }
 
-	public void addBert(BertUnit bert) {
-		bertList.add(bert);
-	}
+    public void addBert(BertUnit bert) {
+        bertList.add(bert);
+    }
 
     public void deleteBert(BertUnit bert) {
         bertList.remove(bert);
@@ -288,6 +287,7 @@ public class Project {
     public Building getBuilding(String buildingID) {
         return buildingList.get(buildingID);
     }
+
     public void addBuilding(String buildingID, Building building) throws InvalidBuildingNameException {
         if (!buildingList.containsKey(buildingID) && Cleaner.isValid(buildingID)) {
             buildingList.put(buildingID, building);
@@ -295,11 +295,13 @@ public class Project {
             throw new InvalidBuildingNameException();
         }
     }
+
     public void renameBuilding(String buildingID, String newBuildingID) throws InvalidBuildingNameException {
         Building building = buildingList.get(buildingID);
         addBuilding(newBuildingID, building);
         buildingList.remove(buildingID);
     }
+
     public void deleteBuilding(String buildingID) {
         for (BertUnit b : getBertsByBuilding(buildingID)) {
             deleteBert(b);
@@ -311,6 +313,7 @@ public class Project {
     public String getProjectName() {
         return projectName;
     }
+
     public void setProjectName(String newProjectName) throws InvalidProjectNameException {
         Cleaner.cleanProjectName(newProjectName);
         if (ProjectProvider.getInstance().projectNameCheck(newProjectName)) {
@@ -323,6 +326,7 @@ public class Project {
     public String getContactName() {
         return contactName;
     }
+
     public void setContactName(String newContactName) {
         Cleaner.clean(newContactName);
         if (Cleaner.isValid(newContactName)) {
@@ -333,6 +337,7 @@ public class Project {
     public String getContactNumber() {
         return contactNumber;
     }
+
     public void setContactNumber(String newContactNumber) {
         Cleaner.clean(newContactNumber);
         if (Cleaner.isValid(newContactNumber)) {
@@ -343,6 +348,7 @@ public class Project {
     public String getCreationDate() {
         return this.creationDate;
     }
+
     public void setCreationDate(String newCreationDate) {
         this.creationDate = newCreationDate;
     }
@@ -350,6 +356,7 @@ public class Project {
     public String getModifiedDate() {
         return this.modifiedDate;
     }
+
     public void setModifiedDate(String newModifiedDate) {
         this.modifiedDate = newModifiedDate;
     }
@@ -373,11 +380,11 @@ public class Project {
             Result result = new StreamResult(outputFile);
             Source source = new DOMSource(d);
             transformer.transform(source, result);
-        } catch(TransformerConfigurationException e) {
+        } catch (TransformerConfigurationException e) {
             e.printStackTrace();
-        } catch(TransformerException e) {
+        } catch (TransformerException e) {
             e.printStackTrace();
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();//TODO should these be handled better?
         }
     }

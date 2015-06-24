@@ -5,10 +5,10 @@
 
 
 
-    <include layout="@layout/fragment_building_detail_metadate" />
+    <include layout="@layout/building_detail_component_info_pane" />
 
-    <include layout="@layout/fragment_bert_counters_install" />
+    <include layout="@layout/bert_counters_fragment_install" />
 
-    <include layout="@layout/building_fragment_detail_buttons" />
+    <include layout="@layout/building_detail_component_buttons" />
 
 </LinearLayout>
