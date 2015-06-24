@@ -66,11 +66,15 @@ abstract public class ProjectListActivity extends ActionBarActivity {
             }
         }
 
-        //TODO verify
+        //TODO verify loading activity directly into a project
         if (getIntent().hasExtra(ARG_PROJECT_ID)) {
             String projectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
             Log.d("ProjectListActivity", "ProjectID (" + projectID + ") in intent, loading project detail view.");
-            loadProject(projectID);
+            if (projectListAdapter.titles.contains(projectID)) {
+                int position = projectListAdapter.titles.indexOf(projectID);
+                openProjectDetailView(projectID);
+                projectListAdapter.selectView(position);
+            }
         } else {
             Log.d("ProjectListActivity", "No projectID passed in intent, loading no selection view");
             openNoSelectionView();
@@ -106,15 +110,6 @@ abstract public class ProjectListActivity extends ActionBarActivity {
     }
 
     abstract public void openAddProjectView();
-
-    //FIXME this is the problem
-    public void loadProject(String projectID) {
-        if (projectListAdapter.titles.contains(projectID)) {
-            int position = projectListAdapter.titles.indexOf(projectID);
-            openProjectDetailView(projectListAdapter.getItem(position));
-            projectListAdapter.selectView(position);
-        }
-    }
 
     public void openNoSelectionView() {
         loadFragment(NoSelectionFragment.newInstance("Create a project or select a project from the list of projects on the left"));
