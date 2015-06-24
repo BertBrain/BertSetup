@@ -18,6 +18,7 @@ import bert.ui.R;
  * @author lcook
  */
 public class SelectableListGVA extends ArrayAdapter<String> {
+//FIXME the first time the list is interacted with the selection will not update but will behave like normal after 1 click
 
     private int selectedPosition = -1;
 
@@ -34,8 +35,8 @@ public class SelectableListGVA extends ArrayAdapter<String> {
 
     public SelectableListGVA(Activity activity, List<String> titles) {
         super(activity, android.R.layout.simple_list_item_1, titles);
-        this.titles = titles;
         this.activity = activity;
+        this.titles = titles;
         this.cellColor = activity.getResources().getColor(R.color.LightGreen);
         this.selectedCellColor = activity.getResources().getColor(R.color.ListSelection);
     }
@@ -79,16 +80,16 @@ public class SelectableListGVA extends ArrayAdapter<String> {
             @Override
             public void onClick(View view) {
                 selectView(view);
+                selectedPosition = position;
                 listener.onItemClick(null, view, position, 0);
             }
         });
-
         return listCell;
     }
 
     public void clearSelection() {
-        if (lastSelectionView != null) {
-            lastSelectionView.setBackgroundColor(cellColor);
+        for (View view : listCells){
+            view.setBackgroundColor(activity.getResources().getColor(R.color.LightGreen));
         }
     }
 }

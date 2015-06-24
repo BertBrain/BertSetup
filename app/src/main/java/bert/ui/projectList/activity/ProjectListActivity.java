@@ -58,6 +58,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
                 Project newProject = Project.loadProject(recievedFile);
                 if (newProject != null) {
                     ProjectProvider.getInstance().addProject(newProject);
+                    getIntent().putExtra(ARG_PROJECT_ID, newProject.getProjectName());
                 } else {
                     BertAlert.show(this, "There was an error importing the project");
                 }
@@ -90,11 +91,22 @@ abstract public class ProjectListActivity extends ActionBarActivity {
                 projectListAdapter.clearSelection();
             }
         });
+
+        loadListView();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        if (projectListAdapter == null) {
+            loadListView();
+        }
+
+        this.setTitle(getTitlePrefix() + ": " + ((getProjects().size() == 1) ? ("1 Project") : (getProjects().size() + " Projects")));
+    }
+
+    public void loadListView() {
         projectListAdapter = new SelectableListGVA(this, getProjects());
 
         projectListView = (ListView) findViewById(R.id.item_list_view);
@@ -105,8 +117,6 @@ abstract public class ProjectListActivity extends ActionBarActivity {
                 openProjectDetailView(projectListAdapter.getItem(position));
             }
         });
-
-        this.setTitle(getTitlePrefix() + ": " + ((getProjects().size() == 1) ? ("1 Project") : (getProjects().size() + " Projects")));
     }
 
     abstract public void openAddProjectView();

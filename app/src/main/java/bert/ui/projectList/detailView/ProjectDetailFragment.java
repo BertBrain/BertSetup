@@ -138,6 +138,7 @@ abstract public class ProjectDetailFragment extends ProjectChildEditorFragment {
                         ProjectProvider.getInstance().deleteProject(projectID);
                         activity.onResume();
                         activity.openNoSelectionView();
+                        activity.loadListView();
                     }
                 }, "Cancel", null);
             }
