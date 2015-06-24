@@ -135,10 +135,15 @@ abstract public class ProjectDetailFragment extends ProjectChildEditorFragment {
                 BertAlert.show(getActivity(), "Warning: This cannot be undone", "Delete anyway", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        ProjectProvider.getInstance().deleteProject(projectID);
-                        activity.onResume();
-                        activity.openNoSelectionView();
-                        activity.loadListView();
+                        if ( ProjectProvider.getInstance().deleteProject(projectID)){
+                            activity.onResume();
+                            activity.openNoSelectionView();
+                            activity.loadListView();
+                        } else {
+                            BertAlert.show(getActivity(), "Unable to delete project");
+                        }
+
+
                     }
                 }, "Cancel", null);
             }

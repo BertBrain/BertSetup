@@ -86,7 +86,7 @@ public class AuditDetailFragment extends ProjectDetailFragment {
             @Override
             public void onClick(View view) {
                 try {
-                    ExportChooser.exportFile(getActivity(), "bert@bertbrain.com", projectID, project.getProjectFile());
+                    ExportChooser.exportFile(getActivity(), "bert@bertbrain.com", projectID, project.getProjectFileNoSpaces());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

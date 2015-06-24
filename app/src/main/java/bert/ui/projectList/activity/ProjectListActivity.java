@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 import bert.data.ProjectProvider;
@@ -50,20 +52,27 @@ abstract public class ProjectListActivity extends ActionBarActivity {
         if (getIntent().getType() != null && getIntent().getType().equals("text/xml")) {
             Log.d("RECIEVING", "recieved XML");
             Uri uri = getIntent().getData();
-            File recievedFile = new File(uri.getPath());
             Log.d("RECIEVING", "text: " + uri.toString());
-            Log.d("RECIEVING", "file: " + recievedFile.toString());
 
             try {
-                Project newProject = Project.loadProject(recievedFile);
+                InputStream stream = getContentResolver().openInputStream(uri);
+                Project newProject = Project.loadProject(stream);
                 if (newProject != null) {
                     ProjectProvider.getInstance().addProject(newProject);
                     getIntent().putExtra(ARG_PROJECT_ID, newProject.getProjectName());
+                    if (newProject.isAudit()){
+                        getIntent().setClass(this, AuditProjectListActivity.class);
+                    } else {
+                        getIntent().setClass(this, InstallProjectListActivity.class);
+                    }
+
                 } else {
                     BertAlert.show(this, "There was an error importing the project");
                 }
             } catch (InvalidProjectNameException e) {
                 BertAlert.show(this, "The project name is invalid or is a duplicate so it cannot be imported.");
+            } catch (FileNotFoundException e){
+                BertAlert.show(this, "Error: file not fount");
             }
         }
 

@@ -11,6 +11,7 @@ import java.util.List;
 
 import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidProjectNameException;
+import bert.ui.common.BertAlert;
 import bert.utility.Cleaner;
 
 /**
@@ -113,17 +114,28 @@ public class ProjectProvider {
         }
     }
 
-    public void deleteProject(String projectID) {
+    public boolean deleteProject(String projectID) {
         Project project = projectMap.get(projectID);
         try {
-            File projectFile = project.getProjectFile();
-            Log.d("DELETING", "path: " + projectFile.getAbsolutePath());
-            File deleteFile = new File(projectFile.getAbsolutePath().replace(" ", "%20"));
-            deleteFile.delete();
-            projectMap.remove(projectID);
+            Log.d("DELETING", "path: " + project.getProjectFileNoSpaces().getAbsolutePath());
+
+            File deleteFile = project.getProjectFileNoSpaces();
+            if (deleteFile.exists()){
+                if (deleteFile.delete()) {
+                    projectMap.remove(projectID);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+
         } catch (IOException e){
             e.printStackTrace();
+            return false;
         }
+
     }
 
     public void addProject(Project project) {

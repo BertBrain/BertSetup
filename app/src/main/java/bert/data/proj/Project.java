@@ -7,6 +7,7 @@ import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -369,6 +370,10 @@ public class Project {
         return new File(FileProvider.getProjectDirectory(), this.getProjectName() + ".xml");
     }
 
+    public File getProjectFileNoSpaces() throws IOException{
+        return new File(getProjectFile().getAbsolutePath().replace(" ", "%20"));
+    }
+
     public void save() {
         Log.d("ProjectSaver", "Saving Project: " + getProjectName() + " to XML file");
         Document d = ProjectSerializer.exportToXML(this);
@@ -387,6 +392,25 @@ public class Project {
         } catch (IOException e) {
             e.printStackTrace();//TODO should these be handled better?
         }
+    }
+
+    public static Project loadProject(InputStream stream) throws InvalidProjectNameException {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document d = builder.parse(stream);
+            return ProjectSerializer.getProjectFromDocument(d);
+        } catch (ParserConfigurationException e){
+            e.printStackTrace();
+            return null;
+        } catch ( IOException e){
+            e.printStackTrace();
+            return null;
+        } catch (SAXException e){
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     public static Project loadProject(File file) throws InvalidProjectNameException {
