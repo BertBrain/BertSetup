@@ -66,16 +66,6 @@ abstract public class ProjectListActivity extends ActionBarActivity {
             }
         }
 
-        //TODO verify
-        if (getIntent().hasExtra(ARG_PROJECT_ID)) {
-            String projectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
-            Log.d("ProjectListActivity", "ProjectID (" + projectID + ") in intent, loading project detail view.");
-            loadProject(projectID);
-        } else {
-            Log.d("ProjectListActivity", "No projectID passed in intent, loading no selection view");
-            openNoSelectionView();
-        }
-
         setContentView(R.layout.common_activity_master_detail);
         addProjectButton = (Button) findViewById(R.id.create_list_item_button);
         addProjectButton.setText(getNewProjectButtonName());
@@ -86,6 +76,18 @@ abstract public class ProjectListActivity extends ActionBarActivity {
                 projectListAdapter.clearSelection();
             }
         });
+
+        onResume();
+
+        //TODO verify
+        if (getIntent().hasExtra(ARG_PROJECT_ID)) {
+            String projectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
+            Log.d("ProjectListActivity", "ProjectID (" + projectID + ") in intent, loading project detail view.");
+            loadProject(projectID);
+        } else {
+            Log.d("ProjectListActivity", "No projectID passed in intent, loading no selection view");
+            openNoSelectionView();
+        }
     }
 
     @Override
@@ -107,8 +109,8 @@ abstract public class ProjectListActivity extends ActionBarActivity {
 
     abstract public void openAddProjectView();
 
-    //FIXME this is the problem
     public void loadProject(String projectID) {
+
         if (projectListAdapter.titles.contains(projectID)) {
             int position = projectListAdapter.titles.indexOf(projectID);
             openProjectDetailView(projectListAdapter.getItem(position));
