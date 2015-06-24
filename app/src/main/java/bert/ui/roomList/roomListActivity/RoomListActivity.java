@@ -64,7 +64,7 @@ public abstract class RoomListActivity extends ActionBarActivity {
             public void onClick(View v) {
                 addRoom();
                 if (roomListAdapter != null){
-                    roomListAdapter.clear();
+                    roomListAdapter.clearSelection();
                 }
             }
         });

@@ -122,7 +122,7 @@ public class AddBuildingFragment extends ProjectChildEditorFragment {
             project.save();
             BuildingListActivity activity = (BuildingListActivity) getActivity();
             activity.loadListView();
-            activity.generalOpenBuildingDetailView(buildingID);
+            activity.openBuildingDetailView(buildingID);
         } catch(InvalidBuildingNameException e) {
             BertAlert.show(getActivity(), "This Building Already Exists");
         }

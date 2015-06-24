@@ -1,7 +1,6 @@
 package bert.ui.common;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,16 +14,22 @@ import bert.ui.R;
 
 /**
  * Created by liamcook on 6/17/15.
+ * @author afiolmahon
+ * @author lcook
  */
 public class SelectableListGVA extends ArrayAdapter<String> {
+//FIXME the first time the list is interacted with the selection will not update but will behave like normal after 1 click
 
     private int selectedPosition = -1;
 
     public List<String> titles;
-    Activity activity;
+    private Activity activity;
 
-    View lastSelectionView;
-    ArrayList<View> listCells = new ArrayList<>();
+    private View lastSelectionView;
+    private ArrayList<View> listCells = new ArrayList<>();
+
+    private int cellColor;
+    private int selectedCellColor;
 
     AdapterView.OnItemClickListener listener;
 
@@ -32,19 +37,23 @@ public class SelectableListGVA extends ArrayAdapter<String> {
         super(activity, android.R.layout.simple_list_item_1, titles);
         this.activity = activity;
         this.titles = titles;
+        this.cellColor = activity.getResources().getColor(R.color.LightGreen);
+        this.selectedCellColor = activity.getResources().getColor(R.color.ListSelection);
     }
 
     public void selectView(int position) {
         if (listCells.size() != 0) {
-            View selectedView = listCells.get(position);
-            if (lastSelectionView != null) {
-                lastSelectionView.setBackgroundColor(activity.getResources().getColor(R.color.LightGreen));
-            }
-            selectedView.setBackgroundColor(activity.getResources().getColor(R.color.ListSelection));
-            lastSelectionView = selectedView;
+            View v = listCells.get(position);
+            selectView(v);
         } else {
             selectedPosition = position;
         }
+    }
+
+    public void selectView(View selectedView) {
+        clearSelection();
+        selectedView.setBackgroundColor(selectedCellColor);
+        lastSelectionView = selectedView;
     }
 
     public void setOnClickListener() {}
@@ -55,38 +64,32 @@ public class SelectableListGVA extends ArrayAdapter<String> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Log.d("SELECTABLE_LIST_GVA", "getting view at position: " + position);
 
         final View listCell = activity.getLayoutInflater().inflate(android.R.layout.simple_list_item_1, parent, false);
+
         if (position == selectedPosition) {
-            lastSelectionView = listCell;
-            listCell.setBackgroundColor(activity.getResources().getColor(R.color.ListSelection));
+            selectView(listCell);
         }
-        Log.d("SELECTABLE_LIST_GVA", "listCell: " + listCell);
+
         listCells.add(position, listCell);
-        Log.d("SELECTABLE_LIST_GVA", "list cells: " + listCells);
+
         TextView textView = (TextView) listCell.findViewById(android.R.id.text1);
         textView.setText(titles.get(position));
 
         listCell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("SELECTABLE_LIST_GVA", "item selected");
-                if (lastSelectionView != null) {
-                    lastSelectionView.setBackgroundColor(activity.getResources().getColor(R.color.LightGreen));
-                }
-                view.setBackgroundColor(activity.getResources().getColor(R.color.ListSelection));
-                lastSelectionView = view;
+                selectView(view);
+                selectedPosition = position;
                 listener.onItemClick(null, view, position, 0);
             }
         });
-
         return listCell;
     }
 
-    public void clear() {
-        if (lastSelectionView != null) {
-            lastSelectionView.setBackgroundColor(activity.getResources().getColor(R.color.LightGreen));
+    public void clearSelection() {
+        for (View view : listCells){
+            view.setBackgroundColor(activity.getResources().getColor(R.color.LightGreen));
         }
     }
 }

@@ -33,7 +33,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
 
     private ListView projectListView;
     private Button addProjectButton;
-    private SelectableListGVA projectTableAdapter;
+    private SelectableListGVA projectListAdapter;
 
     abstract public List<String> getProjects();
 
@@ -58,6 +58,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
                 Project newProject = Project.loadProject(recievedFile);
                 if (newProject != null) {
                     ProjectProvider.getInstance().addProject(newProject);
+                    getIntent().putExtra(ARG_PROJECT_ID, newProject.getProjectName());
                 } else {
                     BertAlert.show(this, "There was an error importing the project");
                 }
@@ -66,11 +67,15 @@ abstract public class ProjectListActivity extends ActionBarActivity {
             }
         }
 
-        //TODO verify
+        //TODO verify loading activity directly into a project
         if (getIntent().hasExtra(ARG_PROJECT_ID)) {
             String projectID = getIntent().getExtras().getString(ARG_PROJECT_ID);
             Log.d("ProjectListActivity", "ProjectID (" + projectID + ") in intent, loading project detail view.");
-            loadProject(projectID);
+            if (projectListAdapter.titles.contains(projectID)) {
+                int position = projectListAdapter.titles.indexOf(projectID);
+                openProjectDetailView(projectID);
+                projectListAdapter.selectView(position);
+            }
         } else {
             Log.d("ProjectListActivity", "No projectID passed in intent, loading no selection view");
             openNoSelectionView();
@@ -83,38 +88,38 @@ abstract public class ProjectListActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 openAddProjectView();
-                projectTableAdapter.clear();
+                projectListAdapter.clearSelection();
             }
         });
+
+        loadListView();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        projectTableAdapter = new SelectableListGVA(this, getProjects());
 
-        projectListView = (ListView) findViewById(R.id.item_list_view);
-        projectListView.setAdapter(projectTableAdapter);
-        projectTableAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openProjectDetailView(projectTableAdapter.getItem(position));
-            }
-        });
+        if (projectListAdapter == null) {
+            loadListView();
+        }
 
         this.setTitle(getTitlePrefix() + ": " + ((getProjects().size() == 1) ? ("1 Project") : (getProjects().size() + " Projects")));
     }
 
-    abstract public void openAddProjectView();
+    public void loadListView() {
+        projectListAdapter = new SelectableListGVA(this, getProjects());
 
-    //FIXME this is the problem
-    public void loadProject(String projectID) {
-        if (projectTableAdapter.titles.contains(projectID)) {
-            int position = projectTableAdapter.titles.indexOf(projectID);
-            openProjectDetailView(projectTableAdapter.getItem(position));
-            projectTableAdapter.selectView(position);
-        }
+        projectListView = (ListView) findViewById(R.id.item_list_view);
+        projectListView.setAdapter(projectListAdapter);
+        projectListAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openProjectDetailView(projectListAdapter.getItem(position));
+            }
+        });
     }
+
+    abstract public void openAddProjectView();
 
     public void openNoSelectionView() {
         loadFragment(NoSelectionFragment.newInstance("Create a project or select a project from the list of projects on the left"));

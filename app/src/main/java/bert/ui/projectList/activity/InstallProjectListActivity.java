@@ -34,7 +34,6 @@ public class InstallProjectListActivity extends ProjectListActivity {
                 "Cancel",
                 null
         );
-        //TODO: create fragment that displays list of audits to turn to installs
     }
 
     @Override
