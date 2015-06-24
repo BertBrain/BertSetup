@@ -8,7 +8,7 @@ import bert.ui.buildingList.detailFragment.InstallBuildingDetailFragment;
 public class InstallBuildingListActivity extends BuildingListActivity {
 
     @Override
-    protected void openBuildingDetailView(String buildingID){
+    public void openBuildingDetailView(String buildingID){
         loadFragment((new InstallBuildingDetailFragment()).newInstance(projectID, buildingID));
     }
 

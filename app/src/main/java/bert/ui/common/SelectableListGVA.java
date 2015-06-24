@@ -15,6 +15,8 @@ import bert.ui.R;
 
 /**
  * Created by liamcook on 6/17/15.
+ * @author afiolmahon
+ * @author lcook
  */
 public class SelectableListGVA extends ArrayAdapter<String> {
 
@@ -26,28 +28,37 @@ public class SelectableListGVA extends ArrayAdapter<String> {
     private View lastSelectionView;
     private ArrayList<View> listCells = new ArrayList<>();
 
+    private int cellColor;
+    private int selectedCellColor;
+
     AdapterView.OnItemClickListener listener;
 
     public SelectableListGVA(Activity activity, List<String> titles) {
 
         super(activity, android.R.layout.simple_list_item_1, titles);
 
-        Log.d("selectingview", "Creating new GVA");
         this.activity = activity;
         this.titles = titles;
+        this.activity = activity;
+        this.cellColor = activity.getResources().getColor(R.color.LightGreen);
+        this.selectedCellColor = activity.getResources().getColor(R.color.ListSelection);
     }
 
     public void selectView(int position) {
         Log.d("selectingview", "position: " + position);
         Log.d("selectingview", "number of list cells: " + listCells.size());
         if (listCells.size() != 0) {
-            View selectedView = listCells.get(position);
-            clearSelection();
-            selectedView.setBackgroundColor(activity.getResources().getColor(R.color.ListSelection));
-            lastSelectionView = selectedView;
+            View v = listCells.get(position);
+            selectView(v);
         } else {
             selectedPosition = position;
         }
+    }
+
+    public void selectView(View selectedView) {
+        clearSelection();
+        selectedView.setBackgroundColor(selectedCellColor);
+        lastSelectionView = selectedView;
     }
 
     public void setOnClickListener() {}
@@ -58,14 +69,12 @@ public class SelectableListGVA extends ArrayAdapter<String> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Log.d("SELECTABLE_LIST_GVA", "getting view at position: " + position);
 
         final View listCell = activity.getLayoutInflater().inflate(android.R.layout.simple_list_item_1, parent, false);
 
         Log.d("selectingview", "selectedposition: " + selectedPosition + "position: " + position);
         if (position == selectedPosition) {
-            lastSelectionView = listCell;
-            listCell.setBackgroundColor(activity.getResources().getColor(R.color.ListSelection));
+            listCell.setBackgroundColor(selectedCellColor);
         }
 
         listCells.add(position, listCell);
@@ -76,10 +85,7 @@ public class SelectableListGVA extends ArrayAdapter<String> {
             @Override
             public void onClick(View view) {
 
-                Log.d("SELECTABLE_LIST_GVA", "item selected");
-                clearSelection();
-                view.setBackgroundColor(activity.getResources().getColor(R.color.ListSelection));
-                lastSelectionView = view;
+                selectView(view);
                 listener.onItemClick(null, view, position, 0);
                 selectedPosition = position;
             }
