@@ -58,6 +58,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
                 Project newProject = Project.loadProject(recievedFile);
                 if (newProject != null) {
                     ProjectProvider.getInstance().addProject(newProject);
+                    getIntent().putExtra(ARG_PROJECT_ID, newProject.getProjectName());
                 } else {
                     BertAlert.show(this, "There was an error importing the project");
                 }
@@ -77,7 +78,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
             }
         });
 
-        onResume();
+        loadListView();
 
         //TODO verify
         if (getIntent().hasExtra(ARG_PROJECT_ID)) {
@@ -93,6 +94,15 @@ abstract public class ProjectListActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
+
+        if (projectListAdapter == null) {
+            loadListView();
+        }
+
+        this.setTitle(getTitlePrefix() + ": " + ((getProjects().size() == 1) ? ("1 Project") : (getProjects().size() + " Projects")));
+    }
+
+    public void loadListView() {
         projectListAdapter = new SelectableListGVA(this, getProjects());
 
         projectListView = (ListView) findViewById(R.id.item_list_view);
@@ -103,8 +113,6 @@ abstract public class ProjectListActivity extends ActionBarActivity {
                 openProjectDetailView(projectListAdapter.getItem(position));
             }
         });
-
-        this.setTitle(getTitlePrefix() + ": " + ((getProjects().size() == 1) ? ("1 Project") : (getProjects().size() + " Projects")));
     }
 
     abstract public void openAddProjectView();
@@ -112,6 +120,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
     public void loadProject(String projectID) {
 
         if (projectListAdapter.titles.contains(projectID)) {
+            Log.d("selectingview", "title found");
             int position = projectListAdapter.titles.indexOf(projectID);
             openProjectDetailView(projectListAdapter.getItem(position));
             projectListAdapter.selectView(position);

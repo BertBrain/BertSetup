@@ -29,12 +29,17 @@ public class SelectableListGVA extends ArrayAdapter<String> {
     AdapterView.OnItemClickListener listener;
 
     public SelectableListGVA(Activity activity, List<String> titles) {
+
         super(activity, android.R.layout.simple_list_item_1, titles);
+
+        Log.d("selectingview", "Creating new GVA");
         this.activity = activity;
         this.titles = titles;
     }
 
     public void selectView(int position) {
+        Log.d("selectingview", "position: " + position);
+        Log.d("selectingview", "number of list cells: " + listCells.size());
         if (listCells.size() != 0) {
             View selectedView = listCells.get(position);
             clearSelection();
@@ -57,26 +62,26 @@ public class SelectableListGVA extends ArrayAdapter<String> {
 
         final View listCell = activity.getLayoutInflater().inflate(android.R.layout.simple_list_item_1, parent, false);
 
+        Log.d("selectingview", "selectedposition: " + selectedPosition + "position: " + position);
         if (position == selectedPosition) {
             lastSelectionView = listCell;
             listCell.setBackgroundColor(activity.getResources().getColor(R.color.ListSelection));
         }
-        Log.d("SELECTABLE_LIST_GVA", "listCell: " + listCell);
+
         listCells.add(position, listCell);
-        Log.d("SELECTABLE_LIST_GVA", "list cells: " + listCells);
         TextView textView = (TextView) listCell.findViewById(android.R.id.text1);
         textView.setText(titles.get(position));
 
         listCell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Log.d("SELECTABLE_LIST_GVA", "item selected");
-                if (lastSelectionView != null) {
-                    lastSelectionView.setBackgroundColor(activity.getResources().getColor(R.color.LightGreen));
-                }
+                clearSelection();
                 view.setBackgroundColor(activity.getResources().getColor(R.color.ListSelection));
                 lastSelectionView = view;
                 listener.onItemClick(null, view, position, 0);
+                selectedPosition = position;
             }
         });
 
@@ -84,8 +89,8 @@ public class SelectableListGVA extends ArrayAdapter<String> {
     }
 
     public void clearSelection() {
-        if (lastSelectionView != null) {
-            lastSelectionView.setBackgroundColor(activity.getResources().getColor(R.color.LightGreen));
+        for (View view : listCells){
+            view.setBackgroundColor(activity.getResources().getColor(R.color.LightGreen));
         }
     }
 }
