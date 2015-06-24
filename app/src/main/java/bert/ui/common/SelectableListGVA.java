@@ -1,6 +1,7 @@
 package bert.ui.common;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,7 +26,6 @@ public class SelectableListGVA extends ArrayAdapter<String> {
     public List<String> titles;
     private Activity activity;
 
-    private View lastSelectionView;
     private ArrayList<View> listCells = new ArrayList<>();
 
     private int cellColor;
@@ -42,6 +42,7 @@ public class SelectableListGVA extends ArrayAdapter<String> {
     }
 
     public void selectView(int position) {
+        log("Position " + position + " selected");
         if (listCells.size() != 0) {
             View v = listCells.get(position);
             selectView(v);
@@ -53,12 +54,11 @@ public class SelectableListGVA extends ArrayAdapter<String> {
     public void selectView(View selectedView) {
         clearSelection();
         selectedView.setBackgroundColor(selectedCellColor);
-        lastSelectionView = selectedView;
     }
 
     public void setOnClickListener() {}
 
-    public void setOnClickListener(  AdapterView.OnItemClickListener listener) {
+    public void setOnClickListener(AdapterView.OnItemClickListener listener) {
         this.listener = listener;
     }
 
@@ -73,8 +73,8 @@ public class SelectableListGVA extends ArrayAdapter<String> {
 
         listCells.add(position, listCell);
 
-        TextView textView = (TextView) listCell.findViewById(android.R.id.text1);
-        textView.setText(titles.get(position));
+        TextView cellText = (TextView) listCell.findViewById(android.R.id.text1);
+        cellText.setText(titles.get(position));
 
         listCell.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,8 +88,12 @@ public class SelectableListGVA extends ArrayAdapter<String> {
     }
 
     public void clearSelection() {
-        for (View view : listCells){
-            view.setBackgroundColor(activity.getResources().getColor(R.color.LightGreen));
+        for (View view : listCells) {
+            view.setBackgroundColor(cellColor);
         }
+    }
+
+    public void log(String message) {
+        Log.d("SELECTABLE_LIST_GVA", message);
     }
 }
