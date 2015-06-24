@@ -33,7 +33,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
 
     private ListView projectListView;
     private Button addProjectButton;
-    private SelectableListGVA projectTableAdapter;
+    private SelectableListGVA projectListAdapter;
 
     abstract public List<String> getProjects();
 
@@ -83,7 +83,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 openAddProjectView();
-                projectTableAdapter.clear();
+                projectListAdapter.clearSelection();
             }
         });
     }
@@ -91,14 +91,14 @@ abstract public class ProjectListActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
-        projectTableAdapter = new SelectableListGVA(this, getProjects());
+        projectListAdapter = new SelectableListGVA(this, getProjects());
 
         projectListView = (ListView) findViewById(R.id.item_list_view);
-        projectListView.setAdapter(projectTableAdapter);
-        projectTableAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
+        projectListView.setAdapter(projectListAdapter);
+        projectListAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openProjectDetailView(projectTableAdapter.getItem(position));
+                openProjectDetailView(projectListAdapter.getItem(position));
             }
         });
 
@@ -109,10 +109,10 @@ abstract public class ProjectListActivity extends ActionBarActivity {
 
     //FIXME this is the problem
     public void loadProject(String projectID) {
-        if (projectTableAdapter.titles.contains(projectID)) {
-            int position = projectTableAdapter.titles.indexOf(projectID);
-            openProjectDetailView(projectTableAdapter.getItem(position));
-            projectTableAdapter.selectView(position);
+        if (projectListAdapter.titles.contains(projectID)) {
+            int position = projectListAdapter.titles.indexOf(projectID);
+            openProjectDetailView(projectListAdapter.getItem(position));
+            projectListAdapter.selectView(position);
         }
     }
 

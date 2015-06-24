@@ -33,6 +33,7 @@ abstract public class BuildingListActivity extends ActionBarActivity {
     public InputMethodManager inputManager;
 
     abstract protected void openBuildingDetailView(String buildingID);
+
     abstract public String getTitlePrefix();
 
     @Override
@@ -73,7 +74,7 @@ abstract public class BuildingListActivity extends ActionBarActivity {
     }
 
     private void openAddBuildingView() {
-        buildingListViewAdapter.clear();
+        buildingListViewAdapter.clearSelection();
         loadFragment(AddBuildingFragment.newInstance(projectID));
     }
 
@@ -85,7 +86,6 @@ abstract public class BuildingListActivity extends ActionBarActivity {
         buildingListViewAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 generalOpenBuildingDetailView(buildingListViewAdapter.getItem(position));
             }
         });
@@ -93,7 +93,7 @@ abstract public class BuildingListActivity extends ActionBarActivity {
         Log.d("BuildingListActivity", "Loaded: " + project.getBuildingNames().size() + " buildings");
     }
 
-    public void generalOpenBuildingDetailView(String buildingID){
+    public void generalOpenBuildingDetailView(String buildingID) {
         int position = buildingListViewAdapter.titles.indexOf(buildingID);
         buildingListViewAdapter.selectView(position);
         openBuildingDetailView(buildingID);
