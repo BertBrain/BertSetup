@@ -11,7 +11,7 @@ import java.util.List;
 
 import bert.data.proj.Project;
 import bert.data.proj.exceptions.InvalidProjectNameException;
-import bert.ui.common.BertAlert;
+import bert.data.proj.exceptions.NoSuchProjectException;
 import bert.utility.Cleaner;
 
 /**
@@ -21,7 +21,7 @@ import bert.utility.Cleaner;
 public class ProjectProvider {
 
     private static ProjectProvider INSTANCE;
-    private HashMap<String, Project> projectMap;
+    private List<Project> projectList;
     private ProjectProvider() {}
 
     public static ProjectProvider getInstance() {
@@ -34,12 +34,18 @@ public class ProjectProvider {
     }
 
     public Project getProject(String projectID) {
-        return projectMap.get(projectID);
+        for (Project project : projectList) {
+            if (projectID.equals(project.getProjectName())) {
+                return project;
+            }
+        }
+        return null;
     }
 
     public List<Project> getAuditProjects() {
+        log("project list: " + projectList.toString());
         List<Project> auditProjects = new ArrayList<>();
-        for (Project project : projectMap.values()) {
+        for (Project project : projectList) {
             if (project.isAudit() == true) {
                 auditProjects.add(project);
             }
@@ -49,7 +55,7 @@ public class ProjectProvider {
 
     public List<Project> getInstallProjects() {
         List<Project> installProjects = new ArrayList<>();
-        for (Project project : projectMap.values()) {
+        for (Project project : projectList) {
             if (project.isAudit() == false) {
                 installProjects.add(project);
             }
@@ -58,12 +64,12 @@ public class ProjectProvider {
     }
 
     public int getProjectCount() {
-        return projectMap.size();
+        return projectList.size();
     }
 
     public List<String> getProjectNameList() {
         List<String> nameList = new ArrayList<>();
-        for (Project project : projectMap.values()) {
+        for (Project project : projectList) {
             nameList.add(project.getProjectName());
         }
         return nameList;
@@ -86,7 +92,7 @@ public class ProjectProvider {
     }
 
     private void loadProjectListFromFile() {
-        projectMap = new HashMap<>();
+        projectList = new ArrayList<>();
         try {
             File projectDir = FileProvider.getProjectDirectory();
             if (projectDir != null && projectDir.listFiles() != null) {
@@ -94,10 +100,11 @@ public class ProjectProvider {
                 if (files.size() > 0) {
                     for (File f : files) {
                         try {
-                            Project nextProject = Project.loadProject(f);
-                            if (nextProject != null) {
+                            Project project = Project.loadProject(f);
+                            if (project != null) {
                                 log("Loading file <" + f.getName() + "> from project directory");
-                                projectMap.put(nextProject.getProjectName(), nextProject);
+                                log("adding project <" + project.getProjectName() + "> from project directory");
+                                projectList.add(project);
                             } else {
                                 log("File <" + f.getName() + "> is not a valid project... Skipping");
                             }
@@ -107,7 +114,7 @@ public class ProjectProvider {
                     }
                 }
             }
-            log("Loaded " + projectMap.size() + " projects from storage");
+            log("Loaded " + projectList.size() + " projects from storage");
         } catch (IOException e) {
             e.printStackTrace();
             log("Unable to complete loadProjectListFromFile()");
@@ -115,14 +122,17 @@ public class ProjectProvider {
     }
 
     public boolean deleteProject(String projectID) {
-        Project project = projectMap.get(projectID);
-        try {
-            Log.d("DELETING", "path: " + project.getProjectFileNoSpaces().getAbsolutePath());
 
-            File deleteFile = project.getProjectFileNoSpaces();
+        try {
+            Log.d("ProjectSaver", "deleting path: " + Project.getProjectFileNoSpaces(projectID).getAbsolutePath());
+
+            File deleteFile = Project.getProjectFileNoSpaces(projectID);
             if (deleteFile.exists()){
                 if (deleteFile.delete()) {
-                    projectMap.remove(projectID);
+                    Project project = getProject(projectID);
+                    if (project != null) {
+                        projectList.remove(project);
+                    }
                     return true;
                 } else {
                     return false;
@@ -139,9 +149,9 @@ public class ProjectProvider {
     }
 
     public void addProject(Project project) {
-        projectMap.put(project.getProjectName(), project);
+        projectList.add(project);
         project.save();
-        log("Added project <" + project.getProjectName() + "> to projectMap");
+        log("Added project <" + project.getProjectName() + "> to projectList");
     }
 
     public boolean projectNameCheck(String name) {

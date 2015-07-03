@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,7 +36,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
 
     private ListView projectListView;
     private Button addProjectButton;
-    private SelectableListGVA projectListAdapter;
+    public SelectableListGVA projectListAdapter;
 
     abstract public List<String> getProjects();
 
@@ -52,6 +53,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
         if (getIntent().getType() != null && getIntent().getType().equals("text/xml")) {
             Log.d("RECIEVING", "recieved XML");
             Uri uri = getIntent().getData();
+            File file = new File(uri.getPath());
             Log.d("RECIEVING", "text: " + uri.toString());
 
             try {
@@ -119,13 +121,33 @@ abstract public class ProjectListActivity extends ActionBarActivity {
         projectListAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openProjectDetailView(projectListAdapter.titles.get(position));
+            }
+        });
+    }
+
+    public void reloadListView() {
+        int selectedPosition = projectListAdapter.selectedPosition;
+        projectListAdapter = new SelectableListGVA(this, getProjects());
+        projectListAdapter.selectedPosition = selectedPosition;
+        projectListView = (ListView) findViewById(R.id.item_list_view);
+        projectListView.setAdapter(projectListAdapter);
+        projectListAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 openProjectDetailView(projectListAdapter.getItem(position));
             }
         });
     }
 
+
     abstract public void openAddProjectView();
 
+    /*
+    public void updateSelectedTitle(String newTitle){
+        projectListAdapter.setSelectedTitle(newTitle);
+    }
+*/
     public void loadProject(String projectID) {
 
         if (projectListAdapter.titles.contains(projectID)) {

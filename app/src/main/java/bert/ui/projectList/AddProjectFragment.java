@@ -113,6 +113,8 @@ public class AddProjectFragment extends Fragment {
         super.onDetach();
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.project_add_fragment, container, false);

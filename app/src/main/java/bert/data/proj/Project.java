@@ -48,7 +48,7 @@ public class Project {
     private List<RoomAudit> auditList;
 
     public Project(String name, List<BertUnit> bertList, HashMap<String, Building> buildingList, List<RoomAudit> auditList) throws InvalidProjectNameException {
-        setProjectName(name);
+        this.projectName = name;
         this.creationDate = DateUtil.getDate();
         this.modifiedDate = creationDate;
         this.bertList = bertList;
@@ -316,11 +316,15 @@ public class Project {
     }
 
     public void setProjectName(String newProjectName) throws InvalidProjectNameException {
-        Cleaner.cleanProjectName(newProjectName);
-        if (ProjectProvider.getInstance().projectNameCheck(newProjectName)) {
-            this.projectName = newProjectName;
-        } else {
-            throw new InvalidProjectNameException();
+        if (!newProjectName.equals(this.projectName)){
+            Cleaner.cleanProjectName(newProjectName);
+            if (ProjectProvider.getInstance().projectNameCheck(newProjectName)) {
+                String oldProjectName = this.projectName;
+                this.projectName = newProjectName;
+                ProjectProvider.getInstance().deleteProject(oldProjectName);
+            } else {
+                throw new InvalidProjectNameException();
+            }
         }
     }
 
@@ -372,6 +376,14 @@ public class Project {
 
     public File getProjectFileNoSpaces() throws IOException{
         return new File(getProjectFile().getAbsolutePath().replace(" ", "%20"));
+    }
+
+    static public File getProjectFile(String projectID) throws IOException {
+        return new File(FileProvider.getProjectDirectory(), projectID + ".xml");
+    }
+
+    static public File getProjectFileNoSpaces(String projectID) throws IOException{
+        return new File(getProjectFile(projectID).getAbsolutePath().replace(" ", "%20"));
     }
 
     public void save() {
