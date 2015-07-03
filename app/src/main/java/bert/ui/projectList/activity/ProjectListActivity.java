@@ -126,21 +126,6 @@ abstract public class ProjectListActivity extends ActionBarActivity {
         });
     }
 
-    public void reloadListView() {
-        int selectedPosition = projectListAdapter.selectedPosition;
-        projectListAdapter = new SelectableListGVA(this, getProjects());
-        projectListAdapter.selectedPosition = selectedPosition;
-        projectListView = (ListView) findViewById(R.id.item_list_view);
-        projectListView.setAdapter(projectListAdapter);
-        projectListAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openProjectDetailView(projectListAdapter.getItem(position));
-            }
-        });
-    }
-
-
     abstract public void openAddProjectView();
 
     /*

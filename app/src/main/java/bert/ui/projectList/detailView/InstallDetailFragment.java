@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
 
+import bert.data.proj.Building;
 import bert.utility.CSVExporter;
 import bert.ui.R;
 import bert.ui.buildingList.activity.BuildingListActivity;

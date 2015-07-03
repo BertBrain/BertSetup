@@ -89,8 +89,10 @@ abstract public class ProjectDetailFragment extends ProjectChildEditorFragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //activity.projectListAdapter.setTitleAtIndex(listIndex, charSequence.toString());
-                TextView view = (TextView) listCell.findViewById(android.R.id.text1);
-                view.setText(charSequence.toString());
+                if(listCell != null) {
+                    TextView view = (TextView) listCell.findViewById(android.R.id.text1);
+                    view.setText(charSequence.toString());
+                }
             }
 
             @Override
@@ -149,6 +151,7 @@ abstract public class ProjectDetailFragment extends ProjectChildEditorFragment {
         openProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                updateNameTextField();
                 openBuildingList();
             }
         });
@@ -185,11 +188,9 @@ abstract public class ProjectDetailFragment extends ProjectChildEditorFragment {
             } catch (InvalidProjectNameException e) {
                 //BertAlert.show(getActivity(), "Invalid Project Name");
             }
-            projectNameEditText.setText(project.getProjectName());
             projectID = project.getProjectName();
+            projectNameEditText.setText(project.getProjectName());
             activity.projectListAdapter.titles.set(listCellIndex, project.getProjectName());
-            //activity.projectListAdapter.setTitleAtIndex(listIndex, project.getProjectName());
-            //activity.reloadListView();
         }
     }
 

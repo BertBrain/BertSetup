@@ -53,7 +53,6 @@ public class SelectableListGVA extends ArrayAdapter<String> {
             selectView(v);
         }
         selectedPosition = position;
-
     }
 
     public void selectView(View selectedView) {
@@ -75,7 +74,7 @@ public class SelectableListGVA extends ArrayAdapter<String> {
 
         Log.d("selectingview", "selectedposition: " + selectedPosition + "position: " + position);
         if (position == selectedPosition) {
-                listCell.setBackgroundColor(selectedCellColor);
+            listCell.setBackgroundColor(selectedCellColor);
         }
 
         TextView textView = (TextView) listCell.findViewById(android.R.id.text1);
