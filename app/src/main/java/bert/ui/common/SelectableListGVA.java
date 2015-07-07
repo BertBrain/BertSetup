@@ -1,6 +1,7 @@
 package bert.ui.common;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import bert.data.ProjectProvider;
 import bert.ui.R;
 
 /**
@@ -20,16 +22,17 @@ import bert.ui.R;
 public class SelectableListGVA extends ArrayAdapter<String> {
 //FIXME the first time the list is interacted with the selection will not update but will behave like normal after 1 click
 
-    private int selectedPosition = -1;
+    public int selectedPosition = -1;
 
     public List<String> titles;
     private Activity activity;
 
-    private View lastSelectionView;
     private ArrayList<View> listCells = new ArrayList<>();
 
     private int cellColor;
     private int selectedCellColor;
+
+    public View selectedView;
 
     AdapterView.OnItemClickListener listener;
 
@@ -45,15 +48,14 @@ public class SelectableListGVA extends ArrayAdapter<String> {
         if (listCells.size() != 0) {
             View v = listCells.get(position);
             selectView(v);
-        } else {
-            selectedPosition = position;
         }
+        selectedPosition = position;
     }
 
     public void selectView(View selectedView) {
         clearSelection();
         selectedView.setBackgroundColor(selectedCellColor);
-        lastSelectionView = selectedView;
+        this.selectedView = selectedView;
     }
 
     public void setOnClickListener() {}
@@ -68,7 +70,7 @@ public class SelectableListGVA extends ArrayAdapter<String> {
         final View listCell = activity.getLayoutInflater().inflate(android.R.layout.simple_list_item_1, parent, false);
 
         if (position == selectedPosition) {
-            selectView(listCell);
+            listCell.setBackgroundColor(selectedCellColor);
         }
 
         listCells.add(position, listCell);
@@ -79,17 +81,34 @@ public class SelectableListGVA extends ArrayAdapter<String> {
         listCell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectView(view);
+                Log.d("GVA", "click index: " + position);
                 selectedPosition = position;
+                selectView(view);
                 listener.onItemClick(null, view, position, 0);
             }
         });
+
+        try {
+            listCells.set(position, listCell);
+        } catch (IndexOutOfBoundsException e) {
+            listCells.add(position, listCell);
+        }
+
         return listCell;
     }
 
     public void clearSelection() {
-        for (View view : listCells){
-            view.setBackgroundColor(activity.getResources().getColor(R.color.LightGreen));
+        if (selectedView != null) {
+            selectedView.setBackgroundColor(cellColor);
         }
+
+        for (View view : listCells) {
+            view.setBackgroundColor(cellColor);
+        }
+    }
+
+    public int getCurrentSelectionIndex() {
+        Log.d("GVA", "current pos: " + selectedPosition);
+        return selectedPosition;
     }
 }

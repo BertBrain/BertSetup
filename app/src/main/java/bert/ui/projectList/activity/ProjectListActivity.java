@@ -35,7 +35,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
 
     private ListView projectListView;
     private Button addProjectButton;
-    private SelectableListGVA projectListAdapter;
+    public SelectableListGVA projectListAdapter;
 
     abstract public List<String> getProjects();
 
@@ -52,6 +52,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
         if (getIntent().getType() != null && getIntent().getType().equals("text/xml")) {
             Log.d("RECIEVING", "recieved XML");
             Uri uri = getIntent().getData();
+            File file = new File(uri.getPath());
             Log.d("RECIEVING", "text: " + uri.toString());
 
             try {
@@ -123,12 +124,28 @@ abstract public class ProjectListActivity extends ActionBarActivity {
         projectListAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openProjectDetailView(projectListAdapter.getItem(position));
+                openProjectDetailView(projectListAdapter.titles.get(position));
             }
         });
     }
 
     abstract public void openAddProjectView();
+
+    /*
+    public void updateSelectedTitle(String newTitle){
+        projectListAdapter.setSelectedTitle(newTitle);
+    }
+    */
+
+    public void loadProject(String projectID) {
+
+        if (projectListAdapter.titles.contains(projectID)) {
+            Log.d("selectingview", "title found");
+            int position = projectListAdapter.titles.indexOf(projectID);
+            openProjectDetailView(projectListAdapter.getItem(position));
+            projectListAdapter.selectView(position);
+        }
+    }
 
     public void openNoSelectionView() {
         loadFragment(NoSelectionFragment.newInstance("Create a project or select a project from the list of projects on the left"));
