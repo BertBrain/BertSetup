@@ -205,6 +205,10 @@ abstract public class ProjectDetailFragment extends ProjectChildEditorFragment {
     @Override
     public void onPause(){
         updateNameTextField();
+        if (project != null ) {
+            project.setContactName(contactNameEditText.getText().toString());
+            project.setContactNumber(contactNumberEditText.getText().toString());
+        }
         super.onPause();
     }
 

@@ -16,6 +16,7 @@ import bert.data.proj.Building;
 import bert.data.proj.Project;
 import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
+import bert.ui.common.SelectableListGVA;
 
 public class CategoryListActivity extends ActionBarActivity implements CategoryDetailFragment.OnFragmentInteractionListener, AddCategoryFragment.OnFragmentInteractionListener {
 
@@ -30,7 +31,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
 
     private Button addCategoryButton;
     private ListView categoryListView;
-    private ArrayAdapter<String> categoryListViewAdapter;
+    private SelectableListGVA categoryListViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +58,12 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     }
 
     public void createCategoryListView() {
-        categoryListViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, project.getBuilding(buildingID).getCategoryNames());
+        categoryListViewAdapter = new SelectableListGVA(this, project.getBuilding(buildingID).getCategoryNames());
         categoryListView = (ListView) findViewById(R.id.item_list_view);
         categoryListView.setAdapter(categoryListViewAdapter);
-        categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        categoryListViewAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> a, View v, int position, long l) {
                 openCategoryDetailFragment(categoryListViewAdapter.getItem(position));
             }
         });
@@ -84,6 +85,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
     }
 
     public void openCategoryAddFragment() {
+        categoryListViewAdapter.clearSelection();
         loadFragment(AddCategoryFragment.newInstance(projectID, buildingID));
     }
 

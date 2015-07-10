@@ -32,7 +32,7 @@ public abstract class RoomListActivity extends ActionBarActivity {
     public DeviceListFragment deviceListFragment;
 
     private Button newRoomButton;
-    private SelectableListGVA roomListAdapter;
+    public SelectableListGVA roomListAdapter;
     private ListView roomListView;
     public InputMethodManager inputManager;
 

@@ -1,12 +1,15 @@
 package bert.ui.projectList.activity;
 
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 
 import java.util.List;
 
 import bert.data.ProjectProvider;
 import bert.ui.common.BertAlert;
+import bert.ui.projectList.addProject.InstallAddProjectFragment;
 import bert.ui.projectList.detailView.InstallDetailFragment;
 
 public class InstallProjectListActivity extends ProjectListActivity {
@@ -23,17 +26,22 @@ public class InstallProjectListActivity extends ProjectListActivity {
 
     @Override
     public void openAddProjectView() {
-        BertAlert.show(this, "Convert an audit project into an installation to add it to this list.",
-                "Take me to the Audit List",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        openProjectListActivity();
-                    }
-                },
-                "Cancel",
-                null
-        );
+        Builder builder = new Builder(this);
+        builder.setTitle("Convert an audit project into an installation to add it to this list.");
+        builder.setMessage("You can turn an existing audit into an install or you can create a new install from scratch");
+
+        builder.setPositiveButton("Open Audit List", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                openProjectListActivity();
+            }
+        });
+       builder.setNegativeButton("Create Install From Scratch", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialogInterface, int i) {
+               loadFragment(InstallAddProjectFragment.newInstance());
+           }
+       });
+        builder.setNeutralButton("Cancel", null);
+        builder.create().show();
     }
 
     @Override

@@ -46,6 +46,7 @@ public class Project {
     private List<BertUnit> bertList;
     private HashMap<String, Building> buildingList;
     private List<RoomAudit> auditList;
+    private boolean isAudit;
 
     public Project(String name, List<BertUnit> bertList, HashMap<String, Building> buildingList, List<RoomAudit> auditList) throws InvalidProjectNameException {
         this.projectName = name;
@@ -53,11 +54,16 @@ public class Project {
         this.modifiedDate = creationDate;
         this.bertList = bertList;
         this.buildingList = buildingList;
-        this.auditList = auditList;
-    }
+        this.auditList = auditList;}
 
     public boolean isAudit() {
-        return bertList.size() == 0;
+        if (bertList.size() != 0){
+            return false;
+        }
+        if (auditList.size() != 0) {
+            return true;
+        }
+        return isAudit;
     }
 
     public void convertToInstall() {
@@ -65,6 +71,7 @@ public class Project {
             bertList.addAll(roomAudit.createBerts());
             auditList.remove(roomAudit);
         }
+        isAudit = false;
     }
 
     public void addAudit(RoomAudit newAudit) throws DuplicateAuditException {
@@ -129,6 +136,16 @@ public class Project {
             bertCount += getBertCountForBuilding(buildingID);
         }
         return bertCount;
+    }
+
+    public boolean containtsAuditInBuilding(String buildingID, String roomAuditID) {
+        boolean isFound = false;
+        for (RoomAudit audit : auditList) {
+            if (audit.getBuildingID().equals(buildingID) && audit.getRoomID().equals(roomAuditID)) {
+                isFound = true;
+            }
+        }
+        return isFound;
     }
 
     public int getBertCountForBuilding(String buildingID) {
@@ -283,6 +300,10 @@ public class Project {
 
     public void deleteBert(BertUnit bert) {
         bertList.remove(bert);
+    }
+
+    public void setIsAudit(Boolean isAudit) {
+        this.isAudit = isAudit;
     }
 
     public Building getBuilding(String buildingID) {

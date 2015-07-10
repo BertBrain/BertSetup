@@ -31,6 +31,9 @@ public class ProjectSerializer {
     public static final String TAG_MODIFIED_DATE = "ModifiedDate";
     public static final String TAG_CONTACT_NAME = "ContactName";
     public static final String TAG_CONTACT_NUMBER = "ContactNumber";
+
+    public static final String TAG_IS_AUDIT = "IsAudit";
+
     public static final String TAG_BERTS = "Berts";
     public static final String TAG_BUILDINGS = "Buildings";
     public static final String TAG_AUDITS = "Audits";
@@ -69,12 +72,23 @@ public class ProjectSerializer {
                 roomAuditList.add(r);
             }
 
+
+
             Project newProject = new Project(projectTag.getAttribute(TAG_PROJECT_NAME),
                     bertList,
                     buildingList,
                     roomAuditList
             );
 
+            boolean isAudit;
+            if (projectTag.hasAttribute(TAG_IS_AUDIT)){
+
+                String isAuditString = projectTag.getAttribute(TAG_IS_AUDIT);
+                isAudit = Boolean.valueOf(isAuditString);
+            } else {
+                isAudit = newProject.getAuditList().size() != 0;
+            }
+            newProject.setIsAudit(isAudit);
             newProject.setContactName(contactTag.getAttribute(TAG_CONTACT_NAME));
             newProject.setContactNumber(contactTag.getAttribute(TAG_CONTACT_NUMBER));
             newProject.setCreationDate(projectTag.getAttribute(TAG_CREATION_DATE));
@@ -94,6 +108,7 @@ public class ProjectSerializer {
         root.setAttribute(TAG_PROJECT_NAME, p.getProjectName());
         root.setAttribute(TAG_CREATION_DATE, p.getCreationDate());
         root.setAttribute(TAG_MODIFIED_DATE, bert.utility.DateUtil.getDate());
+        root.setAttribute(TAG_IS_AUDIT, String.valueOf(p.isAudit()));
 
         //Client
         Element client = projectDoc.createElement(TAG_CONTACT);

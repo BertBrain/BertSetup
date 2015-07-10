@@ -64,8 +64,8 @@ public class AuditDetailFragment extends ProjectDetailFragment {
         beginInstallButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BertAlert.show(getActivity(), "This cannot be undone. Are you Sure?",
-                        "Convert Audit to Install",
+                BertAlert.show(getActivity(), "This cannot be undone. Are you Sure?", "This will allow you to edit individual bert information such the bert's MAC adress, but you will no longer be able to use the room audit wizard grid view.",
+                        "Convert This Audit to Install",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -81,7 +81,6 @@ public class AuditDetailFragment extends ProjectDetailFragment {
                 );
             }
         });
-        beginInstallButton.setEnabled(project.getBertCount() > 0);
 
         sendToBertButton = (Button) getView().findViewById(R.id.send_to_bert_button);
         sendToBertButton.setOnClickListener(new View.OnClickListener() {

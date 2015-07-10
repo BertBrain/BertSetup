@@ -1,4 +1,4 @@
-package bert.ui.projectList;
+package bert.ui.projectList.addProject;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,19 +27,19 @@ import bert.ui.R;
 import bert.ui.projectList.activity.AuditProjectListActivity;
 import bert.ui.projectList.activity.ProjectListActivity;
 
-public class AddProjectFragment extends Fragment {
+abstract public class AddProjectFragment extends Fragment {
+
+    protected String newProjectName;
 
     private Button createButton;
     private TextView nameTextField;
     private TextView contactTextField;
     private TextView contactNumberTextField;
 
-    public static AddProjectFragment newInstance() {
-        return new AddProjectFragment();
-    }
-
     public AddProjectFragment() {}
 
+    abstract protected void returnToPreviousActivity();
+    abstract protected boolean isAudit();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +75,7 @@ public class AddProjectFragment extends Fragment {
     }
 
     private void createProjectAndFinish() {
-        String newProjectName = nameTextField.getText().toString();
+        newProjectName = nameTextField.getText().toString();
 
         try {
             Project newProject = new Project(newProjectName,
@@ -83,6 +83,7 @@ public class AddProjectFragment extends Fragment {
                     new HashMap<String, Building>(),
                     new ArrayList<RoomAudit>()
             );
+            newProject.setIsAudit(isAudit());
             newProject.setContactName(contactTextField.getText().toString());
             newProject.setContactNumber(contactNumberTextField.getText().toString());
 
@@ -92,12 +93,8 @@ public class AddProjectFragment extends Fragment {
 
             ProjectProvider.getInstance().addProject(newProject);
 
-            AuditProjectListActivity activity = (AuditProjectListActivity) getActivity();
-            Intent intent = new Intent(activity, AuditProjectListActivity.class);
-            intent.putExtra(ProjectListActivity.ARG_PROJECT_ID, newProjectName);
+            returnToPreviousActivity();
 
-            activity.openNoSelectionView();
-            startActivity(intent);
         } catch (InvalidProjectNameException e) {
             BertAlert.show(getActivity(), "Invalid project name");
         }
@@ -112,8 +109,6 @@ public class AddProjectFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

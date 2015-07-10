@@ -18,12 +18,15 @@ import android.widget.TextView;
 
 import bert.data.ProjectProvider;
 
+import bert.data.proj.Building;
 import bert.data.proj.RoomAudit;
 import bert.data.proj.exceptions.DuplicateAuditException;
 import bert.ui.R;
 import bert.ui.common.BertAlert;
+import bert.ui.common.BertEditTextAlert;
 import bert.ui.common.ProjectChildEditorFragment;
 import bert.ui.roomList.roomListActivity.AuditRoomListActivity;
+import bert.utility.Cleaner;
 
 import java.util.HashMap;
 
@@ -37,6 +40,8 @@ public class AuditWizardFragment extends ProjectChildEditorFragment {
     private String buildingID;
     private String roomID;
 
+    private Building building;
+
     private AuditRoomListActivity activity;
 
     private AuditTallyBoxGVA categoryGridAdapter;
@@ -48,6 +53,7 @@ public class AuditWizardFragment extends ProjectChildEditorFragment {
     private Button cancelButton;
     private Button finishedButton;
 
+    private String oldName;
 
     public static AuditWizardFragment newInstance(String projectID, String buildingID) {
         AuditWizardFragment fragment = new AuditWizardFragment();
@@ -82,6 +88,7 @@ public class AuditWizardFragment extends ProjectChildEditorFragment {
 
         activity = (AuditRoomListActivity) getActivity();
         project = ProjectProvider.getInstance().getProject(projectID);
+        building = project.getBuilding(buildingID);
 
         if (roomID != null) {
             roomAudit = project.getAuditForRoomAndBuilding(roomID, buildingID);
@@ -95,12 +102,8 @@ public class AuditWizardFragment extends ProjectChildEditorFragment {
             for (String s : project.getBuilding(buildingID).getCategoryNames()) {
                 catCount.put(s, 0);
             }
-            roomAudit = new RoomAudit(buildingID, "AUDIT", catCount);
-            try {
-                project.addAudit(roomAudit);
-            } catch (DuplicateAuditException e) {
-                e.printStackTrace();
-            }
+            roomAudit = new RoomAudit(buildingID, "", catCount);
+
         }
 
         //TODO name needs to be updated shouldn't set it here
@@ -109,7 +112,7 @@ public class AuditWizardFragment extends ProjectChildEditorFragment {
     @Override public void onResume() {
         super.onResume();
 
-        categoryGridAdapter = new AuditTallyBoxGVA(activity, roomAudit, projectID);
+        categoryGridAdapter = new AuditTallyBoxGVA(this, roomAudit, projectID, buildingID);
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(categoryGridAdapter);
 
@@ -122,7 +125,11 @@ public class AuditWizardFragment extends ProjectChildEditorFragment {
         cancelButton.setOnClickListener(new CancelButtonListener());
 
         roomEditText = (EditText) getView().findViewById(R.id.locationNameTextField);
-        roomEditText.setText(roomID);
+        if (oldName != null){
+            roomEditText.setText(oldName);
+        } else {
+            roomEditText.setText(roomAudit.getRoomID());
+        }
         roomEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             //TODO make this interface a class in activity and use it throughout for hiding keyboard
             @Override
@@ -131,52 +138,57 @@ public class AuditWizardFragment extends ProjectChildEditorFragment {
                 return false;
             }
         });
+
+        setBertTotalCounter(roomAudit.totalBerts());
     }
 
     public void setBertTotalCounter(int count) {
         totalBertsTextView.setText("Total: " + count);
     }
 
-    private void openNoRoomNamePopup() {
-        AlertDialog.Builder noRoomNameSetAlert = new AlertDialog.Builder(getView().getContext());
-        noRoomNameSetAlert.setTitle("Room Name Not Specified");
-        noRoomNameSetAlert.setPositiveButton("Set Room Name", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                activity.inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                roomEditText.setFocusable(true);
-                roomEditText.requestFocus();
-                roomEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            activity.inputManager.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
-                            finishAuditWizard();
-                        }
-                        return false;
-                    }
-                });
-            }
-        });
-
-        noRoomNameSetAlert.setNeutralButton("Back to Editing", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {}
-        });
-        noRoomNameSetAlert.create().show();
-    }
 
     private void finishAuditWizard() {
-        roomAudit.setRoomID(roomEditText.getText().toString());
-        try {
-            project.addAudit(roomAudit);
-            project.save();
-            activity.openNoSelection();
-            activity.loadListView();
-            //TODO need to close and reload view
-        } catch (DuplicateAuditException e) {
-            BertAlert.show(activity, "Cant Create Duplicate Audit");
+
+        if (attemptToSetName(roomEditText.getText().toString())) {
+
+            roomAudit.setRoomID(roomEditText.getText().toString());
+            try {
+                project.addAudit(roomAudit);
+                project.save();
+                activity.openNoSelection();
+                activity.loadListView();
+                //TODO need to close and reload view
+            } catch (DuplicateAuditException e) {
+                BertAlert.show(activity, "Cant Create Duplicate Audit");
+            }
+        } else {
+            BertAlert.show(getActivity(), "Invalid Project Name", "OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    roomEditText.requestFocus();
+                    activity.inputManager.showSoftInput(null, InputMethodManager.SHOW_IMPLICIT);
+                }
+            });
+
         }
+    }
+
+    public boolean attemptToSetName(String name){
+        if (!Cleaner.clean(name).equals("")) {
+            if (roomAudit.getRoomID().equals(name) || !project.containtsAuditInBuilding(buildingID, name)) {
+                roomAudit.setRoomID(name);
+
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        oldName = roomEditText.getText().toString();
     }
 
     @Override

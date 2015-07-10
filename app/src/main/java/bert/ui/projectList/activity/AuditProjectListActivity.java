@@ -3,7 +3,8 @@ package bert.ui.projectList.activity;
 import java.util.List;
 
 import bert.data.ProjectProvider;
-import bert.ui.projectList.AddProjectFragment;
+import bert.ui.projectList.addProject.AddProjectFragment;
+import bert.ui.projectList.addProject.AuditAddProjectFragment;
 import bert.ui.projectList.detailView.AuditDetailFragment;
 
 public class AuditProjectListActivity extends ProjectListActivity {
@@ -20,7 +21,7 @@ public class AuditProjectListActivity extends ProjectListActivity {
 
     @Override
     public void openAddProjectView() {
-        loadFragment(AddProjectFragment.newInstance());
+        loadFragment(AuditAddProjectFragment.newInstance());
     }
 
     @Override

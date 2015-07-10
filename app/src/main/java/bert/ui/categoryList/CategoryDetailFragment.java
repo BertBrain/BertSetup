@@ -146,8 +146,6 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
                 askToDeleteCategory();
             }
         });
-
-        activity.onResume();
     }
 
     private void askToDeleteCategory () {
