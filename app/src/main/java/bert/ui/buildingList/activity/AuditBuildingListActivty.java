@@ -9,6 +9,7 @@ public class AuditBuildingListActivty extends BuildingListActivity {
 
     @Override
     public void openBuildingDetailView(String buildingID) {
+        buildingListAdapter.indexPressed(buildingListAdapter.titles.lastIndexOf(buildingID));
         loadFragment((new AuditBuildingDetailFragment()).newInstance(projectID, buildingID));
     }
 

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -25,6 +27,7 @@ import bert.ui.R;
 import bert.ui.common.BertAlert;
 import bert.ui.common.BertEditTextAlert;
 import bert.ui.common.ProjectChildEditorFragment;
+import bert.ui.common.SelectableListGVA;
 import bert.ui.roomList.roomListActivity.AuditRoomListActivity;
 import bert.utility.Cleaner;
 
@@ -54,6 +57,9 @@ public class AuditWizardFragment extends ProjectChildEditorFragment {
     private Button finishedButton;
 
     private String oldName;
+
+    private SelectableListGVA listAdapter;
+    private int listCellPosition;
 
     public static AuditWizardFragment newInstance(String projectID, String buildingID) {
         AuditWizardFragment fragment = new AuditWizardFragment();
@@ -112,6 +118,9 @@ public class AuditWizardFragment extends ProjectChildEditorFragment {
     @Override public void onResume() {
         super.onResume();
 
+        listAdapter = activity.roomListAdapter;
+        listCellPosition = listAdapter.getCurrentSelectionIndex();
+
         categoryGridAdapter = new AuditTallyBoxGVA(this, roomAudit, projectID, buildingID);
         gridView = (GridView) getView().findViewById(R.id.auditWizardGridView);
         gridView.setAdapter(categoryGridAdapter);
@@ -130,6 +139,22 @@ public class AuditWizardFragment extends ProjectChildEditorFragment {
         } else {
             roomEditText.setText(roomAudit.getRoomID());
         }
+        roomEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                listAdapter.setTempTitleForPosition(roomEditText.getText().toString(), listCellPosition);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         roomEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             //TODO make this interface a class in activity and use it throughout for hiding keyboard
             @Override
@@ -177,17 +202,19 @@ public class AuditWizardFragment extends ProjectChildEditorFragment {
         if (!Cleaner.clean(name).equals("")) {
             if (roomAudit.getRoomID().equals(name) || !project.containtsAuditInBuilding(buildingID, name)) {
                 roomAudit.setRoomID(name);
-
+                roomID = name;
                 return true;
             }
 
         }
+        listAdapter.setRealTitleIDForPosition(roomID, listCellPosition);
         return false;
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        attemptToSetName(roomEditText.getText().toString());
         oldName = roomEditText.getText().toString();
     }
 

@@ -16,6 +16,7 @@ import bert.data.proj.Project;
 import bert.ui.R;
 import bert.ui.buildingList.AddBuildingFragment;
 import bert.ui.common.NoSelectionFragment;
+import bert.ui.common.OnListClickedListener;
 import bert.ui.common.SelectableListGVA;
 
 /**
@@ -26,7 +27,7 @@ abstract public class BuildingListActivity extends ActionBarActivity {
     public static final String ARG_PROJECT_ID = "PROJECT_ID";
 
     private Button addBuildingButton;
-    private SelectableListGVA buildingListAdapter;
+    public SelectableListGVA buildingListAdapter;
     private ListView buildingListView;
 
     static protected String projectID;
@@ -52,7 +53,9 @@ abstract public class BuildingListActivity extends ActionBarActivity {
         addBuildingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buildingListAdapter.clearSelection();
                 openAddBuildingView();
+                buildingListAdapter.clearSelection();
             }
         });
 
@@ -73,11 +76,12 @@ abstract public class BuildingListActivity extends ActionBarActivity {
 
         buildingListView = (ListView) findViewById(R.id.item_list_view);
         buildingListView.setAdapter(buildingListAdapter);
-        buildingListAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
+        buildingListAdapter.setListener(new OnListClickedListener(){
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openBuildingDetailView(buildingListAdapter.getItem(position));
+            public void onTitlePressed(String title) {
+                openBuildingDetailView(title);
             }
+
         });
 
         Log.d("BuildingListActivity", "Loaded: " + project.getBuildingNames().size() + " buildings");

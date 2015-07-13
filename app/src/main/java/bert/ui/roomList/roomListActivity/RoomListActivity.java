@@ -16,6 +16,7 @@ import bert.data.proj.Project;
 import bert.data.ProjectProvider;
 import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
+import bert.ui.common.OnListClickedListener;
 import bert.ui.common.SelectableListGVA;
 import bert.ui.roomList.deviceList.deviceEditor.DeviceListFragment;
 
@@ -77,17 +78,16 @@ public abstract class RoomListActivity extends ActionBarActivity {
     public void loadListView() {
         final List<String> roomNames = project.getRoomNamesInBuilding(buildingID);
 
-        if (roomNames.size() != 0) {
-            roomListAdapter = new SelectableListGVA(this, roomNames);
-            roomListView = (ListView) findViewById(R.id.item_list_view);
-            roomListView.setAdapter(roomListAdapter);
-            roomListAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    loadRoom(roomNames.get(position));
-                }
-            });
-        }
+        roomListAdapter = new SelectableListGVA(this, roomNames);
+        roomListView = (ListView) findViewById(R.id.item_list_view);
+        roomListView.setAdapter(roomListAdapter);
+        roomListAdapter.setListener(new OnListClickedListener() {
+            @Override
+            public void onTitlePressed(String title) {
+                loadRoom(title);
+            }
+        });
+
     }
 
     public void openNoSelection() {

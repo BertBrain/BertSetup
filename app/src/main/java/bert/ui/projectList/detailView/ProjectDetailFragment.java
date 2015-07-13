@@ -44,7 +44,6 @@ abstract public class ProjectDetailFragment extends ProjectChildEditorFragment {
     private Button openProjectButton;
     private Button deleteButton;
 
-    View listCell;
     int listCellIndex;
 
     public ProjectDetailFragment() {}
@@ -75,7 +74,6 @@ abstract public class ProjectDetailFragment extends ProjectChildEditorFragment {
         Log.d("ProjectName", "OnResume");
         super.onResume();
         project = ProjectProvider.getInstance().getProject(projectID);
-        listCell = activity.projectListAdapter.selectedView;
 
         listCellIndex = activity.projectListAdapter.getCurrentSelectionIndex();
         projectNameEditText = (EditText) getView().findViewById(R.id.nameEditText);
@@ -89,10 +87,8 @@ abstract public class ProjectDetailFragment extends ProjectChildEditorFragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //activity.projectListAdapter.setTitleAtIndex(listIndex, charSequence.toString());
-                if(listCell != null) {
-                    TextView view = (TextView) listCell.findViewById(android.R.id.text1);
-                    view.setText(charSequence.toString());
-                }
+                activity.projectListAdapter.setTempTitleForPosition(projectNameEditText.getText().toString(), listCellIndex);
+                //activity.projectListAdapter.setRealTitleIDForPosition(projectNameEditText.getText().toString(), listCellIndex);
             }
 
             @Override
@@ -190,7 +186,7 @@ abstract public class ProjectDetailFragment extends ProjectChildEditorFragment {
             }
             projectID = project.getProjectName();
             projectNameEditText.setText(project.getProjectName());
-            activity.projectListAdapter.titles.set(listCellIndex, project.getProjectName());
+            activity.projectListAdapter.setRealTitleIDForPosition(project.getProjectName(), listCellIndex);
         }
     }
 

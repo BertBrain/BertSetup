@@ -102,11 +102,6 @@
         </GridLayout>
 
         <Button
-            style="@style/SaveButton"
-            android:text="Save Changes"
-            android:id="@+id/save_button" />
-
-        <Button
             style="@style/DeleteButton"
             android:text="Delete Category"
             android:id="@+id/delete_button" />

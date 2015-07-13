@@ -69,8 +69,8 @@ public class Project {
     public void convertToInstall() {
         for (RoomAudit roomAudit : auditList) {
             bertList.addAll(roomAudit.createBerts());
-            auditList.remove(roomAudit);
         }
+        auditList.clear();
         isAudit = false;
     }
 

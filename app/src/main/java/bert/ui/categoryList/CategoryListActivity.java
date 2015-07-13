@@ -16,6 +16,7 @@ import bert.data.proj.Building;
 import bert.data.proj.Project;
 import bert.ui.common.NoSelectionFragment;
 import bert.ui.R;
+import bert.ui.common.OnListClickedListener;
 import bert.ui.common.SelectableListGVA;
 
 public class CategoryListActivity extends ActionBarActivity implements CategoryDetailFragment.OnFragmentInteractionListener, AddCategoryFragment.OnFragmentInteractionListener {
@@ -31,7 +32,7 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
 
     private Button addCategoryButton;
     private ListView categoryListView;
-    private SelectableListGVA categoryListViewAdapter;
+    public SelectableListGVA categoryListViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +62,10 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
         categoryListViewAdapter = new SelectableListGVA(this, project.getBuilding(buildingID).getCategoryNames());
         categoryListView = (ListView) findViewById(R.id.item_list_view);
         categoryListView.setAdapter(categoryListViewAdapter);
-        categoryListViewAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
+        categoryListViewAdapter.setListener(new OnListClickedListener() {
             @Override
-            public void onItemClick(AdapterView<?> a, View v, int position, long l) {
-                openCategoryDetailFragment(categoryListViewAdapter.getItem(position));
+            public void onTitlePressed(String title) {
+                openCategoryDetailFragment(title);
             }
         });
     }
@@ -101,14 +102,14 @@ public class CategoryListActivity extends ActionBarActivity implements CategoryD
 
     @Override
     public void categoryCreationCanceled() {
-        if (project.getBuilding(buildingID).getCategoryCount() > 0) {
-            openCategoryDetailFragment(building.getCategoryNames().get(0));
-        }
+        loadFragment(NoSelectionFragment.newInstance("Create a category of select a category from the list of categories on the left."));
     }
 
     @Override
-    public void categoryCreationSuccessful(String buildingID) {
+    public void categoryCreationSuccessful(String categoryID) {
         createCategoryListView();
-        openCategoryDetailFragment(buildingID);
+        openCategoryDetailFragment(categoryID);
+        categoryListViewAdapter.indexPressed(categoryListViewAdapter.titles.lastIndexOf(categoryID));
+
     }
 }

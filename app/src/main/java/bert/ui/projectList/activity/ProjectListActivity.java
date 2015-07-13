@@ -23,6 +23,7 @@ import bert.data.proj.exceptions.InvalidProjectNameException;
 import bert.ui.R;
 import bert.ui.common.BertAlert;
 import bert.ui.common.NoSelectionFragment;
+import bert.ui.common.OnListClickedListener;
 import bert.ui.common.SelectableListGVA;
 
 /**
@@ -84,6 +85,7 @@ abstract public class ProjectListActivity extends ActionBarActivity {
         addProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                projectListAdapter.clearSelection();
                 openAddProjectView();
                 projectListAdapter.clearSelection();
             }
@@ -106,41 +108,31 @@ abstract public class ProjectListActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
 
-        if (projectListAdapter == null) {
-            loadListView();
-        }
-
         this.setTitle(getTitlePrefix() + ": " + ((getProjects().size() == 1) ? ("1 Project") : (getProjects().size() + " Projects")));
     }
 
     public void loadListView() {
         projectListAdapter = new SelectableListGVA(this, getProjects());
+        projectListAdapter.setListener(new OnListClickedListener(){
+            @Override
+            public void onTitlePressed(String project) {
+                loadProject(project);
+            }
+        });
 
         projectListView = (ListView) findViewById(R.id.item_list_view);
         projectListView.setAdapter(projectListAdapter);
-        projectListAdapter.setOnClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openProjectDetailView(projectListAdapter.titles.get(position));
-            }
-        });
+
     }
 
     abstract public void openAddProjectView();
 
-    /*
-    public void updateSelectedTitle(String newTitle){
-        projectListAdapter.setSelectedTitle(newTitle);
-    }
-*/
     public void loadProject(String projectID) {
 
-        if (projectListAdapter.titles.contains(projectID)) {
-            Log.d("selectingview", "title found");
-            int position = projectListAdapter.titles.indexOf(projectID);
-            openProjectDetailView(projectListAdapter.getItem(position));
-            projectListAdapter.selectView(position);
-        }
+        int position = projectListAdapter.titles.indexOf(projectID);
+        openProjectDetailView(projectListAdapter.getItem(position));
+        projectListAdapter.indexPressed(position);
+
     }
 
     public void openNoSelectionView() {

@@ -75,28 +75,38 @@ abstract public class AddProjectFragment extends Fragment {
     }
 
     private void createProjectAndFinish() {
-        newProjectName = nameTextField.getText().toString();
 
-        try {
-            Project newProject = new Project(newProjectName,
-                    new ArrayList<BertUnit>(),
-                    new HashMap<String, Building>(),
-                    new ArrayList<RoomAudit>()
-            );
-            newProject.setIsAudit(isAudit());
-            newProject.setContactName(contactTextField.getText().toString());
-            newProject.setContactNumber(contactNumberTextField.getText().toString());
+        String proposedName = nameTextField.getText().toString();
+        if (!Cleaner.clean(proposedName).equals("")) {
+            if (ProjectProvider.getInstance().projectNameCheck(proposedName)) {
+                newProjectName = proposedName;
+                try {
+                    Project newProject = new Project(newProjectName,
+                            new ArrayList<BertUnit>(),
+                            new HashMap<String, Building>(),
+                            new ArrayList<RoomAudit>()
+                    );
+                    newProject.setIsAudit(isAudit());
+                    newProject.setContactName(contactTextField.getText().toString());
+                    newProject.setContactNumber(contactNumberTextField.getText().toString());
 
-            nameTextField.setText("");
-            contactTextField.setText("");
-            contactNumberTextField.setText("");
+                    nameTextField.setText("");
+                    contactTextField.setText("");
+                    contactNumberTextField.setText("");
 
-            ProjectProvider.getInstance().addProject(newProject);
+                    ProjectProvider.getInstance().addProject(newProject);
 
-            returnToPreviousActivity();
+                    getActivity().finish();
+                    returnToPreviousActivity();
 
-        } catch (InvalidProjectNameException e) {
-            BertAlert.show(getActivity(), "Invalid project name");
+                } catch (InvalidProjectNameException e) {
+                    BertAlert.show(getActivity(), "Invalid project name");
+                }
+            } else {
+                BertAlert.show(getActivity(), "Duplicate Project Name");
+            }
+        } else {
+            BertAlert.show(getActivity(), "Invalid Project Name");
         }
     }
 

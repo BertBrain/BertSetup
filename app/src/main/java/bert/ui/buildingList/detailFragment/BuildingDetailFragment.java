@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -22,6 +24,7 @@ import bert.ui.buildingList.activity.BuildingListActivity;
 import bert.ui.categoryList.CategoryListActivity;
 import bert.ui.common.ProjectChildEditorFragment;
 import bert.ui.common.NoSelectionFragment;
+import bert.ui.common.SelectableListGVA;
 
 /**
  * Created by liamcook on 5/29/15.
@@ -45,6 +48,10 @@ abstract public class BuildingDetailFragment extends ProjectChildEditorFragment 
     private TimeRangeDisplay timeDisplay;
 
     abstract public void openRoomListActivity();
+
+
+    SelectableListGVA listAdapter;
+    int listViewIndex;
 
     public BuildingDetailFragment newInstance(String projectID, String buildingID) {
         Bundle args = new Bundle();
@@ -70,6 +77,9 @@ abstract public class BuildingDetailFragment extends ProjectChildEditorFragment 
     @Override
     public void onResume() {
         super.onResume();
+        listAdapter = ( (BuildingListActivity) getActivity()).buildingListAdapter;
+        listViewIndex = listAdapter.getCurrentSelectionIndex();
+
         startTimeDisplay = (TextView) getView().findViewById(R.id.openingTimeTextView);
 
         endTimeDisplay = (TextView) getView().findViewById(R.id.closingTimeTextView);
@@ -77,18 +87,27 @@ abstract public class BuildingDetailFragment extends ProjectChildEditorFragment 
 
         nameEditText = (EditText) getView().findViewById(R.id.buildingNameEditText);
         nameEditText.setText(buildingID);
+        nameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                listAdapter.setTempTitleForPosition(nameEditText.getText().toString(), listViewIndex);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         nameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                try {
-                    String newBuildingID = nameEditText.getText().toString();
-                    project.renameBuilding(buildingID, newBuildingID);
-                    buildingID = newBuildingID;
-                    project.save();
-                    ((BuildingListActivity) getActivity()).loadListView();
-                } catch (InvalidBuildingNameException e) {
-                    nameEditText.setText(buildingID);
-                }
+                updateBuildingName();
+
                 InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                 mgr.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 return false;
@@ -137,6 +156,22 @@ abstract public class BuildingDetailFragment extends ProjectChildEditorFragment 
         });
     }
 
+    private void updateBuildingName() {
+        String oldBuildingID = buildingID;
+        try {
+
+            String newBuildingID = nameEditText.getText().toString();
+            project.renameBuilding(buildingID, newBuildingID);
+            buildingID = newBuildingID;
+            project.save();
+            listAdapter.setRealTitleIDForPosition(buildingID, listViewIndex);
+        } catch (InvalidBuildingNameException e) {
+            buildingID = oldBuildingID;
+            nameEditText.setText(buildingID);
+            listAdapter.setRealTitleIDForPosition(buildingID, listViewIndex);
+        }
+    }
+
     private void openCategoryListActivity() {
         Intent i = new Intent(this.getActivity(), CategoryListActivity.class);
         i.putExtra(CategoryListActivity.ARG_PROJECT_ID, projectID);
@@ -147,6 +182,7 @@ abstract public class BuildingDetailFragment extends ProjectChildEditorFragment 
     @Override
     public void onPause() {
         super.onPause();
+        updateBuildingName();
         building.setStartTime(timeDisplay.getStartTime());
         building.setEndTime(timeDisplay.getEndTime());
     }

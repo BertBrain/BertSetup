@@ -24,7 +24,7 @@
             <Button
                 android:id="@+id/send_to_bert_button"
                 style="@style/ActionButton"
-                android:text="Send To Bert" />
+                android:text="Send To Bert / Export Project File" />
 
             <Button
                 android:id="@+id/exportToROIButton"

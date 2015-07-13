@@ -16,6 +16,7 @@ import java.io.IOException;
 import bert.data.ProjectProvider;
 import bert.data.proj.Project;
 import bert.ui.projectList.activity.InstallProjectListActivity;
+import bert.ui.projectList.activity.ProjectListActivity;
 import bert.utility.ROIExporter;
 import bert.ui.R;
 import bert.ui.buildingList.activity.AuditBuildingListActivty;
@@ -71,8 +72,9 @@ public class AuditDetailFragment extends ProjectDetailFragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 project.convertToInstall();
                                 project.save();
+                                getActivity().finish();
                                 Intent intent = new Intent(getActivity(), InstallProjectListActivity.class);
-                                intent.putExtra(ARG_PROJECT_ID, projectID);
+                                intent.putExtra(ProjectListActivity.ARG_PROJECT_ID, projectID);
                                 startActivity(intent);
                             }
                         },

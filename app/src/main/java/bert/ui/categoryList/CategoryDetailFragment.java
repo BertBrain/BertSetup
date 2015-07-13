@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,10 +50,11 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
     private TextView bertCountDisplay;
 
     private TextView multipleDevicesIndicator;
-    private Button saveButton;
     private Button deleteButton;
 
     private OnFragmentInteractionListener mListener;
+
+    int listCellIndex;
 
     public static CategoryDetailFragment newInstance(String projectID, String buildingID, String categoryID) {
         CategoryDetailFragment fragment = new CategoryDetailFragment();
@@ -84,8 +87,26 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
     public void onResume() {
         super.onResume();
 
+        listCellIndex = activity.categoryListViewAdapter.getCurrentSelectionIndex();
+
         categoryNameEditText = (EditText) getView().findViewById(R.id.category_name_edit_text);
         categoryNameEditText.setText(categoryID);
+        categoryNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                activity.categoryListViewAdapter.setTempTitleForPosition(categoryNameEditText.getText().toString(), listCellIndex);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         categoryNameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -130,14 +151,6 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
 
         bertCountDisplay = (TextView) getView().findViewById(R.id.bert_count_label);
         bertCountDisplay.setText(String.valueOf(project.getBertCountForCategory(buildingID, categoryID)));
-
-        saveButton = (Button) getView().findViewById(R.id.save_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveChanges();
-            }
-        });
 
         deleteButton = (Button) getView().findViewById(R.id.delete_button);
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -223,11 +236,27 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
             BertAlert.show(getActivity(), "Unable to delete category: " + bertsRemaining + text);
         }
     }
-    private void saveChanges() {
+
+    private void updateName() {
+        String oldCategoryID = categoryID;
         try {
             String newCategoryID = categoryNameEditText.getText().toString();
             building.renameCategory(categoryID, newCategoryID);
             categoryID = newCategoryID;
+            category.setBertTypeID(bertTypeSpinner.getSelectedItemPosition());
+            project.save();
+            activity.createCategoryListView();
+        } catch (InvalidCategoryNameException e) {
+            categoryID = oldCategoryID;
+        }
+        activity.categoryListViewAdapter.setRealTitleIDForPosition(categoryID, listCellIndex);
+    }
+
+    @Override
+    public void onPause() {
+        if (category != null){
+            updateName();
+            category.setBertTypeID(bertTypeSpinner.getSelectedItemPosition());
             try {
                 int estimatedLoad = Integer.valueOf(estimatedLoadEditText.getText().toString());
                 category.setEstimatedLoad(estimatedLoad);
@@ -237,14 +266,9 @@ public class CategoryDetailFragment extends ProjectChildEditorFragment {
                     estimatedLoadEditText.setText(UNDEFINED_LOAD_STRING);
                 }
             }
-            category.setBertTypeID(bertTypeSpinner.getSelectedItemPosition());
-            project.save();
-            activity.createCategoryListView();
-        } catch (InvalidCategoryNameException e) {
-            e.printStackTrace();
-            BertAlert.show(getActivity(), "Invalid New Category Name");
-            categoryNameEditText.setText(categoryID);
+            super.onPause();
         }
+
     }
 
     @Override
